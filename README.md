@@ -37,7 +37,7 @@ meson install -C build
 
 1. Clone the repository
 2. Open the project folder in GNOME Builder
-3. Click "Run Project" button
+3. Click the "Run Project" button
 
 ### Supported Formats
 
