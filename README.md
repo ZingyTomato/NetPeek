@@ -11,6 +11,10 @@ A modern network scanner for GNOME that helps you discover devices on your local
 
 ![No Devices Found](data/screenshots/3.png)
 
+<a href='https://flathub.org/apps/io.github.zingytomato.netpeek'>
+    <img width='240' alt='Get it on Flathub' src='https://flathub.org/api/badge?svg&locale=en'/>
+</a>
+
 
 ## ⭐ Features
 
