@@ -1,0 +1,47 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the netpeek package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: netpeek\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-07-31 15:33+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: data/io.github.zingytomato.netpeek.desktop.in:2
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:6
+msgid "NetPeek"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.desktop.in:3
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
+msgid "Discover devices on your local network"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:9
+msgid ""
+"NetPeek is a simple network scanner that helps you discover active devices "
+"on your local network. It shows open ports, hostnames, and allows easy "
+"rescan with a clean, user-friendly interface."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:16
+msgid "ZingyTomato"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:30
+msgid "Home screen"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:34
+msgid "Scan results"
+msgstr ""

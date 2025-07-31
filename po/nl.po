@@ -1,0 +1,52 @@
+# Dutch translations for netpeek package.
+# Copyright (C) 2025 THE netpeek'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the netpeek package.
+# Automatically generated <>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: netpeek\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-07-31 15:33+0200\n"
+"PO-Revision-Date: 2025-07-31 20:27+0200\n"
+"Last-Translator: Gert-dev\n"
+"Language-Team: none\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 48.0\n"
+
+#: data/io.github.zingytomato.netpeek.desktop.in:2
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:6
+msgid "NetPeek"
+msgstr "NetPeek"
+
+#: data/io.github.zingytomato.netpeek.desktop.in:3
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
+msgid "Discover devices on your local network"
+msgstr "Ontdek apparaten op het lokale netwerk"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:9
+msgid ""
+"NetPeek is a simple network scanner that helps you discover active devices "
+"on your local network. It shows open ports, hostnames, and allows easy "
+"rescan with a clean, user-friendly interface."
+msgstr ""
+"NetPeek is een eenvoudige netwerkscanner die je helpt met het ontdekken van "
+"actieve apparaten op het lokale netwerk. Het toont geopende poorten en "
+"hostnames en laat vlot toe om opnieuw te scannen dankzij een "
+"gebruiksvriendelijke interface."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:16
+msgid "ZingyTomato"
+msgstr "ZingyTomato"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:30
+msgid "Home screen"
+msgstr "Homepagina"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:34
+msgid "Scan results"
+msgstr "Resultaten scan"
