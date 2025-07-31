@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.zingytomato.netpeek</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>NetPeek</name>
+  <summary>Discover devices on your local network</summary>
+  <description>
+    <p>
+      NetPeek is a simple network scanner that helps you
+      discover active devices on your local network. It shows open ports, hostnames,
+      and allows easy rescan with a clean, user-friendly interface.
+    </p>
+  </description>
+  <developer id="io.github.zingytomato">
+    <name>ZingyTomato</name>
+  </developer>
+  <url type="homepage">https://github.com/zingytomato/netpeek</url>
+  <url type="vcs-browser">https://github.com/zingytomato/netpeek</url>
+  <url type="bugtracker">https://github.com/zingytomato/netpeek/issues</url>
+  <launchable type="desktop-id">io.github.zingytomato.netpeek.desktop</launchable>
+  <content_rating type="oars-1.1" />
+  <branding>
+    <color type="primary" scheme_preference="dark">#005577</color>
+    <color type="primary" scheme_preference="light">#0088cc</color>
+  </branding>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/zingytomato/NetPeek/main/data/screenshots/1.png</image>
+      <caption>Home screen</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/zingytomato/NetPeek/main/data/screenshots/2.png</image>
+      <caption>Scan results</caption>
+    </screenshot>
+  </screenshots>
+  <releases>
+    <release version="0.1" date="2025-07-31">
+      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.1</url>
+      <description translate="no">
+        <p>Initial Release</p>
+        <ul>
+          <li>Scan local networks based on a custom IP range for active devices</li>
+          <li>Show open ports and hostnames</li>
+          <li>Designed with libadwaita</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+</component>

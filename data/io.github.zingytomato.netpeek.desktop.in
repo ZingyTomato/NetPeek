@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=NetPeek
+Comment=Discover devices on your local network
+Exec=netpeek
+Icon=io.github.zingytomato.netpeek
+Terminal=false
+Type=Application
+Categories=Network;System;Utilities
+StartupNotify=true

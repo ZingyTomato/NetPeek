@@ -1,0 +1,10 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+data/io.github.zingytomato.netpeek.desktop.in
+data/io.github.zingytomato.netpeek.metainfo.xml.in
+data/io.github.zingytomato.netpeek.gschema.xml
+src/netpeek.py
+src/window.py
+src/pages.py
+src/widgets.py
+src/app.py
