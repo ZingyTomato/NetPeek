@@ -1,0 +1,221 @@
+# Dutch translations for netpeek package.
+# Copyright (C) 2025 THE netpeek'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the netpeek package.
+# Automatically generated <>, 2025.
+# Gert-dev <>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: netpeek\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-01 05:28+0200\n"
+"PO-Revision-Date: 2025-08-01 11:20+0200\n"
+"Last-Translator: Gert-dev\n"
+"Language-Team: none\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 48.0\n"
+
+#: data/io.github.zingytomato.netpeek.desktop.in:2
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/window.py:18
+#: src/window.py:43 src/pages.py:26 src/pages.py:35
+msgid "NetPeek"
+msgstr "NetPeek"
+
+#: data/io.github.zingytomato.netpeek.desktop.in:3
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
+msgid "Discover devices on your local network"
+msgstr "Scan apparaten op het lokale netwerk"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:9
+msgid ""
+"NetPeek is a simple network scanner that helps you discover active devices "
+"on your local network. It shows open ports, hostnames, and allows easy "
+"rescan with a clean, user-friendly interface."
+msgstr ""
+"NetPeek is een eenvoudige netwerkscanner die je helpt met het ontdekken van "
+"actieve apparaten op het lokale netwerk. Het toont geopende poorten en "
+"hostnames en laat vlot toe om opnieuw te scannen dankzij een "
+"gebruiksvriendelijke interface."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:16
+msgid "ZingyTomato"
+msgstr "ZingyTomato"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:30
+msgid "Home screen"
+msgstr "Homepagina"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:34
+msgid "Scan results"
+msgstr "Resultaten scan"
+
+#: src/window.py:47 src/pages.py:73
+msgid "Discover devices on your local network."
+msgstr "Scan naar apparaten op het lokale netwerk."
+
+#: src/window.py:51
+msgid "Contributors"
+msgstr "Bijdragers"
+
+#: src/pages.py:40
+msgid "Main Menu"
+msgstr "Hoofdmenu"
+
+#: src/pages.py:43
+msgid "About"
+msgstr "Over"
+
+#: src/pages.py:44
+msgid "Quit"
+msgstr "Afsluiten"
+
+#: src/pages.py:80
+msgid "Scan my Network"
+msgstr "Mijn netwerk scannen"
+
+#: src/pages.py:96
+msgid "IP Range Configuration"
+msgstr "Configuratie IP-bereik"
+
+#: src/pages.py:97
+msgid "Enter the IP range you want to scan:"
+msgstr "Vul het IP-bereik in dat je wil scannen:"
+
+#: src/pages.py:100
+msgid "IP Range"
+msgstr "IP-bereik"
+
+#: src/pages.py:107
+msgid "Examples: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
+msgstr "Voorbeelden: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
+
+#: src/pages.py:118
+msgid "Home Network (192.168.1.x)"
+msgstr "Thuis-netwerk (192.168.1.x)"
+
+#: src/pages.py:119
+msgid "Home Network (192.168.0.x)"
+msgstr "Thuis-netwerk (192.168.0.x)"
+
+#: src/pages.py:120
+msgid "Corporate (10.0.0.x)"
+msgstr "Bedrijf (10.0.0.x)"
+
+#: src/pages.py:121
+msgid "Private (172.16.0.x)"
+msgstr "Privaat (172.16.0.x)"
+
+#: src/pages.py:128
+msgid "Auto-Detect"
+msgstr "Automatisch detecteren"
+
+#: src/pages.py:129
+msgid "Try to automatically detect your network range."
+msgstr "Automatisch proberen huidig IP-bereik te vinden."
+
+#: src/pages.py:165
+msgid "Valid IP range!"
+msgstr "Geldig IP-bereik"
+
+#: src/pages.py:169
+msgid "Set IP range to: "
+msgstr "IP-bereik instellen op:"
+
+#: src/pages.py:203
+msgid "Scanning in progress..."
+msgstr "Bezig met scannen..."
+
+#: src/pages.py:212
+msgid "Scan Results"
+msgstr "Resultaten scan"
+
+#: src/pages.py:213
+msgid "Devices found on your network:"
+msgstr "Apparaten gevonden op het lokale netwerk:"
+
+#: src/pages.py:216 src/pages.py:312 src/pages.py:330
+msgid "Scan Again"
+msgstr "Opnieuw scannen"
+
+#: src/pages.py:231
+msgid "Scanning Network"
+msgstr "Netwerk aan het scannen"
+
+#: src/pages.py:232
+msgid "Discovering devices on your network... (this may take a while!)"
+msgstr ""
+"Bezig met scannen apparaten op het lokale netwerk... (dit kan even duren)"
+
+#: src/pages.py:259
+msgid "No Devices Found"
+msgstr "Geen apparaten teruggevonden"
+
+#: src/pages.py:260
+msgid "No devices were found in the specified range!"
+msgstr "Geen apparaten teruggevonden in het opgegeven bereik"
+
+#: src/pages.py:264
+msgid "Scan Error"
+msgstr "Fout bij scannen"
+
+#: src/pages.py:265
+msgid "An error occurred while scanning the network!"
+msgstr "Fout bij het scannen van het netwerk"
+
+#: src/pages.py:279
+msgid "Scanning..."
+msgstr "Bezig met scannen..."
+
+#: src/pages.py:286
+msgid "Scanning "
+msgstr "Scannen"
+
+#: src/pages.py:320
+#, python-brace-format
+msgid "Found {count} devices"
+msgstr "{count} apparaten gevonden"
+
+#: src/pages.py:321
+#, python-brace-format
+msgid "Found {count} devices on the network."
+msgstr "{count} apparten gevonden op het netwerk."
+
+#: src/pages.py:324
+msgid "No devices found"
+msgstr "Geen apparaten gevonden"
+
+#: src/pages.py:325
+msgid "No devices found in the specified range"
+msgstr "Geen apparaten gevonden in het opgegeven bereik"
+
+#: src/pages.py:333 src/pages.py:335
+msgid "Error: "
+msgstr "Fout: "
+
+#: src/pages.py:334
+msgid "An error occurred!"
+msgstr "Er is iets misgelopen!"
+
+#: src/widgets.py:24
+msgid "Unknown IP"
+msgstr "Onbekend IP-adres"
+
+#: src/widgets.py:39 src/widgets.py:41
+msgid "Unknown"
+msgstr "Onbekend"
+
+#: src/widgets.py:44
+msgid "Hostname"
+msgstr "Hostnaam"
+
+#: src/widgets.py:51
+msgid "No Ports Open"
+msgstr "Geen geopende poorten"
+
+#: src/widgets.py:53
+msgid "Ports Open"
+msgstr "Geopende poorten"
