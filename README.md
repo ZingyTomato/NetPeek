@@ -19,7 +19,6 @@ A modern network scanner for GNOME that helps you discover devices on your local
 ## ⭐ Features
 
 - 🔍 **Fast Network Scanning** - Discover active devices on your network
-- 🏠 **Smart Auto-Detection** - Automatically detects your network range
 - 🎯 **Port Scanning** - Shows open ports on discovered devices
 - 📱 **Modern UI** - Built with GTK4 and Libadwaita
 - ⚡ **Multi-threaded** - Fast concurrent scanning
