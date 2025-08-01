@@ -70,8 +70,11 @@ class PresetButton(Gtk.Button):
     def __init__(self, preset_range, tooltip_text, callback=None):
         super().__init__()
 
-        display_text = preset_range.split('/')[0].replace('.0', '.x')
-        self.set_label(display_text)
+        ip_address = preset_range.split("/")[0].split(".")
+        prefix_length = int(preset_range.split("/")[1]) // 8
+        ip_address[prefix_length:] = ["x" for _ in range(4 - prefix_length)]
+
+        self.set_label(".".join(ip_address))
         self.set_tooltip_text(_(tooltip_text))
         self.add_css_class("pill")
 
