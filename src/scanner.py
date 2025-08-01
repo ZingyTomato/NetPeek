@@ -5,6 +5,8 @@ import subprocess
 from concurrent.futures import ThreadPoolExecutor
 from gi.repository import GLib
 
+from gettext import gettext as _
+
 class NetworkScanner:
     """Network scanning functionality"""
 
@@ -13,9 +15,8 @@ class NetworkScanner:
         self.is_scanning = False
 
     def validate_ip_range(self, ip_range):
-        """Validate the IP range input"""
         if not ip_range:
-            return False, "Please enter an IP range"
+            return False, _("Please enter an IP range")
 
         try:
             if '/' in ip_range:
@@ -31,20 +32,19 @@ class NetworkScanner:
                     ipaddress.IPv4Address(f"{base_ip}.1")
                     int(range_part)
                 else:
-                    raise ValueError("Invalid range format!")
+                    raise ValueError(_("Invalid range format!"))
             else:
                 ipaddress.IPv4Address(ip_range)
 
-            return True, "Valid IP range"
+            return True, _("Valid IP range")
 
         except Exception as e:
-            return False, f"Invalid IP range: {str(e)}"
+            return False, _("Invalid IP range: ") + str(e)
 
     def auto_detect_network(self):
-        """Try to automatically detect the network range"""
         try:
-            result = subprocess.run(['flatpak-spawn', '--host', 'ip', 'route', 'show', 'default'],
-                                  capture_output=True, text=True, timeout=5)
+            result = subprocess.run(['ip', 'route', 'show', 'default'],
+                                    capture_output=True, text=True, timeout=5)
 
             if result.returncode == 0:
                 lines = result.stdout.strip().split('\n')
@@ -53,16 +53,15 @@ class NetworkScanner:
                         parts = line.split()
                         gateway_ip = parts[2]
                         network = '.'.join(gateway_ip.split('.')[:-1]) + '.0/24'
-                        return network, f"Auto-detected network: {network}"
+                        return network, _("Auto-detected network: ") + network
 
-            return "192.168.1.0/24", "Using default network range"
+            return "192.168.1.0/24", _("Using default network range")
 
         except Exception as e:
-            print(f"Auto-detection failed: {e}")
-            return "192.168.1.0/24", "Using default network range"
+            print(_("Auto-detection failed: ") + str(e))
+            return "192.168.1.0/24", _("Using default network range")
 
     def is_port_open(self, ip, port):
-        """Check if a specific port is open on an IP"""
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 s.settimeout(0.5)
@@ -71,17 +70,14 @@ class NetworkScanner:
             return False
 
     def scan_single_ip(self, ip_str, lock, devices):
-        """Scan a single IP address"""
         alive = False
         open_ports = []
 
-        # Check common ports
         for port in self.common_ports:
             if self.is_port_open(ip_str, port):
                 alive = True
                 open_ports.append(port)
 
-        # If no common ports open, try a basic connectivity check
         if not alive:
             try:
                 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -101,14 +97,13 @@ class NetworkScanner:
             device = {
                 "hostname": hostname,
                 "ip": ip_str,
-                "ports": ", ".join(map(str, open_ports)) if open_ports else "Host alive (no open ports detected)"
+                "ports": ", ".join(map(str, open_ports)) if open_ports else _("Host alive (no open ports detected)")
             }
 
             with lock:
                 devices.append(device)
 
     def parse_ip_range(self, ip_range):
-        """Parse IP range and return list of IP addresses to scan"""
         hosts = []
 
         if '/' in ip_range:
@@ -127,17 +122,16 @@ class NetworkScanner:
                 start_ip = 1
                 end_ip = int(range_part)
             else:
-                raise ValueError("Invalid range format!")
+                raise ValueError(_("Invalid range format!"))
 
             hosts = [ipaddress.IPv4Address(f"{base_network}.{i}")
-                    for i in range(start_ip, end_ip + 1)]
+                     for i in range(start_ip, end_ip + 1)]
         else:
             hosts = [ipaddress.IPv4Address(ip_range)]
 
         return hosts
 
     def scan_network(self, ip_range, callback, error_callback):
-        """Scan network asynchronously"""
         def do_scan():
             try:
                 self.is_scanning = True
@@ -149,14 +143,13 @@ class NetworkScanner:
                 with ThreadPoolExecutor(max_workers=20) as executor:
                     futures = []
                     for host in hosts:
-                        if not self.is_scanning:  # Allow cancellation
+                        if not self.is_scanning:
                             break
                         future = executor.submit(self.scan_single_ip, str(host), lock, devices)
                         futures.append(future)
 
-                    # Wait for all futures to complete
                     for future in futures:
-                        if not self.is_scanning:  # Allow cancellation
+                        if not self.is_scanning:
                             break
                         future.result()
 
@@ -165,11 +158,10 @@ class NetworkScanner:
 
             except Exception as e:
                 self.is_scanning = False
-                GLib.idle_add(error_callback, f"Scan failed: {str(e)}")
+                GLib.idle_add(error_callback, _("Scan failed: ") + str(e))
 
         if not self.is_scanning:
             threading.Thread(target=do_scan, daemon=True).start()
 
     def stop_scan(self):
-        """Stop the current scan"""
         self.is_scanning = False

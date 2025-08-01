@@ -9,7 +9,7 @@ import sys
 from .app import NetworkScannerApp
 
 def main(version="0.1.0"):
-    """Main entry point for NetPeek application"""
+    """Main entry point for the application"""
     app = NetworkScannerApp()
     app.version = version
     return app.run(sys.argv)
