@@ -30,7 +30,8 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "https://github.com/zingytomato/NetPeek.git"
+                    "url" : "https://github.com/zingytomato/NetPeek.git",
+                    "tag": "v0.2"
                 }
             ]
         }

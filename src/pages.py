@@ -125,11 +125,7 @@ class HomePage:
             preset_button = PresetButton(preset_range, tooltip, self.on_preset_clicked)
             preset_box.append(preset_button)
 
-        auto_button = Gtk.Button(label=_("Auto-Detect"))
-        auto_button.set_tooltip_text(_("Try to automatically detect your network range."))
-        auto_button.add_css_class("pill")
-        auto_button.connect('clicked', self.on_auto_detect_clicked)
-        preset_box.append(auto_button)
+
 
         self.ip_group.add(self.ip_entry_row)
 
@@ -145,12 +141,9 @@ class HomePage:
         clamp.set_child(input_box)
         parent_box.append(clamp)
 
-        self.auto_detect_network()
 
-    def auto_detect_network(self):
-        network, message = self.scanner.auto_detect_network()
-        self.ip_entry_row.set_text(network)
-        self.show_toast(_(message))
+
+
 
     def on_scan_clicked(self, button):
         if not self.validate_ip_range():
@@ -168,8 +161,7 @@ class HomePage:
         self.ip_entry_row.set_text(preset_range)
         self.show_toast(_("Set IP range to: ") + preset_range, 2)
 
-    def on_auto_detect_clicked(self, button):
-        self.auto_detect_network()
+
 
     def validate_ip_range(self):
         ip_range = self.ip_entry_row.get_text().strip()
@@ -213,6 +205,15 @@ class ResultsPage:
         self.results_title.set_subtitle(_("Devices found on your network:"))
         header_bar.set_title_widget(self.results_title)
 
+        # Stop Scanning button (left side)
+        self.stop_button = Gtk.Button(label=_("Stop Scanning"))
+        self.stop_button.add_css_class("destructive-action")
+        self.stop_button.set_tooltip_text(_("Stop the current network scan"))
+        self.stop_button.connect('clicked', self.on_stop_clicked)
+        self.stop_button.set_visible(False)  # Initially hidden
+        header_bar.pack_start(self.stop_button)
+
+        # Rescan button (right side)
         self.rescan_button = Gtk.Button(label=_("Scan Again"))
         self.rescan_button.add_css_class("suggested-action")
         self.rescan_button.connect('clicked', self.on_rescan_clicked)
@@ -277,6 +278,7 @@ class ResultsPage:
     def start_scan(self, ip_range):
         self.rescan_button.set_sensitive(False)
         self.rescan_button.set_label(_("Scanning..."))
+        self.stop_button.set_visible(True)  # Show stop button during scan
 
         self.clear_results()
 
@@ -298,6 +300,29 @@ class ResultsPage:
             self.flow_box.remove(child)
             child = next_child
 
+    def on_stop_clicked(self, button):
+        """Handle stop scanning button click"""
+        self.scanner.stop_scan()
+        self.stop_button.set_visible(False)
+        self.spinner.stop()
+        self.rescan_button.set_sensitive(True)
+        self.rescan_button.set_label(_("Scan Again"))
+
+        # Show partial results if any devices were found
+        if self.scanner.get_partial_results():
+            devices = self.scanner.get_partial_results()
+            for device in devices:
+                card = DeviceCard(device)
+                self.flow_box.append(card)
+
+            self.results_stack.set_visible_child_name("devices")
+            self.results_title.set_subtitle(_("Scan stopped - Found {count} devices").format(count=len(devices)))
+            self.show_toast(_("Scan stopped. Found {count} devices so far.").format(count=len(devices)))
+        else:
+            self.results_stack.set_visible_child_name("empty")
+            self.results_title.set_subtitle(_("Scan stopped - No devices found"))
+            self.show_toast(_("Scan stopped. No devices found."))
+
     def on_rescan_clicked(self, button):
         if self.home_page:
             ip_range = self.home_page.ip_entry_row.get_text().strip()
@@ -310,6 +335,7 @@ class ResultsPage:
         self.spinner.stop()
         self.rescan_button.set_sensitive(True)
         self.rescan_button.set_label(_("Scan Again"))
+        self.stop_button.set_visible(False)  # Hide stop button when scan completes
 
         if devices:
             for device in devices:
@@ -328,6 +354,7 @@ class ResultsPage:
         self.spinner.stop()
         self.rescan_button.set_sensitive(True)
         self.rescan_button.set_label(_("Scan Again"))
+        self.stop_button.set_visible(False)  # Hide stop button on error
 
         self.results_stack.set_visible_child_name("error")
         self.error_page.set_description(_("Error: ") + error_message)
@@ -338,4 +365,3 @@ class ResultsPage:
         toast = Adw.Toast(title=_(message))
         toast.set_timeout(timeout)
         self.toast_overlay.add_toast(toast)
-

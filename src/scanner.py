@@ -1,7 +1,6 @@
 import threading
 import ipaddress
 import socket
-import subprocess
 from concurrent.futures import ThreadPoolExecutor
 from gi.repository import GLib
 
@@ -13,6 +12,7 @@ class NetworkScanner:
     def __init__(self):
         self.common_ports = [22, 80, 443, 3389, 53, 21, 23, 8080, 8443, 8006, 5000]
         self.is_scanning = False
+        self.partial_results = []  # Store partial results for when scan is stopped
 
     def validate_ip_range(self, ip_range):
         if not ip_range:
@@ -41,25 +41,7 @@ class NetworkScanner:
         except Exception as e:
             return False, _("Invalid IP range: ") + str(e)
 
-    def auto_detect_network(self):
-        try:
-            result = subprocess.run(['ip', 'route', 'show', 'default'],
-                                    capture_output=True, text=True, timeout=5)
 
-            if result.returncode == 0:
-                lines = result.stdout.strip().split('\n')
-                for line in lines:
-                    if 'default via' in line:
-                        parts = line.split()
-                        gateway_ip = parts[2]
-                        network = '.'.join(gateway_ip.split('.')[:-1]) + '.0/24'
-                        return network, _("Auto-detected network: ") + network
-
-            return "192.168.1.0/24", _("Using default network range")
-
-        except Exception as e:
-            print(_("Auto-detection failed: ") + str(e))
-            return "192.168.1.0/24", _("Using default network range")
 
     def is_port_open(self, ip, port):
         try:
@@ -70,15 +52,21 @@ class NetworkScanner:
             return False
 
     def scan_single_ip(self, ip_str, lock, devices):
+        # Check if scanning should continue
+        if not self.is_scanning:
+            return
+
         alive = False
         open_ports = []
 
         for port in self.common_ports:
+            if not self.is_scanning:  # Check again before each port scan
+                return
             if self.is_port_open(ip_str, port):
                 alive = True
                 open_ports.append(port)
 
-        if not alive:
+        if not alive and self.is_scanning:
             try:
                 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     s.settimeout(0.1)
@@ -87,7 +75,7 @@ class NetworkScanner:
             except:
                 pass
 
-        if alive:
+        if alive and self.is_scanning:
             hostname = ip_str
             try:
                 hostname = socket.gethostbyaddr(ip_str)[0]
@@ -102,6 +90,7 @@ class NetworkScanner:
 
             with lock:
                 devices.append(device)
+                self.partial_results.append(device)  # Store partial result
 
     def parse_ip_range(self, ip_range):
         hosts = []
@@ -135,6 +124,7 @@ class NetworkScanner:
         def do_scan():
             try:
                 self.is_scanning = True
+                self.partial_results = []  # Clear previous partial results
                 devices = []
                 lock = threading.Lock()
 
@@ -148,13 +138,22 @@ class NetworkScanner:
                         future = executor.submit(self.scan_single_ip, str(host), lock, devices)
                         futures.append(future)
 
+                    # Wait for all futures or until scanning is stopped
                     for future in futures:
                         if not self.is_scanning:
+                            # Cancel remaining futures if scan was stopped
+                            for remaining_future in futures:
+                                remaining_future.cancel()
                             break
-                        future.result()
+                        try:
+                            future.result(timeout=1)  # Short timeout to allow checking scan status
+                        except:
+                            pass
 
-                self.is_scanning = False
-                GLib.idle_add(callback, devices)
+                # Only call callback if scan completed normally (not stopped)
+                if self.is_scanning:
+                    self.is_scanning = False
+                    GLib.idle_add(callback, devices)
 
             except Exception as e:
                 self.is_scanning = False
@@ -164,4 +163,9 @@ class NetworkScanner:
             threading.Thread(target=do_scan, daemon=True).start()
 
     def stop_scan(self):
+        """Stop the current scan"""
         self.is_scanning = False
+
+    def get_partial_results(self):
+        """Get the partial results from a stopped scan"""
+        return self.partial_results.copy()

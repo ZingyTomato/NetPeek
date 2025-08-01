@@ -5,11 +5,11 @@ A modern network scanner for GNOME that helps you discover devices on your local
 ## 📷 Screenshots
 
 
-![Home Page](data/screenshots/1.png)
+![Home Page](https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/1.png?raw=true)
 
-![Results Page](data/screenshots/2.png)
+![Results Page](https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/2.png?raw=true)
 
-![No Devices Found](data/screenshots/3.png)
+![No Devices Found](https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/3.png?raw=true)
 
 <a href='https://flathub.org/apps/io.github.zingytomato.netpeek'>
     <img width='240' alt='Get it on Flathub' src='https://flathub.org/api/badge?svg&locale=en'/>
@@ -61,7 +61,7 @@ All dependencies are included in the Python standard library:
 
 ## 📙 License
 
-This project is licensed under the GPL-3.0 License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GPL-3.0 License - see the [LICENSE](https://github.com/ZingyTomato/NetPeek/blob/master/LICENSE) file for details.
 
 ## ❓ Support
 

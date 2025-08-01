@@ -31,18 +31,23 @@
     </screenshot>
     <screenshot>
       <image>https://raw.githubusercontent.com/ZingyTomato/NetPeek/refs/heads/master/data/screenshots/2.png</image>
-      <caption>Scan results</caption>
+      <caption>Scan in Progress</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/ZingyTomato/NetPeek/refs/heads/master/data/screenshots/3.png</image>
+      <caption>Scan Results</caption>
     </screenshot>
   </screenshots>
   <releases>
-    <release version="0.1" date="2025-07-31">
-      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.1</url>
+    <release version="0.2" date="2025-08-01">
+      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2</url>
       <description translate="no">
-        <p>Initial Release</p>
+        <p>Version 0.2</p>
         <ul>
-          <li>Scan local networks based on a custom IP range for active devices</li>
-          <li>Show open ports and hostnames</li>
-          <li>Designed with libadwaita</li>
+          <li>Added Dutch translations</li>
+          <li>Added a Stop Scanning button</li>
+          <li>Removed auto-detection functionality</li>
+          <li>Updated Screenshots</li>
         </ul>
       </description>
     </release>
