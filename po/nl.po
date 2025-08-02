@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: netpeek\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-02 10:16+0200\n"
-"PO-Revision-Date: 2025-08-02 11:58+0200\n"
+"POT-Creation-Date: 2025-08-02 17:09+0200\n"
+"PO-Revision-Date: 2025-08-02 20:22+0200\n"
 "Last-Translator: Gert-dev\n"
 "Language-Team: none\n"
 "Language: nl\n"
@@ -87,7 +87,7 @@ msgstr "Configuratie IP-bereik"
 
 #: src/pages.py:96
 msgid "Enter the IP range you want to scan:"
-msgstr "Vul het IP-bereik in dat je wil scannen:"
+msgstr "Vul het IP-bereik om te scannen in:"
 
 #: src/pages.py:99
 msgid "IP Range"
@@ -119,7 +119,7 @@ msgstr "Geldig IP-bereik"
 
 #: src/pages.py:161
 msgid "Set IP range to: "
-msgstr "IP-bereik instellen op:"
+msgstr "IP-bereik ingesteld op: "
 
 #: src/pages.py:194
 msgid "Scanning in progress..."
@@ -174,7 +174,7 @@ msgstr "Bezig met scannen..."
 
 #: src/pages.py:287
 msgid "Scanning "
-msgstr "Scannen"
+msgstr "Scannen "
 
 #: src/pages.py:318
 #, python-brace-format
