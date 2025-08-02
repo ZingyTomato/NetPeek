@@ -1,0 +1,251 @@
+# Russian translations for NetPeek package.
+# Copyright (C) 2025 ZingyTomato
+# This file is distributed under the same license as the NetPeek package.
+# Vladimir Kosolapov, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: netpeek\n"
+"Report-Msgid-Bugs-To: https://github.com/ZingyTomato/NetPeek/issues\n"
+"POT-Creation-Date: 2025-08-02 10:16+0200\n"
+"PO-Revision-Date: 2025-08-02 16:00+0300\n"
+"Last-Translator: Vladimir Kosolapov\n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: data/io.github.zingytomato.netpeek.desktop.in:2
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/window.py:17
+#: src/window.py:42 src/pages.py:25 src/pages.py:34
+msgid "NetPeek"
+msgstr "NetPeek"
+
+#: data/io.github.zingytomato.netpeek.desktop.in:3
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
+msgid "Discover devices on your local network"
+msgstr "Обнаружение устройств в локальной сети"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:9
+msgid ""
+"NetPeek is a simple network scanner that helps you discover active devices "
+"on your local network. It shows open ports, hostnames, and allows easy "
+"rescan with a clean, user-friendly interface."
+msgstr ""
+"NetPeek — это простой сетевой сканер, который помогает обнаруживать активные "
+"устройства в локальной сети. Он показывает открытые порты, имена хостов и "
+"позволяет легко повторять сканирование благодаря удобному интерфейсу."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:16
+msgid "ZingyTomato"
+msgstr "ZingyTomato"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:30
+msgid "Home screen"
+msgstr "Главный экран"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:34
+msgid "Scan in Progress"
+msgstr "Процесс сканирования"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:38 src/pages.py:203
+msgid "Scan Results"
+msgstr "Результаты сканирования"
+
+#: src/window.py:46 src/pages.py:72
+msgid "Discover devices on your local network."
+msgstr "Обнаружение устройств в локальной сети"
+
+#: src/window.py:50
+msgid "Contributors"
+msgstr "Участники"
+
+#: src/pages.py:39
+msgid "Main Menu"
+msgstr "Главное меню"
+
+#: src/pages.py:42
+msgid "About"
+msgstr "О приложении"
+
+#: src/pages.py:43
+msgid "Quit"
+msgstr "Выход"
+
+#: src/pages.py:79
+msgid "Scan my Network"
+msgstr "Сканировать сеть"
+
+#: src/pages.py:95
+msgid "IP Range Configuration"
+msgstr "Настройка диапазона IP"
+
+#: src/pages.py:96
+msgid "Enter the IP range you want to scan:"
+msgstr "Введите диапазон IP для сканирования:"
+
+#: src/pages.py:99
+msgid "IP Range"
+msgstr "Диапазон IP"
+
+#: src/pages.py:106
+msgid "Examples: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
+msgstr "Примеры: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
+
+#: src/pages.py:117
+msgid "Home Network (192.168.1.x)"
+msgstr "Домашняя сеть (192.168.1.x)"
+
+#: src/pages.py:118
+msgid "Home Network (192.168.0.x)"
+msgstr "Домашняя сеть (192.168.0.x)"
+
+#: src/pages.py:119
+msgid "Corporate (10.0.0.x)"
+msgstr "Корпоративная (10.0.0.x)"
+
+#: src/pages.py:120
+msgid "Private (172.16.0.x)"
+msgstr "Частная (172.16.0.x)"
+
+#: src/pages.py:157
+msgid "Valid IP range!"
+msgstr "Допустимый диапазон IP!"
+
+#: src/pages.py:161
+msgid "Set IP range to: "
+msgstr "Установлен диапазон IP: "
+
+#: src/pages.py:194
+msgid "Scanning in progress..."
+msgstr "Сканирование..."
+
+#: src/pages.py:204
+msgid "Devices found on your network:"
+msgstr "Устройства, найденные в вашей сети:"
+
+#. Stop Scanning button (left side)
+#: src/pages.py:208
+msgid "Stop Scanning"
+msgstr "Остановить"
+
+#: src/pages.py:210
+msgid "Stop the current network scan"
+msgstr "Остановить сканирование сети"
+
+#. Rescan button (right side)
+#: src/pages.py:216 src/pages.py:308 src/pages.py:336 src/pages.py:355
+msgid "Scan Again"
+msgstr "Повторить"
+
+#: src/pages.py:231
+msgid "Scanning Network"
+msgstr "Сканирование сети"
+
+#: src/pages.py:232
+msgid "Discovering devices on your network... (this may take a while!)"
+msgstr ""
+"Обнаружение устройств в вашей сети... (может занять некоторое время)"
+
+#: src/pages.py:259
+msgid "No Devices Found"
+msgstr "Устройства не найдены"
+
+#: src/pages.py:260
+msgid "No devices were found in the specified range!"
+msgstr "Устройства не найдены в указанном диапазоне!"
+
+#: src/pages.py:264
+msgid "Scan Error"
+msgstr "Ошибка сканирования"
+
+#: src/pages.py:265
+msgid "An error occurred while scanning the network!"
+msgstr "Ошибка при сканировании сети!"
+
+#: src/pages.py:279
+msgid "Scanning..."
+msgstr "Сканирование..."
+
+#: src/pages.py:287
+msgid "Scanning "
+msgstr "Сканирование "
+
+#: src/pages.py:318
+#, python-brace-format
+msgid "Scan stopped - Found {count} devices"
+msgid_plural "Scan stopped - Found {count} devices"
+msgstr[0] "Сканирование остановлено - найдено {count} устройство"
+msgstr[1] "Сканирование остановлено - найдено {count} устройства"
+msgstr[2] "Сканирование остановлено - найдено {count} устройств"
+
+#: src/pages.py:319
+#, python-brace-format
+msgid "Scan stopped. Found {count} devices so far."
+msgid_plural "Scan stopped. Found {count} devices so far."
+msgstr[0] "Сканирование остановлено. Найдено {count} устройство."
+msgstr[1] "Сканирование остановлено. Найдено {count} устройства."
+msgstr[2] "Сканирование остановлено. Найдено {count} устройств."
+
+#: src/pages.py:322
+msgid "Scan stopped - No devices found"
+msgstr "Сканирование остановлено - устройства не найдены"
+
+#: src/pages.py:323
+msgid "Scan stopped. No devices found."
+msgstr "Сканирование остановлено. Устройства не найдены."
+
+#: src/pages.py:345
+#, python-brace-format
+msgid "Found {count} devices"
+msgid_plural "Found {count} devices"
+msgstr[0] "Найдено {count} устройство"
+msgstr[1] "Найдено {count} устройства"
+msgstr[2] "Найдено {count} устройств"
+
+#: src/pages.py:346
+#, python-brace-format
+msgid "Found {count} devices on the network."
+msgid_plural "Found {count} devices on the network."
+msgstr[0] "Найдено {count} устройство в сети."
+msgstr[1] "Найдено {count} устройства в сети."
+msgstr[2] "Найдено {count} устройств в сети."
+
+#: src/pages.py:349
+msgid "No devices found"
+msgstr "Устройства не найдены"
+
+#: src/pages.py:350
+msgid "No devices found in the specified range"
+msgstr "Устройства не найдены в указанном диапазоне"
+
+#: src/pages.py:359 src/pages.py:361
+msgid "Error: "
+msgstr "Ошибка: "
+
+#: src/pages.py:360
+msgid "An error occurred!"
+msgstr "Произошла ошибка!"
+
+#: src/widgets.py:23
+msgid "Unknown IP"
+msgstr "Неизвестный IP"
+
+#: src/widgets.py:38 src/widgets.py:40
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: src/widgets.py:43
+msgid "Hostname"
+msgstr "Имя хоста"
+
+#: src/widgets.py:50
+msgid "No Ports Open"
+msgstr "Открытых портов нет"
+
+#: src/widgets.py:52
+msgid "Ports Open"
+msgstr "Открытые порты"
