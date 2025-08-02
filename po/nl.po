@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: netpeek\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-01 05:28+0200\n"
-"PO-Revision-Date: 2025-08-01 11:20+0200\n"
+"POT-Creation-Date: 2025-08-02 10:16+0200\n"
+"PO-Revision-Date: 2025-08-02 11:58+0200\n"
 "Last-Translator: Gert-dev\n"
 "Language-Team: none\n"
 "Language: nl\n"
@@ -20,8 +20,8 @@ msgstr ""
 "X-Generator: Gtranslator 48.0\n"
 
 #: data/io.github.zingytomato.netpeek.desktop.in:2
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/window.py:18
-#: src/window.py:43 src/pages.py:26 src/pages.py:35
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/window.py:17
+#: src/window.py:42 src/pages.py:25 src/pages.py:34
 msgid "NetPeek"
 msgstr "NetPeek"
 
@@ -50,94 +50,96 @@ msgid "Home screen"
 msgstr "Homepagina"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:34
-msgid "Scan results"
-msgstr "Resultaten scan"
+msgid "Scan in Progress"
+msgstr "Bezig met scannen"
 
-#: src/window.py:47 src/pages.py:73
-msgid "Discover devices on your local network."
-msgstr "Scan naar apparaten op het lokale netwerk."
-
-#: src/window.py:51
-msgid "Contributors"
-msgstr "Bijdragers"
-
-#: src/pages.py:40
-msgid "Main Menu"
-msgstr "Hoofdmenu"
-
-#: src/pages.py:43
-msgid "About"
-msgstr "Over"
-
-#: src/pages.py:44
-msgid "Quit"
-msgstr "Afsluiten"
-
-#: src/pages.py:80
-msgid "Scan my Network"
-msgstr "Mijn netwerk scannen"
-
-#: src/pages.py:96
-msgid "IP Range Configuration"
-msgstr "Configuratie IP-bereik"
-
-#: src/pages.py:97
-msgid "Enter the IP range you want to scan:"
-msgstr "Vul het IP-bereik in dat je wil scannen:"
-
-#: src/pages.py:100
-msgid "IP Range"
-msgstr "IP-bereik"
-
-#: src/pages.py:107
-msgid "Examples: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
-msgstr "Voorbeelden: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
-
-#: src/pages.py:118
-msgid "Home Network (192.168.1.x)"
-msgstr "Thuis-netwerk (192.168.1.x)"
-
-#: src/pages.py:119
-msgid "Home Network (192.168.0.x)"
-msgstr "Thuis-netwerk (192.168.0.x)"
-
-#: src/pages.py:120
-msgid "Corporate (10.0.0.x)"
-msgstr "Bedrijf (10.0.0.x)"
-
-#: src/pages.py:121
-msgid "Private (172.16.0.x)"
-msgstr "Privaat (172.16.0.x)"
-
-#: src/pages.py:128
-msgid "Auto-Detect"
-msgstr "Automatisch detecteren"
-
-#: src/pages.py:129
-msgid "Try to automatically detect your network range."
-msgstr "Automatisch proberen huidig IP-bereik te vinden."
-
-#: src/pages.py:165
-msgid "Valid IP range!"
-msgstr "Geldig IP-bereik"
-
-#: src/pages.py:169
-msgid "Set IP range to: "
-msgstr "IP-bereik instellen op:"
-
-#: src/pages.py:203
-msgid "Scanning in progress..."
-msgstr "Bezig met scannen..."
-
-#: src/pages.py:212
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:38 src/pages.py:203
 msgid "Scan Results"
 msgstr "Resultaten scan"
 
-#: src/pages.py:213
+#: src/window.py:46 src/pages.py:72
+msgid "Discover devices on your local network."
+msgstr "Scan naar apparaten op het lokale netwerk."
+
+#: src/window.py:50
+msgid "Contributors"
+msgstr "Bijdragers"
+
+#: src/pages.py:39
+msgid "Main Menu"
+msgstr "Hoofdmenu"
+
+#: src/pages.py:42
+msgid "About"
+msgstr "Over"
+
+#: src/pages.py:43
+msgid "Quit"
+msgstr "Afsluiten"
+
+#: src/pages.py:79
+msgid "Scan my Network"
+msgstr "Mijn netwerk scannen"
+
+#: src/pages.py:95
+msgid "IP Range Configuration"
+msgstr "Configuratie IP-bereik"
+
+#: src/pages.py:96
+msgid "Enter the IP range you want to scan:"
+msgstr "Vul het IP-bereik in dat je wil scannen:"
+
+#: src/pages.py:99
+msgid "IP Range"
+msgstr "IP-bereik"
+
+#: src/pages.py:106
+msgid "Examples: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
+msgstr "Voorbeelden: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
+
+#: src/pages.py:117
+msgid "Home Network (192.168.1.x)"
+msgstr "Thuis-netwerk (192.168.1.x)"
+
+#: src/pages.py:118
+msgid "Home Network (192.168.0.x)"
+msgstr "Thuis-netwerk (192.168.0.x)"
+
+#: src/pages.py:119
+msgid "Corporate (10.0.0.x)"
+msgstr "Bedrijf (10.0.0.x)"
+
+#: src/pages.py:120
+msgid "Private (172.16.0.x)"
+msgstr "Privaat (172.16.0.x)"
+
+#: src/pages.py:157
+msgid "Valid IP range!"
+msgstr "Geldig IP-bereik"
+
+#: src/pages.py:161
+msgid "Set IP range to: "
+msgstr "IP-bereik instellen op:"
+
+#: src/pages.py:194
+msgid "Scanning in progress..."
+msgstr "Bezig met scannen..."
+
+#: src/pages.py:204
 msgid "Devices found on your network:"
 msgstr "Apparaten gevonden op het lokale netwerk:"
 
-#: src/pages.py:216 src/pages.py:312 src/pages.py:330
+#. Stop Scanning button (left side)
+#: src/pages.py:208
+msgid "Stop Scanning"
+msgstr "Scannen stoppen"
+
+#: src/pages.py:210
+msgid "Stop the current network scan"
+msgstr "Stop de lopende scan van het netwerk"
+
+#. Rescan button (right side)
+#: src/pages.py:216 src/pages.py:308 src/pages.py:336 src/pages.py:355
 msgid "Scan Again"
 msgstr "Opnieuw scannen"
 
@@ -170,52 +172,79 @@ msgstr "Fout bij het scannen van het netwerk"
 msgid "Scanning..."
 msgstr "Bezig met scannen..."
 
-#: src/pages.py:286
+#: src/pages.py:287
 msgid "Scanning "
 msgstr "Scannen"
 
-#: src/pages.py:320
+#: src/pages.py:318
+#, python-brace-format
+msgid "Scan stopped - Found {count} devices"
+msgstr "Scan gestopt - {count} apparaten gevonden"
+
+#: src/pages.py:319
+#, python-brace-format
+msgid "Scan stopped. Found {count} devices so far."
+msgstr "Scan gestopt. {count} apparaten reeds gevonden."
+
+#: src/pages.py:322
+msgid "Scan stopped - No devices found"
+msgstr "Scan gestopt - Geen apparaten gevonden"
+
+#: src/pages.py:323
+msgid "Scan stopped. No devices found."
+msgstr "Scan gestopt. Geen apparaten gevonden"
+
+#: src/pages.py:345
 #, python-brace-format
 msgid "Found {count} devices"
 msgstr "{count} apparaten gevonden"
 
-#: src/pages.py:321
+#: src/pages.py:346
 #, python-brace-format
 msgid "Found {count} devices on the network."
 msgstr "{count} apparten gevonden op het netwerk."
 
-#: src/pages.py:324
+#: src/pages.py:349
 msgid "No devices found"
 msgstr "Geen apparaten gevonden"
 
-#: src/pages.py:325
+#: src/pages.py:350
 msgid "No devices found in the specified range"
 msgstr "Geen apparaten gevonden in het opgegeven bereik"
 
-#: src/pages.py:333 src/pages.py:335
+#: src/pages.py:359 src/pages.py:361
 msgid "Error: "
 msgstr "Fout: "
 
-#: src/pages.py:334
+#: src/pages.py:360
 msgid "An error occurred!"
 msgstr "Er is iets misgelopen!"
 
-#: src/widgets.py:24
+#: src/widgets.py:23
 msgid "Unknown IP"
 msgstr "Onbekend IP-adres"
 
-#: src/widgets.py:39 src/widgets.py:41
+#: src/widgets.py:38 src/widgets.py:40
 msgid "Unknown"
 msgstr "Onbekend"
 
-#: src/widgets.py:44
+#: src/widgets.py:43
 msgid "Hostname"
 msgstr "Hostnaam"
 
-#: src/widgets.py:51
+#: src/widgets.py:50
 msgid "No Ports Open"
 msgstr "Geen geopende poorten"
 
-#: src/widgets.py:53
+#: src/widgets.py:52
 msgid "Ports Open"
 msgstr "Geopende poorten"
+
+#~ msgid "Scan results"
+#~ msgstr "Resultaten scan"
+
+#~ msgid "Auto-Detect"
+#~ msgstr "Automatisch detecteren"
+
+#~ msgid "Try to automatically detect your network range."
+#~ msgstr "Automatisch proberen huidig IP-bereik te vinden."

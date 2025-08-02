@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: netpeek\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-01 05:28+0200\n"
+"POT-Creation-Date: 2025-08-02 10:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: data/io.github.zingytomato.netpeek.desktop.in:2
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/window.py:18
-#: src/window.py:43 src/pages.py:26 src/pages.py:35
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/window.py:17
+#: src/window.py:42 src/pages.py:25 src/pages.py:34
 msgid "NetPeek"
 msgstr ""
 
@@ -44,94 +44,96 @@ msgid "Home screen"
 msgstr ""
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:34
-msgid "Scan results"
+msgid "Scan in Progress"
 msgstr ""
 
-#: src/window.py:47 src/pages.py:73
-msgid "Discover devices on your local network."
-msgstr ""
-
-#: src/window.py:51
-msgid "Contributors"
-msgstr ""
-
-#: src/pages.py:40
-msgid "Main Menu"
-msgstr ""
-
-#: src/pages.py:43
-msgid "About"
-msgstr ""
-
-#: src/pages.py:44
-msgid "Quit"
-msgstr ""
-
-#: src/pages.py:80
-msgid "Scan my Network"
-msgstr ""
-
-#: src/pages.py:96
-msgid "IP Range Configuration"
-msgstr ""
-
-#: src/pages.py:97
-msgid "Enter the IP range you want to scan:"
-msgstr ""
-
-#: src/pages.py:100
-msgid "IP Range"
-msgstr ""
-
-#: src/pages.py:107
-msgid "Examples: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
-msgstr ""
-
-#: src/pages.py:118
-msgid "Home Network (192.168.1.x)"
-msgstr ""
-
-#: src/pages.py:119
-msgid "Home Network (192.168.0.x)"
-msgstr ""
-
-#: src/pages.py:120
-msgid "Corporate (10.0.0.x)"
-msgstr ""
-
-#: src/pages.py:121
-msgid "Private (172.16.0.x)"
-msgstr ""
-
-#: src/pages.py:128
-msgid "Auto-Detect"
-msgstr ""
-
-#: src/pages.py:129
-msgid "Try to automatically detect your network range."
-msgstr ""
-
-#: src/pages.py:165
-msgid "Valid IP range!"
-msgstr ""
-
-#: src/pages.py:169
-msgid "Set IP range to: "
-msgstr ""
-
-#: src/pages.py:203
-msgid "Scanning in progress..."
-msgstr ""
-
-#: src/pages.py:212
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:38 src/pages.py:203
 msgid "Scan Results"
 msgstr ""
 
-#: src/pages.py:213
+#: src/window.py:46 src/pages.py:72
+msgid "Discover devices on your local network."
+msgstr ""
+
+#: src/window.py:50
+msgid "Contributors"
+msgstr ""
+
+#: src/pages.py:39
+msgid "Main Menu"
+msgstr ""
+
+#: src/pages.py:42
+msgid "About"
+msgstr ""
+
+#: src/pages.py:43
+msgid "Quit"
+msgstr ""
+
+#: src/pages.py:79
+msgid "Scan my Network"
+msgstr ""
+
+#: src/pages.py:95
+msgid "IP Range Configuration"
+msgstr ""
+
+#: src/pages.py:96
+msgid "Enter the IP range you want to scan:"
+msgstr ""
+
+#: src/pages.py:99
+msgid "IP Range"
+msgstr ""
+
+#: src/pages.py:106
+msgid "Examples: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
+msgstr ""
+
+#: src/pages.py:117
+msgid "Home Network (192.168.1.x)"
+msgstr ""
+
+#: src/pages.py:118
+msgid "Home Network (192.168.0.x)"
+msgstr ""
+
+#: src/pages.py:119
+msgid "Corporate (10.0.0.x)"
+msgstr ""
+
+#: src/pages.py:120
+msgid "Private (172.16.0.x)"
+msgstr ""
+
+#: src/pages.py:157
+msgid "Valid IP range!"
+msgstr ""
+
+#: src/pages.py:161
+msgid "Set IP range to: "
+msgstr ""
+
+#: src/pages.py:194
+msgid "Scanning in progress..."
+msgstr ""
+
+#: src/pages.py:204
 msgid "Devices found on your network:"
 msgstr ""
 
-#: src/pages.py:216 src/pages.py:312 src/pages.py:330
+#. Stop Scanning button (left side)
+#: src/pages.py:208
+msgid "Stop Scanning"
+msgstr ""
+
+#: src/pages.py:210
+msgid "Stop the current network scan"
+msgstr ""
+
+#. Rescan button (right side)
+#: src/pages.py:216 src/pages.py:308 src/pages.py:336 src/pages.py:355
 msgid "Scan Again"
 msgstr ""
 
@@ -163,52 +165,70 @@ msgstr ""
 msgid "Scanning..."
 msgstr ""
 
-#: src/pages.py:286
+#: src/pages.py:287
 msgid "Scanning "
 msgstr ""
 
-#: src/pages.py:320
+#: src/pages.py:318
+#, python-brace-format
+msgid "Scan stopped - Found {count} devices"
+msgstr ""
+
+#: src/pages.py:319
+#, python-brace-format
+msgid "Scan stopped. Found {count} devices so far."
+msgstr ""
+
+#: src/pages.py:322
+msgid "Scan stopped - No devices found"
+msgstr ""
+
+#: src/pages.py:323
+msgid "Scan stopped. No devices found."
+msgstr ""
+
+#: src/pages.py:345
 #, python-brace-format
 msgid "Found {count} devices"
 msgstr ""
 
-#: src/pages.py:321
+#: src/pages.py:346
 #, python-brace-format
 msgid "Found {count} devices on the network."
 msgstr ""
 
-#: src/pages.py:324
+#: src/pages.py:349
 msgid "No devices found"
 msgstr ""
 
-#: src/pages.py:325
+#: src/pages.py:350
 msgid "No devices found in the specified range"
 msgstr ""
 
-#: src/pages.py:333 src/pages.py:335
+#: src/pages.py:359 src/pages.py:361
 msgid "Error: "
 msgstr ""
 
-#: src/pages.py:334
+#: src/pages.py:360
 msgid "An error occurred!"
 msgstr ""
 
-#: src/widgets.py:24
+#: src/widgets.py:23
 msgid "Unknown IP"
 msgstr ""
 
-#: src/widgets.py:39 src/widgets.py:41
+#: src/widgets.py:38 src/widgets.py:40
 msgid "Unknown"
 msgstr ""
 
-#: src/widgets.py:44
+#: src/widgets.py:43
 msgid "Hostname"
 msgstr ""
 
-#: src/widgets.py:51
+#: src/widgets.py:50
 msgid "No Ports Open"
 msgstr ""
 
-#: src/widgets.py:53
+#: src/widgets.py:52
 msgid "Ports Open"
 msgstr ""
