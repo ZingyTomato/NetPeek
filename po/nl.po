@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: netpeek\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-02 10:16+0200\n"
-"PO-Revision-Date: 2025-08-02 11:56+0200\n"
+"PO-Revision-Date: 2025-08-02 11:58+0200\n"
 "Last-Translator: Gert-dev\n"
 "Language-Team: none\n"
 "Language: nl\n"
@@ -184,7 +184,7 @@ msgstr "Scan gestopt - {count} apparaten gevonden"
 #: src/pages.py:319
 #, python-brace-format
 msgid "Scan stopped. Found {count} devices so far."
-msgstr "Scan gestopt. {count} apparaten gevonden"
+msgstr "Scan gestopt. {count} apparaten reeds gevonden."
 
 #: src/pages.py:322
 msgid "Scan stopped - No devices found"
