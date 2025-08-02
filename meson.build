@@ -1,14 +1,11 @@
 project('netpeek',
-          version: '0.1.0',
+          version: '0.2',
     meson_version: '>= 1.0.0',
   default_options: [ 'warning_level=2', 'werror=false', ],
 )
 
 i18n = import('i18n')
 gnome = import('gnome')
-
-
-
 
 subdir('data')
 subdir('src')

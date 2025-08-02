@@ -4,8 +4,6 @@ import socket
 from concurrent.futures import ThreadPoolExecutor
 from gi.repository import GLib
 
-from gettext import gettext as _
-
 class NetworkScanner:
     """Network scanning functionality"""
 
