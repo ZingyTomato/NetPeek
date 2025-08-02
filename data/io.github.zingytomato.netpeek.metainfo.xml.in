@@ -39,15 +39,14 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="0.2" date="2025-08-01">
-      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2</url>
+    <release version="0.2.1" date="2025-08-02">
+      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2.1</url>
       <description translate="no">
-        <p>Version 0.2</p>
+        <p>Version 0.2.1</p>
         <ul>
-          <li>Added Dutch translations</li>
-          <li>Added a Stop Scanning button</li>
-          <li>Removed auto-detection functionality</li>
-          <li>Updated Screenshots</li>
+          <li>Fixed Dutch translations</li>
+          <li>Added Russian translations</li>
+          <li>Improved logic to determine the `PresetButton` label</li>
         </ul>
       </description>
     </release>

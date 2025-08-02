@@ -58,6 +58,10 @@ All dependencies are included in the Python standard library:
 - `threading` - Concurrent scanning
 - `subprocess` - Network detection
 
+## 🙌 Help translate!
+
+Translations to your native language are very much appreciated.
+
 ## 📙 License
 
 This project is licensed under the GPL-3.0 License - see the [LICENSE](https://github.com/ZingyTomato/NetPeek/blob/master/LICENSE) file for details.
