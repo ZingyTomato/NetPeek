@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: netpeek\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-02 10:16+0200\n"
+"POT-Creation-Date: 2025-08-04 11:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,217 +18,237 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: data/io.github.zingytomato.netpeek.desktop.in:2
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/window.py:17
-#: src/window.py:42 src/pages.py:25 src/pages.py:34
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/window.py:36
+#: src/window.py:61 src/pages.py:45 src/pages.py:54
 msgid "NetPeek"
 msgstr ""
 
 #: data/io.github.zingytomato.netpeek.desktop.in:3
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
 msgid "Discover devices on your local network"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
+msgid "See what's connected to your network"
 msgstr ""
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:9
 msgid ""
 "NetPeek is a simple network scanner that helps you discover active devices "
-"on your local network. It shows open ports, hostnames, and allows easy "
-"rescan with a clean, user-friendly interface."
+"on your local network."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:16
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:15
 msgid "ZingyTomato"
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:30
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:29
 msgid "Home screen"
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:34
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:33
 msgid "Scan in Progress"
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:38 src/pages.py:203
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:37 src/pages.py:218
 msgid "Scan Results"
 msgstr ""
 
-#: src/window.py:46 src/pages.py:72
+#: src/window.py:65 src/pages.py:92
 msgid "Discover devices on your local network."
 msgstr ""
 
-#: src/window.py:50
+#: src/window.py:69
 msgid "Contributors"
 msgstr ""
 
-#: src/pages.py:39
+#: src/pages.py:59
 msgid "Main Menu"
 msgstr ""
 
-#: src/pages.py:42
+#: src/pages.py:62
 msgid "About"
 msgstr ""
 
-#: src/pages.py:43
+#: src/pages.py:63
 msgid "Quit"
 msgstr ""
 
-#: src/pages.py:79
+#: src/pages.py:99
 msgid "Scan my Network"
 msgstr ""
 
-#: src/pages.py:95
+#: src/pages.py:115
 msgid "IP Range Configuration"
 msgstr ""
 
-#: src/pages.py:96
+#: src/pages.py:116
 msgid "Enter the IP range you want to scan:"
 msgstr ""
 
-#: src/pages.py:99
+#: src/pages.py:119
 msgid "IP Range"
 msgstr ""
 
-#: src/pages.py:106
+#: src/pages.py:126
 msgid "Examples: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
 msgstr ""
 
-#: src/pages.py:117
+#: src/pages.py:137
 msgid "Home Network (192.168.1.x)"
 msgstr ""
 
-#: src/pages.py:118
+#: src/pages.py:138
 msgid "Home Network (192.168.0.x)"
 msgstr ""
 
-#: src/pages.py:119
+#: src/pages.py:139
 msgid "Corporate (10.0.0.x)"
 msgstr ""
 
-#: src/pages.py:120
+#: src/pages.py:140
 msgid "Private (172.16.0.x)"
 msgstr ""
 
-#: src/pages.py:157
+#: src/pages.py:171
 msgid "Valid IP range!"
 msgstr ""
 
-#: src/pages.py:161
+#: src/pages.py:175
 msgid "Set IP range to: "
 msgstr ""
 
-#: src/pages.py:194
+#: src/pages.py:209
 msgid "Scanning in progress..."
 msgstr ""
 
-#: src/pages.py:204
+#: src/pages.py:219
 msgid "Devices found on your network:"
 msgstr ""
 
 #. Stop Scanning button (left side)
-#: src/pages.py:208
+#: src/pages.py:223
 msgid "Stop Scanning"
 msgstr ""
 
-#: src/pages.py:210
+#: src/pages.py:225
 msgid "Stop the current network scan"
 msgstr ""
 
 #. Rescan button (right side)
-#: src/pages.py:216 src/pages.py:308 src/pages.py:336 src/pages.py:355
+#: src/pages.py:231 src/pages.py:379 src/pages.py:409 src/pages.py:431
 msgid "Scan Again"
 msgstr ""
 
-#: src/pages.py:231
+#: src/pages.py:246
 msgid "Scanning Network"
 msgstr ""
 
-#: src/pages.py:232
+#: src/pages.py:247
 msgid "Discovering devices on your network... (this may take a while!)"
 msgstr ""
 
-#: src/pages.py:259
+#: src/pages.py:262 src/pages.py:352
+msgid "Preparing scan..."
+msgstr ""
+
+#: src/pages.py:268 src/pages.py:353
+msgid "Time Elapsed: 00:00"
+msgstr ""
+
+#: src/pages.py:293
 msgid "No Devices Found"
 msgstr ""
 
-#: src/pages.py:260
+#: src/pages.py:294
 msgid "No devices were found in the specified range!"
 msgstr ""
 
-#: src/pages.py:264
+#: src/pages.py:298
 msgid "Scan Error"
 msgstr ""
 
-#: src/pages.py:265
+#: src/pages.py:299
 msgid "An error occurred while scanning the network!"
 msgstr ""
 
-#: src/pages.py:279
+#: src/pages.py:329
+#, python-brace-format
+msgid "Time Elapsed: {minutes:02d}:{seconds:02d}"
+msgstr ""
+
+#: src/pages.py:338
+#, python-brace-format
+msgid "Hosts Scanned: {scanned}/{total}"
+msgstr ""
+
+#: src/pages.py:346
 msgid "Scanning..."
 msgstr ""
 
-#: src/pages.py:287
+#: src/pages.py:358
 msgid "Scanning "
 msgstr ""
 
-#: src/pages.py:318
+#: src/pages.py:392
 #, python-brace-format
 msgid "Scan stopped - Found {count} devices"
 msgstr ""
 
-#: src/pages.py:319
+#: src/pages.py:393
 #, python-brace-format
 msgid "Scan stopped. Found {count} devices so far."
 msgstr ""
 
-#: src/pages.py:322
+#: src/pages.py:396
 msgid "Scan stopped - No devices found"
 msgstr ""
 
-#: src/pages.py:323
+#: src/pages.py:397
 msgid "Scan stopped. No devices found."
 msgstr ""
 
-#: src/pages.py:345
+#: src/pages.py:421
 #, python-brace-format
 msgid "Found {count} devices"
 msgstr ""
 
-#: src/pages.py:346
+#: src/pages.py:422
 #, python-brace-format
 msgid "Found {count} devices on the network."
 msgstr ""
 
-#: src/pages.py:349
+#: src/pages.py:425
 msgid "No devices found"
 msgstr ""
 
-#: src/pages.py:350
+#: src/pages.py:426
 msgid "No devices found in the specified range"
 msgstr ""
 
-#: src/pages.py:359 src/pages.py:361
+#: src/pages.py:438 src/pages.py:440
 msgid "Error: "
 msgstr ""
 
-#: src/pages.py:360
+#: src/pages.py:439
 msgid "An error occurred!"
 msgstr ""
 
-#: src/widgets.py:23
+#: src/widgets.py:42
 msgid "Unknown IP"
 msgstr ""
 
-#: src/widgets.py:38 src/widgets.py:40
+#: src/widgets.py:57 src/widgets.py:59
 msgid "Unknown"
 msgstr ""
 
-#: src/widgets.py:43
+#: src/widgets.py:62
 msgid "Hostname"
 msgstr ""
 
-#: src/widgets.py:50
+#: src/widgets.py:69
 msgid "No Ports Open"
 msgstr ""
 
-#: src/widgets.py:52
+#: src/widgets.py:71
 msgid "Ports Open"
 msgstr ""
