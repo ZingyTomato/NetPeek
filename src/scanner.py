@@ -1,6 +1,26 @@
+# scanner.py
+#
+# Copyright 2025 ZingyTomato
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 import threading
 import ipaddress
 import socket
+from ping3 import ping
 from concurrent.futures import ThreadPoolExecutor
 from gi.repository import GLib
 
@@ -10,6 +30,8 @@ class NetworkScanner:
     def __init__(self):
         self.common_ports = [22, 80, 443, 3389, 53, 21, 23, 8080, 8443, 8006, 5000]
         self.is_scanning = False
+        self.hosts_scanned = 0
+        self.total_hosts = 0
         self.partial_results = []  # Store partial results for when scan is stopped
 
     def validate_ip_range(self, ip_range):
@@ -39,8 +61,6 @@ class NetworkScanner:
         except Exception as e:
             return False, _("Invalid IP range: ") + str(e)
 
-
-
     def is_port_open(self, ip, port):
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -49,7 +69,7 @@ class NetworkScanner:
         except:
             return False
 
-    def scan_single_ip(self, ip_str, lock, devices):
+    def scan_single_ip(self, ip_str, lock, devices, progress_callback=None):
         # Check if scanning should continue
         if not self.is_scanning:
             return
@@ -70,6 +90,8 @@ class NetworkScanner:
                     s.settimeout(0.1)
                     if s.connect_ex((ip_str, 80)) == 0:
                         alive = True
+                    elif ping(ip_str):
+                        alive = True
             except:
                 pass
 
@@ -89,6 +111,12 @@ class NetworkScanner:
             with lock:
                 devices.append(device)
                 self.partial_results.append(device)  # Store partial result
+
+        # Update progress counter
+        with lock:
+            self.hosts_scanned += 1
+            if progress_callback:
+                GLib.idle_add(progress_callback, self.hosts_scanned, self.total_hosts)
 
     def parse_ip_range(self, ip_range):
         hosts = []
@@ -118,22 +146,29 @@ class NetworkScanner:
 
         return hosts
 
-    def scan_network(self, ip_range, callback, error_callback):
+    def scan_network(self, ip_range, callback, error_callback, progress_callback=None):
         def do_scan():
             try:
                 self.is_scanning = True
                 self.partial_results = []  # Clear previous partial results
+                self.hosts_scanned = 0  # Reset counter every scan
+
                 devices = []
                 lock = threading.Lock()
 
                 hosts = self.parse_ip_range(ip_range)
+                self.total_hosts = len(hosts)  # Store total for progress tracking
 
-                with ThreadPoolExecutor(max_workers=20) as executor:
+                # Initialize progress
+                if progress_callback:
+                    GLib.idle_add(progress_callback, 0, self.total_hosts)
+
+                with ThreadPoolExecutor(max_workers=100) as executor:
                     futures = []
                     for host in hosts:
                         if not self.is_scanning:
                             break
-                        future = executor.submit(self.scan_single_ip, str(host), lock, devices)
+                        future = executor.submit(self.scan_single_ip, str(host), lock, devices, progress_callback)
                         futures.append(future)
 
                     # Wait for all futures or until scanning is stopped

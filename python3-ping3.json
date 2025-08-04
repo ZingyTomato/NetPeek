@@ -1,0 +1,14 @@
+{
+    "name": "python3-ping3",
+    "buildsystem": "simple",
+    "build-commands": [
+        "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"ping3\" --no-build-isolation"
+    ],
+    "sources": [
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/e6/f4/4070daca3da5bbc3ef5e622d68f979e034e5bf678416817918e51a1b2907/ping3-4.0.8-py3-none-any.whl",
+            "sha256": "b5c294851968b4229e9af69d252778241cb84221594b436a8677419c31925594"
+        }
+    ]
+}

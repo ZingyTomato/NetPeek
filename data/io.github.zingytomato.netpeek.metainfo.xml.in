@@ -4,12 +4,11 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <name>NetPeek</name>
-  <summary>Discover devices on your local network</summary>
+  <summary>See what's connected to your network</summary>
   <description>
     <p>
       NetPeek is a simple network scanner that helps you
-      discover active devices on your local network. It shows open ports, hostnames,
-      and allows easy rescan with a clean, user-friendly interface.
+      discover active devices on your local network.
     </p>
   </description>
   <developer id="io.github.zingytomato">
@@ -39,14 +38,15 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="0.2.1" date="2025-08-02">
-      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2.1</url>
+    <release version="0.2.2" date="2025-08-04">
+      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2.2</url>
       <description translate="no">
-        <p>Version 0.2.1</p>
+        <p>Version 0.2.2</p>
         <ul>
-          <li>Fixed Dutch translations</li>
-          <li>Added Russian translations</li>
-          <li>Improved logic to determine the `PresetButton` label</li>
+          <li>Updated Dutch translations.</li>
+          <li>Increased thread count for faster scans.</li>
+          <li>Detects active IP addresses even if common ports aren't open.</li>
+          <li>Use Adw.spinner instead of Gtk.spinner</li>
         </ul>
       </description>
     </release>

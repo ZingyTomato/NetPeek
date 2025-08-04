@@ -23,6 +23,7 @@
         "*.a"
     ],
     "modules" : [
+        "python3-ping3.json",
         {
             "name" : "netpeek",
             "builddir" : true,
@@ -31,7 +32,7 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/zingytomato/NetPeek.git",
-                    "tag": "v0.2.1"
+                    "tag": "v0.2.2"
                 }
             ]
         }

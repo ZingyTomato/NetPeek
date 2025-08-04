@@ -1,15 +1,35 @@
+# pages.py
+#
+# Copyright 2025 ZingyTomato
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 import gi
+import time
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Adw, Gio
+from gi.repository import Gtk, Adw, Gio, GLib
 
 from .widgets import DeviceCard, PresetButton
 
 class HomePage:
     """Home page with IP input functionality"""
 
-    def __init__(self, navigation_view, toast_overlay, scanner):
+    def __init__(self, navigation_view, toast_overlay, scanner): ## Initialize all components
         self.navigation_view = navigation_view
         self.toast_overlay = toast_overlay
         self.scanner = scanner
@@ -20,7 +40,7 @@ class HomePage:
     def connect_results_page(self, results_page):
         self.results_page = results_page
 
-    def create_page(self):
+    def create_page(self): ## Create the Home Page
         page = Adw.NavigationPage()
         page.set_title(_("NetPeek"))
 
@@ -48,7 +68,7 @@ class HomePage:
 
         return page
 
-    def create_content(self):
+    def create_content(self): ## Add items to the home page
         main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         main_box.set_spacing(24)
         main_box.set_margin_top(48)
@@ -90,7 +110,7 @@ class HomePage:
 
         return scrolled
 
-    def setup_ip_input_section(self, parent_box):
+    def setup_ip_input_section(self, parent_box): ## Allow entering/picking an IP range
         self.ip_group = Adw.PreferencesGroup()
         self.ip_group.set_title(_("IP Range Configuration"))
         self.ip_group.set_description(_("Enter the IP range you want to scan:"))
@@ -124,8 +144,6 @@ class HomePage:
             preset_button = PresetButton(preset_range, tooltip, self.on_preset_clicked)
             preset_box.append(preset_button)
 
-
-
         self.ip_group.add(self.ip_entry_row)
 
         clamp = Adw.Clamp()
@@ -140,11 +158,7 @@ class HomePage:
         clamp.set_child(input_box)
         parent_box.append(clamp)
 
-
-
-
-
-    def on_scan_clicked(self, button):
+    def on_scan_clicked(self, button): ## Start scan when "Scan My Network" is clicked
         if not self.validate_ip_range():
             return
         ip_range = self.ip_entry_row.get_text().strip()
@@ -152,17 +166,15 @@ class HomePage:
             self.navigation_view.push(self.results_page.page)
             self.results_page.start_scan(ip_range)
 
-    def on_ip_range_apply(self, entry_row):
+    def on_ip_range_apply(self, entry_row): ## If the check mark is clicked after entering an IP
         if self.validate_ip_range():
             self.show_toast(_("Valid IP range!"), 2)
 
-    def on_preset_clicked(self, button, preset_range):
+    def on_preset_clicked(self, button, preset_range): ## If one of the IP presets were clicked
         self.ip_entry_row.set_text(preset_range)
         self.show_toast(_("Set IP range to: ") + preset_range, 2)
 
-
-
-    def validate_ip_range(self):
+    def validate_ip_range(self): ## Validate the IP entered
         ip_range = self.ip_entry_row.get_text().strip()
         is_valid, message = self.scanner.validate_ip_range(ip_range)
         if not is_valid:
@@ -174,7 +186,6 @@ class HomePage:
         toast.set_timeout(timeout)
         self.toast_overlay.add_toast(toast)
 
-
 class ResultsPage:
     """Results page for displaying scan results"""
 
@@ -183,6 +194,10 @@ class ResultsPage:
         self.toast_overlay = toast_overlay
         self.scanner = scanner
         self.home_page = None
+
+        # Timer variables
+        self.scan_start_time = None
+        self.timer_source_id = None
 
         self.page = self.create_page()
 
@@ -232,10 +247,29 @@ class ResultsPage:
         loading_page.set_description(_("Discovering devices on your network... (this may take a while!)"))
         loading_page.set_icon_name("network-wireless-acquiring-symbolic")
 
-        self.spinner = Gtk.Spinner()
+        # Create a box to hold spinner, progress counter, and timer
+        loading_content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        loading_content.set_spacing(12)
+        loading_content.set_halign(Gtk.Align.CENTER)
+
+        self.spinner = Adw.Spinner()
         self.spinner.set_size_request(48, 48)
         self.spinner.add_css_class("large")
-        loading_page.set_child(self.spinner)
+        loading_content.append(self.spinner)
+
+        # Add progress counter label
+        self.progress_label = Gtk.Label()
+        self.progress_label.set_text(_("Preparing scan..."))
+        self.progress_label.add_css_class("dim-label")
+        loading_content.append(self.progress_label)
+
+        # Add timer label
+        self.timer_label = Gtk.Label()
+        self.timer_label.set_text(_("Time Elapsed: 00:00"))
+        self.timer_label.add_css_class("dim-label")
+        loading_content.append(self.timer_label)
+
+        loading_page.set_child(loading_content)
 
         scrolled_window = Gtk.ScrolledWindow()
         scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
@@ -274,6 +308,39 @@ class ResultsPage:
 
         return self.results_stack
 
+    def start_timer(self):
+        """Start the scan timer"""
+        self.scan_start_time = time.time()
+        # Update timer every second
+        self.timer_source_id = GLib.timeout_add(1000, self.update_timer)
+
+    def stop_timer(self):
+        """Stop the scan timer"""
+        if self.timer_source_id:
+            GLib.source_remove(self.timer_source_id)
+            self.timer_source_id = None
+
+    def update_timer(self):
+        """Update the timer display"""
+        if self.scan_start_time:
+            elapsed = time.time() - self.scan_start_time
+            minutes = int(elapsed // 60)
+            seconds = int(elapsed % 60)
+            timer_text = _("Time Elapsed: {minutes:02d}:{seconds:02d}").format(
+                minutes=minutes,
+                seconds=seconds
+            )
+            self.timer_label.set_text(timer_text)
+        return True  # Continue calling this function
+
+    def on_progress_update(self, hosts_scanned, total_hosts):
+        """Handle progress updates from the scanner"""
+        progress_text = _("Hosts Scanned: {scanned}/{total}").format(
+            scanned=hosts_scanned,
+            total=total_hosts
+        )
+        self.progress_label.set_text(progress_text)
+
     def start_scan(self, ip_range):
         self.rescan_button.set_sensitive(False)
         self.rescan_button.set_label(_("Scanning..."))
@@ -282,14 +349,19 @@ class ResultsPage:
         self.clear_results()
 
         self.results_stack.set_visible_child_name("loading")
-        self.spinner.start()
+        self.progress_label.set_text(_("Preparing scan..."))
+        self.timer_label.set_text(_("Time Elapsed: 00:00"))
+
+        # Start the timer
+        self.start_timer()
 
         self.results_title.set_subtitle(_("Scanning ") + ip_range + "...")
 
         self.scanner.scan_network(
             ip_range,
             self.on_scan_complete,
-            self.on_scan_error
+            self.on_scan_error,
+            self.on_progress_update  # Add progress callback
         )
 
     def clear_results(self):
@@ -303,9 +375,11 @@ class ResultsPage:
         """Handle stop scanning button click"""
         self.scanner.stop_scan()
         self.stop_button.set_visible(False)
-        self.spinner.stop()
         self.rescan_button.set_sensitive(True)
         self.rescan_button.set_label(_("Scan Again"))
+
+        # Stop the timer
+        self.stop_timer()
 
         # Show partial results if any devices were found
         if self.scanner.get_partial_results():
@@ -331,10 +405,12 @@ class ResultsPage:
                 self.navigation_view.pop()
 
     def on_scan_complete(self, devices):
-        self.spinner.stop()
         self.rescan_button.set_sensitive(True)
         self.rescan_button.set_label(_("Scan Again"))
         self.stop_button.set_visible(False)  # Hide stop button when scan completes
+
+        # Stop the timer
+        self.stop_timer()
 
         if devices:
             for device in devices:
@@ -354,6 +430,9 @@ class ResultsPage:
         self.rescan_button.set_sensitive(True)
         self.rescan_button.set_label(_("Scan Again"))
         self.stop_button.set_visible(False)  # Hide stop button on error
+
+        # Stop the timer
+        self.stop_timer()
 
         self.results_stack.set_visible_child_name("error")
         self.error_page.set_description(_("Error: ") + error_message)
