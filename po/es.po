@@ -1,0 +1,253 @@
+# Spanish translations for netpeek package.
+# Copyright (C) 2025 THE netpeek'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the netpeek package.
+# Óscar Fernández Díaz <oscfdezdz@tuta.io>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: netpeek\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-04 18:24+0200\n"
+"PO-Revision-Date: 2025-08-04 18:39+0200\n"
+"Last-Translator: Óscar Fernández Díaz <oscfdezdz@tuta.io>\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 48.0\n"
+
+#: data/io.github.zingytomato.netpeek.desktop.in:2
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/window.py:36
+#: src/window.py:61 src/pages.py:45 src/pages.py:54
+msgid "NetPeek"
+msgstr "NetPeek"
+
+#: data/io.github.zingytomato.netpeek.desktop.in:3
+msgid "Discover devices on your local network"
+msgstr "Descubrir dispositivos en su red local"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
+msgid "See what's connected to your network"
+msgstr "Vea qué hay conectado en su red"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:9
+msgid ""
+"NetPeek is a simple network scanner that helps you discover active devices "
+"on your local network."
+msgstr ""
+"NetPeek es un sencillo escáner de red que ayuda a descubrir dispositivos "
+"activos en su red local."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:29
+msgid "Home screen"
+msgstr "Pantalla principal"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:33
+msgid "Scan in Progress"
+msgstr "Escaneo en proceso"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:37 src/pages.py:218
+msgid "Scan Results"
+msgstr "Resultados del escaneo"
+
+#: src/window.py:65 src/pages.py:92
+msgid "Discover devices on your local network."
+msgstr "Descubra dispositivos en su red local."
+
+#: src/window.py:69
+msgid "Contributors"
+msgstr "Contribuidores"
+
+#: src/pages.py:59
+msgid "Main Menu"
+msgstr "Menú principal"
+
+#: src/pages.py:62
+msgid "About"
+msgstr "Acerca de NetPeek"
+
+#: src/pages.py:63
+msgid "Quit"
+msgstr "Salir"
+
+#: src/pages.py:99
+msgid "Scan my Network"
+msgstr "Escanear mi red"
+
+#: src/pages.py:115
+msgid "IP Range Configuration"
+msgstr "Configuración del rango IP"
+
+#: src/pages.py:116
+msgid "Enter the IP range you want to scan:"
+msgstr "Introduzca el rango IP a escanear:"
+
+#: src/pages.py:119
+msgid "IP Range"
+msgstr "Rango IP"
+
+#: src/pages.py:126
+msgid "Examples: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
+msgstr "Ejemplos: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
+
+#: src/pages.py:137
+msgid "Home Network (192.168.1.x)"
+msgstr "Red del hogar (192.168.1.x)"
+
+#: src/pages.py:138
+msgid "Home Network (192.168.0.x)"
+msgstr "Red del hogar (192.168.0.x)"
+
+#: src/pages.py:139
+msgid "Corporate (10.0.0.x)"
+msgstr "Empresarial (10.0.0.x)"
+
+#: src/pages.py:140
+msgid "Private (172.16.0.x)"
+msgstr "Privado (172.16.0.x)"
+
+#: src/pages.py:171
+msgid "Valid IP range!"
+msgstr "¡Rango IP válido!"
+
+#: src/pages.py:175
+msgid "Set IP range to: "
+msgstr "Establecer rango IP a:"
+
+#: src/pages.py:209
+msgid "Scanning in progress..."
+msgstr "Escaneo en proceso..."
+
+#: src/pages.py:219
+msgid "Devices found on your network:"
+msgstr "Dispositivos encontrados en su red:"
+
+#. Stop Scanning button (left side)
+#: src/pages.py:223
+msgid "Stop Scanning"
+msgstr "Detener escaneo"
+
+#: src/pages.py:225
+msgid "Stop the current network scan"
+msgstr "Detiene el escaneo de red actual"
+
+#. Rescan button (right side)
+#: src/pages.py:231 src/pages.py:379 src/pages.py:409 src/pages.py:431
+msgid "Scan Again"
+msgstr "Escanear de nuevo"
+
+#: src/pages.py:246
+msgid "Scanning Network"
+msgstr "Escaneando red"
+
+#: src/pages.py:247
+msgid "Discovering devices on your network... (this may take a while!)"
+msgstr "Descubriendo dispositivos en su red... (¡esto puede llevar un tiempo!)"
+
+#: src/pages.py:262 src/pages.py:352
+msgid "Preparing scan..."
+msgstr "Preparando escaneo..."
+
+#: src/pages.py:268 src/pages.py:353
+msgid "Time Elapsed: 00:00"
+msgstr "Tiempo transcurrido: 00:00"
+
+#: src/pages.py:293
+msgid "No Devices Found"
+msgstr "Ningún dispositivo encontrado"
+
+#: src/pages.py:294
+msgid "No devices were found in the specified range!"
+msgstr "¡No se encontraron dispositivos en el rango especificado!"
+
+#: src/pages.py:298
+msgid "Scan Error"
+msgstr "Error de escaneo"
+
+#: src/pages.py:299
+msgid "An error occurred while scanning the network!"
+msgstr "¡Se produjo un error mientras se escaneaba su red!"
+
+#: src/pages.py:329
+#, python-brace-format
+msgid "Time Elapsed: {minutes:02d}:{seconds:02d}"
+msgstr "Tiempo transcurrido: {minutes:02d}:{seconds:02d}"
+
+#: src/pages.py:338
+#, python-brace-format
+msgid "Hosts Scanned: {scanned}/{total}"
+msgstr "Equipos escaneados: {scanned}/{total}"
+
+#: src/pages.py:346
+msgid "Scanning..."
+msgstr "Escaneando..."
+
+#: src/pages.py:358
+msgid "Scanning "
+msgstr "Escaneando"
+
+#: src/pages.py:392
+#, python-brace-format
+msgid "Scan stopped - Found {count} devices"
+msgstr "Escaneo detenido - {count} dispositivos encontrados"
+
+#: src/pages.py:393
+#, python-brace-format
+msgid "Scan stopped. Found {count} devices so far."
+msgstr "Escaneo detenido. {count} dispositivos encontrados hasta ahora."
+
+#: src/pages.py:396
+msgid "Scan stopped - No devices found"
+msgstr "Escaneo detenido - Ningún dispositivo encontrado"
+
+#: src/pages.py:397
+msgid "Scan stopped. No devices found."
+msgstr "Escaneo detenido. Ningún dispositivo encontrado."
+
+#: src/pages.py:421
+#, python-brace-format
+msgid "Found {count} devices"
+msgstr "{count} dispositivos encontrados"
+
+#: src/pages.py:422
+#, python-brace-format
+msgid "Found {count} devices on the network."
+msgstr "{count} dispositivos encontrados en la red."
+
+#: src/pages.py:425
+msgid "No devices found"
+msgstr "Ningún dispositivo encontrado"
+
+#: src/pages.py:426
+msgid "No devices found in the specified range"
+msgstr "Ningún dispositivo encontrado en el rango especificado"
+
+#: src/pages.py:438 src/pages.py:440
+msgid "Error: "
+msgstr "Error:"
+
+#: src/pages.py:439
+msgid "An error occurred!"
+msgstr "¡Se produjo un error!"
+
+#: src/widgets.py:42
+msgid "Unknown IP"
+msgstr "IP desconocida"
+
+#: src/widgets.py:57 src/widgets.py:59
+msgid "Unknown"
+msgstr "Desconocido"
+
+#: src/widgets.py:62
+msgid "Hostname"
+msgstr "Nombre del equipo"
+
+#: src/widgets.py:69
+msgid "No Ports Open"
+msgstr "Ningún puerto abierto"
+
+#: src/widgets.py:71
+msgid "Ports Open"
+msgstr "Puertos abiertos"
