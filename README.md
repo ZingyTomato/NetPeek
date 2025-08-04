@@ -68,6 +68,7 @@ Translations to your native language are very much appreciated.
 Currently supported languages:
 * Dutch
 * Russian
+* Spanish
 
 ## 📙 License
 
