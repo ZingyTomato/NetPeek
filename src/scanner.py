@@ -186,7 +186,8 @@ class NetworkScanner:
                 # Only call callback if scan completed normally (not stopped)
                 if self.is_scanning:
                     self.is_scanning = False
-                    GLib.idle_add(callback, devices)
+                    devices_sorted = sorted(devices, key=lambda x: ipaddress.IPv4Address(x['ip']))
+                    GLib.idle_add(callback, devices_sorted)
 
             except Exception as e:
                 self.is_scanning = False
@@ -201,4 +202,4 @@ class NetworkScanner:
 
     def get_partial_results(self):
         """Get the partial results from a stopped scan"""
-        return self.partial_results.copy()
+        return sorted(self.partial_results, key=lambda x: ipaddress.IPv4Address(x['ip']))

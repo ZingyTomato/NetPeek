@@ -7,3 +7,4 @@ Terminal=false
 Type=Application
 Categories=Network;System
 StartupNotify=true
+Keywords=Gnome;GTK;libadwaita;Networking;Scanner;Internet;

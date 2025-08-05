@@ -426,7 +426,6 @@ class ResultsPage:
             self.show_toast(_("No devices found in the specified range"))
 
     def on_scan_error(self, error_message):
-        self.spinner.stop()
         self.rescan_button.set_sensitive(True)
         self.rescan_button.set_label(_("Scan Again"))
         self.stop_button.set_visible(False)  # Hide stop button on error

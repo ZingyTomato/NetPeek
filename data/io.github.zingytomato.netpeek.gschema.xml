@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="netpeek">
 	<schema id="io.github.zingytomato.netpeek" path="/io/github/zingytomato/netpeek/">
+    <key name="window-width" type="i">
+      <default>700</default>
+      <summary>Default window width</summary>
+      <description>Default window width</description>
+    </key>
+    <key name="window-height" type="i">
+      <default>1000</default>
+      <summary>Default window height</summary>
+      <description>Default window height</description>
+    </key>
+    <key name="window-maximized" type="b">
+      <default>false</default>
+      <summary>Default window maximized behaviour</summary>
+      <description>Not maximised by default</description>
+    </key>
 	</schema>
 </schemalist>
