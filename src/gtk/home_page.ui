@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+
+  <template class="HomePage" parent="AdwNavigationPage">
+    <property name="title" translatable="yes">NetPeek</property>
+
+    <child>
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar">
+            <child type="title">
+              <object class="AdwWindowTitle">
+                <property name="title" translatable="yes">NetPeek</property>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkMenuButton" id="menu_button">
+                <property name="icon-name">open-menu-symbolic</property>
+                <property name="tooltip-text" translatable="yes">Main Menu</property>
+                <property name="menu-model">main_menu</property>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkScrolledWindow">
+            <property name="hscrollbar-policy">automatic</property>
+            <property name="vscrollbar-policy">automatic</property>
+
+            <child>
+              <object class="GtkBox" id="main_box">
+                <property name="orientation">vertical</property>
+                <property name="spacing">24</property>
+                <property name="margin-top">48</property>
+                <property name="margin-bottom">48</property>
+                <property name="margin-start">24</property>
+                <property name="margin-end">24</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+
+                <!-- Welcome section -->
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <property name="halign">center</property>
+
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">network-wireless-symbolic</property>
+                        <property name="pixel-size">64</property>
+                        <style>
+                          <class name="accent"/>
+                        </style>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">&lt;span size='x-large' weight='bold'&gt;Discover devices on your local network.&lt;/span&gt;</property>
+                        <property name="use-markup">true</property>
+                        <property name="halign">center</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+
+                <!-- IP Input section -->
+                <child>
+                  <object class="AdwClamp">
+                    <property name="maximum-size">600</property>
+
+                    <child>
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">12</property>
+
+                        <child>
+                          <object class="AdwPreferencesGroup" id="ip_group">
+                            <property name="title" translatable="yes">IP Range Configuration</property>
+                            <property name="description" translatable="yes">Enter the IP range you want to scan:</property>
+
+                            <child>
+                              <object class="AdwEntryRow" id="ip_entry_row">
+                                <property name="title" translatable="yes">IP Range</property>
+                                <property name="text">192.168.1.0/24</property>
+                                <property name="show-apply-button">true</property>
+                                <signal name="apply" handler="on_ip_range_apply"/>
+                                <signal name="entry-activated" handler="on_ip_range_apply"/>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;small&gt;&lt;i&gt;Examples: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200&lt;/i&gt;&lt;/small&gt;</property>
+                            <property name="use-markup">true</property>
+                            <property name="halign">start</property>
+                            <property name="margin-top">6</property>
+                            <style>
+                              <class name="dim-label"/>
+                            </style>
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="GtkBox" id="preset_box">
+                            <property name="orientation">horizontal</property>
+                            <property name="spacing">6</property>
+                            <property name="halign">center</property>
+                            <property name="margin-top">12</property>
+
+                            <!-- Preset buttons will be added programmatically -->
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+
+                <!-- Scan button -->
+                <child>
+                  <object class="GtkButton" id="scan_button">
+                    <property name="label" translatable="yes">Scan my Network</property>
+                    <property name="width-request">200</property>
+                    <property name="height-request">48</property>
+                    <property name="halign">center</property>
+                    <signal name="clicked" handler="on_scan_clicked"/>
+                    <style>
+                      <class name="suggested-action"/>
+                      <class name="pill"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+
+  <menu id="main_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">About</attribute>
+        <attribute name="action">app.about</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Quit</attribute>
+        <attribute name="action">app.quit</attribute>
+      </item>
+    </section>
+  </menu>
+</interface>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+
+  <template class="NetworkScannerWindow" parent="AdwApplicationWindow">
+    <property name="title" translatable="yes">NetPeek</property>
+    <property name="default-width">1000</property>
+    <property name="default-height">700</property>
+
+    <child>
+      <object class="AdwToastOverlay" id="toast_overlay">
+        <child>
+          <object class="AdwNavigationView" id="navigation_view"/>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

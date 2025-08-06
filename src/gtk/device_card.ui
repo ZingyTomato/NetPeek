@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+
+  <template class="DeviceCard" parent="AdwBin">
+    <child>
+      <object class="AdwClamp">
+        <property name="maximum-size">320</property>
+        <property name="tightening-threshold">280</property>
+
+        <child>
+          <object class="AdwPreferencesGroup" id="content_group">
+            <property name="margin-top">8</property>
+            <property name="margin-bottom">8</property>
+            <property name="margin-start">8</property>
+            <property name="margin-end">8</property>
+
+            <child>
+              <object class="AdwActionRow" id="ip_row">
+                <property name="title">Unknown IP</property>
+
+                <child type="suffix">
+                  <object class="GtkBox">
+                    <property name="orientation">horizontal</property>
+                    <property name="spacing">6</property>
+                    <property name="valign">center</property>
+
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">network-wireless-signal-excellent-symbolic</property>
+                        <style>
+                          <class name="success"/>
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwActionRow" id="hostname_row">
+                <property name="title" translatable="yes">Hostname</property>
+                <property name="subtitle" translatable="yes">Unknown</property>
+
+                <child type="prefix">
+                  <object class="GtkImage">
+                    <property name="icon-name">computer-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwActionRow" id="ports_row">
+                <property name="title" translatable="yes">Ports Open</property>
+                <property name="subtitle" translatable="yes">No Ports Open</property>
+
+                <child type="prefix">
+                  <object class="GtkImage">
+                    <property name="icon-name">network-wired-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

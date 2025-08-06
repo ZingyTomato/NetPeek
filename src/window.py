@@ -23,27 +23,21 @@ gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Gtk, Adw, Gio
 
-from .widgets import DeviceCard
 from .scanner import NetworkScanner
 from .pages import HomePage, ResultsPage
 
+@Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/main_window.ui')
 class NetworkScannerWindow(Adw.ApplicationWindow):
     """Main application window"""
+    __gtype_name__ = 'NetworkScannerWindow'
+
+    toast_overlay = Gtk.Template.Child()
+    navigation_view = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.set_title(_("NetPeek"))
-        self.set_default_size(1000, 700)
-
-        self.toast_overlay = Adw.ToastOverlay()
-        self.set_content(self.toast_overlay)
-
-        self.navigation_view = Adw.NavigationView()
-        self.toast_overlay.set_child(self.navigation_view)
-
         self.scanner = NetworkScanner()
-
         self.setup_pages()
         self.create_actions()
 
@@ -88,7 +82,7 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         self.home_page.connect_results_page(self.results_page)
         self.results_page.connect_home_page(self.home_page)
 
-        self.navigation_view.add(self.home_page.page)
+        self.navigation_view.add(self.home_page)
 
     def show_toast(self, message, timeout=3):
         toast = Adw.Toast(title=_(message))

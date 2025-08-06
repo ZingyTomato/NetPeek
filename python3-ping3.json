@@ -7,8 +7,8 @@
     "sources": [
         {
             "type": "file",
-            "url": "https://files.pythonhosted.org/packages/e6/f4/4070daca3da5bbc3ef5e622d68f979e034e5bf678416817918e51a1b2907/ping3-4.0.8-py3-none-any.whl",
-            "sha256": "b5c294851968b4229e9af69d252778241cb84221594b436a8677419c31925594"
+            "url": "https://files.pythonhosted.org/packages/fb/90/9f73b3176fc36fb13675382f52c65ba4f7dae4fb5ac83f6d0504a54dceb1/ping3-5.1.3-py3-none-any.whl",
+            "sha256": "f5e8d2e6872c5630205065e585cdff8d60cea62eaf664f2b24cd90867801ad24"
         }
     ]
 }
