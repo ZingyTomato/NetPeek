@@ -22,9 +22,10 @@ import time
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Adw, Gio, GLib
+from gi.repository import Gtk, Adw, Gio, GLib, Gdk
 
 from .widgets import DeviceCard, PresetButton
+from .scanner import NetworkScanner
 
 @Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/home_page.ui')
 class HomePage(Adw.NavigationPage):
@@ -60,6 +61,8 @@ class HomePage(Adw.NavigationPage):
         for preset_range, tooltip in presets:
             preset_button = PresetButton(preset_range, tooltip, self.on_preset_clicked)
             self.preset_box.append(preset_button)
+
+        self.ip_entry_row.set_text(NetworkScanner.get_local_ip_range())
 
     @Gtk.Template.Callback()
     def on_scan_clicked(self, button):
@@ -119,6 +122,7 @@ class ResultsPage(Adw.NavigationPage):
         self.toast_overlay = toast_overlay
         self.scanner = scanner
         self.home_page = None
+        self.clipboard = Gdk.Display.get_default().get_clipboard()
 
         # Timer variables
         self.scan_start_time = None
@@ -205,7 +209,7 @@ class ResultsPage(Adw.NavigationPage):
         if self.scanner.get_partial_results():
             devices = self.scanner.get_partial_results()
             for device in devices:
-                card = DeviceCard(device)
+                card = DeviceCard(device_info=device, toast_overlay=self.toast_overlay)
                 self.flow_box.append(card)
 
             self.results_stack.set_visible_child_name("devices")
@@ -235,7 +239,7 @@ class ResultsPage(Adw.NavigationPage):
 
         if devices:
             for device in devices:
-                card = DeviceCard(device)
+                card = DeviceCard(device_info=device, toast_overlay=self.toast_overlay)
                 self.flow_box.append(card)
 
             self.results_stack.set_visible_child_name("devices")

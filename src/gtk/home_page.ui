@@ -86,7 +86,7 @@
                             <child>
                               <object class="AdwEntryRow" id="ip_entry_row">
                                 <property name="title" translatable="yes">IP Range</property>
-                                <property name="text">192.168.1.0/24</property>
+                                <property name="text">192.168.1.0/24</property> <!-- Default Range -->
                                 <property name="show-apply-button">true</property>
                                 <signal name="apply" handler="on_ip_range_apply"/>
                                 <signal name="entry-activated" handler="on_ip_range_apply"/>

@@ -4,11 +4,19 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <name>NetPeek</name>
-  <summary>See what's connected to your network</summary>
+  <summary>See what's on your network</summary>
   <description>
     <p>
       NetPeek is a simple network scanner that helps you
       discover active devices on your local network.
+
+      Features:
+      <li>Fast Network Scanning - Discover active devices on your network</li>
+      <li>Port Scanning - Shows open ports on discovered devices</li>
+      <li>Modern UI - Built with GTK4 and Libadwaita</li>
+      <li>Multi-threaded - Fast concurrent scanning</li>
+      <li>Flexible Input - Supports CIDR notation, IP ranges, and single IPs</li>
+      <li>Automatic IP Detection - Instantly finds your local IP range</li>
     </p>
   </description>
   <developer id="io.github.zingytomato">
@@ -38,15 +46,15 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="0.2.2" date="2025-08-04">
-      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2.2</url>
+    <release version="0.2.3" date="2025-08-07">
+      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2.3</url>
       <description translate="no">
-        <p>Version 0.2.2</p>
+        <p>Version 0.2.3</p>
         <ul>
-          <li>Updated Dutch translations.</li>
-          <li>Increased thread count for faster scans.</li>
-          <li>Detects active IP addresses even if common ports aren't open.</li>
-          <li>Use Adw.spinner instead of Gtk.spinner</li>
+          <li>Added Spanish translations.</li>
+          <li>IP addresses are now displayed in ascending order.</li>
+          <li>Use .ui files to structure the design</li>
+          <li>Added a copy to clipboard button next to each IP</li>
         </ul>
       </description>
     </release>

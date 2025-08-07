@@ -203,3 +203,11 @@ class NetworkScanner:
     def get_partial_results(self):
         """Get the partial results from a stopped scan"""
         return sorted(self.partial_results, key=lambda x: ipaddress.IPv4Address(x['ip']))
+
+    def get_local_ip_range():
+        hostname = socket.gethostname()
+        local_ip = socket.gethostbyname(hostname)
+
+        # Default to a /24 subnet to scan the whole network
+        network = ipaddress.IPv4Network(local_ip + '/24', strict=False)
+        return str(network)

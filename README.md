@@ -18,6 +18,7 @@ A modern libadwaita-based network scanner for GNOME that helps you discover devi
 - 📱 **Modern UI** - Built with GTK4 and Libadwaita
 - ⚡ **Multi-threaded** - Fast concurrent scanning
 - 🔧 **Flexible Input** - Supports CIDR notation, IP ranges, and single IPs
+- 🤖 **Automatic IP Detection** - Instantly finds your local IP range
 
 ## 🔧 Installation
 

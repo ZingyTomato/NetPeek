@@ -21,7 +21,7 @@ import gi
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Adw
+from gi.repository import Gtk, Adw, Gdk
 
 @Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/device_card.ui')
 class DeviceCard(Adw.Bin):
@@ -32,8 +32,10 @@ class DeviceCard(Adw.Bin):
     hostname_row = Gtk.Template.Child()
     ports_row = Gtk.Template.Child()
 
-    def __init__(self, device_info=None):
+    def __init__(self, toast_overlay, device_info=None):
         super().__init__()
+        self.toast_overlay = toast_overlay
+        self.clipboard = Gdk.Display.get_default().get_clipboard()
 
         if device_info:
             self.set_device_info(device_info)
@@ -50,6 +52,18 @@ class DeviceCard(Adw.Bin):
 
         ports = device_info.get('ports', _("No Ports Open"))
         self.ports_row.set_subtitle(ports)
+
+    @Gtk.Template.Callback()
+    def on_ip_clicked(self, button):
+        """Start scan when the copy button is clicked"""
+        ip_text = self.ip_row.get_title()
+        self.clipboard.set(ip_text)
+        self.show_toast(f"Copied {ip_text} to the clipboard")
+
+    def show_toast(self, message, timeout=3):
+        toast = Adw.Toast(title=_(message))
+        toast.set_timeout(timeout)
+        self.toast_overlay.add_toast(toast)
 
 class PresetButton(Gtk.Button):
     """Custom preset button for IP ranges"""

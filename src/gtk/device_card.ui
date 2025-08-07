@@ -18,22 +18,15 @@
 
             <child>
               <object class="AdwActionRow" id="ip_row">
-                <property name="title">Unknown IP</property>
+                <property name="title">IP Address</property>
 
                 <child type="suffix">
-                  <object class="GtkBox">
-                    <property name="orientation">horizontal</property>
-                    <property name="spacing">6</property>
+                  <object class="GtkButton" id="ip_button">
+                    <property name="halign">end</property>
                     <property name="valign">center</property>
-
-                    <child>
-                      <object class="GtkImage">
-                        <property name="icon-name">network-wireless-signal-excellent-symbolic</property>
-                        <style>
-                          <class name="success"/>
-                        </style>
-                      </object>
-                    </child>
+                    <property name="icon-name">edit-copy-symbolic</property>
+                    <property name="tooltip-text">Click to copy IP</property>
+                    <signal name="clicked" handler="on_ip_clicked"/>
                   </object>
                 </child>
               </object>
@@ -64,9 +57,11 @@
                 </child>
               </object>
             </child>
+
           </object>
         </child>
       </object>
     </child>
   </template>
 </interface>
+
