@@ -9,14 +9,6 @@
     <p>
       NetPeek is a simple network scanner that helps you
       discover active devices on your local network.
-
-      Features:
-      <li>Fast Network Scanning - Discover active devices on your network</li>
-      <li>Port Scanning - Shows open ports on discovered devices</li>
-      <li>Modern UI - Built with GTK4 and Libadwaita</li>
-      <li>Multi-threaded - Fast concurrent scanning</li>
-      <li>Flexible Input - Supports CIDR notation, IP ranges, and single IPs</li>
-      <li>Automatic IP Detection - Instantly finds your local IP range</li>
     </p>
   </description>
   <developer id="io.github.zingytomato">
@@ -46,10 +38,10 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="0.2.3" date="2025-08-07">
-      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2.3</url>
-      <description translate="no">
-        <p>Version 0.2.3</p>
+    <release version="0.2.3.1" date="2025-08-07">
+      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2.3.1</url>
+      <description>
+        <p>Version 0.2.3.1</p>
         <ul>
           <li>Added Spanish translations.</li>
           <li>IP addresses are now displayed in ascending order.</li>

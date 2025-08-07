@@ -27,7 +27,7 @@ gi.require_version('Adw', '1')
 import sys
 from .app import NetworkScannerApp
 
-def main(version="0.2.3"):
+def main(version="0.2.3.1"):
     """Main entry point for the application"""
     app = NetworkScannerApp()
     app.version = version
