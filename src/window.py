@@ -53,7 +53,7 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
     def on_about_action(self, action, param):
         about = Adw.AboutDialog()
         about.set_application_name(_("NetPeek"))
-        about.set_version("0.2.3.1")
+        about.set_version("0.2.4")
         about.set_developer_name("ZingyTomato")
         about.set_license_type(Gtk.License.GPL_3_0)
         about.set_comments(_("Discover devices on your local network."))

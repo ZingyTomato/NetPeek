@@ -38,15 +38,12 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="0.2.3.1" date="2025-08-07">
-      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2.3.1</url>
+    <release version="0.2.4" date="2025-08-30">
+      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2.4</url>
       <description>
-        <p>Version 0.2.3.1</p>
+        <p>Version 0.2.4</p>
         <ul>
-          <li>Added Spanish translations.</li>
-          <li>IP addresses are now displayed in ascending order.</li>
-          <li>Use .ui files to structure the design</li>
-          <li>Added a copy to clipboard button next to each IP</li>
+          <li>Use bundled in nmap for more accurate scan results.</li>
         </ul>
       </description>
     </release>
