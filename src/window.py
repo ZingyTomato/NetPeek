@@ -53,14 +53,14 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
     def on_about_action(self, action, param):
         about = Adw.AboutDialog()
         about.set_application_name(_("NetPeek"))
-        about.set_version("0.2.3.1")
+        about.set_version("0.2.4")
         about.set_developer_name("ZingyTomato")
         about.set_license_type(Gtk.License.GPL_3_0)
         about.set_comments(_("Discover devices on your local network."))
         about.set_website("https://github.com/zingytomato/netpeek")
         about.set_issue_url("https://github.com/zingytomato/netpeek/issues")
         about.set_application_icon("io.github.zingytomato.netpeek")
-        about.add_credit_section(_("Contributors"), ["ZingyTomato", "Gert-Dev", "Cameo007", "vmkspv", "oscfdezdz"])
+        about.add_credit_section(_("Contributors"), ["ZingyTomato", "Gert-Dev", "Cameo007", "vmkspv", "oscfdezdz", "albanobattistella", "sjulien"])
         about.present(self)
 
     def on_quit_action(self, action, param):

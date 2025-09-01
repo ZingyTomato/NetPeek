@@ -33,8 +33,8 @@ flatpak install flathub io.github.zingytomato.netpeek
 ```
 
 ### 👨🏻‍🔧 Unofficial Community Packages
-* Arch Linux (AUR) - [netpeek](https://aur.archlinux.org/packages/netpeek)
-* Arch Linux (AUR) - [netpeek-git](https://aur.archlinux.org/packages/netpeek-git)
+
+[![Packaging status](https://repology.org/badge/vertical-allrepos/netpeek.svg)](https://repology.org/project/netpeek/versions)
 
 ## 🔨 Local Development
 
@@ -61,7 +61,7 @@ environment cross-distro. Thus, it is highly recommended you use it.
 - `socket` - Network operations
 - `ipaddress` - IP address validation
 - `threading` - Concurrent scanning
-- `ping3` - Ping active hosts
+- `python-nmap` - Find active hosts using nmap
 
 ## 🙌 Help translate!
 
@@ -70,6 +70,8 @@ Currently supported languages:
 * Dutch
 * Russian
 * Spanish
+* Italian
+* French
 * Polish
 
 ## 📙 License
