@@ -72,6 +72,7 @@ Currently supported languages:
 * Spanish
 * Italian
 * French
+* Polish
 
 ## 📙 License
 
