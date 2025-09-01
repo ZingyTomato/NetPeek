@@ -4,23 +4,13 @@
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import threading
 import ipaddress
 import socket
-from ping3 import ping
+import nmap
 from concurrent.futures import ThreadPoolExecutor
 from gi.repository import GLib
 
@@ -32,158 +22,119 @@ class NetworkScanner:
         self.is_scanning = False
         self.hosts_scanned = 0
         self.total_hosts = 0
-        self.partial_results = []  # Store partial results for when scan is stopped
+        self.partial_results = []
+        self.lock = threading.Lock()
 
     def validate_ip_range(self, ip_range):
         if not ip_range:
             return False, _("Please enter an IP range")
 
         try:
+            if '/' in ip_range or '-' in ip_range:
+                pass
+            else:
+                ipaddress.IPv4Address(ip_range)
+            return True, _("Valid IP range")
+        except Exception as e:
+            return False, _("Invalid IP range: {e}").format(e=e)
+
+    def parse_ip_range_for_list(self, ip_range):
+        hosts = []
+        try:
             if '/' in ip_range:
-                ipaddress.ip_network(ip_range, strict=False)
+                net = ipaddress.ip_network(ip_range, strict=False)
+                hosts = list(net.hosts())
             elif '-' in ip_range:
                 base_ip, range_part = ip_range.rsplit('-', 1)
                 base_parts = base_ip.split('.')
 
                 if len(base_parts) == 4:
-                    ipaddress.IPv4Address(base_ip)
-                    int(range_part)
+                    base_network = '.'.join(base_parts[:3])
+                    start_ip = int(base_parts[3])
+                    end_ip = int(range_part)
                 elif len(base_parts) == 3:
-                    ipaddress.IPv4Address(f"{base_ip}.1")
-                    int(range_part)
+                    base_network = base_ip
+                    start_ip = 1
+                    end_ip = int(range_part)
                 else:
                     raise ValueError(_("Invalid range format!"))
+
+                hosts = [ipaddress.IPv4Address(f"{base_network}.{i}") for i in range(start_ip, end_ip + 1)]
             else:
-                ipaddress.IPv4Address(ip_range)
-
-            return True, _("Valid IP range")
-
+                hosts = [ipaddress.IPv4Address(ip_range)]
         except Exception as e:
-            return False, _("Invalid IP range: ") + str(e)
+            print(_("Error parsing IP range: {e}").format(e=e))
+            hosts = []
+        return hosts
 
-    def is_port_open(self, ip, port):
-        try:
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                s.settimeout(0.5)
-                return s.connect_ex((ip, port)) == 0
-        except:
-            return False
-
-    def scan_single_ip(self, ip_str, lock, devices, progress_callback=None):
-        # Check if scanning should continue
+    def scan_single_ip(self, host, devices, progress_callback=None):
         if not self.is_scanning:
             return
 
-        alive = False
-        open_ports = []
+        nm = nmap.PortScanner()
+        scan_arguments = f"-sT -p {','.join(map(str, self.common_ports))}"
 
-        for port in self.common_ports:
-            if not self.is_scanning:  # Check again before each port scan
-                return
-            if self.is_port_open(ip_str, port):
-                alive = True
-                open_ports.append(port)
+        try:
+            nm.scan(hosts=str(host), arguments=scan_arguments)
+        except nmap.nmap.PortScannerError as e:
+            # Handle Nmap errors for a single host gracefully
+            print(_("Nmap error on host {host}: {e}").format(host=host, e=e))
+            return
 
-        if not alive and self.is_scanning:
-            try:
-                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                    s.settimeout(0.1)
-                    if s.connect_ex((ip_str, 80)) == 0:
-                        alive = True
-                    elif ping(ip_str):
-                        alive = True
-            except:
-                pass
+        if str(host) in nm.all_hosts():
+            host_info = nm[str(host)]
+            hostname = host_info.hostname() if host_info.hostname() else str(host)
+            open_ports = []
 
-        if alive and self.is_scanning:
-            hostname = ip_str
-            try:
-                hostname = socket.gethostbyaddr(ip_str)[0]
-            except:
-                pass
+            if 'tcp' in host_info:
+                for port in host_info['tcp']:
+                    if host_info['tcp'][port]['state'] == 'open':
+                        open_ports.append(port)
 
-            device = {
-                "hostname": hostname,
-                "ip": ip_str,
-                "ports": ", ".join(map(str, open_ports)) if open_ports else _("Host alive (no open ports detected)")
-            }
+            if host_info.state() == 'up':
+                device = {
+                    "hostname": hostname,
+                    "ip": str(host),
+                    "ports": _("Host alive (no common ports detected)") if not open_ports else ", ".join(map(str, open_ports))
+                }
+                with self.lock:
+                    devices.append(device)
+                    self.partial_results.append(device)
 
-            with lock:
-                devices.append(device)
-                self.partial_results.append(device)  # Store partial result
-
-        # Update progress counter
-        with lock:
+        with self.lock:
             self.hosts_scanned += 1
             if progress_callback:
                 GLib.idle_add(progress_callback, self.hosts_scanned, self.total_hosts)
-
-    def parse_ip_range(self, ip_range):
-        hosts = []
-
-        if '/' in ip_range:
-            net = ipaddress.ip_network(ip_range, strict=False)
-            hosts = list(net.hosts())
-        elif '-' in ip_range:
-            base_ip, range_part = ip_range.rsplit('-', 1)
-            base_parts = base_ip.split('.')
-
-            if len(base_parts) == 4:
-                base_network = '.'.join(base_parts[:3])
-                start_ip = int(base_parts[3])
-                end_ip = int(range_part)
-            elif len(base_parts) == 3:
-                base_network = base_ip
-                start_ip = 1
-                end_ip = int(range_part)
-            else:
-                raise ValueError(_("Invalid range format!"))
-
-            hosts = [ipaddress.IPv4Address(f"{base_network}.{i}")
-                     for i in range(start_ip, end_ip + 1)]
-        else:
-            hosts = [ipaddress.IPv4Address(ip_range)]
-
-        return hosts
 
     def scan_network(self, ip_range, callback, error_callback, progress_callback=None):
         def do_scan():
             try:
                 self.is_scanning = True
-                self.partial_results = []  # Clear previous partial results
-                self.hosts_scanned = 0  # Reset counter every scan
+                self.partial_results = []
+                self.hosts_scanned = 0
 
-                devices = []
-                lock = threading.Lock()
+                hosts_to_scan = self.parse_ip_range_for_list(ip_range)
+                self.total_hosts = len(hosts_to_scan)
 
-                hosts = self.parse_ip_range(ip_range)
-                self.total_hosts = len(hosts)  # Store total for progress tracking
-
-                # Initialize progress
                 if progress_callback:
                     GLib.idle_add(progress_callback, 0, self.total_hosts)
 
+                devices = []
+
                 with ThreadPoolExecutor(max_workers=100) as executor:
                     futures = []
-                    for host in hosts:
+                    for host in hosts_to_scan:
                         if not self.is_scanning:
                             break
-                        future = executor.submit(self.scan_single_ip, str(host), lock, devices, progress_callback)
+                        future = executor.submit(self.scan_single_ip, host, devices, progress_callback)
                         futures.append(future)
 
-                    # Wait for all futures or until scanning is stopped
                     for future in futures:
-                        if not self.is_scanning:
-                            # Cancel remaining futures if scan was stopped
-                            for remaining_future in futures:
-                                remaining_future.cancel()
-                            break
                         try:
-                            future.result(timeout=1)  # Short timeout to allow checking scan status
-                        except:
-                            pass
+                            future.result()
+                        except Exception as e:
+                            print(_("An error occurred in a thread: {e}").format(e=e))
 
-                # Only call callback if scan completed normally (not stopped)
                 if self.is_scanning:
                     self.is_scanning = False
                     devices_sorted = sorted(devices, key=lambda x: ipaddress.IPv4Address(x['ip']))
@@ -191,23 +142,19 @@ class NetworkScanner:
 
             except Exception as e:
                 self.is_scanning = False
-                GLib.idle_add(error_callback, _("Scan failed: ") + str(e))
+                GLib.idle_add(error_callback, _("Scan failed: {e}").format(e=e))
 
         if not self.is_scanning:
             threading.Thread(target=do_scan, daemon=True).start()
 
     def stop_scan(self):
-        """Stop the current scan"""
         self.is_scanning = False
 
     def get_partial_results(self):
-        """Get the partial results from a stopped scan"""
         return sorted(self.partial_results, key=lambda x: ipaddress.IPv4Address(x['ip']))
 
     def get_local_ip_range():
         hostname = socket.gethostname()
         local_ip = socket.gethostbyname(hostname)
-
-        # Default to a /24 subnet to scan the whole network
-        network = ipaddress.IPv4Network(local_ip + '/24', strict=False)
+        network = ipaddress.IPv4Network(f"{local_ip}/24", strict=False)
         return str(network)
