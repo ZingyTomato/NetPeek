@@ -73,6 +73,7 @@ Currently supported languages:
 * Italian
 * French
 * Polish
+* Ukranian
 
 ## 📙 License
 
