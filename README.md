@@ -70,6 +70,7 @@ Currently supported languages:
 * Dutch
 * Russian
 * Spanish
+* Polish
 
 ## 📙 License
 
