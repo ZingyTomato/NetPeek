@@ -1,0 +1,258 @@
+# Slovak translation for NetPeek application.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the netpeek package.
+# Dušan Kazik <prescott66@gmail.com>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: netpeek\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-04 11:27+0200\n"
+"PO-Revision-Date: 2025-09-04 17:12+0200\n"
+"Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
+"Language-Team: \n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
+
+#: data/io.github.zingytomato.netpeek.desktop.in:2
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/window.py:36
+#: src/window.py:61 src/pages.py:45 src/pages.py:54
+msgid "NetPeek"
+msgstr "NetPeek"
+
+#: data/io.github.zingytomato.netpeek.desktop.in:3
+msgid "Discover devices on your local network"
+msgstr "Objavuje zariadenia vo vašej lokálnej sieti"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
+msgid "See what's connected to your network"
+msgstr "Prezrite si, čo je pripojené k vašej sieti"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:9
+msgid ""
+"NetPeek is a simple network scanner that helps you discover active devices "
+"on your local network."
+msgstr ""
+"NetPeek je jednoduchý sieťový skener, ktorý vám pomôže objaviť aktívne "
+"zariadenia vo vašej lokálnej sieti."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:15
+msgid "ZingyTomato"
+msgstr "ZingyTomato"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:29
+msgid "Home screen"
+msgstr "Domovská obrazovka"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:33
+msgid "Scan in Progress"
+msgstr "Prebieha skenovanie"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:37 src/pages.py:218
+msgid "Scan Results"
+msgstr "Výsledky skenovania"
+
+#: src/window.py:65 src/pages.py:92
+msgid "Discover devices on your local network."
+msgstr "Objavte zariadenia vo vašej lokálnej sieti."
+
+#: src/window.py:69
+msgid "Contributors"
+msgstr "Prispievatelia"
+
+#: src/pages.py:59
+msgid "Main Menu"
+msgstr "Hlavná ponuka"
+
+#: src/pages.py:62
+msgid "About"
+msgstr "O aplikácii"
+
+#: src/pages.py:63
+msgid "Quit"
+msgstr "Ukončiť"
+
+#: src/pages.py:99
+msgid "Scan my Network"
+msgstr "Skenovať moju sieť"
+
+#: src/pages.py:115
+msgid "IP Range Configuration"
+msgstr "Konfigurácia rozsahu IP adries"
+
+#: src/pages.py:116
+msgid "Enter the IP range you want to scan:"
+msgstr "Zadajte rozsah IP adries, ktoré chcete skenovať:"
+
+#: src/pages.py:119
+msgid "IP Range"
+msgstr "Rozsah IP adries"
+
+#: src/pages.py:126
+msgid "Examples: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
+msgstr "Príklady: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
+
+#: src/pages.py:137
+msgid "Home Network (192.168.1.x)"
+msgstr "Domáca sieť (192.168.1.x)"
+
+#: src/pages.py:138
+msgid "Home Network (192.168.0.x)"
+msgstr "Domáca sieť (192.168.0.x)"
+
+#: src/pages.py:139
+msgid "Corporate (10.0.0.x)"
+msgstr "Pracovná (10.0.0.x)"
+
+#: src/pages.py:140
+msgid "Private (172.16.0.x)"
+msgstr "Súkromná (172.16.0.x)"
+
+#: src/pages.py:171
+msgid "Valid IP range!"
+msgstr "Platný rozsah IP adries!"
+
+#: src/pages.py:175
+msgid "Set IP range to: "
+msgstr "Nastavený rozsah IP adries na: "
+
+#: src/pages.py:209
+msgid "Scanning in progress..."
+msgstr "Prebieha skenovanie..."
+
+#: src/pages.py:219
+msgid "Devices found on your network:"
+msgstr "Zariadenia nájdené vo vašej sieti:"
+
+#. Stop Scanning button (left side)
+#: src/pages.py:223
+msgid "Stop Scanning"
+msgstr "Zastaviť skenovanie"
+
+# tooltip
+#: src/pages.py:225
+msgid "Stop the current network scan"
+msgstr "Zastaví aktuálne skenovanie siete"
+
+#. Rescan button (right side)
+#: src/pages.py:231 src/pages.py:379 src/pages.py:409 src/pages.py:431
+msgid "Scan Again"
+msgstr "Skenovať znovu"
+
+#: src/pages.py:246
+msgid "Scanning Network"
+msgstr "Skenuje sa sieť"
+
+#: src/pages.py:247
+msgid "Discovering devices on your network... (this may take a while!)"
+msgstr "Objavujú sa zariadenia vo vašej sieti... (Môže to chvíľu trvať!)"
+
+#: src/pages.py:262 src/pages.py:352
+msgid "Preparing scan..."
+msgstr "Pripravuje sa skenovanie..."
+
+#: src/pages.py:268 src/pages.py:353
+msgid "Time Elapsed: 00:00"
+msgstr "Uplynutý čas: 00:00"
+
+#: src/pages.py:293
+msgid "No Devices Found"
+msgstr "Nenašli sa žiadne zariadenia"
+
+#: src/pages.py:294
+msgid "No devices were found in the specified range!"
+msgstr "V určenom rozsahu neboli nájdené žiadne zariadenia!"
+
+#: src/pages.py:298
+msgid "Scan Error"
+msgstr "Chyba skenovania"
+
+#: src/pages.py:299
+msgid "An error occurred while scanning the network!"
+msgstr "Počas skenovania siete sa vyskytla chyba!"
+
+#: src/pages.py:329
+#, python-brace-format
+msgid "Time Elapsed: {minutes:02d}:{seconds:02d}"
+msgstr "Uplynutý čas: {minutes:02d}:{seconds:02d}"
+
+#: src/pages.py:338
+#, python-brace-format
+msgid "Hosts Scanned: {scanned}/{total}"
+msgstr "Skenovaných hostiteľov: {scanned}/{total}"
+
+#: src/pages.py:346
+msgid "Scanning..."
+msgstr "Skenovanie..."
+
+#: src/pages.py:358
+msgid "Scanning "
+msgstr "Skenuje sa "
+
+#: src/pages.py:392
+#, python-brace-format
+msgid "Scan stopped - Found {count} devices"
+msgstr "Skenovanie zastavené - počet nájdených zariadení: {count}"
+
+#: src/pages.py:393
+#, python-brace-format
+msgid "Scan stopped. Found {count} devices so far."
+msgstr "Skenovanie zastavené. Doposiaľ nájdených zariadení: {count}."
+
+#: src/pages.py:396
+msgid "Scan stopped - No devices found"
+msgstr "Skenovanie zastavené - nenašli sa žiadne zariadenia"
+
+#: src/pages.py:397
+msgid "Scan stopped. No devices found."
+msgstr "Skenovanie zastavené. Nenašli sa žiadne zariadenia."
+
+#: src/pages.py:421
+#, python-brace-format
+msgid "Found {count} devices"
+msgstr "Nájdených zariadení: {count}"
+
+#: src/pages.py:422
+#, python-brace-format
+msgid "Found {count} devices on the network."
+msgstr "Počet nájdených zariadení v sieti: {count}."
+
+#: src/pages.py:425
+msgid "No devices found"
+msgstr "Nenašli sa žiadne zariadenia"
+
+#: src/pages.py:426
+msgid "No devices found in the specified range"
+msgstr "V určenom rozsahu sa nenašli žiadne zariadenia"
+
+#: src/pages.py:438 src/pages.py:440
+msgid "Error: "
+msgstr "Chyba: "
+
+#: src/pages.py:439
+msgid "An error occurred!"
+msgstr "Vyskytla sa chyba!"
+
+#: src/widgets.py:42
+msgid "Unknown IP"
+msgstr "Neznáma IP adresa"
+
+#: src/widgets.py:57 src/widgets.py:59
+msgid "Unknown"
+msgstr "Neznámy"
+
+#: src/widgets.py:62
+msgid "Hostname"
+msgstr "Názov hostiteľa"
+
+#: src/widgets.py:69
+msgid "No Ports Open"
+msgstr "Žiadne otvorené porty"
+
+#: src/widgets.py:71
+msgid "Ports Open"
+msgstr "Otvorené porty"
