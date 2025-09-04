@@ -2,6 +2,16 @@
 
 A modern libadwaita-based network scanner for GNOME that helps you discover devices on your local network.
 
+## 📖 Table Of Contents
+
+* [`📷 Screenshots`](#-screenshots)
+* [`⭐ Features`](#-features)
+* [`🔧 Installation`](#-installation)
+* [`🔨 Local Development`](#-local-development)
+* [`👨🏻‍💻 Requirements`](#-requirements)
+* [`🙌 Help translate!`](#-help-translate!)
+* [`❓ Support`](#-support)
+
 ## 📷 Screenshots
 
 
@@ -54,7 +64,7 @@ environment cross-distro. Thus, it is highly recommended you use it.
 - **Range**: `192.168.1.1-254`, `10.0.0.1-50`
 - **Single IP**: `192.168.1.1`
 
-## 👨🏻‍💻 Development
+## 👨🏻‍💻 Requirements
 
 ### Python Dependencies
 
