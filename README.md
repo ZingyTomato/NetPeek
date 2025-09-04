@@ -84,6 +84,7 @@ Currently supported languages:
 * French
 * Polish
 * Ukranian
+* Slovakian
 
 ## 📙 License
 
