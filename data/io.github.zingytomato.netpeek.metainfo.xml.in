@@ -36,14 +36,23 @@
       <image>https://raw.githubusercontent.com/ZingyTomato/NetPeek/refs/heads/master/data/screenshots/3.png</image>
       <caption>Scan Results</caption>
     </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/ZingyTomato/NetPeek/refs/heads/master/data/screenshots/4.png</image>
+      <caption>List View</caption>
+    </screenshot>
   </screenshots>
   <releases>
-    <release version="0.2.4" date="2025-08-30">
-      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2.4</url>
+    <release version="0.2.5" date="2025-11-30">
+      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2.5</url>
       <description>
-        <p>Version 0.2.4</p>
+        <p>Version 0.2.5</p>
         <ul>
-          <li>Use bundled in nmap for more accurate scan results.</li>
+          <li>Added the ability to set the number of threads while scanning.</li>
+          <li>Exporting scan results to CSV is now possible.</li>
+          <li>Added a new list view for networks with many devices.</li>
+          <li>Now keeps track of all devices and notifies of any new devices since last scan.</li>
+          <li>Added the ability to add custom names to devices.</li>
+          <li>Updated to GNOME 49 runtime.</li>
         </ul>
       </description>
     </release>

@@ -1,7 +1,7 @@
 {
   "id": "io.github.zingytomato.netpeek",
   "runtime": "org.gnome.Platform",
-  "runtime-version": "48",
+  "runtime-version": "49",
   "sdk": "org.gnome.Sdk",
   "command": "netpeek",
   "finish-args": [
@@ -48,7 +48,7 @@
         {
           "type": "git",
           "url": "https://github.com/zingytomato/NetPeek.git",
-          "tag": "v0.2.4"
+          "tag": "v0.2.5"
         }
       ]
     }

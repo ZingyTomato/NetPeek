@@ -68,7 +68,6 @@
                   </object>
                 </child>
 
-                <!-- IP Input section -->
                 <child>
                   <object class="AdwClamp">
                     <property name="maximum-size">600</property>
@@ -86,10 +85,27 @@
                             <child>
                               <object class="AdwEntryRow" id="ip_entry_row">
                                 <property name="title" translatable="yes">IP Range</property>
-                                <property name="text">192.168.1.0/24</property> <!-- Default Range -->
+                                <property name="text">192.168.1.0/24</property>
                                 <property name="show-apply-button">true</property>
                                 <signal name="apply" handler="on_ip_range_apply"/>
                                 <signal name="entry-activated" handler="on_ip_range_apply"/>
+                              </object>
+                            </child>
+
+                            <child>
+                              <object class="AdwSpinRow" id="thread_spinner">
+                                <property name="title" translatable="yes">Thread Count</property>
+                                <property name="subtitle" translatable="yes">Number of threads to use while scanning</property>
+                                <property name="adjustment">
+                                  <object class="GtkAdjustment">
+                                    <property name="lower">1</property>
+                                    <property name="upper">500</property>
+                                    <property name="value">100</property>
+                                    <property name="step-increment">10</property>
+                                    <property name="page-increment">50</property>
+                                  </object>
+                                </property>
+                                <signal name="changed" handler="on_thread_count_changed"/>
                               </object>
                             </child>
                           </object>
@@ -113,8 +129,6 @@
                             <property name="spacing">6</property>
                             <property name="halign">center</property>
                             <property name="margin-top">12</property>
-
-                            <!-- Preset buttons will be added programmatically -->
                           </object>
                         </child>
                       </object>
@@ -122,7 +136,6 @@
                   </object>
                 </child>
 
-                <!-- Scan button -->
                 <child>
                   <object class="GtkButton" id="scan_button">
                     <property name="label" translatable="yes">Scan my Network</property>

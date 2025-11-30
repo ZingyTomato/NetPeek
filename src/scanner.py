@@ -4,6 +4,16 @@
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -11,11 +21,13 @@ import threading
 import ipaddress
 import socket
 import nmap
+import json
+from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 from gi.repository import GLib
 
 class NetworkScanner:
-    """Network scanning functionality"""
+    """Network scanning functionality with caching and custom names"""
 
     def __init__(self):
         self.common_ports = [22, 80, 443, 3389, 53, 21, 23, 8080, 8443, 8006, 5000]
@@ -24,6 +36,103 @@ class NetworkScanner:
         self.total_hosts = 0
         self.partial_results = []
         self.lock = threading.Lock()
+
+        self.max_workers = 100
+
+        self.cache_dir = Path.home() / ".cache" / "netpeek"
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+        self.cache_file = self.cache_dir / "device_cache.json"
+        self.custom_names_file = self.cache_dir / "custom_names.json"
+
+        self.device_cache = {}
+        self.custom_names = {}
+
+        self.load_cache()
+
+    def set_max_workers(self, count):
+        """Set the maximum number of worker threads"""
+        if 1 <= count <= 500:
+            self.max_workers = count
+        else:
+            print(_("Thread count must be between 1 and 500"))
+
+    def load_cache(self):
+        """Load cached devices and custom names from disk"""
+        try:
+            if self.cache_file.exists():
+                with open(self.cache_file, 'r') as f:
+                    self.device_cache = json.load(f)
+        except Exception as e:
+            print(_("Failed to load device cache: {e}").format(e=e))
+            self.device_cache = {}
+
+        try:
+            if self.custom_names_file.exists():
+                with open(self.custom_names_file, 'r') as f:
+                    self.custom_names = json.load(f)
+        except Exception as e:
+            print(_("Failed to load custom names: {e}").format(e=e))
+            self.custom_names = {}
+
+    def save_cache(self):
+        """Save device cache to disk"""
+        try:
+            with open(self.cache_file, 'w') as f:
+                json.dump(self.device_cache, f, indent=2)
+        except Exception as e:
+            print(_("Failed to save device cache: {e}").format(e=e))
+
+    def save_custom_names(self):
+        """Save custom names to disk"""
+        try:
+            with open(self.custom_names_file, 'w') as f:
+                json.dump(self.custom_names, f, indent=2)
+        except Exception as e:
+            print(_("Failed to save custom names: {e}").format(e=e))
+
+    def update_cache(self, devices):
+        """Update cache with newly scanned devices"""
+        import time
+        current_time = time.time()
+
+        for device in devices:
+            ip = device['ip']
+            self.device_cache[ip] = {
+                'hostname': device['hostname'],
+                'ports': device['ports'],
+                'last_seen': current_time
+            }
+
+        self.save_cache()
+
+    def is_new_device(self, ip):
+        """Check if a device is new (not in cache)"""
+        return ip not in self.device_cache
+
+    def get_custom_name(self, ip):
+        """Get custom name for an IP address"""
+        return self.custom_names.get(ip)
+
+    def set_custom_name(self, ip, custom_name):
+        """Set custom name for an IP address"""
+        if custom_name and custom_name.strip():
+            self.custom_names[ip] = custom_name.strip()
+        elif ip in self.custom_names:
+            del self.custom_names[ip]
+
+        self.save_custom_names()
+
+    def get_cached_devices(self):
+        """Get all cached devices"""
+        return [
+            {
+                'ip': ip,
+                'hostname': data['hostname'],
+                'ports': data['ports'],
+                'last_seen': data.get('last_seen', 0)
+            }
+            for ip, data in self.device_cache.items()
+        ]
 
     def validate_ip_range(self, ip_range):
         if not ip_range:
@@ -77,7 +186,6 @@ class NetworkScanner:
         try:
             nm.scan(hosts=str(host), arguments=scan_arguments)
         except nmap.nmap.PortScannerError as e:
-            # Handle Nmap errors for a single host gracefully
             print(_("Nmap error on host {host}: {e}").format(host=host, e=e))
             return
 
@@ -121,7 +229,7 @@ class NetworkScanner:
 
                 devices = []
 
-                with ThreadPoolExecutor(max_workers=100) as executor:
+                with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
                     futures = []
                     for host in hosts_to_scan:
                         if not self.is_scanning:
