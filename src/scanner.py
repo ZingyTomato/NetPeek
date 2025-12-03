@@ -262,7 +262,10 @@ class NetworkScanner:
         return sorted(self.partial_results, key=lambda x: ipaddress.IPv4Address(x['ip']))
 
     def get_local_ip_range():
-        hostname = socket.gethostname()
-        local_ip = socket.gethostbyname(hostname)
-        network = ipaddress.IPv4Network(f"{local_ip}/24", strict=False)
+        try:
+            hostname = socket.gethostname()
+            local_ip = socket.gethostbyname(hostname)
+            network = ipaddress.IPv4Network(f"{local_ip}/24", strict=False)
+        except Exception:
+            network = ipaddress.IPv4Network("192.168.0.1/24", strict=False)
         return str(network)

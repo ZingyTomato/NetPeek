@@ -42,17 +42,13 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="0.2.5" date="2025-11-30">
-      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2.5</url>
+    <release version="0.2.6" date="2025-12-3">
+      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2.6</url>
       <description>
-        <p>Version 0.2.5</p>
+        <p>Version 0.2.6</p>
         <ul>
-          <li>Added the ability to set the number of threads while scanning.</li>
-          <li>Exporting scan results to CSV is now possible.</li>
-          <li>Added a new list view for networks with many devices.</li>
-          <li>Now keeps track of all devices and notifies of any new devices since last scan.</li>
-          <li>Added the ability to add custom names to devices.</li>
-          <li>Updated to GNOME 49 runtime.</li>
+          <li>Added a new permission enabling access to the home directory to get cached results working.</li>
+          <li>Fixed a bug where the app would crash if there was no network connected.</li>
         </ul>
       </description>
     </release>

@@ -1,56 +1,57 @@
 {
-  "id": "io.github.zingytomato.netpeek",
-  "runtime": "org.gnome.Platform",
-  "runtime-version": "49",
-  "sdk": "org.gnome.Sdk",
-  "command": "netpeek",
-  "finish-args": [
-    "--share=network",
-    "--share=ipc",
-    "--socket=fallback-x11",
-    "--device=dri",
-    "--socket=wayland"
-  ],
-  "cleanup": [
-    "/include",
-    "/lib/pkgconfig",
-    "/man",
-    "/share/doc",
-    "/share/gtk-doc",
-    "/share/man",
-    "/share/pkgconfig",
-    "*.la",
-    "*.a"
-  ],
-  "modules": [
-    {
-      "name": "nmap",
-      "buildsystem": "autotools",
-      "sources": [
+    "id": "io.github.zingytomato.netpeek",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "49",
+    "sdk": "org.gnome.Sdk",
+    "command": "netpeek",
+    "finish-args": [
+        "--share=network",
+        "--share=ipc",
+        "--socket=fallback-x11",
+        "--device=dri",
+        "--socket=wayland",
+        "--filesystem=home"
+    ],
+    "cleanup": [
+        "/include",
+        "/lib/pkgconfig",
+        "/man",
+        "/share/doc",
+        "/share/gtk-doc",
+        "/share/man",
+        "/share/pkgconfig",
+        "*.la",
+        "*.a"
+    ],
+    "modules": [
         {
-          "type": "archive",
-          "url": "https://nmap.org/dist/nmap-7.94.tar.bz2",
-          "sha256": "d71be189eec43d7e099bac8571509d316c4577ca79491832ac3e1217bc8f92cc",
-          "x-checker-data": {
-            "type": "anitya",
-            "project-id": 2096,
-            "url-template": "https://nmap.org/dist/nmap-$version.tar.bz2"
-          }
-        }
-      ]
-    },
-    "python3-python-nmap.json",
-    {
-      "name": "netpeek",
-      "builddir": true,
-      "buildsystem": "meson",
-      "sources": [
+            "name": "nmap",
+            "buildsystem": "autotools",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://nmap.org/dist/nmap-7.94.tar.bz2",
+                    "sha256": "d71be189eec43d7e099bac8571509d316c4577ca79491832ac3e1217bc8f92cc",
+                    "x-checker-data": {
+                        "type": "anitya",
+                        "project-id": 2096,
+                        "url-template": "https://nmap.org/dist/nmap-$version.tar.bz2"
+                    }
+                }
+            ]
+        },
+        "python3-python-nmap.json",
         {
-          "type": "git",
-          "url": "https://github.com/zingytomato/NetPeek.git",
-          "tag": "v0.2.5"
+            "name": "netpeek",
+            "builddir": true,
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/zingytomato/NetPeek.git",
+                    "tag": "v0.2.6"
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }

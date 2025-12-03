@@ -41,7 +41,6 @@
                 <property name="halign">center</property>
                 <property name="valign">center</property>
 
-                <!-- Welcome section -->
                 <child>
                   <object class="GtkBox">
                     <property name="orientation">vertical</property>
