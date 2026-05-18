@@ -25,9 +25,10 @@ gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 
 import sys
+from netpeek import VERSION
 from .app import NetworkScannerApp
 
-def main(version="0.2.6"):
+def main(version=VERSION):
     """Main entry point for the application"""
     app = NetworkScannerApp()
     app.version = version

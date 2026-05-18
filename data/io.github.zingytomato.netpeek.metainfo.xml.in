@@ -42,13 +42,12 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="0.2.6" date="2025-12-3">
-      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2.6</url>
+    <release version="0.2.7" date="2026-05-18">
+      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2.7</url>
       <description>
-        <p>Version 0.2.6</p>
+        <p>Version 0.2.7</p>
         <ul>
-          <li>Added a new permission enabling access to the home directory to get cached results working.</li>
-          <li>Fixed a bug where the app would crash if there was no network connected.</li>
+          <li>Updated to GNOME 50 runtime.</li>
         </ul>
       </description>
     </release>

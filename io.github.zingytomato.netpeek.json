@@ -1,7 +1,7 @@
 {
     "id": "io.github.zingytomato.netpeek",
     "runtime": "org.gnome.Platform",
-    "runtime-version": "49",
+    "runtime-version": "50",
     "sdk": "org.gnome.Sdk",
     "command": "netpeek",
     "finish-args": [
@@ -46,9 +46,8 @@
             "buildsystem": "meson",
             "sources": [
                 {
-                    "type": "git",
-                    "url": "https://github.com/zingytomato/NetPeek.git",
-                    "tag": "v0.2.6"
+                    "type": "dir",
+                    "path": "."
                 }
             ]
         }
