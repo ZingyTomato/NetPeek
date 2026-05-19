@@ -29,8 +29,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://nmap.org/dist/nmap-7.94.tar.bz2",
-                    "sha256": "d71be189eec43d7e099bac8571509d316c4577ca79491832ac3e1217bc8f92cc",
+                    "url": "https://nmap.org/dist/nmap-7.99.tar.bz2",
+                    "sha256": "df512492ffd108e53a27a06f26d8635bbe89e0e569455dc8ffef058c035d51b2",
                     "x-checker-data": {
                         "type": "anitya",
                         "project-id": 2096,
