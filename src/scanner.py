@@ -30,7 +30,7 @@ class NetworkScanner:
     """Network scanning functionality with caching and custom names"""
 
     def __init__(self):
-        self.common_ports = [22, 80, 443, 3389, 53, 21, 23, 8080, 8443, 8006, 5000]
+        self.common_ports = [22, 80, 443, 3389, 53, 21, 23, 8080, 8443, 8006, 5000, 445, 9090]
         self.is_scanning = False
         self.hosts_scanned = 0
         self.total_hosts = 0
