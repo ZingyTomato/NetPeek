@@ -33,7 +33,10 @@ netpeek_sources = [
   'pages.py',
   'app.py',
   'scanner.py',
-  'widgets.py'
+  'widgets.py',
+  'models.py',
+  'storage.py',
+  'netinfo.py'
 ]
 
 install_data(netpeek_sources, install_dir: moduledir)

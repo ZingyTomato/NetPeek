@@ -16,5 +16,20 @@
       <summary>Default window maximized behaviour</summary>
       <description>Not maximised by default</description>
     </key>
+    <key name="color-scheme" type="s">
+      <default>'default'</default>
+      <summary>Preferred color scheme</summary>
+      <description>One of "default" (follow system), "light", or "dark".</description>
+    </key>
+    <key name="view-mode" type="s">
+      <default>'cards'</default>
+      <summary>Results view mode</summary>
+      <description>One of "cards" or "list".</description>
+    </key>
+    <key name="last-ip-range" type="s">
+      <default>''</default>
+      <summary>Last used IP range</summary>
+      <description>The IP range entered in the last scan, restored on startup.</description>
+    </key>
 	</schema>
 </schemalist>

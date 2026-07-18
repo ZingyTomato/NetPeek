@@ -42,6 +42,19 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="0.2.8" date="2026-07-18">
+      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2.8</url>
+      <description>
+        <p>Version 0.2.8</p>
+        <ul>
+          <li>Fixed unreliable network auto-detection.</li>
+          <li>Added scan history with a Previous Scans dialog.</li>
+          <li>Added dark mode support.</li>
+          <li>Unified sorting between card and list views.</li>
+          <li>Improved responsive layout on narrow windows.</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.2.7" date="2026-05-18">
       <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2.7</url>
       <description>

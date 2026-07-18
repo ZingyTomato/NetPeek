@@ -1,6 +1,6 @@
 # netpeek.py
 #
-# Copyright 2025 ZingyTomato
+# Copyright 2026 ZingyTomato
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,11 +25,9 @@ gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 
 import sys
-from netpeek import VERSION
 from .app import NetworkScannerApp
 
-def main(version=VERSION):
-    """Main entry point for the application"""
+def main(version="0.0.0-dev"):
     app = NetworkScannerApp()
-    app.version = version
+    app.set_version(version)
     return app.run(sys.argv)

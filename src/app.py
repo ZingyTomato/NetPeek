@@ -1,6 +1,6 @@
 # app.py
 #
-# Copyright 2025 ZingyTomato
+# Copyright 2026 ZingyTomato
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,18 +21,46 @@ import gi
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Adw
+from gi.repository import Adw, Gio, GLib
 
 from .window import NetworkScannerWindow
+
+COLOR_SCHEMES = {
+    "light": Adw.ColorScheme.FORCE_LIGHT,
+    "dark": Adw.ColorScheme.FORCE_DARK,
+    "default": Adw.ColorScheme.DEFAULT,
+}
 
 class NetworkScannerApp(Adw.Application):
     """Main application class for NetPeek"""
 
     def __init__(self):
         super().__init__(application_id='io.github.zingytomato.netpeek')
-        self.devices = []
+        self.settings = Gio.Settings.new('io.github.zingytomato.netpeek')
+
+        self._create_color_scheme_action()
+        self._apply_color_scheme()
+
+    def _create_color_scheme_action(self):
+        action = Gio.SimpleAction.new_stateful(
+            "color-scheme",
+            GLib.VariantType.new("s"),
+            GLib.Variant.new_string(self.settings.get_string("color-scheme")),
+        )
+        action.connect("activate", self.on_color_scheme_change)
+        self.add_action(action)
+
+    def on_color_scheme_change(self, action, value):
+        action.set_state(value)
+        self.settings.set_string("color-scheme", value.get_string())
+        self._apply_color_scheme()
+
+    def _apply_color_scheme(self):
+        scheme = self.settings.get_string("color-scheme")
+        Adw.StyleManager.get_default().set_color_scheme(
+            COLOR_SCHEMES.get(scheme, Adw.ColorScheme.DEFAULT))
 
     def do_activate(self):
         """Called when the application is activated"""
-        self.window = NetworkScannerWindow(application=self)
+        self.window = NetworkScannerWindow(application=self, settings=self.settings)
         self.window.present()

@@ -1,6 +1,6 @@
 # scanner.py
 #
-# Copyright 2025 ZingyTomato
+# Copyright 2026 ZingyTomato
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,17 +20,18 @@
 import threading
 import ipaddress
 import socket
+import struct
 import nmap
-import json
-from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 from gi.repository import GLib
 
+from . import netinfo
+
 class NetworkScanner:
-    """Network scanning functionality with caching and custom names"""
+    """Network scanning functionality"""
 
     def __init__(self):
-        self.common_ports = [22, 80, 443, 3389, 53, 21, 23, 8080, 8443, 8006, 5000]
+        self.common_ports = [22, 80, 443, 3389, 53, 21, 23, 8080, 8443, 8006, 5000, 445, 139]
         self.is_scanning = False
         self.hosts_scanned = 0
         self.total_hosts = 0
@@ -39,100 +40,12 @@ class NetworkScanner:
 
         self.max_workers = 100
 
-        self.cache_dir = Path.home() / ".cache" / "netpeek"
-        self.cache_dir.mkdir(parents=True, exist_ok=True)
-        self.cache_file = self.cache_dir / "device_cache.json"
-        self.custom_names_file = self.cache_dir / "custom_names.json"
-
-        self.device_cache = {}
-        self.custom_names = {}
-
-        self.load_cache()
-
     def set_max_workers(self, count):
         """Set the maximum number of worker threads"""
         if 1 <= count <= 500:
             self.max_workers = count
         else:
             print(_("Thread count must be between 1 and 500"))
-
-    def load_cache(self):
-        """Load cached devices and custom names from disk"""
-        try:
-            if self.cache_file.exists():
-                with open(self.cache_file, 'r') as f:
-                    self.device_cache = json.load(f)
-        except Exception as e:
-            print(_("Failed to load device cache: {e}").format(e=e))
-            self.device_cache = {}
-
-        try:
-            if self.custom_names_file.exists():
-                with open(self.custom_names_file, 'r') as f:
-                    self.custom_names = json.load(f)
-        except Exception as e:
-            print(_("Failed to load custom names: {e}").format(e=e))
-            self.custom_names = {}
-
-    def save_cache(self):
-        """Save device cache to disk"""
-        try:
-            with open(self.cache_file, 'w') as f:
-                json.dump(self.device_cache, f, indent=2)
-        except Exception as e:
-            print(_("Failed to save device cache: {e}").format(e=e))
-
-    def save_custom_names(self):
-        """Save custom names to disk"""
-        try:
-            with open(self.custom_names_file, 'w') as f:
-                json.dump(self.custom_names, f, indent=2)
-        except Exception as e:
-            print(_("Failed to save custom names: {e}").format(e=e))
-
-    def update_cache(self, devices):
-        """Update cache with newly scanned devices"""
-        import time
-        current_time = time.time()
-
-        for device in devices:
-            ip = device['ip']
-            self.device_cache[ip] = {
-                'hostname': device['hostname'],
-                'ports': device['ports'],
-                'last_seen': current_time
-            }
-
-        self.save_cache()
-
-    def is_new_device(self, ip):
-        """Check if a device is new (not in cache)"""
-        return ip not in self.device_cache
-
-    def get_custom_name(self, ip):
-        """Get custom name for an IP address"""
-        return self.custom_names.get(ip)
-
-    def set_custom_name(self, ip, custom_name):
-        """Set custom name for an IP address"""
-        if custom_name and custom_name.strip():
-            self.custom_names[ip] = custom_name.strip()
-        elif ip in self.custom_names:
-            del self.custom_names[ip]
-
-        self.save_custom_names()
-
-    def get_cached_devices(self):
-        """Get all cached devices"""
-        return [
-            {
-                'ip': ip,
-                'hostname': data['hostname'],
-                'ports': data['ports'],
-                'last_seen': data.get('last_seen', 0)
-            }
-            for ip, data in self.device_cache.items()
-        ]
 
     def validate_ip_range(self, ip_range):
         if not ip_range:
@@ -191,19 +104,24 @@ class NetworkScanner:
 
         if str(host) in nm.all_hosts():
             host_info = nm[str(host)]
-            hostname = host_info.hostname() if host_info.hostname() else str(host)
+            hostname = host_info.hostname() or None
             open_ports = []
 
             if 'tcp' in host_info:
                 for port in host_info['tcp']:
                     if host_info['tcp'][port]['state'] == 'open':
                         open_ports.append(port)
+            open_ports.sort()
 
             if host_info.state() == 'up':
+                if not hostname:
+                    hostname = netinfo.resolve_hostname(str(host))
                 device = {
-                    "hostname": hostname,
+                    "hostname": hostname or str(host),
                     "ip": str(host),
-                    "ports": _("Host alive (no common ports detected)") if not open_ports else ", ".join(map(str, open_ports))
+                    "ports": open_ports,
+                    "ports_display": ", ".join(map(str, open_ports)) if open_ports else _("No common ports open"),
+                    "smb": 445 in open_ports or 139 in open_ports,
                 }
                 with self.lock:
                     devices.append(device)
@@ -246,6 +164,7 @@ class NetworkScanner:
                 if self.is_scanning:
                     self.is_scanning = False
                     devices_sorted = sorted(devices, key=lambda x: ipaddress.IPv4Address(x['ip']))
+                    self._enrich_with_arp(devices_sorted)
                     GLib.idle_add(callback, devices_sorted)
 
             except Exception as e:
@@ -259,13 +178,66 @@ class NetworkScanner:
         self.is_scanning = False
 
     def get_partial_results(self):
-        return sorted(self.partial_results, key=lambda x: ipaddress.IPv4Address(x['ip']))
+        devices = sorted(self.partial_results, key=lambda x: ipaddress.IPv4Address(x['ip']))
+        self._enrich_with_arp(devices)
+        return devices
 
+    @staticmethod
+    def _enrich_with_arp(devices):
+        """Fill in MAC address from the kernel ARP table, best-effort."""
+        arp_table = netinfo.read_arp_table()
+        for device in devices:
+            device["mac"] = arp_table.get(device["ip"], "")
+
+    @staticmethod
+    def _local_ip_via_udp_probe():
+        """Ask the kernel which local address it would use to reach the internet.
+
+        A UDP connect() only performs a routing decision - no packet is sent -
+        so this works offline and needs no special permissions.
+        """
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.settimeout(1)
+            s.connect(("8.8.8.8", 80))
+            return s.getsockname()[0]
+
+    @staticmethod
+    def _default_gateway_from_proc_route():
+        """Fallback: read the default gateway straight from the kernel route table."""
+        with open('/proc/net/route') as f:
+            lines = f.readlines()[1:]
+        for line in lines:
+            parts = line.split()
+            if len(parts) < 3:
+                continue
+            _iface, destination, gateway = parts[0], parts[1], parts[2]
+            if destination == '00000000' and gateway != '00000000':
+                packed = struct.pack('<L', int(gateway, 16))
+                return socket.inet_ntoa(packed)
+        return None
+
+    @staticmethod
     def get_local_ip_range():
+        """Detect the local /24 network range.
+
+        Previously used socket.gethostbyname(gethostname()), which commonly
+        resolves to 127.0.1.1 or the wrong interface depending on
+        /etc/hosts - unreliable, especially inside the Flatpak sandbox. A UDP
+        connect() only performs a kernel routing decision (no packet sent),
+        so it reliably reveals the real outbound interface instead.
+        """
         try:
-            hostname = socket.gethostname()
-            local_ip = socket.gethostbyname(hostname)
-            network = ipaddress.IPv4Network(f"{local_ip}/24", strict=False)
-        except Exception:
-            network = ipaddress.IPv4Network("192.168.0.1/24", strict=False)
-        return str(network)
+            local_ip = NetworkScanner._local_ip_via_udp_probe()
+            if local_ip:
+                return str(ipaddress.IPv4Network(f"{local_ip}/24", strict=False))
+        except OSError:
+            pass
+
+        try:
+            gateway_ip = NetworkScanner._default_gateway_from_proc_route()
+            if gateway_ip:
+                return str(ipaddress.IPv4Network(f"{gateway_ip}/24", strict=False))
+        except OSError:
+            pass
+
+        return "192.168.0.0/24"

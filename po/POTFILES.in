@@ -3,6 +3,11 @@
 data/io.github.zingytomato.netpeek.desktop.in
 data/io.github.zingytomato.netpeek.metainfo.xml.in
 data/io.github.zingytomato.netpeek.gschema.xml
+src/gtk/device_card.ui
+src/gtk/history_dialog.ui
+src/gtk/home_page.ui
+src/gtk/main_window.ui
+src/gtk/results_page.ui
 src/netpeek.py
 src/window.py
 src/pages.py

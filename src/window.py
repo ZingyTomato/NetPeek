@@ -1,6 +1,6 @@
 # window.py
 #
-# Copyright 2025 ZingyTomato
+# Copyright 2026 ZingyTomato
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,14 +18,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import gi
-from netpeek import VERSION
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Gtk, Adw, Gio
 
 from .scanner import NetworkScanner
-from .pages import HomePage, ResultsPage
+from .pages import HomePage, ResultsPage, HistoryDialog
 
 @Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/main_window.ui')
 class NetworkScannerWindow(Adw.ApplicationWindow):
@@ -35,9 +34,10 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
     toast_overlay = Gtk.Template.Child()
     navigation_view = Gtk.Template.Child()
 
-    def __init__(self, **kwargs):
+    def __init__(self, settings, **kwargs):
         super().__init__(**kwargs)
 
+        self.settings = settings
         self.scanner = NetworkScanner()
         self.setup_pages()
         self.create_actions()
@@ -51,10 +51,15 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         quit_action.connect("activate", self.on_quit_action)
         self.get_application().add_action(quit_action)
 
+        previous_scans_action = Gio.SimpleAction.new("previous-scans", None)
+        previous_scans_action.connect("activate", self.on_previous_scans_action)
+        self.add_action(previous_scans_action)
+
     def on_about_action(self, action, param):
+        version = self.get_application().get_version()
         about = Adw.AboutDialog()
         about.set_application_name(_("NetPeek"))
-        about.set_version(VERSION)
+        about.set_version(version)
         about.set_developer_name("ZingyTomato")
         about.set_license_type(Gtk.License.GPL_3_0)
         about.set_comments(_("Discover devices on your local network."))
@@ -64,27 +69,44 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         about.add_credit_section(_("Contributors"), ["ZingyTomato", "Gert-Dev", "Cameo007", "vmkspv", "oscfdezdz", "albanobattistella", "sjulien", "dawkagaming", "prescott66"])
         release_notes = """
         <ul>
-          <li>Updated to GNOME 50 runtime.</li>
+          <li>Fixed unreliable network auto-detection.</li>
+          <li>Added scan history with a Previous Scans dialog.</li>
+          <li>Added dark mode support.</li>
+          <li>Unified sorting between card and list views.</li>
+          <li>Improved responsive layout on narrow windows.</li>
         </ul>
         """
         about.set_release_notes(release_notes)
-        about.set_release_notes_version(VERSION)
+        about.set_release_notes_version(version)
         about.present(self)
 
     def on_quit_action(self, action, param):
         self.get_application().quit()
 
+    def on_previous_scans_action(self, action, param):
+        """Show the previous scans dialog"""
+        dialog = HistoryDialog(self.on_history_scan_selected)
+        dialog.present(self)
+
+    def on_history_scan_selected(self, scan):
+        """Load a scan chosen from history into the results page"""
+        if self.navigation_view.get_visible_page() != self.results_page:
+            self.navigation_view.push(self.results_page)
+        self.results_page.load_from_history(scan.get('ip_range', ''), scan.get('devices', []))
+
     def setup_pages(self):
         self.home_page = HomePage(
             navigation_view=self.navigation_view,
             toast_overlay=self.toast_overlay,
-            scanner=self.scanner
+            scanner=self.scanner,
+            settings=self.settings,
         )
 
         self.results_page = ResultsPage(
             navigation_view=self.navigation_view,
             toast_overlay=self.toast_overlay,
-            scanner=self.scanner
+            scanner=self.scanner,
+            settings=self.settings,
         )
 
         self.home_page.connect_results_page(self.results_page)

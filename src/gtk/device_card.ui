@@ -17,15 +17,40 @@
             <property name="margin-end">8</property>
 
             <child>
+              <object class="AdwEntryRow" id="name_row">
+                <property name="title" translatable="yes">Name</property>
+                <property name="show-apply-button">True</property>
+                <signal name="apply" handler="on_name_apply"/>
+                <child>
+                  <object class="GtkLabel" id="new_badge">
+                    <property name="label" translatable="yes">New</property>
+                    <property name="visible">False</property>
+                    <property name="valign">center</property>
+                    <style>
+                      <class name="accent"/>
+                      <class name="caption-heading"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+
+            <child>
               <object class="AdwActionRow" id="ip_row">
                 <property name="title">IP Address</property>
+
+                <child type="prefix">
+                  <object class="GtkImage">
+                    <property name="icon-name">network-wired-symbolic</property>
+                  </object>
+                </child>
 
                 <child type="suffix">
                   <object class="GtkButton" id="ip_button">
                     <property name="halign">end</property>
                     <property name="valign">center</property>
                     <property name="icon-name">edit-copy-symbolic</property>
-                    <property name="tooltip-text">Click to copy IP</property>
+                    <property name="tooltip-text" translatable="yes">Click to copy IP</property>
                     <signal name="clicked" handler="on_ip_clicked"/>
                   </object>
                 </child>
@@ -35,7 +60,6 @@
             <child>
               <object class="AdwActionRow" id="hostname_row">
                 <property name="title" translatable="yes">Hostname</property>
-                <property name="subtitle" translatable="yes">Unknown</property>
 
                 <child type="prefix">
                   <object class="GtkImage">
@@ -48,11 +72,24 @@
             <child>
               <object class="AdwActionRow" id="ports_row">
                 <property name="title" translatable="yes">Ports Open</property>
-                <property name="subtitle" translatable="yes">No Ports Open</property>
 
                 <child type="prefix">
                   <object class="GtkImage">
-                    <property name="icon-name">network-wired-symbolic</property>
+                    <property name="icon-name">network-transmit-receive-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwActionRow" id="smb_row">
+                <property name="title" translatable="yes">File Sharing</property>
+                <property name="subtitle" translatable="yes">SMB shares detected</property>
+                <property name="visible">False</property>
+
+                <child type="prefix">
+                  <object class="GtkImage">
+                    <property name="icon-name">folder-remote-symbolic</property>
                   </object>
                 </child>
               </object>
@@ -64,4 +101,3 @@
     </child>
   </template>
 </interface>
-

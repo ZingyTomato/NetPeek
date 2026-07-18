@@ -26,126 +26,144 @@
         </child>
 
         <child>
-          <object class="GtkScrolledWindow">
-            <property name="hscrollbar-policy">automatic</property>
-            <property name="vscrollbar-policy">automatic</property>
-
+          <object class="AdwBreakpointBin">
+            <property name="width-request">360</property>
+            <property name="height-request">200</property>
             <child>
-              <object class="GtkBox" id="main_box">
-                <property name="orientation">vertical</property>
-                <property name="spacing">24</property>
-                <property name="margin-top">48</property>
-                <property name="margin-bottom">48</property>
-                <property name="margin-start">24</property>
-                <property name="margin-end">24</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
+              <object class="AdwBreakpoint">
+                <condition>max-width: 400sp</condition>
+                <setter object="main_box" property="margin-top">24</setter>
+                <setter object="main_box" property="margin-bottom">24</setter>
+                <setter object="main_box" property="margin-start">12</setter>
+                <setter object="main_box" property="margin-end">12</setter>
+              </object>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="hscrollbar-policy">never</property>
+                <property name="vscrollbar-policy">automatic</property>
 
                 <child>
-                  <object class="GtkBox">
+                  <object class="GtkBox" id="main_box">
                     <property name="orientation">vertical</property>
-                    <property name="spacing">12</property>
+                    <property name="spacing">24</property>
+                    <property name="margin-top">48</property>
+                    <property name="margin-bottom">48</property>
+                    <property name="margin-start">24</property>
+                    <property name="margin-end">24</property>
                     <property name="halign">center</property>
-
-                    <child>
-                      <object class="GtkImage">
-                        <property name="icon-name">network-wireless-symbolic</property>
-                        <property name="pixel-size">64</property>
-                        <style>
-                          <class name="accent"/>
-                        </style>
-                      </object>
-                    </child>
-
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="label" translatable="yes">&lt;span size='x-large' weight='bold'&gt;Discover devices on your local network.&lt;/span&gt;</property>
-                        <property name="use-markup">true</property>
-                        <property name="halign">center</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-
-                <child>
-                  <object class="AdwClamp">
-                    <property name="maximum-size">600</property>
+                    <property name="valign">center</property>
 
                     <child>
                       <object class="GtkBox">
                         <property name="orientation">vertical</property>
                         <property name="spacing">12</property>
+                        <property name="halign">center</property>
 
                         <child>
-                          <object class="AdwPreferencesGroup" id="ip_group">
-                            <property name="title" translatable="yes">IP Range Configuration</property>
-                            <property name="description" translatable="yes">Enter the IP range you want to scan:</property>
-
-                            <child>
-                              <object class="AdwEntryRow" id="ip_entry_row">
-                                <property name="title" translatable="yes">IP Range</property>
-                                <property name="text">192.168.1.0/24</property>
-                                <property name="show-apply-button">true</property>
-                                <signal name="apply" handler="on_ip_range_apply"/>
-                                <signal name="entry-activated" handler="on_ip_range_apply"/>
-                              </object>
-                            </child>
-
-                            <child>
-                              <object class="AdwSpinRow" id="thread_spinner">
-                                <property name="title" translatable="yes">Thread Count</property>
-                                <property name="subtitle" translatable="yes">Number of threads to use while scanning</property>
-                                <property name="adjustment">
-                                  <object class="GtkAdjustment">
-                                    <property name="lower">1</property>
-                                    <property name="upper">500</property>
-                                    <property name="value">100</property>
-                                    <property name="step-increment">10</property>
-                                    <property name="page-increment">50</property>
-                                  </object>
-                                </property>
-                                <signal name="changed" handler="on_thread_count_changed"/>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">&lt;small&gt;&lt;i&gt;Examples: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200&lt;/i&gt;&lt;/small&gt;</property>
-                            <property name="use-markup">true</property>
-                            <property name="halign">start</property>
-                            <property name="margin-top">6</property>
+                          <object class="GtkImage">
+                            <property name="icon-name">network-wireless-symbolic</property>
+                            <property name="pixel-size">64</property>
                             <style>
-                              <class name="dim-label"/>
+                              <class name="accent"/>
                             </style>
                           </object>
                         </child>
 
                         <child>
-                          <object class="GtkBox" id="preset_box">
-                            <property name="orientation">horizontal</property>
-                            <property name="spacing">6</property>
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">&lt;span size='x-large' weight='bold'&gt;Discover devices on your local network.&lt;/span&gt;</property>
+                            <property name="use-markup">true</property>
                             <property name="halign">center</property>
-                            <property name="margin-top">12</property>
+                            <property name="wrap">true</property>
+                            <property name="justify">center</property>
                           </object>
                         </child>
                       </object>
                     </child>
-                  </object>
-                </child>
 
-                <child>
-                  <object class="GtkButton" id="scan_button">
-                    <property name="label" translatable="yes">Scan my Network</property>
-                    <property name="width-request">200</property>
-                    <property name="height-request">48</property>
-                    <property name="halign">center</property>
-                    <signal name="clicked" handler="on_scan_clicked"/>
-                    <style>
-                      <class name="suggested-action"/>
-                      <class name="pill"/>
-                    </style>
+                    <child>
+                      <object class="AdwClamp">
+                        <property name="maximum-size">600</property>
+
+                        <child>
+                          <object class="GtkBox">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">12</property>
+
+                            <child>
+                              <object class="AdwPreferencesGroup" id="ip_group">
+                                <property name="title" translatable="yes">IP Range Configuration</property>
+                                <property name="description" translatable="yes">Enter the IP range you want to scan:</property>
+
+                                <child>
+                                  <object class="AdwEntryRow" id="ip_entry_row">
+                                    <property name="title" translatable="yes">IP Range</property>
+                                    <property name="text">192.168.1.0/24</property>
+                                    <property name="show-apply-button">true</property>
+                                    <signal name="apply" handler="on_ip_range_apply"/>
+                                    <signal name="entry-activated" handler="on_ip_range_apply"/>
+                                  </object>
+                                </child>
+
+                                <child>
+                                  <object class="AdwSpinRow" id="thread_spinner">
+                                    <property name="title" translatable="yes">Thread Count</property>
+                                    <property name="subtitle" translatable="yes">Number of threads to use while scanning</property>
+                                    <property name="adjustment">
+                                      <object class="GtkAdjustment">
+                                        <property name="lower">1</property>
+                                        <property name="upper">500</property>
+                                        <property name="value">100</property>
+                                        <property name="step-increment">10</property>
+                                        <property name="page-increment">50</property>
+                                      </object>
+                                    </property>
+                                    <signal name="changed" handler="on_thread_count_changed"/>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="label" translatable="yes">&lt;small&gt;&lt;i&gt;Examples: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200&lt;/i&gt;&lt;/small&gt;</property>
+                                <property name="use-markup">true</property>
+                                <property name="halign">start</property>
+                                <property name="wrap">true</property>
+                                <property name="margin-top">6</property>
+                                <style>
+                                  <class name="dim-label"/>
+                                </style>
+                              </object>
+                            </child>
+
+                            <child>
+                              <object class="AdwWrapBox" id="preset_box">
+                                <property name="child-spacing">6</property>
+                                <property name="line-spacing">6</property>
+                                <property name="halign">center</property>
+                                <property name="margin-top">12</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="GtkButton" id="scan_button">
+                        <property name="label" translatable="yes">Scan my Network</property>
+                        <property name="width-request">200</property>
+                        <property name="height-request">48</property>
+                        <property name="halign">center</property>
+                        <signal name="clicked" handler="on_scan_clicked"/>
+                        <style>
+                          <class name="suggested-action"/>
+                          <class name="pill"/>
+                        </style>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -157,6 +175,30 @@
   </template>
 
   <menu id="main_menu">
+    <section>
+      <submenu>
+        <attribute name="label" translatable="yes">Appearance</attribute>
+        <item>
+          <attribute name="label" translatable="yes">Follow System</attribute>
+          <attribute name="action">app.color-scheme</attribute>
+          <attribute name="target">default</attribute>
+        </item>
+        <item>
+          <attribute name="label" translatable="yes">Light</attribute>
+          <attribute name="action">app.color-scheme</attribute>
+          <attribute name="target">light</attribute>
+        </item>
+        <item>
+          <attribute name="label" translatable="yes">Dark</attribute>
+          <attribute name="action">app.color-scheme</attribute>
+          <attribute name="target">dark</attribute>
+        </item>
+      </submenu>
+      <item>
+        <attribute name="label" translatable="yes">Previous Scans</attribute>
+        <attribute name="action">win.previous-scans</attribute>
+      </item>
+    </section>
     <section>
       <item>
         <attribute name="label" translatable="yes">About</attribute>

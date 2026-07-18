@@ -1,6 +1,6 @@
 # widgets.py
 #
-# Copyright 2025 ZingyTomato
+# Copyright 2026 ZingyTomato
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,47 +21,67 @@ import gi
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Adw, Gdk
+from gi.repository import Gtk, Adw, Gdk, GObject
+
+from . import storage
 
 @Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/device_card.ui')
 class DeviceCard(Adw.Bin):
     """Custom widget for displaying device information in a card format"""
     __gtype_name__ = 'DeviceCard'
 
+    name_row = Gtk.Template.Child()
+    new_badge = Gtk.Template.Child()
     ip_row = Gtk.Template.Child()
     hostname_row = Gtk.Template.Child()
     ports_row = Gtk.Template.Child()
+    smb_row = Gtk.Template.Child()
 
-    def __init__(self, toast_overlay, device_info=None):
+    def __init__(self, device, toast_overlay, on_rename=None):
         super().__init__()
+        self.device = device
         self.toast_overlay = toast_overlay
+        self._on_rename = on_rename
         self.clipboard = Gdk.Display.get_default().get_clipboard()
 
-        if device_info:
-            self.set_device_info(device_info)
+        # Bidirectional binding keeps this card's name entry and the list
+        # view's custom name column in sync live, without either widget
+        # having to know about the other.
+        device.bind_property(
+            "custom-name", self.name_row, "text",
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
 
-    def set_device_info(self, device_info):
-        """Set the device information"""
-        ip_address = device_info.get('ip', _("Unknown IP"))
-        self.ip_row.set_title(ip_address)
+        self.refresh()
 
-        hostname = device_info.get('hostname', _("Unknown"))
-        if hostname == ip_address:
-            hostname = _("Unknown")
-        self.hostname_row.set_subtitle(hostname)
+    def refresh(self):
+        """Populate the card from the bound Device model"""
+        device = self.device
 
-        ports = device_info.get('ports', _("No Ports Open"))
-        self.ports_row.set_subtitle(ports)
+        self.new_badge.set_visible(not device.known)
+
+        self.ip_row.set_title(device.ip)
+        self.hostname_row.set_subtitle(device.hostname if device.hostname != device.ip else _("Unknown"))
+        self.ports_row.set_subtitle(device.ports_display)
+        self.smb_row.set_visible(device.smb)
 
     @Gtk.Template.Callback()
     def on_ip_clicked(self, button):
-        """Start scan when the copy button is clicked"""
+        """Copy the IP address when the copy button is clicked"""
         ip_text = self.ip_row.get_title()
         self.clipboard.set(ip_text)
-        self.show_toast(f"Copied {ip_text} to the clipboard")
+        self.show_toast(_("Copied {ip} to the clipboard").format(ip=ip_text))
+
+    @Gtk.Template.Callback()
+    def on_name_apply(self, entry_row):
+        """Persist a custom name when the entry row's apply button is used"""
+        # entry_row.text is already synced onto self.device.custom_name via
+        # the bind_property() set up in __init__.
+        storage.set_custom_name(self.device.registry_key, self.device.custom_name)
+        if self._on_rename:
+            self._on_rename(self.device)
 
     def show_toast(self, message, timeout=3):
-        toast = Adw.Toast(title=_(message))
+        toast = Adw.Toast(title=message)
         toast.set_timeout(timeout)
         self.toast_overlay.add_toast(toast)
 
@@ -83,28 +103,3 @@ class PresetButton(Gtk.Button):
 
         if callback:
             self.connect('clicked', callback, preset_range)
-
-class StatusIndicator(Gtk.Box):
-    """Custom status indicator widget"""
-
-    def __init__(self, status="online"):
-        super().__init__(orientation=Gtk.Orientation.HORIZONTAL)
-        self.set_spacing(6)
-        self.set_valign(Gtk.Align.CENTER)
-
-        self.indicator = Gtk.Image()
-        self.set_status(status)
-
-        self.append(self.indicator)
-
-    def set_status(self, status):
-        """Set the status indicator"""
-        if status == "online":
-            self.indicator.set_from_icon_name("network-wireless-signal-excellent-symbolic")
-            self.indicator.add_css_class("success")
-        elif status == "offline":
-            self.indicator.set_from_icon_name("network-wireless-offline-symbolic")
-            self.indicator.add_css_class("error")
-        elif status == "scanning":
-            self.indicator.set_from_icon_name("network-wireless-acquiring-symbolic")
-            self.indicator.add_css_class("warning")

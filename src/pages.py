@@ -1,6 +1,6 @@
 # pages.py
 #
-# Copyright 2025 ZingyTomato
+# Copyright 2026 ZingyTomato
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 import gi
 import time
 import csv
-import json
+from datetime import datetime
 from pathlib import Path
 
 gi.require_version('Gtk', '4.0')
@@ -29,6 +29,17 @@ from gi.repository import Gtk, Adw, Gio, GLib, Gdk, GObject
 
 from .widgets import DeviceCard, PresetButton
 from .scanner import NetworkScanner
+from .models import Device
+from . import storage
+
+
+def _format_timestamp(iso_string):
+    try:
+        dt = datetime.fromisoformat(iso_string)
+        return dt.astimezone().strftime('%b %d, %Y %H:%M')
+    except ValueError:
+        return iso_string
+
 
 @Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/home_page.ui')
 class HomePage(Adw.NavigationPage):
@@ -40,17 +51,24 @@ class HomePage(Adw.NavigationPage):
     preset_box = Gtk.Template.Child()
     thread_spinner = Gtk.Template.Child()
 
-    def __init__(self, navigation_view, toast_overlay, scanner):
+    def __init__(self, navigation_view, toast_overlay, scanner, settings):
         super().__init__()
 
         self.navigation_view = navigation_view
         self.toast_overlay = toast_overlay
         self.scanner = scanner
+        self.settings = settings
         self.results_page = None
 
         self.thread_count_timeout_id = None
 
         self.setup_presets()
+
+        last_range = self.settings.get_string('last-ip-range')
+        if last_range:
+            self.ip_entry_row.set_text(last_range)
+        else:
+            self.auto_detect_network()
 
     def connect_results_page(self, results_page):
         self.results_page = results_page
@@ -76,7 +94,11 @@ class HomePage(Adw.NavigationPage):
             preset_button = PresetButton(preset_range, tooltip, self.on_preset_clicked)
             self.preset_box.append(preset_button)
 
-        self.ip_entry_row.set_text(NetworkScanner.get_local_ip_range())
+    def auto_detect_network(self):
+        """Auto-detect network range"""
+        detected_range = NetworkScanner.get_local_ip_range()
+        self.ip_entry_row.set_text(detected_range)
+        self.show_toast(_("Auto-detected IP range: ") + detected_range, 2)
 
     @Gtk.Template.Callback()
     def on_scan_clicked(self, button):
@@ -84,6 +106,7 @@ class HomePage(Adw.NavigationPage):
         if not self.validate_ip_range():
             return
         ip_range = self.ip_entry_row.get_text().strip()
+        self.settings.set_string('last-ip-range', ip_range)
         if self.results_page:
             self.navigation_view.push(self.results_page)
             self.results_page.start_scan(ip_range)
@@ -113,9 +136,7 @@ class HomePage(Adw.NavigationPage):
 
     def on_auto_detect_clicked(self, button):
         """Auto-detect local network IP range"""
-        detected_range = NetworkScanner.get_local_ip_range()
-        self.ip_entry_row.set_text(detected_range)
-        self.show_toast(_("Auto-detected IP range: ") + detected_range, 2)
+        self.auto_detect_network()
 
     def on_preset_clicked(self, button, preset_range):
         """If one of the IP presets were clicked"""
@@ -143,85 +164,103 @@ class ResultsPage(Adw.NavigationPage):
 
     results_title = Gtk.Template.Child()
     stop_button = Gtk.Template.Child()
+    stop_button_content = Gtk.Template.Child()
     rescan_button = Gtk.Template.Child()
+    rescan_button_content = Gtk.Template.Child()
     export_button = Gtk.Template.Child()
-    view_toggle = Gtk.Template.Child()
+    view_toggle_button = Gtk.Template.Child()
+    sort_menu_button = Gtk.Template.Child()
+    sort_list = Gtk.Template.Child()
+    sort_row_known = Gtk.Template.Child()
+    sort_row_ip = Gtk.Template.Child()
+    sort_row_hostname = Gtk.Template.Child()
+    sort_row_custom_name = Gtk.Template.Child()
+    sort_row_ports = Gtk.Template.Child()
     results_stack = Gtk.Template.Child()
     spinner = Gtk.Template.Child()
     progress_label = Gtk.Template.Child()
     timer_label = Gtk.Template.Child()
+    devices_breakpoint_bin = Gtk.Template.Child()
+    view_stack = Gtk.Template.Child()
     flow_box = Gtk.Template.Child()
     list_view = Gtk.Template.Child()
     empty_page = Gtk.Template.Child()
     error_page = Gtk.Template.Child()
 
-    def __init__(self, navigation_view, toast_overlay, scanner):
+    def __init__(self, navigation_view, toast_overlay, scanner, settings):
         super().__init__()
 
         self.navigation_view = navigation_view
         self.toast_overlay = toast_overlay
         self.scanner = scanner
+        self.settings = settings
         self.home_page = None
         self.clipboard = Gdk.Display.get_default().get_clipboard()
 
-        self.current_devices = []
-        self.current_view = "grid"
+        self.current_ip_range = ""
 
         self.scan_start_time = None
         self.timer_source_id = None
 
-        self.setup_list_view()
+        self.list_store = Gio.ListStore(item_type=Device)
+        self._setup_column_view()
+        self.flow_box.bind_model(self.sort_model, self._create_card)
+        self._setup_responsive_columns()
+
+        self._sort_rows = {
+            self.sort_row_known: "known",
+            self.sort_row_ip: "ip",
+            self.sort_row_hostname: "hostname",
+            self.sort_row_custom_name: "custom_name",
+            self.sort_row_ports: "ports",
+        }
+
+        view_mode = self.settings.get_string('view-mode')
+        is_list = view_mode == 'list'
+        self.view_toggle_button.set_active(is_list)
+        self.view_toggle_button.set_icon_name('view-grid-symbolic' if is_list else 'view-list-symbolic')
+        self.view_stack.set_visible_child_name('list' if is_list else 'cards')
 
     def connect_home_page(self, home_page):
         self.home_page = home_page
 
-    def setup_list_view(self):
-        """Setup the list view with columns"""
-        self.list_store = Gio.ListStore.new(DeviceListItem)
+    def _create_card(self, device):
+        return DeviceCard(device, toast_overlay=self.toast_overlay, on_rename=self._on_device_renamed)
 
-        selection_model = Gtk.NoSelection.new(self.list_store)
+    def _on_device_renamed(self, device):
+        if device.custom_name:
+            self.show_toast(_("Renamed to \"{name}\"").format(name=device.custom_name), 2)
+        else:
+            self.show_toast(_("Custom name cleared"), 2)
+
+    def _setup_column_view(self):
+        self.sort_model = Gtk.SortListModel(model=self.list_store)
 
         self.column_view = Gtk.ColumnView()
-        self.column_view.set_model(selection_model)
+        self.column_view.set_model(Gtk.NoSelection(model=self.sort_model))
         self.column_view.set_show_row_separators(True)
         self.column_view.set_show_column_separators(True)
-
-        status_factory = Gtk.SignalListItemFactory()
-        status_factory.connect("setup", self.on_status_setup)
-        status_factory.connect("bind", self.on_status_bind)
-        status_column = Gtk.ColumnViewColumn.new("", status_factory)
-        status_column.set_fixed_width(50)
-        self.column_view.append_column(status_column)
-
-        ip_factory = Gtk.SignalListItemFactory()
-        ip_factory.connect("setup", self.on_ip_setup)
-        ip_factory.connect("bind", self.on_ip_bind)
-        ip_column = Gtk.ColumnViewColumn.new(_("IP Address"), ip_factory)
-        ip_column.set_expand(True)
-        self.column_view.append_column(ip_column)
-
-        hostname_factory = Gtk.SignalListItemFactory()
-        hostname_factory.connect("setup", self.on_hostname_setup)
-        hostname_factory.connect("bind", self.on_hostname_bind)
-        hostname_column = Gtk.ColumnViewColumn.new(_("Hostname"), hostname_factory)
-        hostname_column.set_expand(True)
-        self.column_view.append_column(hostname_column)
-
-        custom_name_factory = Gtk.SignalListItemFactory()
-        custom_name_factory.connect("setup", self.on_custom_name_setup)
-        custom_name_factory.connect("bind", self.on_custom_name_bind)
-        custom_name_column = Gtk.ColumnViewColumn.new(_("Custom Name"), custom_name_factory)
-        custom_name_column.set_expand(True)
-        self.column_view.append_column(custom_name_column)
-
-        ports_factory = Gtk.SignalListItemFactory()
-        ports_factory.connect("setup", self.on_ports_setup)
-        ports_factory.connect("bind", self.on_ports_bind)
-        ports_column = Gtk.ColumnViewColumn.new(_("Open Ports"), ports_factory)
-        ports_column.set_expand(True)
-        self.column_view.append_column(ports_column)
-
         self.list_view.set_child(self.column_view)
+
+        self.columns = {
+            "known": self._add_status_column(),
+            "ip": self._add_ip_column(),
+            "hostname": self._add_hostname_column(),
+            "custom_name": self._add_custom_name_column(),
+            "ports": self._add_simple_column(_("Ports"), "ports-display", lambda d: d.ports_display, wrap=True),
+        }
+
+        self.sort_model.set_sorter(self.column_view.get_sorter())
+
+    def _add_status_column(self):
+        factory = Gtk.SignalListItemFactory()
+        factory.connect("setup", self.on_status_setup)
+        factory.connect("bind", self.on_status_bind)
+        column = Gtk.ColumnViewColumn(title="", factory=factory)
+        column.set_fixed_width(50)
+        column.set_sorter(Gtk.NumericSorter.new(Gtk.PropertyExpression.new(Device, None, "known-int")))
+        self.column_view.append_column(column)
+        return column
 
     def on_status_setup(self, factory, list_item):
         """Setup status indicator cell"""
@@ -235,7 +274,7 @@ class ResultsPage(Adw.NavigationPage):
         icon = list_item.get_child()
         item = list_item.get_item()
 
-        if item.is_new:
+        if not item.known:
             icon.set_from_icon_name("starred-symbolic")
             icon.set_tooltip_text(_("New device"))
             icon.add_css_class("accent")
@@ -243,6 +282,16 @@ class ResultsPage(Adw.NavigationPage):
             icon.set_from_icon_name("network-wireless-signal-excellent-symbolic")
             icon.set_tooltip_text(_("Known device"))
             icon.remove_css_class("accent")
+
+    def _add_ip_column(self):
+        factory = Gtk.SignalListItemFactory()
+        factory.connect("setup", self.on_ip_setup)
+        factory.connect("bind", self.on_ip_bind)
+        column = Gtk.ColumnViewColumn(title=_("IP Address"), factory=factory)
+        column.set_expand(True)
+        column.set_sorter(Gtk.NumericSorter.new(Gtk.PropertyExpression.new(Device, None, "ip-sort-key")))
+        self.column_view.append_column(column)
+        return column
 
     def on_ip_setup(self, factory, list_item):
         """Setup IP column"""
@@ -269,7 +318,21 @@ class ResultsPage(Adw.NavigationPage):
         item = list_item.get_item()
 
         label.set_text(item.ip)
-        copy_btn.connect("clicked", lambda btn: self.copy_to_clipboard(item.ip))
+
+        if hasattr(copy_btn, '_click_handler'):
+            copy_btn.disconnect(copy_btn._click_handler)
+        copy_btn._click_handler = copy_btn.connect(
+            "clicked", lambda btn: self.copy_to_clipboard(item.ip))
+
+    def _add_hostname_column(self):
+        factory = Gtk.SignalListItemFactory()
+        factory.connect("setup", self.on_hostname_setup)
+        factory.connect("bind", self.on_hostname_bind)
+        column = Gtk.ColumnViewColumn(title=_("Hostname"), factory=factory)
+        column.set_expand(True)
+        column.set_sorter(Gtk.StringSorter.new(Gtk.PropertyExpression.new(Device, None, "hostname")))
+        self.column_view.append_column(column)
+        return column
 
     def on_hostname_setup(self, factory, list_item):
         """Setup hostname column"""
@@ -288,6 +351,16 @@ class ResultsPage(Adw.NavigationPage):
         hostname = item.hostname if item.hostname != item.ip else _("Unknown")
         label.set_text(hostname)
 
+    def _add_custom_name_column(self):
+        factory = Gtk.SignalListItemFactory()
+        factory.connect("setup", self.on_custom_name_setup)
+        factory.connect("bind", self.on_custom_name_bind)
+        column = Gtk.ColumnViewColumn(title=_("Custom Name"), factory=factory)
+        column.set_expand(True)
+        column.set_sorter(Gtk.StringSorter.new(Gtk.PropertyExpression.new(Device, None, "custom-name")))
+        self.column_view.append_column(column)
+        return column
+
     def on_custom_name_setup(self, factory, list_item):
         """Setup custom name column with edit capability"""
         entry = Gtk.Entry()
@@ -297,42 +370,85 @@ class ResultsPage(Adw.NavigationPage):
         list_item.set_child(entry)
 
     def on_custom_name_bind(self, factory, list_item):
-        """Bind custom name"""
+        """Bind custom name, keeping the entry live-synced to the Device model
+
+        so edits here and edits made via the card view's name row stay in
+        sync without either widget knowing about the other.
+        """
         entry = list_item.get_child()
         item = list_item.get_item()
 
-        custom_name = self.scanner.get_custom_name(item.ip)
-        entry.set_text(custom_name if custom_name else "")
+        if getattr(entry, '_custom_name_binding', None):
+            entry._custom_name_binding.unbind()
+        entry._custom_name_binding = item.bind_property(
+            "custom-name", entry, "text",
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
 
         if hasattr(entry, '_custom_name_handler'):
             entry.disconnect(entry._custom_name_handler)
+        entry._custom_name_handler = entry.connect(
+            "activate", lambda e: self._on_custom_name_committed(item))
 
-        entry._custom_name_handler = entry.connect("activate",
-            lambda e: self.on_custom_name_changed(item.ip, e.get_text()))
-
-    def on_custom_name_changed(self, ip, custom_name):
-        """Handle custom name change"""
-        self.scanner.set_custom_name(ip, custom_name)
-        if custom_name:
-            self.show_toast(_("Custom name saved for ") + ip, 2)
+    def _on_custom_name_committed(self, item):
+        """Persist a custom name once the user commits (presses Enter)"""
+        storage.set_custom_name(item.registry_key, item.custom_name)
+        if item.custom_name:
+            self.show_toast(_("Custom name saved for ") + item.ip, 2)
         else:
-            self.show_toast(_("Custom name cleared for ") + ip, 2)
+            self.show_toast(_("Custom name cleared for ") + item.ip, 2)
 
-    def on_ports_setup(self, factory, list_item):
-        """Setup ports column"""
-        label = Gtk.Label()
-        label.set_xalign(0)
-        label.set_margin_start(8)
-        label.set_margin_end(8)
-        label.set_wrap(True)
-        label.set_wrap_mode(2)
-        list_item.set_child(label)
+    def _add_simple_column(self, title, prop_name, display_func, wrap=False):
+        factory = Gtk.SignalListItemFactory()
 
-    def on_ports_bind(self, factory, list_item):
-        """Bind ports"""
-        label = list_item.get_child()
-        item = list_item.get_item()
-        label.set_text(item.ports)
+        def setup(_factory, list_item):
+            label = Gtk.Label(xalign=0, margin_start=8, margin_end=8)
+            if wrap:
+                label.set_wrap(True)
+                label.set_wrap_mode(2)
+            list_item.set_child(label)
+
+        def bind(_factory, list_item):
+            list_item.get_child().set_text(display_func(list_item.get_item()))
+
+        factory.connect("setup", setup)
+        factory.connect("bind", bind)
+
+        column = Gtk.ColumnViewColumn(title=title, factory=factory)
+        column.set_expand(True)
+        column.set_sorter(Gtk.StringSorter.new(Gtk.PropertyExpression.new(Device, None, prop_name)))
+        self.column_view.append_column(column)
+        return column
+
+    def _setup_responsive_columns(self):
+        """Hide secondary columns before the list view is forced to scroll horizontally."""
+        breakpoint = Adw.Breakpoint.new(Adw.BreakpointCondition.parse("max-width: 700sp"))
+        for key in ("custom_name", "ports"):
+            breakpoint.add_setter(self.columns[key], "visible", False)
+        self.devices_breakpoint_bin.add_breakpoint(breakpoint)
+
+    def _apply_sort(self, column):
+        sorter = self.column_view.get_sorter()
+        if sorter.get_primary_sort_column() == column:
+            order = (Gtk.SortType.DESCENDING
+                     if sorter.get_primary_sort_order() == Gtk.SortType.ASCENDING
+                     else Gtk.SortType.ASCENDING)
+        else:
+            order = Gtk.SortType.ASCENDING
+        self.column_view.sort_by_column(column, order)
+        self.sort_menu_button.popdown()
+
+    @Gtk.Template.Callback()
+    def on_sort_row_activated(self, listbox, row):
+        key = self._sort_rows.get(row)
+        if key:
+            self._apply_sort(self.columns[key])
+
+    @Gtk.Template.Callback()
+    def on_view_toggle(self, button):
+        is_list = button.get_active()
+        button.set_icon_name('view-grid-symbolic' if is_list else 'view-list-symbolic')
+        self.view_stack.set_visible_child_name('list' if is_list else 'cards')
+        self.settings.set_string('view-mode', 'list' if is_list else 'cards')
 
     def copy_to_clipboard(self, text):
         """Copy text to clipboard"""
@@ -340,26 +456,9 @@ class ResultsPage(Adw.NavigationPage):
         self.show_toast(_("Copied to clipboard: ") + text, 2)
 
     @Gtk.Template.Callback()
-    def on_view_toggle_clicked(self, button):
-        """Toggle between grid and list view"""
-        if not self.current_devices:
-            return
-
-        if self.current_view == "grid":
-            self.current_view = "list"
-            button.set_icon_name("view-grid-symbolic")
-            button.set_tooltip_text(_("Switch to Grid View"))
-            self.results_stack.set_visible_child_name("list")
-        else:
-            self.current_view = "grid"
-            button.set_icon_name("view-list-symbolic")
-            button.set_tooltip_text(_("Switch to List View"))
-            self.results_stack.set_visible_child_name("devices")
-
-    @Gtk.Template.Callback()
     def on_export_clicked(self, button):
         """Export scan results to CSV"""
-        if not self.current_devices:
+        if self.list_store.get_n_items() == 0:
             self.show_toast(_("No devices to export"))
             return
 
@@ -392,20 +491,20 @@ class ResultsPage(Adw.NavigationPage):
         """Export devices to CSV file"""
         try:
             with open(file_path, 'w', newline='') as csvfile:
-                fieldnames = ['IP Address', 'Hostname', 'Custom Name', 'Open Ports', 'Status']
+                fieldnames = ['IP Address', 'Hostname', 'Custom Name', 'MAC Address',
+                              'Open Ports', 'SMB', 'Status']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
                 writer.writeheader()
-                for device in self.current_devices:
-                    custom_name = self.scanner.get_custom_name(device['ip'])
-                    is_new = self.scanner.is_new_device(device['ip'])
-
+                for device in self.list_store:
                     writer.writerow({
-                        'IP Address': device['ip'],
-                        'Hostname': device['hostname'],
-                        'Custom Name': custom_name if custom_name else '',
-                        'Open Ports': device['ports'],
-                        'Status': 'New' if is_new else 'Known'
+                        'IP Address': device.ip,
+                        'Hostname': device.hostname,
+                        'Custom Name': device.custom_name,
+                        'MAC Address': device.mac,
+                        'Open Ports': device.ports_display,
+                        'SMB': _("Yes") if device.smb else _("No"),
+                        'Status': _("Known") if device.known else _("New"),
                     })
 
             filename = Path(file_path).name
@@ -446,13 +545,15 @@ class ResultsPage(Adw.NavigationPage):
         self.progress_label.set_text(progress_text)
 
     def start_scan(self, ip_range):
+        self.current_ip_range = ip_range
+
         self.rescan_button.set_sensitive(False)
-        self.rescan_button.set_label(_("Scanning..."))
+        self.rescan_button_content.set_label(_("Scanning..."))
         self.stop_button.set_visible(True)
         self.export_button.set_sensitive(False)
-        self.view_toggle.set_sensitive(False)
+        self.view_toggle_button.set_sensitive(False)
 
-        self.clear_results()
+        self.list_store.remove_all()
 
         self.results_stack.set_visible_child_name("loading")
         self.progress_label.set_text(_("Preparing scan..."))
@@ -469,107 +570,93 @@ class ResultsPage(Adw.NavigationPage):
             self.on_progress_update
         )
 
-    def clear_results(self):
-        child = self.flow_box.get_first_child()
-        while child:
-            next_child = child.get_next_sibling()
-            self.flow_box.remove(child)
-            child = next_child
-
-        self.list_store.remove_all()
-
-        self.current_devices = []
-
     @Gtk.Template.Callback()
     def on_stop_clicked(self, button):
         """Handle stop scanning button click"""
         self.scanner.stop_scan()
         self.stop_button.set_visible(False)
         self.rescan_button.set_sensitive(True)
-        self.rescan_button.set_label(_("Scan Again"))
-        self.view_toggle.set_sensitive(True)
+        self.rescan_button_content.set_label(_("Scan Again"))
+        self.view_toggle_button.set_sensitive(True)
 
         self.stop_timer()
 
-        if self.scanner.get_partial_results():
-            devices = self.scanner.get_partial_results()
-            self.display_devices(devices)
-            self.results_title.set_subtitle(_("Scan stopped - Found {count} devices").format(count=len(devices)))
-            self.show_toast(_("Scan stopped. Found {count} devices so far.").format(count=len(devices)))
+        partial = self.scanner.get_partial_results()
+        if partial:
+            annotated = storage.record_scan(self.current_ip_range, partial)
+            self._display_devices(annotated)
+            self.results_title.set_subtitle(_("Scan stopped - Found {count} devices").format(count=len(annotated)))
+            self.show_toast(_("Scan stopped. Found {count} devices so far.").format(count=len(annotated)))
             self.export_button.set_sensitive(True)
         else:
-            self.results_stack.set_visible_child_name("empty")
+            self._display_devices([])
             self.results_title.set_subtitle(_("Scan stopped - No devices found"))
             self.show_toast(_("Scan stopped. No devices found."))
-            self.view_toggle.set_sensitive(False)
+            self.view_toggle_button.set_sensitive(False)
             self.export_button.set_sensitive(False)
 
     @Gtk.Template.Callback()
     def on_rescan_clicked(self, button):
-        if self.home_page:
-            ip_range = self.home_page.ip_entry_row.get_text().strip()
-            if ip_range and self.home_page.validate_ip_range():
-                self.start_scan(ip_range)
-            else:
-                self.navigation_view.pop()
+        if not self.current_ip_range:
+            self.navigation_view.pop()
+            return
 
-    def display_devices(self, devices):
-        """Display devices in both grid and list views"""
-        self.current_devices = devices
-
-        new_device_count = 0
-
-        for device in devices:
-            card = DeviceCard(device_info=device, toast_overlay=self.toast_overlay)
-            self.flow_box.append(card)
-
-            is_new = self.scanner.is_new_device(device['ip'])
-            if is_new:
-                new_device_count += 1
-
-            list_item = DeviceListItem(
-                ip=device['ip'],
-                hostname=device['hostname'],
-                ports=device['ports'],
-                is_new=is_new
-            )
-            self.list_store.append(list_item)
-
-        self.scanner.update_cache(devices)
-
-        if self.current_view == "list":
-            self.results_stack.set_visible_child_name("list")
+        is_valid, message = self.scanner.validate_ip_range(self.current_ip_range)
+        if is_valid:
+            self.start_scan(self.current_ip_range)
         else:
-            self.results_stack.set_visible_child_name("devices")
+            self.show_toast(_(message))
 
-        if new_device_count > 0:
-            self.show_toast(_("Found {count} new devices since last scan!").format(count=new_device_count), 4)
+    def load_from_history(self, ip_range, devices_data):
+        """Load a previously saved scan without rescanning"""
+        self.current_ip_range = ip_range
+        self.results_title.set_subtitle(_("Loaded from history: ") + ip_range)
+        self._display_devices(devices_data)
+        self.export_button.set_sensitive(bool(devices_data))
+        self.view_toggle_button.set_sensitive(bool(devices_data))
+
+    def _display_devices(self, devices_data):
+        """Populate the shared list store and switch to the right stack page"""
+        self.list_store.remove_all()
+        for data in devices_data:
+            self.list_store.append(Device(data))
+
+        if devices_data:
+            self.results_stack.set_visible_child_name("devices")
+        else:
+            self.results_stack.set_visible_child_name("empty")
 
     def on_scan_complete(self, devices):
         self.rescan_button.set_sensitive(True)
-        self.rescan_button.set_label(_("Scan Again"))
+        self.rescan_button_content.set_label(_("Scan Again"))
         self.stop_button.set_visible(False)
         self.export_button.set_sensitive(True)
-        self.view_toggle.set_sensitive(True)
+        self.view_toggle_button.set_sensitive(True)
 
         self.stop_timer()
 
         if devices:
-            self.display_devices(devices)
-            self.results_title.set_subtitle(_("Found {count} devices").format(count=len(devices)))
-            self.show_toast(_("Found {count} devices on the network.").format(count=len(devices)))
+            annotated = storage.record_scan(self.current_ip_range, devices)
+            self._display_devices(annotated)
+            self.results_title.set_subtitle(_("Found {count} devices").format(count=len(annotated)))
+
+            new_count = sum(1 for d in annotated if not d.get('known'))
+            if new_count:
+                self.show_toast(_("Found {count} new devices since last scan!").format(count=new_count), 4)
+            else:
+                self.show_toast(_("Found {count} devices on the network.").format(count=len(annotated)))
         else:
-            self.results_stack.set_visible_child_name("empty")
+            self._display_devices([])
             self.results_title.set_subtitle(_("No devices found"))
             self.show_toast(_("No devices found in the specified range"))
-            self.view_toggle.set_sensitive(False)
+            self.view_toggle_button.set_sensitive(False)
             self.export_button.set_sensitive(False)
 
     def on_scan_error(self, error_message):
         self.rescan_button.set_sensitive(True)
-        self.rescan_button.set_label(_("Scan Again"))
+        self.rescan_button_content.set_label(_("Scan Again"))
         self.stop_button.set_visible(False)
-        self.view_toggle.set_sensitive(True)
+        self.view_toggle_button.set_sensitive(True)
 
         self.stop_timer()
 
@@ -579,17 +666,68 @@ class ResultsPage(Adw.NavigationPage):
         self.show_toast(_("Error: ") + error_message, 5)
 
     def show_toast(self, message, timeout=3):
-        toast = Adw.Toast(title=_(message))
+        toast = Adw.Toast(title=message)
         toast.set_timeout(timeout)
         self.toast_overlay.add_toast(toast)
 
 
-class DeviceListItem(GObject.Object):
-    """Data model for list view items"""
+@Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/history_dialog.ui')
+class HistoryDialog(Adw.Dialog):
+    """Dialog listing previous scans in reverse-chronological order"""
+    __gtype_name__ = 'HistoryDialog'
 
-    def __init__(self, ip="", hostname="", ports="", is_new=False):
-        super().__init__()
-        self.ip = ip
-        self.hostname = hostname
-        self.ports = ports
-        self.is_new = is_new
+    history_stack = Gtk.Template.Child()
+    history_list = Gtk.Template.Child()
+
+    def __init__(self, on_select, **kwargs):
+        super().__init__(**kwargs)
+        self._on_select = on_select
+        self._populate()
+
+    def _populate(self):
+        scans = storage.load_scans()
+        if not scans:
+            self.history_stack.set_visible_child_name('empty')
+            return
+
+        self.history_stack.set_visible_child_name('list')
+        for scan in scans:
+            self.history_list.append(self._build_row(scan))
+
+    def _build_row(self, scan):
+        row = Adw.ActionRow()
+        row.set_title(scan.get('ip_range', ''))
+        device_count = len(scan.get('devices', []))
+        row.set_subtitle(_("{timestamp} · {count} devices").format(
+            timestamp=_format_timestamp(scan.get('timestamp', '')), count=device_count))
+        row.set_activatable(True)
+        row.scan_data = scan
+
+        delete_button = Gtk.Button()
+        delete_button.set_icon_name('user-trash-symbolic')
+        delete_button.set_tooltip_text(_("Delete this scan"))
+        delete_button.set_valign(Gtk.Align.CENTER)
+        delete_button.add_css_class('flat')
+        delete_button.connect('clicked', self._on_delete_clicked, row)
+        row.add_suffix(delete_button)
+
+        row.add_suffix(Gtk.Image.new_from_icon_name('go-next-symbolic'))
+        return row
+
+    def _on_delete_clicked(self, button, row):
+        scan_data = getattr(row, 'scan_data', None)
+        if not scan_data:
+            return
+
+        storage.delete_scan(scan_data.get('timestamp', ''))
+        self.history_list.remove(row)
+
+        if self.history_list.get_first_child() is None:
+            self.history_stack.set_visible_child_name('empty')
+
+    @Gtk.Template.Callback()
+    def on_scan_row_activated(self, listbox, row):
+        scan_data = getattr(row, 'scan_data', None)
+        if scan_data:
+            self._on_select(scan_data)
+            self.close()
