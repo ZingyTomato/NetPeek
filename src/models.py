@@ -35,6 +35,7 @@ class Device(GObject.Object):
     mac = GObject.Property(type=str, default="")
     ports_display = GObject.Property(type=str, default="")
     smb = GObject.Property(type=bool, default=False)
+    services_display = GObject.Property(type=str, default="")
     known = GObject.Property(type=bool, default=False)
     known_int = GObject.Property(type=int, default=0)
     ip_sort_key = GObject.Property(type=GObject.TYPE_UINT64, default=0)
@@ -48,6 +49,9 @@ class Device(GObject.Object):
         self.ports = data.get("ports", [])
         self.ports_display = data.get("ports_display", "")
         self.smb = bool(data.get("smb", False))
+        self.services = data.get("services") or (["smb"] if self.smb else [])
+        service_labels = {"smb": _("SMB shares"), "cockpit": _("Cockpit")}
+        self.services_display = ", ".join(service_labels.get(s, s) for s in self.services)
         self.known = bool(data.get("known", False))
         self.known_int = 1 if self.known else 0
         self.ip_sort_key = self._ip_to_int(self.ip)
@@ -80,5 +84,6 @@ class Device(GObject.Object):
             "ports": self.ports,
             "ports_display": self.ports_display,
             "smb": self.smb,
+            "services": self.services,
             "known": self.known,
         }

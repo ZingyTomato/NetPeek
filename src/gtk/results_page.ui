@@ -7,9 +7,14 @@
     <property name="title" translatable="yes">Scanning in progress...</property>
 
     <child>
+      <object class="AdwBreakpointBin" id="page_breakpoint_bin">
+        <property name="width-request">360</property>
+        <property name="height-request">200</property>
+        <child>
       <object class="AdwToolbarView">
+        <property name="bottom-bar-style">raised</property>
         <child type="top">
-          <object class="AdwHeaderBar">
+          <object class="AdwHeaderBar" id="results_header">
             <child type="title">
               <object class="AdwWindowTitle" id="results_title">
                 <property name="title" translatable="yes">Scan Results</property>
@@ -36,7 +41,7 @@
             </child>
 
             <child type="end">
-              <object class="GtkBox">
+              <object class="GtkBox" id="action_box">
                 <property name="spacing">6</property>
 
                 <child>
@@ -63,7 +68,7 @@
                       <object class="GtkPopover">
                         <property name="child">
                           <object class="GtkListBox" id="sort_list">
-                            <property name="selection-mode">none</property>
+                            <property name="selection-mode">single</property>
                             <signal name="row-activated" handler="on_sort_row_activated"/>
                             <style>
                               <class name="boxed-list"/>
@@ -129,6 +134,20 @@
                                 <property name="child">
                                   <object class="GtkLabel">
                                     <property name="label" translatable="yes">Ports</property>
+                                    <property name="halign">start</property>
+                                    <property name="margin-top">6</property>
+                                    <property name="margin-bottom">6</property>
+                                    <property name="margin-start">12</property>
+                                    <property name="margin-end">12</property>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkListBoxRow" id="sort_row_services">
+                                <property name="child">
+                                  <object class="GtkLabel">
+                                    <property name="label" translatable="yes">Services</property>
                                     <property name="halign">start</property>
                                     <property name="margin-top">6</property>
                                     <property name="margin-bottom">6</property>
@@ -263,6 +282,9 @@
                                     <property name="margin-start">24</property>
                                     <property name="margin-end">24</property>
                                     <property name="selection-mode">none</property>
+                                    <style>
+                                      <class name="device-grid"/>
+                                    </style>
                                   </object>
                                 </child>
                               </object>
@@ -314,6 +336,14 @@
               </object>
             </child>
           </object>
+        </child>
+
+        <child type="bottom">
+          <object class="AdwBin" id="bottom_bar">
+            <property name="visible">False</property>
+          </object>
+        </child>
+      </object>
         </child>
       </object>
     </child>

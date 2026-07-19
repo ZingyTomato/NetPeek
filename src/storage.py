@@ -98,6 +98,20 @@ def set_custom_name(key, name):
     save_devices(devices)
 
 
+def apply_custom_names(devices):
+    """Return copies of the given device dicts with custom_name refreshed
+    from the live registry, so renames show up in older scans too."""
+    registry = load_devices()
+    refreshed = []
+    for device in devices:
+        record = registry.get(device_key(device.get("mac", ""), device.get("ip", "")))
+        merged = dict(device)
+        if record is not None:
+            merged["custom_name"] = record.get("custom_name", "")
+        refreshed.append(merged)
+    return refreshed
+
+
 def record_scan(ip_range, devices):
     """Persist a completed scan and update the device registry.
 

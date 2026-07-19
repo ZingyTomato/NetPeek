@@ -6,5 +6,13 @@
     <file preprocess="xml-stripblanks">gtk/results_page.ui</file>
     <file preprocess="xml-stripblanks">gtk/device_card.ui</file>
     <file preprocess="xml-stripblanks">gtk/history_dialog.ui</file>
+    <file preprocess="xml-stripblanks">gtk/theme_selector.ui</file>
+    <file>gtk/style.css</file>
+  </gresource>
+  <gresource prefix="/io/github/zingytomato/netpeek/icons/scalable/apps">
+    <file preprocess="xml-stripblanks" alias="io.github.zingytomato.netpeek.svg">../data/icons/hicolor/scalable/apps/io.github.zingytomato.netpeek.svg</file>
+  </gresource>
+  <gresource prefix="/io/github/zingytomato/netpeek/icons/symbolic/apps">
+    <file preprocess="xml-stripblanks" alias="io.github.zingytomato.netpeek-symbolic.svg">../data/icons/hicolor/symbolic/apps/io.github.zingytomato.netpeek-symbolic.svg</file>
   </gresource>
 </gresources>

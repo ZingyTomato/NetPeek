@@ -21,7 +21,7 @@ import gi
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Adw, Gio, GLib
+from gi.repository import Gtk, Adw, Gdk, Gio, GLib
 
 from .window import NetworkScannerWindow
 
@@ -40,6 +40,21 @@ class NetworkScannerApp(Adw.Application):
 
         self._create_color_scheme_action()
         self._apply_color_scheme()
+
+    def do_startup(self):
+        Adw.Application.do_startup(self)
+        # Make the bundled app icons resolvable without an installed icon
+        # cache, so they also show up in development runs (e.g. Builder).
+        Gtk.IconTheme.get_for_display(Gdk.Display.get_default()).add_resource_path(
+            '/io/github/zingytomato/netpeek/icons')
+        self._load_css()
+
+    def _load_css(self):
+        provider = Gtk.CssProvider()
+        provider.load_from_resource('/io/github/zingytomato/netpeek/gtk/style.css')
+        Gtk.StyleContext.add_provider_for_display(
+            Gdk.Display.get_default(), provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
     def _create_color_scheme_action(self):
         action = Gio.SimpleAction.new_stateful(

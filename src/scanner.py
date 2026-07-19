@@ -31,7 +31,7 @@ class NetworkScanner:
     """Network scanning functionality"""
 
     def __init__(self):
-        self.common_ports = [22, 80, 443, 3389, 53, 21, 23, 8080, 8443, 8006, 5000, 445, 139]
+        self.common_ports = [22, 80, 443, 3389, 53, 21, 23, 8080, 8443, 8006, 5000, 445, 139, 9090]
         self.is_scanning = False
         self.hosts_scanned = 0
         self.total_hosts = 0
@@ -116,12 +116,19 @@ class NetworkScanner:
             if host_info.state() == 'up':
                 if not hostname:
                     hostname = netinfo.resolve_hostname(str(host))
+                smb = 445 in open_ports or 139 in open_ports
+                services = []
+                if smb:
+                    services.append("smb")
+                if 9090 in open_ports:
+                    services.append("cockpit")
                 device = {
                     "hostname": hostname or str(host),
                     "ip": str(host),
                     "ports": open_ports,
                     "ports_display": ", ".join(map(str, open_ports)) if open_ports else _("No common ports open"),
-                    "smb": 445 in open_ports or 139 in open_ports,
+                    "smb": smb,
+                    "services": services,
                 }
                 with self.lock:
                     devices.append(device)

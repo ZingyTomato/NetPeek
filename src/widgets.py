@@ -21,7 +21,7 @@ import gi
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Adw, Gdk, GObject
+from gi.repository import Gtk, Adw, Gdk, GObject, GLib
 
 from . import storage
 
@@ -31,17 +31,17 @@ class DeviceCard(Adw.Bin):
     __gtype_name__ = 'DeviceCard'
 
     name_row = Gtk.Template.Child()
+    name_apply_button = Gtk.Template.Child()
     new_badge = Gtk.Template.Child()
     ip_row = Gtk.Template.Child()
     hostname_row = Gtk.Template.Child()
     ports_row = Gtk.Template.Child()
-    smb_row = Gtk.Template.Child()
+    services_row = Gtk.Template.Child()
 
-    def __init__(self, device, toast_overlay, on_rename=None):
+    def __init__(self, device, toast_overlay):
         super().__init__()
         self.device = device
         self.toast_overlay = toast_overlay
-        self._on_rename = on_rename
         self.clipboard = Gdk.Display.get_default().get_clipboard()
 
         # Bidirectional binding keeps this card's name entry and the list
@@ -50,6 +50,11 @@ class DeviceCard(Adw.Bin):
         device.bind_property(
             "custom-name", self.name_row, "text",
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
+
+        focus_controller = Gtk.EventControllerFocus()
+        focus_controller.connect("enter", lambda c: self.name_apply_button.set_visible(True))
+        focus_controller.connect("leave", lambda c: self.name_apply_button.set_visible(False))
+        self.name_row.add_controller(focus_controller)
 
         self.refresh()
 
@@ -62,7 +67,8 @@ class DeviceCard(Adw.Bin):
         self.ip_row.set_title(device.ip)
         self.hostname_row.set_subtitle(device.hostname if device.hostname != device.ip else _("Unknown"))
         self.ports_row.set_subtitle(device.ports_display)
-        self.smb_row.set_visible(device.smb)
+        self.services_row.set_subtitle(device.services_display)
+        self.services_row.set_visible(bool(device.services_display))
 
     @Gtk.Template.Callback()
     def on_ip_clicked(self, button):
@@ -72,18 +78,51 @@ class DeviceCard(Adw.Bin):
         self.show_toast(_("Copied {ip} to the clipboard").format(ip=ip_text))
 
     @Gtk.Template.Callback()
-    def on_name_apply(self, entry_row):
-        """Persist a custom name when the entry row's apply button is used"""
-        # entry_row.text is already synced onto self.device.custom_name via
-        # the bind_property() set up in __init__.
+    def on_name_apply(self, _widget):
+        """Persist a custom name when the apply button is clicked or Enter is pressed"""
+        # The name entry's text is already synced onto self.device.custom_name
+        # via the bind_property() set up in __init__.
         storage.set_custom_name(self.device.registry_key, self.device.custom_name)
-        if self._on_rename:
-            self._on_rename(self.device)
+        root = self.get_root()
+        if root:
+            root.set_focus(None)
 
     def show_toast(self, message, timeout=3):
         toast = Adw.Toast(title=message)
         toast.set_timeout(timeout)
         self.toast_overlay.add_toast(toast)
+
+@Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/theme_selector.ui')
+class ThemeSelector(Gtk.Box):
+    """Light/dark/system swatch selector shown in the primary menu."""
+    __gtype_name__ = 'ThemeSelector'
+
+    auto_button = Gtk.Template.Child()
+    light_button = Gtk.Template.Child()
+    dark_button = Gtk.Template.Child()
+
+    def __init__(self, settings):
+        super().__init__()
+        self.schemes = {
+            self.auto_button: "default",
+            self.light_button: "light",
+            self.dark_button: "dark",
+        }
+
+        current = settings.get_string("color-scheme")
+        for button, scheme in self.schemes.items():
+            button.set_active(scheme == current)
+
+        # Connected after the initial state is set so restoring the saved
+        # scheme doesn't re-activate the action before we're in a window.
+        for button in self.schemes:
+            button.connect("toggled", self.on_option_selected)
+
+    def on_option_selected(self, button):
+        if button.get_active():
+            self.activate_action(
+                "app.color-scheme", GLib.Variant("s", self.schemes[button]))
+
 
 class PresetButton(Gtk.Button):
     """Custom preset button for IP ranges"""

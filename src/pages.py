@@ -27,7 +27,7 @@ gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Gtk, Adw, Gio, GLib, Gdk, GObject
 
-from .widgets import DeviceCard, PresetButton
+from .widgets import DeviceCard, PresetButton, ThemeSelector
 from .scanner import NetworkScanner
 from .models import Device
 from . import storage
@@ -47,9 +47,12 @@ class HomePage(Adw.NavigationPage):
     __gtype_name__ = 'HomePage'
 
     ip_entry_row = Gtk.Template.Child()
+    ip_apply_button = Gtk.Template.Child()
     scan_button = Gtk.Template.Child()
     preset_box = Gtk.Template.Child()
     thread_spinner = Gtk.Template.Child()
+    thread_apply_button = Gtk.Template.Child()
+    primary_popover = Gtk.Template.Child()
 
     def __init__(self, navigation_view, toast_overlay, scanner, settings):
         super().__init__()
@@ -60,7 +63,10 @@ class HomePage(Adw.NavigationPage):
         self.settings = settings
         self.results_page = None
 
-        self.thread_count_timeout_id = None
+        self.primary_popover.add_child(ThemeSelector(self.settings), "theme")
+
+        self._setup_apply_button_focus(self.ip_entry_row, self.ip_apply_button)
+        self._setup_apply_button_focus(self.thread_spinner, self.thread_apply_button)
 
         self.setup_presets()
 
@@ -68,7 +74,30 @@ class HomePage(Adw.NavigationPage):
         if last_range:
             self.ip_entry_row.set_text(last_range)
         else:
-            self.auto_detect_network()
+            detected_range = NetworkScanner.get_local_ip_range()
+            self.ip_entry_row.set_text(detected_range)
+
+        # On launch, drop the default focus and text selection so the IP entry
+        # isn't highlighted as if its contents were selected.
+        GLib.idle_add(self._reset_launch_highlight)
+
+    def _reset_launch_highlight(self):
+        self._clear_focus()
+        self.ip_entry_row.set_position(-1)
+        return GLib.SOURCE_REMOVE
+
+    def _clear_focus(self):
+        root = self.get_root()
+        if root:
+            root.set_focus(None)
+        return GLib.SOURCE_REMOVE
+
+    def _setup_apply_button_focus(self, row, button):
+        """Reveal a row's apply button whenever that row holds keyboard focus"""
+        controller = Gtk.EventControllerFocus()
+        controller.connect("enter", lambda c: button.set_visible(True))
+        controller.connect("leave", lambda c: button.set_visible(False))
+        row.add_controller(controller)
 
     def connect_results_page(self, results_page):
         self.results_page = results_page
@@ -98,7 +127,6 @@ class HomePage(Adw.NavigationPage):
         """Auto-detect network range"""
         detected_range = NetworkScanner.get_local_ip_range()
         self.ip_entry_row.set_text(detected_range)
-        self.show_toast(_("Auto-detected IP range: ") + detected_range, 2)
 
     @Gtk.Template.Callback()
     def on_scan_clicked(self, button):
@@ -112,27 +140,28 @@ class HomePage(Adw.NavigationPage):
             self.results_page.start_scan(ip_range)
 
     @Gtk.Template.Callback()
-    def on_ip_range_apply(self, entry_row):
-        """If the check mark is clicked after entering an IP"""
-        if self.validate_ip_range():
-            self.show_toast(_("Valid IP range!"), 2)
+    def on_ip_range_apply(self, _widget):
+        """When the apply button is clicked or Enter is pressed in the IP entry"""
+        self.validate_ip_range()
+        self._clear_focus()
 
     @Gtk.Template.Callback()
-    def on_thread_count_changed(self, spinner):
+    def on_thread_count_apply(self, button):
+        """Commit the manually typed thread count when the apply button is clicked"""
+        try:
+            typed = int(float(self.thread_spinner.get_text()))
+        except (ValueError, TypeError):
+            return
+        adjustment = self.thread_spinner.get_adjustment()
+        typed = max(int(adjustment.get_lower()), min(int(adjustment.get_upper()), typed))
+        self.thread_spinner.set_value(typed)
+        self._clear_focus()
+
+    @Gtk.Template.Callback()
+    def on_thread_count_changed(self, spinner, _pspec=None):
         """When thread count spinner value changes"""
-        thread_count = int(spinner.get_value())
-        self.scanner.set_max_workers(thread_count)
-
-        if self.thread_count_timeout_id:
-            GLib.source_remove(self.thread_count_timeout_id)
-
-        self.thread_count_timeout_id = GLib.timeout_add(500, self.show_thread_count_toast, thread_count)
-
-    def show_thread_count_toast(self, thread_count):
-        """Show toast for thread count change"""
-        self.show_toast(_("Thread count set to: ") + str(thread_count), 2)
-        self.thread_count_timeout_id = None
-        return False  # Don't repeat
+        self.scanner.set_max_workers(int(spinner.get_value()))
+        self._clear_focus()
 
     def on_auto_detect_clicked(self, button):
         """Auto-detect local network IP range"""
@@ -141,7 +170,6 @@ class HomePage(Adw.NavigationPage):
     def on_preset_clicked(self, button, preset_range):
         """If one of the IP presets were clicked"""
         self.ip_entry_row.set_text(preset_range)
-        self.show_toast(_("Set IP range to: ") + preset_range, 2)
 
     def validate_ip_range(self):
         """Validate the IP entered"""
@@ -162,6 +190,10 @@ class ResultsPage(Adw.NavigationPage):
     """Results page for displaying scan results"""
     __gtype_name__ = 'ResultsPage'
 
+    page_breakpoint_bin = Gtk.Template.Child()
+    results_header = Gtk.Template.Child()
+    action_box = Gtk.Template.Child()
+    bottom_bar = Gtk.Template.Child()
     results_title = Gtk.Template.Child()
     stop_button = Gtk.Template.Child()
     stop_button_content = Gtk.Template.Child()
@@ -176,11 +208,11 @@ class ResultsPage(Adw.NavigationPage):
     sort_row_hostname = Gtk.Template.Child()
     sort_row_custom_name = Gtk.Template.Child()
     sort_row_ports = Gtk.Template.Child()
+    sort_row_services = Gtk.Template.Child()
     results_stack = Gtk.Template.Child()
     spinner = Gtk.Template.Child()
     progress_label = Gtk.Template.Child()
     timer_label = Gtk.Template.Child()
-    devices_breakpoint_bin = Gtk.Template.Child()
     view_stack = Gtk.Template.Child()
     flow_box = Gtk.Template.Child()
     list_view = Gtk.Template.Child()
@@ -205,7 +237,7 @@ class ResultsPage(Adw.NavigationPage):
         self.list_store = Gio.ListStore(item_type=Device)
         self._setup_column_view()
         self.flow_box.bind_model(self.sort_model, self._create_card)
-        self._setup_responsive_columns()
+        self._setup_responsive_header()
 
         self._sort_rows = {
             self.sort_row_known: "known",
@@ -213,6 +245,7 @@ class ResultsPage(Adw.NavigationPage):
             self.sort_row_hostname: "hostname",
             self.sort_row_custom_name: "custom_name",
             self.sort_row_ports: "ports",
+            self.sort_row_services: "services",
         }
 
         view_mode = self.settings.get_string('view-mode')
@@ -225,13 +258,7 @@ class ResultsPage(Adw.NavigationPage):
         self.home_page = home_page
 
     def _create_card(self, device):
-        return DeviceCard(device, toast_overlay=self.toast_overlay, on_rename=self._on_device_renamed)
-
-    def _on_device_renamed(self, device):
-        if device.custom_name:
-            self.show_toast(_("Renamed to \"{name}\"").format(name=device.custom_name), 2)
-        else:
-            self.show_toast(_("Custom name cleared"), 2)
+        return DeviceCard(device, toast_overlay=self.toast_overlay)
 
     def _setup_column_view(self):
         self.sort_model = Gtk.SortListModel(model=self.list_store)
@@ -247,10 +274,12 @@ class ResultsPage(Adw.NavigationPage):
             "ip": self._add_ip_column(),
             "hostname": self._add_hostname_column(),
             "custom_name": self._add_custom_name_column(),
-            "ports": self._add_simple_column(_("Ports"), "ports-display", lambda d: d.ports_display, wrap=True),
+            "ports": self._add_simple_column(_("Ports"), "ports-display", lambda d: d.ports_display, wrap=True, width=180),
+            "services": self._add_simple_column(_("Services"), "services-display", lambda d: d.services_display, wrap=True, width=160),
         }
 
         self.sort_model.set_sorter(self.column_view.get_sorter())
+        self.column_view.get_sorter().connect("changed", lambda *_: self._update_sort_indicator())
 
     def _add_status_column(self):
         factory = Gtk.SignalListItemFactory()
@@ -288,7 +317,8 @@ class ResultsPage(Adw.NavigationPage):
         factory.connect("setup", self.on_ip_setup)
         factory.connect("bind", self.on_ip_bind)
         column = Gtk.ColumnViewColumn(title=_("IP Address"), factory=factory)
-        column.set_expand(True)
+        column.set_fixed_width(170)
+        column.set_resizable(True)
         column.set_sorter(Gtk.NumericSorter.new(Gtk.PropertyExpression.new(Device, None, "ip-sort-key")))
         self.column_view.append_column(column)
         return column
@@ -356,7 +386,8 @@ class ResultsPage(Adw.NavigationPage):
         factory.connect("setup", self.on_custom_name_setup)
         factory.connect("bind", self.on_custom_name_bind)
         column = Gtk.ColumnViewColumn(title=_("Custom Name"), factory=factory)
-        column.set_expand(True)
+        column.set_fixed_width(170)
+        column.set_resizable(True)
         column.set_sorter(Gtk.StringSorter.new(Gtk.PropertyExpression.new(Device, None, "custom-name")))
         self.column_view.append_column(column)
         return column
@@ -367,6 +398,8 @@ class ResultsPage(Adw.NavigationPage):
         entry.set_margin_start(8)
         entry.set_margin_end(8)
         entry.set_placeholder_text(_("Click to set name..."))
+        entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, "object-select-symbolic")
+        entry.set_icon_tooltip_text(Gtk.EntryIconPosition.SECONDARY, _("Apply"))
         list_item.set_child(entry)
 
     def on_custom_name_bind(self, factory, list_item):
@@ -387,17 +420,21 @@ class ResultsPage(Adw.NavigationPage):
         if hasattr(entry, '_custom_name_handler'):
             entry.disconnect(entry._custom_name_handler)
         entry._custom_name_handler = entry.connect(
-            "activate", lambda e: self._on_custom_name_committed(item))
+            "activate", lambda e: self._on_custom_name_committed(item, e))
 
-    def _on_custom_name_committed(self, item):
-        """Persist a custom name once the user commits (presses Enter)"""
+        if hasattr(entry, '_custom_name_icon_handler'):
+            entry.disconnect(entry._custom_name_icon_handler)
+        entry._custom_name_icon_handler = entry.connect(
+            "icon-press", lambda e, pos: self._on_custom_name_committed(item, e))
+
+    def _on_custom_name_committed(self, item, entry):
+        """Persist a custom name once the user commits (Enter or apply button)"""
         storage.set_custom_name(item.registry_key, item.custom_name)
-        if item.custom_name:
-            self.show_toast(_("Custom name saved for ") + item.ip, 2)
-        else:
-            self.show_toast(_("Custom name cleared for ") + item.ip, 2)
+        root = entry.get_root()
+        if root:
+            root.set_focus(None)
 
-    def _add_simple_column(self, title, prop_name, display_func, wrap=False):
+    def _add_simple_column(self, title, prop_name, display_func, wrap=False, width=None):
         factory = Gtk.SignalListItemFactory()
 
         def setup(_factory, list_item):
@@ -414,17 +451,61 @@ class ResultsPage(Adw.NavigationPage):
         factory.connect("bind", bind)
 
         column = Gtk.ColumnViewColumn(title=title, factory=factory)
-        column.set_expand(True)
+        if width is not None:
+            column.set_fixed_width(width)
+            column.set_resizable(True)
+        else:
+            column.set_expand(True)
         column.set_sorter(Gtk.StringSorter.new(Gtk.PropertyExpression.new(Device, None, prop_name)))
         self.column_view.append_column(column)
         return column
 
-    def _setup_responsive_columns(self):
-        """Hide secondary columns before the list view is forced to scroll horizontally."""
-        breakpoint = Adw.Breakpoint.new(Adw.BreakpointCondition.parse("max-width: 700sp"))
-        for key in ("custom_name", "ports"):
-            breakpoint.add_setter(self.columns[key], "visible", False)
-        self.devices_breakpoint_bin.add_breakpoint(breakpoint)
+    def _setup_responsive_header(self):
+        """Move the header action buttons to a bottom bar on narrow windows.
+
+        Breakpoint setters can only set properties, not reparent widgets, so
+        the move is done from the apply/unapply signals instead.
+        """
+        breakpoint = Adw.Breakpoint.new(Adw.BreakpointCondition.parse("max-width: 550sp"))
+        breakpoint.connect("apply", self._move_actions_to_bottom)
+        breakpoint.connect("unapply", self._move_actions_to_header)
+        self.page_breakpoint_bin.add_breakpoint(breakpoint)
+
+    def _action_buttons(self):
+        child = self.action_box.get_first_child()
+        while child is not None:
+            yield child
+            child = child.get_next_sibling()
+
+    def _move_actions_to_bottom(self, breakpoint):
+        self.results_header.remove(self.action_box)
+        self.action_box.set_halign(Gtk.Align.FILL)
+        self.action_box.set_hexpand(True)
+        self.action_box.set_spacing(6)
+        self.action_box.set_margin_top(9)
+        self.action_box.set_margin_bottom(9)
+        self.action_box.set_margin_start(9)
+        self.action_box.set_margin_end(9)
+        for button in self._action_buttons():
+            button.set_hexpand(True)
+            button.set_halign(Gtk.Align.CENTER)
+        self.bottom_bar.set_child(self.action_box)
+        self.bottom_bar.set_visible(True)
+
+    def _move_actions_to_header(self, breakpoint):
+        self.bottom_bar.set_child(None)
+        self.bottom_bar.set_visible(False)
+        self.action_box.set_hexpand(False)
+        self.action_box.set_halign(Gtk.Align.FILL)
+        self.action_box.set_spacing(6)
+        self.action_box.set_margin_top(0)
+        self.action_box.set_margin_bottom(0)
+        self.action_box.set_margin_start(0)
+        self.action_box.set_margin_end(0)
+        for button in self._action_buttons():
+            button.set_hexpand(False)
+            button.set_halign(Gtk.Align.FILL)
+        self.results_header.pack_end(self.action_box)
 
     def _apply_sort(self, column):
         sorter = self.column_view.get_sorter()
@@ -436,6 +517,18 @@ class ResultsPage(Adw.NavigationPage):
             order = Gtk.SortType.ASCENDING
         self.column_view.sort_by_column(column, order)
         self.sort_menu_button.popdown()
+
+    def _update_sort_indicator(self):
+        """Highlight the active sort row and show the direction on the button."""
+        sorter = self.column_view.get_sorter()
+        active_column = sorter.get_primary_sort_column()
+        active_key = next((k for k, c in self.columns.items() if c == active_column), None)
+        active_row = next((r for r, k in self._sort_rows.items() if k == active_key), None)
+        self.sort_list.select_row(active_row)
+
+        ascending = sorter.get_primary_sort_order() == Gtk.SortType.ASCENDING
+        self.sort_menu_button.set_icon_name(
+            "view-sort-ascending-symbolic" if ascending else "view-sort-descending-symbolic")
 
     @Gtk.Template.Callback()
     def on_sort_row_activated(self, listbox, row):
@@ -453,7 +546,7 @@ class ResultsPage(Adw.NavigationPage):
     def copy_to_clipboard(self, text):
         """Copy text to clipboard"""
         self.clipboard.set(text)
-        self.show_toast(_("Copied to clipboard: ") + text, 2)
+        self.show_toast(_("Copied {ip} to the clipboard").format(ip=text), 2)
 
     @Gtk.Template.Callback()
     def on_export_clicked(self, button):
@@ -492,7 +585,7 @@ class ResultsPage(Adw.NavigationPage):
         try:
             with open(file_path, 'w', newline='') as csvfile:
                 fieldnames = ['IP Address', 'Hostname', 'Custom Name', 'MAC Address',
-                              'Open Ports', 'SMB', 'Status']
+                              'Open Ports', 'Services', 'Status']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
                 writer.writeheader()
@@ -503,14 +596,23 @@ class ResultsPage(Adw.NavigationPage):
                         'Custom Name': device.custom_name,
                         'MAC Address': device.mac,
                         'Open Ports': device.ports_display,
-                        'SMB': _("Yes") if device.smb else _("No"),
+                        'Services': device.services_display,
                         'Status': _("Known") if device.known else _("New"),
                     })
 
             filename = Path(file_path).name
-            self.show_toast(_("Successfully exported to ") + filename, 3)
+            toast = Adw.Toast(title=_("Successfully exported to ") + filename)
+            toast.set_timeout(5)
+            toast.set_button_label(_("Open Folder"))
+            toast.connect("button-clicked", self._on_open_export_folder, file_path)
+            self.toast_overlay.add_toast(toast)
         except Exception as e:
             self.show_toast(_("Export failed: ") + str(e), 5)
+
+    def _on_open_export_folder(self, toast, file_path):
+        """Open the system file manager at the exported CSV"""
+        launcher = Gtk.FileLauncher.new(Gio.File.new_for_path(file_path))
+        launcher.open_containing_folder(self.get_root(), None, None)
 
     def start_timer(self):
         """Start the scan timer"""
@@ -552,6 +654,7 @@ class ResultsPage(Adw.NavigationPage):
         self.stop_button.set_visible(True)
         self.export_button.set_sensitive(False)
         self.view_toggle_button.set_sensitive(False)
+        self.sort_menu_button.set_sensitive(False)
 
         self.list_store.remove_all()
 
@@ -578,6 +681,7 @@ class ResultsPage(Adw.NavigationPage):
         self.rescan_button.set_sensitive(True)
         self.rescan_button_content.set_label(_("Scan Again"))
         self.view_toggle_button.set_sensitive(True)
+        self.sort_menu_button.set_sensitive(True)
 
         self.stop_timer()
 
@@ -586,14 +690,13 @@ class ResultsPage(Adw.NavigationPage):
             annotated = storage.record_scan(self.current_ip_range, partial)
             self._display_devices(annotated)
             self.results_title.set_subtitle(_("Scan stopped - Found {count} devices").format(count=len(annotated)))
-            self.show_toast(_("Scan stopped. Found {count} devices so far.").format(count=len(annotated)))
             self.export_button.set_sensitive(True)
         else:
             self._display_devices([])
             self.results_title.set_subtitle(_("Scan stopped - No devices found"))
-            self.show_toast(_("Scan stopped. No devices found."))
             self.view_toggle_button.set_sensitive(False)
             self.export_button.set_sensitive(False)
+            self.sort_menu_button.set_sensitive(False)
 
     @Gtk.Template.Callback()
     def on_rescan_clicked(self, button):
@@ -611,15 +714,21 @@ class ResultsPage(Adw.NavigationPage):
         """Load a previously saved scan without rescanning"""
         self.current_ip_range = ip_range
         self.results_title.set_subtitle(_("Loaded from history: ") + ip_range)
+        devices_data = storage.apply_custom_names(devices_data)
         self._display_devices(devices_data)
         self.export_button.set_sensitive(bool(devices_data))
         self.view_toggle_button.set_sensitive(bool(devices_data))
+        self.sort_menu_button.set_sensitive(bool(devices_data))
 
     def _display_devices(self, devices_data):
         """Populate the shared list store and switch to the right stack page"""
         self.list_store.remove_all()
         for data in devices_data:
             self.list_store.append(Device(data))
+
+        has_services = any(device.services_display for device in self.list_store)
+        self.columns["services"].set_visible(has_services)
+        self.sort_row_services.set_visible(has_services)
 
         if devices_data:
             self.results_stack.set_visible_child_name("devices")
@@ -632,6 +741,7 @@ class ResultsPage(Adw.NavigationPage):
         self.stop_button.set_visible(False)
         self.export_button.set_sensitive(True)
         self.view_toggle_button.set_sensitive(True)
+        self.sort_menu_button.set_sensitive(True)
 
         self.stop_timer()
 
@@ -639,24 +749,19 @@ class ResultsPage(Adw.NavigationPage):
             annotated = storage.record_scan(self.current_ip_range, devices)
             self._display_devices(annotated)
             self.results_title.set_subtitle(_("Found {count} devices").format(count=len(annotated)))
-
-            new_count = sum(1 for d in annotated if not d.get('known'))
-            if new_count:
-                self.show_toast(_("Found {count} new devices since last scan!").format(count=new_count), 4)
-            else:
-                self.show_toast(_("Found {count} devices on the network.").format(count=len(annotated)))
         else:
             self._display_devices([])
             self.results_title.set_subtitle(_("No devices found"))
-            self.show_toast(_("No devices found in the specified range"))
             self.view_toggle_button.set_sensitive(False)
             self.export_button.set_sensitive(False)
+            self.sort_menu_button.set_sensitive(False)
 
     def on_scan_error(self, error_message):
         self.rescan_button.set_sensitive(True)
         self.rescan_button_content.set_label(_("Scan Again"))
         self.stop_button.set_visible(False)
-        self.view_toggle_button.set_sensitive(True)
+        self.view_toggle_button.set_sensitive(False)
+        self.sort_menu_button.set_sensitive(False)
 
         self.stop_timer()
 

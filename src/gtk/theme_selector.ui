@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+
+  <template class="ThemeSelector" parent="GtkBox">
+    <property name="halign">center</property>
+    <property name="spacing">12</property>
+    <style>
+      <class name="theme-selector-frame"/>
+    </style>
+
+    <child>
+      <object class="GtkCheckButton" id="auto_button">
+        <property name="focus-on-click">False</property>
+        <property name="tooltip-text" translatable="yes">Follow System</property>
+        <style>
+          <class name="theme-selector"/>
+          <class name="auto"/>
+        </style>
+        <accessibility>
+          <property name="label" translatable="yes">Follow System</property>
+        </accessibility>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkCheckButton" id="light_button">
+        <property name="group">auto_button</property>
+        <property name="focus-on-click">False</property>
+        <property name="tooltip-text" translatable="yes">Light</property>
+        <style>
+          <class name="theme-selector"/>
+          <class name="light"/>
+        </style>
+        <accessibility>
+          <property name="label" translatable="yes">Light</property>
+        </accessibility>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkCheckButton" id="dark_button">
+        <property name="group">auto_button</property>
+        <property name="focus-on-click">False</property>
+        <property name="tooltip-text" translatable="yes">Dark</property>
+        <style>
+          <class name="theme-selector"/>
+          <class name="dark"/>
+        </style>
+        <accessibility>
+          <property name="label" translatable="yes">Dark</property>
+        </accessibility>
+      </object>
+    </child>
+  </template>
+</interface>

@@ -2,3 +2,4 @@
 repo/
 builddir/
 *.pyc
+__pycache__/
