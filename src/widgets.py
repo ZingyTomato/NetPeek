@@ -37,6 +37,7 @@ class DeviceCard(Adw.Bin):
     hostname_row = Gtk.Template.Child()
     ports_row = Gtk.Template.Child()
     services_row = Gtk.Template.Child()
+    os_row = Gtk.Template.Child()
 
     def __init__(self, device, toast_overlay):
         super().__init__()
@@ -68,7 +69,9 @@ class DeviceCard(Adw.Bin):
         self.hostname_row.set_subtitle(device.hostname if device.hostname != device.ip else _("Unknown"))
         self.ports_row.set_subtitle(device.ports_display)
         self.services_row.set_subtitle(device.services_display)
-        self.services_row.set_visible(bool(device.services_display))
+
+        self.os_row.set_subtitle(device.os_display)
+        self.os_row.set_visible(device.deep_scanned)
 
     @Gtk.Template.Callback()
     def on_ip_clicked(self, button):
@@ -86,6 +89,7 @@ class DeviceCard(Adw.Bin):
         root = self.get_root()
         if root:
             root.set_focus(None)
+        self.name_row.set_position(-1)
 
     def show_toast(self, message, timeout=3):
         toast = Adw.Toast(title=message)

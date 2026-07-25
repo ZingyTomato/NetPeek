@@ -69,20 +69,9 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         about.add_credit_section(_("Contributors"), ["ZingyTomato", "Gert-Dev", "Cameo007", "vmkspv", "oscfdezdz", "albanobattistella", "sjulien", "dawkagaming", "prescott66"])
         release_notes = """
         <ul>
-          <li>Refreshed the app icon with a contemporary, flat style.</li>
-          <li>Redesigned the light, dark and system style switcher with visual swatches.</li>
-          <li>Cockpit instances are now detected and shown alongside SMB shares in a combined Services row.</li>
-          <li>Header actions move into a bottom bar when the window is narrow.</li>
-          <li>Custom device names now apply retroactively to previous scans.</li>
-          <li>Added an Open Folder shortcut to the CSV export notification.</li>
-          <li>Streamlined notifications, keeping only copy, export and error messages.</li>
-          <li>The active sort option is now highlighted and shows its direction.</li>
-          <li>Sorting is disabled while scanning and when no devices are found.</li>
-          <li>Added a Services column to the list view and made narrow lists scroll horizontally.</li>
-          <li>Centered the network preset buttons and set a minimum window size for a consistent layout.</li>
-          <li>Fixed manually entered thread counts not being applied, and added a confirm button to the IP and thread fields.</li>
-          <li>Input fields no longer keep focus after use, and the IP entry no longer shows a focus ring or apply button on launch.</li>
-          <li>Device cards no longer highlight on hover.</li>
+          <li>New Deep Scan mode for additional information like OS identification, software versions and more.</li>
+          <li>Expanded service detection for common self-hosted and DevOps services (MySQL, PostgreSQL, Redis, Home Assistant, Plex, etc.).</li>
+          <li>Improved UI adaptability for smaller screens.</li>
         </ul>
         """
         about.set_release_notes(release_notes)

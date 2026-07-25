@@ -53,6 +53,7 @@ class HomePage(Adw.NavigationPage):
     thread_spinner = Gtk.Template.Child()
     thread_apply_button = Gtk.Template.Child()
     primary_popover = Gtk.Template.Child()
+    deep_scan_row = Gtk.Template.Child()
 
     def __init__(self, navigation_view, toast_overlay, scanner, settings):
         super().__init__()
@@ -69,6 +70,10 @@ class HomePage(Adw.NavigationPage):
         self._setup_apply_button_focus(self.thread_spinner, self.thread_apply_button)
 
         self.setup_presets()
+
+        # Bind deep scan switch to GSettings
+        self.deep_scan_row.set_active(self.settings.get_boolean('deep-scan'))
+        self.deep_scan_row.connect('notify::active', self._on_deep_scan_toggled)
 
         last_range = self.settings.get_string('last-ip-range')
         if last_range:
@@ -128,6 +133,10 @@ class HomePage(Adw.NavigationPage):
         detected_range = NetworkScanner.get_local_ip_range()
         self.ip_entry_row.set_text(detected_range)
 
+    def _on_deep_scan_toggled(self, switch, _pspec):
+        """Persist deep scan preference when toggled."""
+        self.settings.set_boolean('deep-scan', switch.get_active())
+
     @Gtk.Template.Callback()
     def on_scan_clicked(self, button):
         """Start scan when 'Scan My Network' is clicked"""
@@ -137,13 +146,14 @@ class HomePage(Adw.NavigationPage):
         self.settings.set_string('last-ip-range', ip_range)
         if self.results_page:
             self.navigation_view.push(self.results_page)
-            self.results_page.start_scan(ip_range)
+            self.results_page.start_scan(ip_range, deep_scan=self.deep_scan_row.get_active())
 
     @Gtk.Template.Callback()
     def on_ip_range_apply(self, _widget):
         """When the apply button is clicked or Enter is pressed in the IP entry"""
         self.validate_ip_range()
         self._clear_focus()
+        self.ip_entry_row.set_position(-1)
 
     @Gtk.Template.Callback()
     def on_thread_count_apply(self, button):
@@ -156,12 +166,14 @@ class HomePage(Adw.NavigationPage):
         typed = max(int(adjustment.get_lower()), min(int(adjustment.get_upper()), typed))
         self.thread_spinner.set_value(typed)
         self._clear_focus()
+        self.thread_spinner.set_position(-1)
 
     @Gtk.Template.Callback()
     def on_thread_count_changed(self, spinner, _pspec=None):
         """When thread count spinner value changes"""
         self.scanner.set_max_workers(int(spinner.get_value()))
         self._clear_focus()
+        spinner.set_position(-1)
 
     def on_auto_detect_clicked(self, button):
         """Auto-detect local network IP range"""
@@ -209,6 +221,7 @@ class ResultsPage(Adw.NavigationPage):
     sort_row_custom_name = Gtk.Template.Child()
     sort_row_ports = Gtk.Template.Child()
     sort_row_services = Gtk.Template.Child()
+    sort_row_os = Gtk.Template.Child()
     results_stack = Gtk.Template.Child()
     spinner = Gtk.Template.Child()
     progress_label = Gtk.Template.Child()
@@ -231,6 +244,8 @@ class ResultsPage(Adw.NavigationPage):
 
         self.current_ip_range = ""
 
+        self._deep_scan = False
+
         self.scan_start_time = None
         self.timer_source_id = None
 
@@ -246,7 +261,10 @@ class ResultsPage(Adw.NavigationPage):
             self.sort_row_custom_name: "custom_name",
             self.sort_row_ports: "ports",
             self.sort_row_services: "services",
+            self.sort_row_os: "os",
         }
+
+        self.column_view.sort_by_column(self.columns["ip"], Gtk.SortType.ASCENDING)
 
         view_mode = self.settings.get_string('view-mode')
         is_list = view_mode == 'list'
@@ -276,6 +294,7 @@ class ResultsPage(Adw.NavigationPage):
             "custom_name": self._add_custom_name_column(),
             "ports": self._add_simple_column(_("Ports"), "ports-display", lambda d: d.ports_display, wrap=True, width=180),
             "services": self._add_simple_column(_("Services"), "services-display", lambda d: d.services_display, wrap=True, width=160),
+            "os": self._add_simple_column(_("System Information"), "os-display", lambda d: d.os_display, wrap=True, width=180),
         }
 
         self.sort_model.set_sorter(self.column_view.get_sorter())
@@ -433,6 +452,7 @@ class ResultsPage(Adw.NavigationPage):
         root = entry.get_root()
         if root:
             root.set_focus(None)
+        entry.set_position(-1)
 
     def _add_simple_column(self, title, prop_name, display_func, wrap=False, width=None):
         factory = Gtk.SignalListItemFactory()
@@ -466,7 +486,7 @@ class ResultsPage(Adw.NavigationPage):
         Breakpoint setters can only set properties, not reparent widgets, so
         the move is done from the apply/unapply signals instead.
         """
-        breakpoint = Adw.Breakpoint.new(Adw.BreakpointCondition.parse("max-width: 550sp"))
+        breakpoint = Adw.Breakpoint.new(Adw.BreakpointCondition.parse("max-width: 600sp"))
         breakpoint.connect("apply", self._move_actions_to_bottom)
         breakpoint.connect("unapply", self._move_actions_to_header)
         self.page_breakpoint_bin.add_breakpoint(breakpoint)
@@ -474,23 +494,27 @@ class ResultsPage(Adw.NavigationPage):
     def _action_buttons(self):
         child = self.action_box.get_first_child()
         while child is not None:
-            yield child
+            if isinstance(child, (Gtk.Button, Gtk.ToggleButton, Gtk.MenuButton)):
+                yield child
             child = child.get_next_sibling()
 
     def _move_actions_to_bottom(self, breakpoint):
         self.results_header.remove(self.action_box)
-        self.action_box.set_halign(Gtk.Align.FILL)
-        self.action_box.set_hexpand(True)
-        self.action_box.set_spacing(6)
-        self.action_box.set_margin_top(9)
-        self.action_box.set_margin_bottom(9)
-        self.action_box.set_margin_start(9)
-        self.action_box.set_margin_end(9)
+        self.action_box.set_halign(Gtk.Align.CENTER)
+        self.action_box.set_hexpand(False)
+        self.action_box.set_spacing(12)
+        self.action_box.set_margin_top(6)
+        self.action_box.set_margin_bottom(6)
+        self.action_box.set_margin_start(6)
+        self.action_box.set_margin_end(6)
         for button in self._action_buttons():
-            button.set_hexpand(True)
-            button.set_halign(Gtk.Align.CENTER)
+            button.set_hexpand(False)
+            button.set_halign(Gtk.Align.FILL)
+        self.export_button.set_margin_end(6)
         self.bottom_bar.set_child(self.action_box)
         self.bottom_bar.set_visible(True)
+        self.view_toggle_button.set_visible(False)
+        self.stop_button_content.set_label("")
 
     def _move_actions_to_header(self, breakpoint):
         self.bottom_bar.set_child(None)
@@ -505,6 +529,9 @@ class ResultsPage(Adw.NavigationPage):
         for button in self._action_buttons():
             button.set_hexpand(False)
             button.set_halign(Gtk.Align.FILL)
+        self.export_button.set_margin_end(0)
+        self.view_toggle_button.set_visible(True)
+        self.stop_button_content.set_label(_("Stop"))
         self.results_header.pack_end(self.action_box)
 
     def _apply_sort(self, column):
@@ -514,7 +541,7 @@ class ResultsPage(Adw.NavigationPage):
                      if sorter.get_primary_sort_order() == Gtk.SortType.ASCENDING
                      else Gtk.SortType.ASCENDING)
         else:
-            order = Gtk.SortType.ASCENDING
+            order = Gtk.SortType.DESCENDING
         self.column_view.sort_by_column(column, order)
         self.sort_menu_button.popdown()
 
@@ -527,6 +554,16 @@ class ResultsPage(Adw.NavigationPage):
         self.sort_list.select_row(active_row)
 
         ascending = sorter.get_primary_sort_order() == Gtk.SortType.ASCENDING
+
+        for row in self._sort_rows:
+            box = row.get_child()
+            icon = box.get_last_child()
+            if row == active_row:
+                icon.set_from_icon_name(
+                    "view-sort-ascending-symbolic" if ascending else "view-sort-descending-symbolic")
+                icon.set_visible(True)
+            else:
+                icon.set_visible(False)
         self.sort_menu_button.set_icon_name(
             "view-sort-ascending-symbolic" if ascending else "view-sort-descending-symbolic")
 
@@ -585,7 +622,7 @@ class ResultsPage(Adw.NavigationPage):
         try:
             with open(file_path, 'w', newline='') as csvfile:
                 fieldnames = ['IP Address', 'Hostname', 'Custom Name', 'MAC Address',
-                              'Open Ports', 'Services', 'Status']
+                              'Open Ports', 'Services', 'System Information', 'Status']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
                 writer.writeheader()
@@ -597,6 +634,7 @@ class ResultsPage(Adw.NavigationPage):
                         'MAC Address': device.mac,
                         'Open Ports': device.ports_display,
                         'Services': device.services_display,
+                        'System Information': device.os_display,
                         'Status': _("Known") if device.known else _("New"),
                     })
 
@@ -646,8 +684,9 @@ class ResultsPage(Adw.NavigationPage):
         )
         self.progress_label.set_text(progress_text)
 
-    def start_scan(self, ip_range):
+    def start_scan(self, ip_range, deep_scan=False):
         self.current_ip_range = ip_range
+        self._deep_scan = deep_scan
 
         self.rescan_button.set_sensitive(False)
         self.rescan_button_content.set_label(_("Scanning..."))
@@ -670,7 +709,8 @@ class ResultsPage(Adw.NavigationPage):
             ip_range,
             self.on_scan_complete,
             self.on_scan_error,
-            self.on_progress_update
+            self.on_progress_update,
+            deep_scan=deep_scan,
         )
 
     @Gtk.Template.Callback()
@@ -679,7 +719,7 @@ class ResultsPage(Adw.NavigationPage):
         self.scanner.stop_scan()
         self.stop_button.set_visible(False)
         self.rescan_button.set_sensitive(True)
-        self.rescan_button_content.set_label(_("Scan Again"))
+        self.rescan_button_content.set_label(_("Rescan"))
         self.view_toggle_button.set_sensitive(True)
         self.sort_menu_button.set_sensitive(True)
 
@@ -706,7 +746,7 @@ class ResultsPage(Adw.NavigationPage):
 
         is_valid, message = self.scanner.validate_ip_range(self.current_ip_range)
         if is_valid:
-            self.start_scan(self.current_ip_range)
+            self.start_scan(self.current_ip_range, deep_scan=self._deep_scan)
         else:
             self.show_toast(_(message))
 
@@ -730,6 +770,10 @@ class ResultsPage(Adw.NavigationPage):
         self.columns["services"].set_visible(has_services)
         self.sort_row_services.set_visible(has_services)
 
+        has_os = any(device.deep_scanned for device in self.list_store)
+        self.columns["os"].set_visible(has_os)
+        self.sort_row_os.set_visible(has_os)
+
         if devices_data:
             self.results_stack.set_visible_child_name("devices")
         else:
@@ -737,7 +781,7 @@ class ResultsPage(Adw.NavigationPage):
 
     def on_scan_complete(self, devices):
         self.rescan_button.set_sensitive(True)
-        self.rescan_button_content.set_label(_("Scan Again"))
+        self.rescan_button_content.set_label(_("Rescan"))
         self.stop_button.set_visible(False)
         self.export_button.set_sensitive(True)
         self.view_toggle_button.set_sensitive(True)
@@ -758,7 +802,7 @@ class ResultsPage(Adw.NavigationPage):
 
     def on_scan_error(self, error_message):
         self.rescan_button.set_sensitive(True)
-        self.rescan_button_content.set_label(_("Scan Again"))
+        self.rescan_button_content.set_label(_("Rescan"))
         self.stop_button.set_visible(False)
         self.view_toggle_button.set_sensitive(False)
         self.sort_menu_button.set_sensitive(False)

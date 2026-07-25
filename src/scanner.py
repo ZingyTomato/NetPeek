@@ -30,9 +30,27 @@ from . import netinfo
 class NetworkScanner:
     """Network scanning functionality"""
 
+    # Map of known service ports to service identifiers.
+    # Only includes ports that are distinctive enough for a reliable guess.
+    SERVICE_PORTS = {
+        139: "smb",
+        445: "smb",
+        9090: "cockpit",
+        3306: "mysql",
+        5432: "postgresql",
+        6379: "redis",
+        8123: "homeassistant",
+        32400: "plex",
+        631: "cups",
+        27017: "mongodb",
+        8006: "proxmox",
+        5001: "synology",
+    }
+
     def __init__(self):
-        self.common_ports = [22, 80, 443, 3389, 53, 21, 23, 8080, 8443, 8006, 5000, 445, 139, 9090]
+        self.common_ports = [22, 80, 443, 3389, 53, 21, 23, 8080, 8443, 8006, 5000, 5001, 445, 139, 9090, 3000, 3306, 5432, 6379, 8123, 32400, 9000, 631, 27017]
         self.is_scanning = False
+        self._scan_generation = 0
         self.hosts_scanned = 0
         self.total_hosts = 0
         self.partial_results = []
@@ -89,12 +107,19 @@ class NetworkScanner:
             hosts = []
         return hosts
 
-    def scan_single_ip(self, host, devices, progress_callback=None):
+    def scan_single_ip(self, host, devices, progress_callback=None, deep_scan=False, generation=None):
         if not self.is_scanning:
             return
 
         nm = nmap.PortScanner()
-        scan_arguments = f"-sT -p {','.join(map(str, self.common_ports))}"
+        ports_str = ','.join(map(str, self.common_ports))
+        scan_arguments = f"-sT -p {ports_str}"
+
+        if deep_scan:
+            # Service version detection (works without root)
+            scan_arguments += " -sV --version-intensity 2"
+            # SMB OS discovery and share enumeration (NSE scripts, no root needed)
+            scan_arguments += " --script smb-os-discovery.nse"
 
         try:
             nm.scan(hosts=str(host), arguments=scan_arguments)
@@ -117,11 +142,11 @@ class NetworkScanner:
                 if not hostname:
                     hostname = netinfo.resolve_hostname(str(host))
                 smb = 445 in open_ports or 139 in open_ports
-                services = []
-                if smb:
-                    services.append("smb")
-                if 9090 in open_ports:
-                    services.append("cockpit")
+                services = list(dict.fromkeys(
+                    svc for port, svc in self.SERVICE_PORTS.items()
+                    if port in open_ports
+                ))
+
                 device = {
                     "hostname": hostname or str(host),
                     "ip": str(host),
@@ -129,22 +154,33 @@ class NetworkScanner:
                     "ports_display": ", ".join(map(str, open_ports)) if open_ports else _("No common ports open"),
                     "smb": smb,
                     "services": services,
+                    "os_display": "",
                 }
+
+                if deep_scan:
+                    self._enrich_deep_scan(host_info, device, open_ports)
+
+                device["deep_scanned"] = deep_scan
+
                 with self.lock:
                     devices.append(device)
-                    self.partial_results.append(device)
+                    if generation is None or generation == self._scan_generation:
+                        self.partial_results.append(device)
 
         with self.lock:
-            self.hosts_scanned += 1
-            if progress_callback:
-                GLib.idle_add(progress_callback, self.hosts_scanned, self.total_hosts)
+            if generation is None or generation == self._scan_generation:
+                self.hosts_scanned += 1
+                if progress_callback:
+                    GLib.idle_add(progress_callback, self.hosts_scanned, self.total_hosts)
 
-    def scan_network(self, ip_range, callback, error_callback, progress_callback=None):
+    def scan_network(self, ip_range, callback, error_callback, progress_callback=None, deep_scan=False):
         def do_scan():
             try:
                 self.is_scanning = True
                 self.partial_results = []
                 self.hosts_scanned = 0
+                self._scan_generation += 1
+                gen = self._scan_generation
 
                 hosts_to_scan = self.parse_ip_range_for_list(ip_range)
                 self.total_hosts = len(hosts_to_scan)
@@ -159,7 +195,7 @@ class NetworkScanner:
                     for host in hosts_to_scan:
                         if not self.is_scanning:
                             break
-                        future = executor.submit(self.scan_single_ip, host, devices, progress_callback)
+                        future = executor.submit(self.scan_single_ip, host, devices, progress_callback, deep_scan, gen)
                         futures.append(future)
 
                     for future in futures:
@@ -168,7 +204,7 @@ class NetworkScanner:
                         except Exception as e:
                             print(_("An error occurred in a thread: {e}").format(e=e))
 
-                if self.is_scanning:
+                if self.is_scanning and gen == self._scan_generation:
                     self.is_scanning = False
                     devices_sorted = sorted(devices, key=lambda x: ipaddress.IPv4Address(x['ip']))
                     self._enrich_with_arp(devices_sorted)
@@ -183,11 +219,52 @@ class NetworkScanner:
 
     def stop_scan(self):
         self.is_scanning = False
+        self._scan_generation += 1
 
     def get_partial_results(self):
         devices = sorted(self.partial_results, key=lambda x: ipaddress.IPv4Address(x['ip']))
         self._enrich_with_arp(devices)
         return devices
+
+    @staticmethod
+    def _enrich_deep_scan(host_info, device, open_ports):
+        """Parse NSE script results and -sV service versions into OS and share info."""
+        hostscript = host_info.get('hostscript', [])
+        os_parts = []
+
+        # 1. SMB OS discovery (most accurate for Windows hosts)
+        for script in hostscript:
+            if script.get('id') == 'smb-os-discovery':
+                output = script.get('output', '')
+                for line in output.split('\n'):
+                    line = line.strip()
+                    if line.startswith('OS:'):
+                        os_parts.append(line[3:].strip())
+                    elif line.startswith('|_'):
+                        # Handle continuation lines
+                        clean = line[2:].strip()
+                        if clean.startswith('OS:'):
+                            os_parts.append(clean[3:].strip())
+
+        # 2. Service version info from -sV
+        version_strings = []
+        if 'tcp' in host_info:
+            for port in open_ports:
+                port_info = host_info['tcp'].get(port, {})
+                product = port_info.get('product', '')
+                version = port_info.get('version', '')
+                if product:
+                    parts = [product]
+                    if version:
+                        parts.append(version)
+                    version_strings.append(' '.join(parts))
+
+        if version_strings:
+            # Deduplicate and limit to 3 services
+            seen = list(dict.fromkeys(version_strings))
+            os_parts.append(', '.join(seen[:3]))
+
+        device["os_display"] = ' — '.join(os_parts) if os_parts else ''
 
     @staticmethod
     def _enrich_with_arp(devices):

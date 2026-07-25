@@ -31,5 +31,10 @@
       <summary>Last used IP range</summary>
       <description>The IP range entered in the last scan, restored on startup.</description>
     </key>
+    <key name="deep-scan" type="b">
+      <default>false</default>
+      <summary>Enable deep scan mode</summary>
+      <description>When enabled, retrieves more detailed system information like OS name, HTTP server etc.</description>
+    </key>
 	</schema>
 </schemalist>

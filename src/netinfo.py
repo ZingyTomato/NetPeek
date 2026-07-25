@@ -17,11 +17,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-# Best-effort local network discovery helpers - all stdlib, no root required.
-#
-# Provides hostname resolution beyond plain reverse DNS (which rarely works on
-# home LANs), plus MAC lookup via the kernel ARP table.
-
 import random
 import socket
 import struct

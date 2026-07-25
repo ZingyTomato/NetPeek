@@ -150,19 +150,13 @@
                                     </child>
                                   </object>
                                 </child>
-                              </object>
-                            </child>
 
-                            <child>
-                              <object class="GtkLabel">
-                                <property name="label" translatable="yes">Examples: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200</property>
-                                <property name="halign">start</property>
-                                <property name="wrap">true</property>
-                                <property name="margin-top">6</property>
-                                <style>
-                                  <class name="dim-label"/>
-                                  <class name="caption"/>
-                                </style>
+                                <child>
+                                  <object class="AdwSwitchRow" id="deep_scan_row">
+                                    <property name="title" translatable="yes">Deep Scan</property>
+                                    <property name="subtitle" translatable="yes">Retrieves more detailed system information like OS name, HTTP server etc.</property>
+                                  </object>
+                                </child>
                               </object>
                             </child>
 

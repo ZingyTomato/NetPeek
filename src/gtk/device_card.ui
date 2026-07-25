@@ -4,6 +4,7 @@
   <requires lib="libadwaita" version="1.0"/>
 
   <template class="DeviceCard" parent="AdwBin">
+    <property name="width-request">320</property>
     <child>
       <object class="AdwClamp">
         <property name="maximum-size">320</property>
@@ -95,11 +96,23 @@
             <child>
               <object class="AdwActionRow" id="services_row">
                 <property name="title" translatable="yes">Services</property>
-                <property name="visible">False</property>
 
                 <child type="prefix">
                   <object class="GtkImage">
                     <property name="icon-name">folder-remote-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwActionRow" id="os_row">
+                <property name="title" translatable="yes">System Information</property>
+                <property name="subtitle-lines">3</property>
+
+                <child type="prefix">
+                  <object class="GtkImage">
+                    <property name="icon-name">computer-symbolic</property>
                   </object>
                 </child>
               </object>

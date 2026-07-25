@@ -18,7 +18,26 @@
   <url type="vcs-browser">https://github.com/zingytomato/netpeek</url>
   <url type="bugtracker">https://github.com/zingytomato/netpeek/issues</url>
   <launchable type="desktop-id">io.github.zingytomato.netpeek.desktop</launchable>
+  <categories>
+    <category>Network</category>
+    <category>System</category>
+  </categories>
+  <keywords>
+    <keyword>Gnome</keyword>
+    <keyword>GTK</keyword>
+    <keyword>Networking</keyword>
+    <keyword>Internet</keyword>
+    <keyword>Scanner</keyword>
+  </keywords>
   <content_rating type="oars-1.1" />
+  <supports>
+    <control>keyboard</control>
+    <control>pointing</control>
+    <control>touch</control>
+  </supports>
+  <requires>
+    <display_length compare="ge">360</display_length>
+  </requires>
   <branding>
     <color type="primary" scheme_preference="dark">#005577</color>
     <color type="primary" scheme_preference="light">#0088cc</color>
@@ -42,6 +61,17 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="0.3.0" date="2026-07-25">
+      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.3.0</url>
+      <description>
+        <p>Version 0.3.0</p>
+        <ul>
+          <li>New Deep Scan mode for additional information like OS identification, software versions and more.</li>
+          <li>Expanded service detection for common self-hosted and DevOps services (MySQL, PostgreSQL, Redis, Home Assistant, Plex, etc.).</li>
+          <li>Improved UI adaptability for smaller screens.</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.2.9" date="2026-07-19">
       <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.2.9</url>
       <description>

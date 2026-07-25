@@ -17,10 +17,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-# Local JSON persistence for the device registry and scan history. Lives
-# under GLib's per-app user data dir, which Flatpak maps to the app's
-# private data directory - no extra permissions needed.
-
 import json
 import os
 from datetime import datetime, timezone

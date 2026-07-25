@@ -29,7 +29,7 @@
                 <property name="child">
                   <object class="AdwButtonContent" id="stop_button_content">
                     <property name="icon-name">process-stop-symbolic</property>
-                    <property name="label" translatable="yes">Stop Scanning</property>
+                    <property name="label" translatable="yes">Stop</property>
                     <property name="can-shrink">True</property>
                   </object>
                 </property>
@@ -62,27 +62,35 @@
 
                 <child>
                   <object class="GtkMenuButton" id="sort_menu_button">
-                    <property name="icon-name">view-sort-descending-symbolic</property>
+                    <property name="icon-name">view-sort-ascending-symbolic</property>
                     <property name="tooltip-text" translatable="yes">Sort devices</property>
                     <property name="popover">
                       <object class="GtkPopover">
+                        <style>
+                          <class name="menu"/>
+                        </style>
                         <property name="child">
                           <object class="GtkListBox" id="sort_list">
                             <property name="selection-mode">single</property>
                             <signal name="row-activated" handler="on_sort_row_activated"/>
-                            <style>
-                              <class name="boxed-list"/>
-                            </style>
                             <child>
                               <object class="GtkListBoxRow" id="sort_row_known">
                                 <property name="child">
-                                  <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Known</property>
-                                    <property name="halign">start</property>
-                                    <property name="margin-top">6</property>
-                                    <property name="margin-bottom">6</property>
-                                    <property name="margin-start">12</property>
-                                    <property name="margin-end">12</property>
+                                  <object class="GtkBox">
+                                    <property name="hexpand">True</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Known</property>
+                                        <property name="halign">start</property>
+                                        <property name="hexpand">True</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkImage">
+                                        <property name="icon-name">object-select-symbolic</property>
+                                        <property name="visible">False</property>
+                                      </object>
+                                    </child>
                                   </object>
                                 </property>
                               </object>
@@ -90,13 +98,21 @@
                             <child>
                               <object class="GtkListBoxRow" id="sort_row_ip">
                                 <property name="child">
-                                  <object class="GtkLabel">
-                                    <property name="label" translatable="yes">IP Address</property>
-                                    <property name="halign">start</property>
-                                    <property name="margin-top">6</property>
-                                    <property name="margin-bottom">6</property>
-                                    <property name="margin-start">12</property>
-                                    <property name="margin-end">12</property>
+                                  <object class="GtkBox">
+                                    <property name="hexpand">True</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">IP Address</property>
+                                        <property name="halign">start</property>
+                                        <property name="hexpand">True</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkImage">
+                                        <property name="icon-name">object-select-symbolic</property>
+                                        <property name="visible">False</property>
+                                      </object>
+                                    </child>
                                   </object>
                                 </property>
                               </object>
@@ -104,13 +120,21 @@
                             <child>
                               <object class="GtkListBoxRow" id="sort_row_hostname">
                                 <property name="child">
-                                  <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Hostname</property>
-                                    <property name="halign">start</property>
-                                    <property name="margin-top">6</property>
-                                    <property name="margin-bottom">6</property>
-                                    <property name="margin-start">12</property>
-                                    <property name="margin-end">12</property>
+                                  <object class="GtkBox">
+                                    <property name="hexpand">True</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Hostname</property>
+                                        <property name="halign">start</property>
+                                        <property name="hexpand">True</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkImage">
+                                        <property name="icon-name">object-select-symbolic</property>
+                                        <property name="visible">False</property>
+                                      </object>
+                                    </child>
                                   </object>
                                 </property>
                               </object>
@@ -118,13 +142,21 @@
                             <child>
                               <object class="GtkListBoxRow" id="sort_row_custom_name">
                                 <property name="child">
-                                  <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Custom Name</property>
-                                    <property name="halign">start</property>
-                                    <property name="margin-top">6</property>
-                                    <property name="margin-bottom">6</property>
-                                    <property name="margin-start">12</property>
-                                    <property name="margin-end">12</property>
+                                  <object class="GtkBox">
+                                    <property name="hexpand">True</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Custom Name</property>
+                                        <property name="halign">start</property>
+                                        <property name="hexpand">True</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkImage">
+                                        <property name="icon-name">object-select-symbolic</property>
+                                        <property name="visible">False</property>
+                                      </object>
+                                    </child>
                                   </object>
                                 </property>
                               </object>
@@ -132,13 +164,21 @@
                             <child>
                               <object class="GtkListBoxRow" id="sort_row_ports">
                                 <property name="child">
-                                  <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Ports</property>
-                                    <property name="halign">start</property>
-                                    <property name="margin-top">6</property>
-                                    <property name="margin-bottom">6</property>
-                                    <property name="margin-start">12</property>
-                                    <property name="margin-end">12</property>
+                                  <object class="GtkBox">
+                                    <property name="hexpand">True</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Ports</property>
+                                        <property name="halign">start</property>
+                                        <property name="hexpand">True</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkImage">
+                                        <property name="icon-name">object-select-symbolic</property>
+                                        <property name="visible">False</property>
+                                      </object>
+                                    </child>
                                   </object>
                                 </property>
                               </object>
@@ -146,13 +186,43 @@
                             <child>
                               <object class="GtkListBoxRow" id="sort_row_services">
                                 <property name="child">
-                                  <object class="GtkLabel">
-                                    <property name="label" translatable="yes">Services</property>
-                                    <property name="halign">start</property>
-                                    <property name="margin-top">6</property>
-                                    <property name="margin-bottom">6</property>
-                                    <property name="margin-start">12</property>
-                                    <property name="margin-end">12</property>
+                                  <object class="GtkBox">
+                                    <property name="hexpand">True</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Services</property>
+                                        <property name="halign">start</property>
+                                        <property name="hexpand">True</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkImage">
+                                        <property name="icon-name">object-select-symbolic</property>
+                                        <property name="visible">False</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkListBoxRow" id="sort_row_os">
+                                <property name="child">
+                                  <object class="GtkBox">
+                                    <property name="hexpand">True</property>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="label" translatable="yes">System Information</property>
+                                        <property name="halign">start</property>
+                                        <property name="hexpand">True</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkImage">
+                                        <property name="icon-name">object-select-symbolic</property>
+                                        <property name="visible">False</property>
+                                      </object>
+                                    </child>
                                   </object>
                                 </property>
                               </object>
@@ -165,11 +235,19 @@
                 </child>
 
                 <child>
+                  <object class="GtkSeparator">
+                    <style>
+                      <class name="spacer"/>
+                    </style>
+                  </object>
+                </child>
+
+                <child>
                   <object class="GtkButton" id="rescan_button">
                     <property name="child">
                       <object class="AdwButtonContent" id="rescan_button_content">
                         <property name="icon-name">view-refresh-symbolic</property>
-                        <property name="label" translatable="yes">Scan Again</property>
+                        <property name="label" translatable="yes">Rescan</property>
                         <property name="can-shrink">True</property>
                       </object>
                     </property>
@@ -255,7 +333,6 @@
                       <object class="AdwBreakpoint">
                         <condition>max-width: 500sp</condition>
                         <setter object="view_stack" property="visible-child-name">cards</setter>
-                        <setter object="view_toggle_button" property="visible">False</setter>
                       </object>
                     </child>
                     <child>
@@ -273,14 +350,15 @@
                                 <child>
                                   <object class="GtkFlowBox" id="flow_box">
                                     <property name="valign">start</property>
-                                    <property name="max-children-per-line">3</property>
+                                    <property name="halign">center</property>
+                                    <property name="max-children-per-line">4</property>
                                     <property name="min-children-per-line">1</property>
                                     <property name="row-spacing">12</property>
                                     <property name="column-spacing">12</property>
                                     <property name="margin-top">24</property>
                                     <property name="margin-bottom">24</property>
-                                    <property name="margin-start">24</property>
-                                    <property name="margin-end">24</property>
+                                    <property name="margin-start">12</property>
+                                    <property name="margin-end">12</property>
                                     <property name="selection-mode">none</property>
                                     <style>
                                       <class name="device-grid"/>
