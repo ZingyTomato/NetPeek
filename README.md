@@ -54,6 +54,8 @@ flatpak install flathub io.github.zingytomato.netpeek
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/netpeek.svg)](https://repology.org/project/netpeek/versions)
 
+Fedora COPR: https://copr.fedorainfracloud.org/coprs/infiniti151/flatpak-apps/
+
 ## 🔨 Local Development
 
 ### GNOME Builder
