@@ -20,7 +20,7 @@
 import gi
 import time
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 gi.require_version('Gtk', '4.0')
@@ -727,7 +727,7 @@ class ResultsPage(Adw.NavigationPage):
 
         partial = self.scanner.get_partial_results()
         if partial:
-            annotated = storage.record_scan(self.current_ip_range, partial)
+            annotated = storage.record_scan(self.current_ip_range, partial, deep_scan=self._deep_scan)
             self._display_devices(annotated)
             self.results_title.set_subtitle(_("Scan stopped - Found {count} devices").format(count=len(annotated)))
             self.export_button.set_sensitive(True)
@@ -790,7 +790,7 @@ class ResultsPage(Adw.NavigationPage):
         self.stop_timer()
 
         if devices:
-            annotated = storage.record_scan(self.current_ip_range, devices)
+            annotated = storage.record_scan(self.current_ip_range, devices, deep_scan=self._deep_scan)
             self._display_devices(annotated)
             self.results_title.set_subtitle(_("Found {count} devices").format(count=len(annotated)))
         else:
@@ -822,16 +822,85 @@ class ResultsPage(Adw.NavigationPage):
 
 @Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/history_dialog.ui')
 class HistoryDialog(Adw.Dialog):
-    """Dialog listing previous scans in reverse-chronological order"""
+    """Dialog listing previous scans grouped by date"""
     __gtype_name__ = 'HistoryDialog'
 
     history_stack = Gtk.Template.Child()
     history_list = Gtk.Template.Child()
+    history_scrolled = Gtk.Template.Child()
+    scroll_top_button = Gtk.Template.Child()
+
+    # Persist scroll position across dialog instances
+    _saved_scroll_y = 0
 
     def __init__(self, on_select, **kwargs):
         super().__init__(**kwargs)
         self._on_select = on_select
+        self.connect('closed', self._on_closed)
         self._populate()
+        self._connect_scroll()
+
+    def _connect_scroll(self):
+        """Show the scroll-to-top button when scrolled down."""
+        vadj = self.history_scrolled.get_vadjustment()
+        if vadj:
+            vadj.connect('value-changed', self._on_scroll)
+
+    def _on_scroll(self, vadj):
+        """Toggle scroll-to-top button visibility based on scroll position."""
+        self.scroll_top_button.set_visible(vadj.get_value() > 100)
+
+    def _on_closed(self, _dialog):
+        """Save scroll position before the dialog is destroyed."""
+        vadj = self.history_scrolled.get_vadjustment()
+        if vadj:
+            HistoryDialog._saved_scroll_y = vadj.get_value()
+
+    def _restore_scroll(self):
+        """Restore the saved scroll position after rebuilding the list."""
+        vadj = self.history_scrolled.get_vadjustment()
+        if vadj and HistoryDialog._saved_scroll_y > 0:
+            vadj.set_value(min(HistoryDialog._saved_scroll_y, vadj.get_upper() - vadj.get_page_size()))
+        return False
+
+    @staticmethod
+    def _make_header_row(title):
+        """Create a date section header compatible with all Libadwaita versions."""
+        label = Gtk.Label(label=title)
+        label.set_halign(Gtk.Align.START)
+        label.set_margin_start(16)
+        label.set_margin_end(16)
+        label.set_margin_top(24)
+        label.set_margin_bottom(6)
+        label.add_css_class('heading')
+        row = Gtk.ListBoxRow()
+        row.set_selectable(False)
+        row.set_activatable(False)
+        row.set_can_focus(False)
+        row.set_child(label)
+        return row
+
+    @staticmethod
+    def _format_date_header(iso_string):
+        """Parse ISO timestamp and return a human-friendly date header."""
+        try:
+            dt = datetime.fromisoformat(iso_string)
+            local_dt = dt.astimezone()
+            today = datetime.now(local_dt.tzinfo).date()
+            scan_date = local_dt.date()
+            if scan_date == today:
+                return _("Today")
+            if scan_date == today - timedelta(days=1):
+                return _("Yesterday")
+            # Use GLib.DateTime for locale-aware formatting
+            gdt = GLib.DateTime.new_local(
+                local_dt.year, local_dt.month, local_dt.day, 0, 0, 0
+            )
+            if local_dt.year != today.year:
+                return gdt.format('%A, %B %d, %Y')
+            return gdt.format('%A, %B %d')
+        except ValueError:
+            return iso_string
 
     def _populate(self):
         scans = storage.load_scans()
@@ -840,15 +909,45 @@ class HistoryDialog(Adw.Dialog):
             return
 
         self.history_stack.set_visible_child_name('list')
+
+        GLib.idle_add(self._restore_scroll)
+
+        # Group scans by date (newest-first from storage)
+        groups = {}
         for scan in scans:
-            self.history_list.append(self._build_row(scan))
+            ts = scan.get('timestamp', '')
+            try:
+                dt = datetime.fromisoformat(ts)
+                date_key = dt.astimezone().date().isoformat()
+            except ValueError:
+                date_key = ts
+            groups.setdefault(date_key, []).append(scan)
+
+        # Sort date groups newest-first
+        for date_key in sorted(groups.keys(), reverse=True):
+            scans_in_group = groups[date_key]
+            # Build a header row for this date
+            header = self._make_header_row(
+                self._format_date_header(scans_in_group[0].get('timestamp', ''))
+            )
+            self.history_list.append(header)
+            # Add scan rows under this date header
+            for scan in scans_in_group:
+                self.history_list.append(self._build_row(scan))
 
     def _build_row(self, scan):
         row = Adw.ActionRow()
         row.set_title(scan.get('ip_range', ''))
         device_count = len(scan.get('devices', []))
-        row.set_subtitle(_("{timestamp} · {count} devices").format(
-            timestamp=_format_timestamp(scan.get('timestamp', '')), count=device_count))
+        # Extract just the time from the ISO timestamp
+        try:
+            ts_dt = datetime.fromisoformat(scan.get('timestamp', ''))
+            time_str = ts_dt.astimezone().strftime('%H:%M')
+        except ValueError:
+            time_str = ""
+        deep_suffix = " · " + _("Deep") if scan.get("deep_scan", False) else ""
+        row.set_subtitle(_("{time} · {count} devices{deep}").format(
+            time=time_str, count=device_count, deep=deep_suffix))
         row.set_activatable(True)
         row.scan_data = scan
 
@@ -869,14 +968,41 @@ class HistoryDialog(Adw.Dialog):
             return
 
         storage.delete_scan(scan_data.get('timestamp', ''))
+
+        # Find the header row above this scan row
+        header = row.get_prev_sibling()
         self.history_list.remove(row)
 
-        if self.history_list.get_first_child() is None:
+        # If the header's section is now empty, remove the header too
+        if header is not None and not header.get_selectable():
+            next_sibling = header.get_next_sibling()
+            if next_sibling is None or not next_sibling.get_selectable():
+                self.history_list.remove(header)
+
+        # Check if any selectable (scan) rows remain
+        has_scan = False
+        child = self.history_list.get_first_child()
+        while child is not None:
+            if child.get_selectable():
+                has_scan = True
+                break
+            child = child.get_next_sibling()
+        if not has_scan:
             self.history_stack.set_visible_child_name('empty')
 
     @Gtk.Template.Callback()
     def on_scan_row_activated(self, listbox, row):
+        # Skip header rows — they're not activatable
+        if not row.get_selectable():
+            return
         scan_data = getattr(row, 'scan_data', None)
         if scan_data:
             self._on_select(scan_data)
             self.close()
+
+    @Gtk.Template.Callback()
+    def on_scroll_top_clicked(self, button):
+        """Scroll the history list back to the top."""
+        vadj = self.history_scrolled.get_vadjustment()
+        if vadj:
+            vadj.set_value(0)

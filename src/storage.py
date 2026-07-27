@@ -108,7 +108,7 @@ def apply_custom_names(devices):
     return refreshed
 
 
-def record_scan(ip_range, devices):
+def record_scan(ip_range, devices, deep_scan=False):
     """Persist a completed scan and update the device registry.
 
     Annotates and returns the given device list with `custom_name` and
@@ -143,6 +143,7 @@ def record_scan(ip_range, devices):
         "timestamp": now,
         "ip_range": ip_range,
         "devices": annotated,
+        "deep_scan": deep_scan,
     })
     save_scans(scans[:MAX_SCAN_HISTORY])
 

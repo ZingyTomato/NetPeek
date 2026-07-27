@@ -39,6 +39,7 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
 
         self.settings = settings
         self.scanner = NetworkScanner()
+        self._came_from_history = False
         self.setup_pages()
         self.create_actions()
 
@@ -91,6 +92,14 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         if self.navigation_view.get_visible_page() != self.results_page:
             self.navigation_view.push(self.results_page)
         self.results_page.load_from_history(scan.get('ip_range', ''), scan.get('devices', []))
+        self._came_from_history = True
+
+    def _on_page_popped(self, navigation_view, page):
+        """Re-open history dialog when navigating back from a history-loaded scan."""
+        if self._came_from_history and page == self.results_page:
+            self._came_from_history = False
+            dialog = HistoryDialog(self.on_history_scan_selected)
+            dialog.present(self)
 
     def setup_pages(self):
         self.home_page = HomePage(
@@ -109,6 +118,8 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
 
         self.home_page.connect_results_page(self.results_page)
         self.results_page.connect_home_page(self.home_page)
+
+        self.navigation_view.connect("popped", self._on_page_popped)
 
         self.navigation_view.add(self.home_page)
 
