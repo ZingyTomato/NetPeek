@@ -9,7 +9,7 @@ A modern libadwaita-based network scanner for GNOME that helps you discover devi
 * [`🔧 Installation`](#-installation)
 * [`🙌 Help translate!`](#-help-translate)
 * [`🔨 Local Development`](#-local-development)
-* [`👨🏻‍💻 Requirements`](#-requirements)
+* [`👨🏻‍💻 Requirements`](#%E2%80%8D-requirements)
 * [`❓ Support`](#-support)
 
 ## 📷 Screenshots
