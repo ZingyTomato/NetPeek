@@ -8,8 +8,8 @@ A modern libadwaita-based network scanner for GNOME that helps you discover devi
 * [`⭐ Features`](#-features)
 * [`🔧 Installation`](#-installation)
 * [`🔨 Local Development`](#-local-development)
-* [`👨🏻‍💻 Requirements`](#-requirements)
 * [`🙌 Help translate!`](#-help-translate!)
+* [`👨🏻‍💻 Requirements`](#-requirements)
 * [`❓ Support`](#-support)
 
 ## 📷 Screenshots
@@ -54,7 +54,7 @@ flatpak install flathub io.github.zingytomato.netpeek
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/netpeek.svg)](https://repology.org/project/netpeek/versions)
 
-Fedora COPR: https://copr.fedorainfracloud.org/coprs/infiniti151/flatpak-apps/
+Fedora COPR: https://copr.fedorainfracloud.org/coprs/infiniti151/flatpak-apps/package/netpeek/
 
 ## 🔨 Local Development
 
@@ -74,16 +74,20 @@ environment cross-distro. Thus, it is highly recommended you use it.
 - **Range**: `192.168.1.1-254`, `10.0.0.1-50`
 - **Single IP**: `192.168.1.1`
 
+## 🙌 Help translate!
+
+[![Translation status](https://hosted.weblate.org/widgets/netpeek/-/netpeek/multi-auto.svg)](https://hosted.weblate.org/engage/netpeek/)
+
+Translations to your native language are very much appreciated.
+
+[Translate on Weblate](https://hosted.weblate.org/engage/netpeek/)
+
 ## 👨🏻‍💻 Requirements
 
-### Python Dependencies
-
-- `socket` - Network operations
-- `ipaddress` - IP address validation
-- `threading` - Concurrent scanning
-- `python-nmap` - Find active hosts using nmap
-
-## 🙌 Help translate!
+- **Python 3** with **PyGObject** (GTK4 bindings)
+- **[python-nmap](https://pypi.org/project/python-nmap/)** — nmap library for network scanning
+- **GTK4** and **libadwaita** (>= 1.6)
+- **[nmap](https://nmap.org/)**
 
 [![Translation status](https://hosted.weblate.org/widgets/netpeek/-/netpeek/multi-auto.svg)](https://hosted.weblate.org/engage/netpeek/)
 
