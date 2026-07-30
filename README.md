@@ -85,16 +85,11 @@ environment cross-distro. Thus, it is highly recommended you use it.
 
 ## 🙌 Help translate!
 
+[![Translation status](https://hosted.weblate.org/widgets/netpeek/-/netpeek/multi-auto.svg)](https://hosted.weblate.org/engage/netpeek/)
+
 Translations to your native language are very much appreciated.
-Currently supported languages:
-* Dutch
-* Russian
-* Spanish
-* Italian
-* French
-* Polish
-* Ukranian
-* Slovakian
+
+[Translate on Weblate](https://hosted.weblate.org/engage/netpeek/)
 
 ## 📙 License
 
