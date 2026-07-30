@@ -50,8 +50,6 @@ class HomePage(Adw.NavigationPage):
     ip_apply_button = Gtk.Template.Child()
     scan_button = Gtk.Template.Child()
     preset_box = Gtk.Template.Child()
-    thread_spinner = Gtk.Template.Child()
-    thread_apply_button = Gtk.Template.Child()
     primary_popover = Gtk.Template.Child()
     deep_scan_row = Gtk.Template.Child()
 
@@ -66,8 +64,32 @@ class HomePage(Adw.NavigationPage):
 
         self.primary_popover.add_child(ThemeSelector(self.settings), "theme")
 
+        # Build compact thread count widget for the menu popover
+        thread_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
+        thread_box.set_margin_start(12)
+        thread_box.set_margin_end(12)
+        thread_box.add_css_class("menu-item")
+
+        thread_label = Gtk.Label()
+        thread_label.set_label(_("Threads"))
+        thread_label.set_halign(Gtk.Align.START)
+        thread_label.set_valign(Gtk.Align.CENTER)
+        thread_label.set_xalign(0.0)
+        thread_label.set_hexpand(True)
+        thread_label.add_css_class("body")
+        thread_box.append(thread_label)
+
+        thread_spin = Gtk.SpinButton()
+        thread_spin.set_range(1, 500)
+        thread_spin.set_value(self.settings.get_int('thread-count'))
+        thread_spin.set_increments(10, 50)
+        thread_spin.set_valign(Gtk.Align.CENTER)
+        thread_spin.connect("notify::value", lambda s, _: self._on_thread_count_changed(s))
+        thread_box.append(thread_spin)
+
+        self.primary_popover.add_child(thread_box, "thread_count")
+
         self._setup_apply_button_focus(self.ip_entry_row, self.ip_apply_button)
-        self._setup_apply_button_focus(self.thread_spinner, self.thread_apply_button)
 
         self.setup_presets()
 
@@ -137,6 +159,11 @@ class HomePage(Adw.NavigationPage):
         """Persist deep scan preference when toggled."""
         self.settings.set_boolean('deep-scan', switch.get_active())
 
+    def _on_thread_count_changed(self, spin):
+        """Persist thread count and apply to scanner."""
+        self.scanner.set_max_workers(int(spin.get_value()))
+        self.settings.set_int('thread-count', int(spin.get_value()))
+
     @Gtk.Template.Callback()
     def on_scan_clicked(self, button):
         """Start scan when 'Scan My Network' is clicked"""
@@ -154,26 +181,6 @@ class HomePage(Adw.NavigationPage):
         self.validate_ip_range()
         self._clear_focus()
         self.ip_entry_row.set_position(-1)
-
-    @Gtk.Template.Callback()
-    def on_thread_count_apply(self, button):
-        """Commit the manually typed thread count when the apply button is clicked"""
-        try:
-            typed = int(float(self.thread_spinner.get_text()))
-        except (ValueError, TypeError):
-            return
-        adjustment = self.thread_spinner.get_adjustment()
-        typed = max(int(adjustment.get_lower()), min(int(adjustment.get_upper()), typed))
-        self.thread_spinner.set_value(typed)
-        self._clear_focus()
-        self.thread_spinner.set_position(-1)
-
-    @Gtk.Template.Callback()
-    def on_thread_count_changed(self, spinner, _pspec=None):
-        """When thread count spinner value changes"""
-        self.scanner.set_max_workers(int(spinner.get_value()))
-        self._clear_focus()
-        spinner.set_position(-1)
 
     def on_auto_detect_clicked(self, button):
         """Auto-detect local network IP range"""
