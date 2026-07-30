@@ -7,8 +7,8 @@ A modern libadwaita-based network scanner for GNOME that helps you discover devi
 * [`📷 Screenshots`](#-screenshots)
 * [`⭐ Features`](#-features)
 * [`🔧 Installation`](#-installation)
+* [`🙌 Help translate!`](#-help-translate)
 * [`🔨 Local Development`](#-local-development)
-* [`🙌 Help translate!`](#-help-translate!)
 * [`👨🏻‍💻 Requirements`](#-requirements)
 * [`❓ Support`](#-support)
 
@@ -56,6 +56,14 @@ flatpak install flathub io.github.zingytomato.netpeek
 
 Fedora COPR: https://copr.fedorainfracloud.org/coprs/infiniti151/flatpak-apps/package/netpeek/
 
+## 🙌 Help translate!
+
+[![Translation status](https://hosted.weblate.org/widgets/netpeek/-/netpeek/multi-auto.svg)](https://hosted.weblate.org/engage/netpeek/)
+
+Translations to your native language are very much appreciated.
+
+[Translate on Weblate](https://hosted.weblate.org/engage/netpeek/)
+
 ## 🔨 Local Development
 
 ### GNOME Builder
@@ -74,26 +82,12 @@ environment cross-distro. Thus, it is highly recommended you use it.
 - **Range**: `192.168.1.1-254`, `10.0.0.1-50`
 - **Single IP**: `192.168.1.1`
 
-## 🙌 Help translate!
-
-[![Translation status](https://hosted.weblate.org/widgets/netpeek/-/netpeek/multi-auto.svg)](https://hosted.weblate.org/engage/netpeek/)
-
-Translations to your native language are very much appreciated.
-
-[Translate on Weblate](https://hosted.weblate.org/engage/netpeek/)
-
 ## 👨🏻‍💻 Requirements
 
 - **Python 3** with **PyGObject** (GTK4 bindings)
 - **[python-nmap](https://pypi.org/project/python-nmap/)** — nmap library for network scanning
 - **GTK4** and **libadwaita** (>= 1.6)
 - **[nmap](https://nmap.org/)**
-
-[![Translation status](https://hosted.weblate.org/widgets/netpeek/-/netpeek/multi-auto.svg)](https://hosted.weblate.org/engage/netpeek/)
-
-Translations to your native language are very much appreciated.
-
-[Translate on Weblate](https://hosted.weblate.org/engage/netpeek/)
 
 ## 📙 License
 
