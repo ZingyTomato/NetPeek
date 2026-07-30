@@ -91,7 +91,7 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         """Load a scan chosen from history into the results page"""
         if self.navigation_view.get_visible_page() != self.results_page:
             self.navigation_view.push(self.results_page)
-        self.results_page.load_from_history(scan.get('ip_range', ''), scan.get('devices', []))
+        self.results_page.load_from_history(scan.get('ip_range', ''), scan.get('devices', []), scan.get('deep_scan', False))
         self._came_from_history = True
 
     def _on_page_popped(self, navigation_view, page):

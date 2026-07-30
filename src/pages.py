@@ -261,6 +261,7 @@ class ResultsPage(Adw.NavigationPage):
         self.flow_box.bind_model(self.sort_model, self._create_card)
         self._setup_responsive_header()
 
+
         self._sort_rows = {
             self.sort_row_known: "known",
             self.sort_row_ip: "ip",
@@ -277,6 +278,7 @@ class ResultsPage(Adw.NavigationPage):
         is_list = view_mode == 'list'
         self.view_toggle_button.set_active(is_list)
         self.view_toggle_button.set_icon_name('view-grid-symbolic' if is_list else 'view-list-symbolic')
+        self.view_toggle_button.set_tooltip_text(_("Show as grid") if is_list else _("Show as list"))
         self.view_stack.set_visible_child_name('list' if is_list else 'cards')
 
     def connect_home_page(self, home_page):
@@ -584,6 +586,7 @@ class ResultsPage(Adw.NavigationPage):
     def on_view_toggle(self, button):
         is_list = button.get_active()
         button.set_icon_name('view-grid-symbolic' if is_list else 'view-list-symbolic')
+        button.set_tooltip_text(_("Show as grid") if is_list else _("Show as list"))
         self.view_stack.set_visible_child_name('list' if is_list else 'cards')
         self.settings.set_string('view-mode', 'list' if is_list else 'cards')
 
@@ -710,7 +713,8 @@ class ResultsPage(Adw.NavigationPage):
 
         self.start_timer()
 
-        self.results_title.set_subtitle(_("Scanning ") + ip_range + "...")
+        scan_mode = _("Deep scanning") if deep_scan else _("Scanning")
+        self.results_title.set_subtitle(f"{scan_mode}: {ip_range}")
 
         self.scanner.scan_network(
             ip_range,
@@ -736,7 +740,8 @@ class ResultsPage(Adw.NavigationPage):
         if partial:
             annotated = storage.record_scan(self.current_ip_range, partial, deep_scan=self._deep_scan)
             self._display_devices(annotated)
-            self.results_title.set_subtitle(_("Scan stopped - Found {count} devices").format(count=len(annotated)))
+            scan_mode = _("Deep") + " · " if self._deep_scan else ""
+            self.results_title.set_subtitle(scan_mode + _("Scan stopped - Found {count} devices").format(count=len(annotated)))
             self.export_button.set_sensitive(True)
         else:
             self._display_devices([])
@@ -757,10 +762,12 @@ class ResultsPage(Adw.NavigationPage):
         else:
             self.show_toast(_(message))
 
-    def load_from_history(self, ip_range, devices_data):
+    def load_from_history(self, ip_range, devices_data, deep_scan=False):
         """Load a previously saved scan without rescanning"""
         self.current_ip_range = ip_range
-        self.results_title.set_subtitle(_("Loaded from history: ") + ip_range)
+        self._deep_scan = deep_scan
+        scan_mode = _("Deep") + " · " if deep_scan else ""
+        self.results_title.set_subtitle(scan_mode + _("Loaded from history: ") + ip_range)
         devices_data = storage.apply_custom_names(devices_data)
         self._display_devices(devices_data)
         self.export_button.set_sensitive(bool(devices_data))
@@ -799,7 +806,8 @@ class ResultsPage(Adw.NavigationPage):
         if devices:
             annotated = storage.record_scan(self.current_ip_range, devices, deep_scan=self._deep_scan)
             self._display_devices(annotated)
-            self.results_title.set_subtitle(_("Found {count} devices").format(count=len(annotated)))
+            scan_mode = _("Deep") + " · " if self._deep_scan else ""
+            self.results_title.set_subtitle(scan_mode + _("Found {count} devices").format(count=len(annotated)))
         else:
             self._display_devices([])
             self.results_title.set_subtitle(_("No devices found"))
