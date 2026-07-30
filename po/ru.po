@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: netpeek\n"
-"Report-Msgid-Bugs-To: https://github.com/ZingyTomato/NetPeek/issues\n"
-"POT-Creation-Date: 2025-08-02 10:16+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-30 09:46+0200\n"
 "PO-Revision-Date: 2025-08-02 16:00+0300\n"
 "Last-Translator: Vladimir Kosolapov\n"
 "Language-Team: \n"
@@ -19,233 +19,525 @@ msgstr ""
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: data/io.github.zingytomato.netpeek.desktop.in:2
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/window.py:17
-#: src/window.py:42 src/pages.py:25 src/pages.py:34
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/gtk/home_page.ui:7
+#: src/gtk/home_page.ui:15 src/gtk/main_window.ui:7 src/window.py:62
 msgid "NetPeek"
 msgstr "NetPeek"
 
 #: data/io.github.zingytomato.netpeek.desktop.in:3
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
 msgid "Discover devices on your local network"
 msgstr "Обнаружение устройств в локальной сети"
 
+#: data/io.github.zingytomato.netpeek.desktop.in:10
+msgid "Gnome;GTK;Networking;Scanner;Internet;"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:6
+#: data/io.github.zingytomato.netpeek.gschema.xml:7
+msgid "Default window width"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:11
+#: data/io.github.zingytomato.netpeek.gschema.xml:12
+msgid "Default window height"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:16
+msgid "Default window maximized behaviour"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:17
+msgid "Not maximised by default"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:21
+msgid "Preferred color scheme"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:22
+msgid "One of \"default\" (follow system), \"light\", or \"dark\"."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:26
+msgid "Results view mode"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:27
+msgid "One of \"cards\" or \"list\"."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:31
+#, fuzzy
+#| msgid "Valid IP range!"
+msgid "Last used IP range"
+msgstr "Допустимый диапазон IP!"
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:32
+msgid "The IP range entered in the last scan, restored on startup."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:36
+msgid "Enable deep scan mode"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:37
+msgid ""
+"When enabled, retrieves more detailed system information like OS name, HTTP "
+"server etc."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
+#, fuzzy
+#| msgid "Devices found on your network:"
+msgid "See what's on your network"
+msgstr "Устройства, найденные в вашей сети:"
+
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:9
+#, fuzzy
+#| msgid ""
+#| "NetPeek is a simple network scanner that helps you discover active "
+#| "devices on your local network. It shows open ports, hostnames, and allows "
+#| "easy rescan with a clean, user-friendly interface."
 msgid ""
 "NetPeek is a simple network scanner that helps you discover active devices "
-"on your local network. It shows open ports, hostnames, and allows easy "
-"rescan with a clean, user-friendly interface."
+"on your local network."
 msgstr ""
 "NetPeek — это простой сетевой сканер, который помогает обнаруживать активные "
 "устройства в локальной сети. Он показывает открытые порты, имена хостов и "
 "позволяет легко повторять сканирование благодаря удобному интерфейсу."
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:16
-msgid "ZingyTomato"
-msgstr "ZingyTomato"
-
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:30
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:48
 msgid "Home screen"
 msgstr "Главный экран"
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:34
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:52
 msgid "Scan in Progress"
 msgstr "Процесс сканирования"
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:38 src/pages.py:203
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:56
+#: src/gtk/results_page.ui:20
 msgid "Scan Results"
 msgstr "Результаты сканирования"
 
-#: src/window.py:46 src/pages.py:72
-msgid "Discover devices on your local network."
-msgstr "Обнаружение устройств в локальной сети"
-
-#: src/window.py:50
-msgid "Contributors"
-msgstr "Участники"
-
-#: src/pages.py:39
-msgid "Main Menu"
-msgstr "Главное меню"
-
-#: src/pages.py:42
-msgid "About"
-msgstr "О приложении"
-
-#: src/pages.py:43
-msgid "Quit"
-msgstr "Выход"
-
-#: src/pages.py:79
-msgid "Scan my Network"
-msgstr "Сканировать сеть"
-
-#: src/pages.py:95
-msgid "IP Range Configuration"
-msgstr "Настройка диапазона IP"
-
-#: src/pages.py:96
-msgid "Enter the IP range you want to scan:"
-msgstr "Введите диапазон IP для сканирования:"
-
-#: src/pages.py:99
-msgid "IP Range"
-msgstr "Диапазон IP"
-
-#: src/pages.py:106
-msgid "Examples: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
-msgstr "Примеры: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
-
-#: src/pages.py:117
-msgid "Home Network (192.168.1.x)"
-msgstr "Домашняя сеть (192.168.1.x)"
-
-#: src/pages.py:118
-msgid "Home Network (192.168.0.x)"
-msgstr "Домашняя сеть (192.168.0.x)"
-
-#: src/pages.py:119
-msgid "Corporate (10.0.0.x)"
-msgstr "Корпоративная (10.0.0.x)"
-
-#: src/pages.py:120
-msgid "Private (172.16.0.x)"
-msgstr "Частная (172.16.0.x)"
-
-#: src/pages.py:157
-msgid "Valid IP range!"
-msgstr "Допустимый диапазон IP!"
-
-#: src/pages.py:161
-msgid "Set IP range to: "
-msgstr "Установлен диапазон IP: "
-
-#: src/pages.py:194
-msgid "Scanning in progress..."
-msgstr "Сканирование..."
-
-#: src/pages.py:204
-msgid "Devices found on your network:"
-msgstr "Устройства, найденные в вашей сети:"
-
-#. Stop Scanning button (left side)
-#: src/pages.py:208
-msgid "Stop Scanning"
-msgstr "Остановить"
-
-#: src/pages.py:210
-msgid "Stop the current network scan"
-msgstr "Остановить сканирование сети"
-
-#. Rescan button (right side)
-#: src/pages.py:216 src/pages.py:308 src/pages.py:336 src/pages.py:355
-msgid "Scan Again"
-msgstr "Повторить"
-
-#: src/pages.py:231
-msgid "Scanning Network"
-msgstr "Сканирование сети"
-
-#: src/pages.py:232
-msgid "Discovering devices on your network... (this may take a while!)"
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:60
+msgid "List View"
 msgstr ""
-"Обнаружение устройств в вашей сети... (может занять некоторое время)"
 
-#: src/pages.py:259
-msgid "No Devices Found"
-msgstr "Устройства не найдены"
+#: src/gtk/device_card.ui:22
+msgid "Name"
+msgstr ""
 
-#: src/pages.py:260
-msgid "No devices were found in the specified range!"
-msgstr "Устройства не найдены в указанном диапазоне!"
+#: src/gtk/device_card.ui:29
+msgid "Apply name"
+msgstr ""
 
-#: src/pages.py:264
-msgid "Scan Error"
-msgstr "Ошибка сканирования"
+#: src/gtk/device_card.ui:38 src/pages.py:638
+msgid "New"
+msgstr ""
 
-#: src/pages.py:265
-msgid "An error occurred while scanning the network!"
-msgstr "Ошибка при сканировании сети!"
+#: src/gtk/device_card.ui:65
+msgid "Click to copy IP"
+msgstr ""
 
-#: src/pages.py:279
-msgid "Scanning..."
-msgstr "Сканирование..."
-
-#: src/pages.py:287
-msgid "Scanning "
-msgstr "Сканирование "
-
-#: src/pages.py:318
-#, python-brace-format
-msgid "Scan stopped - Found {count} devices"
-msgid_plural "Scan stopped - Found {count} devices"
-msgstr[0] "Сканирование остановлено - найдено {count} устройство"
-msgstr[1] "Сканирование остановлено - найдено {count} устройства"
-msgstr[2] "Сканирование остановлено - найдено {count} устройств"
-
-#: src/pages.py:319
-#, python-brace-format
-msgid "Scan stopped. Found {count} devices so far."
-msgid_plural "Scan stopped. Found {count} devices so far."
-msgstr[0] "Сканирование остановлено. Найдено {count} устройство."
-msgstr[1] "Сканирование остановлено. Найдено {count} устройства."
-msgstr[2] "Сканирование остановлено. Найдено {count} устройств."
-
-#: src/pages.py:322
-msgid "Scan stopped - No devices found"
-msgstr "Сканирование остановлено - устройства не найдены"
-
-#: src/pages.py:323
-msgid "Scan stopped. No devices found."
-msgstr "Сканирование остановлено. Устройства не найдены."
-
-#: src/pages.py:345
-#, python-brace-format
-msgid "Found {count} devices"
-msgid_plural "Found {count} devices"
-msgstr[0] "Найдено {count} устройство"
-msgstr[1] "Найдено {count} устройства"
-msgstr[2] "Найдено {count} устройств"
-
-#: src/pages.py:346
-#, python-brace-format
-msgid "Found {count} devices on the network."
-msgid_plural "Found {count} devices on the network."
-msgstr[0] "Найдено {count} устройство в сети."
-msgstr[1] "Найдено {count} устройства в сети."
-msgstr[2] "Найдено {count} устройств в сети."
-
-#: src/pages.py:349
-msgid "No devices found"
-msgstr "Устройства не найдены"
-
-#: src/pages.py:350
-msgid "No devices found in the specified range"
-msgstr "Устройства не найдены в указанном диапазоне"
-
-#: src/pages.py:359 src/pages.py:361
-msgid "Error: "
-msgstr "Ошибка: "
-
-#: src/pages.py:360
-msgid "An error occurred!"
-msgstr "Произошла ошибка!"
-
-#: src/widgets.py:23
-msgid "Unknown IP"
-msgstr "Неизвестный IP"
-
-#: src/widgets.py:38 src/widgets.py:40
-msgid "Unknown"
-msgstr "Неизвестно"
-
-#: src/widgets.py:43
+#: src/gtk/device_card.ui:74 src/gtk/results_page.ui:127 src/pages.py:380
 msgid "Hostname"
 msgstr "Имя хоста"
 
-#: src/widgets.py:50
-msgid "No Ports Open"
-msgstr "Открытых портов нет"
-
-#: src/widgets.py:52
+#: src/gtk/device_card.ui:86
 msgid "Ports Open"
 msgstr "Открытые порты"
+
+#: src/gtk/device_card.ui:98 src/gtk/results_page.ui:193 src/pages.py:296
+msgid "Services"
+msgstr ""
+
+#: src/gtk/device_card.ui:110 src/gtk/results_page.ui:215 src/pages.py:297
+msgid "System Information"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:7 src/gtk/history_dialog.ui:16
+#: src/gtk/home_page.ui:208
+msgid "Previous Scans"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:50
+msgid "Scroll to top"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:72
+msgid "No Previous Scans"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:73
+msgid "Your scan history will appear here."
+msgstr ""
+
+#: src/gtk/home_page.ui:21
+msgid "Main Menu"
+msgstr "Главное меню"
+
+#: src/gtk/home_page.ui:79 src/window.py:66
+msgid "Discover devices on your local network."
+msgstr "Обнаружение устройств в локальной сети"
+
+#: src/gtk/home_page.ui:102
+msgid "IP Range Configuration"
+msgstr "Настройка диапазона IP"
+
+#: src/gtk/home_page.ui:103
+msgid "Enter the IP range you want to scan:"
+msgstr "Введите диапазон IP для сканирования:"
+
+#: src/gtk/home_page.ui:107
+msgid "IP Range"
+msgstr "Диапазон IP"
+
+#: src/gtk/home_page.ui:115
+#, fuzzy
+#| msgid "Valid IP range!"
+msgid "Apply IP range"
+msgstr "Допустимый диапазон IP!"
+
+#: src/gtk/home_page.ui:127
+msgid "Thread Count"
+msgstr ""
+
+#: src/gtk/home_page.ui:128
+msgid "Number of threads to use while scanning"
+msgstr ""
+
+#: src/gtk/home_page.ui:144
+msgid "Apply thread count"
+msgstr ""
+
+#: src/gtk/home_page.ui:156
+msgid "Deep Scan"
+msgstr ""
+
+#: src/gtk/home_page.ui:157
+msgid ""
+"Retrieves more detailed system information like OS name, HTTP server etc."
+msgstr ""
+
+#: src/gtk/home_page.ui:179
+msgid "Scan my Network"
+msgstr "Сканировать сеть"
+
+#: src/gtk/home_page.ui:214
+msgid "About"
+msgstr "О приложении"
+
+#: src/gtk/home_page.ui:218
+msgid "Quit"
+msgstr "Выход"
+
+#: src/gtk/results_page.ui:7
+msgid "Scanning in progress..."
+msgstr "Сканирование..."
+
+#: src/gtk/results_page.ui:21
+msgid "Devices found on your network:"
+msgstr "Устройства, найденные в вашей сети:"
+
+#: src/gtk/results_page.ui:27
+msgid "Stop the current network scan"
+msgstr "Остановить сканирование сети"
+
+#: src/gtk/results_page.ui:32 src/pages.py:534
+msgid "Stop"
+msgstr ""
+
+#: src/gtk/results_page.ui:50
+msgid "Export to CSV"
+msgstr ""
+
+#: src/gtk/results_page.ui:58
+msgid "Toggle list view"
+msgstr ""
+
+#: src/gtk/results_page.ui:66
+#, fuzzy
+#| msgid "No devices found"
+msgid "Sort devices"
+msgstr "Устройства не найдены"
+
+#: src/gtk/results_page.ui:83 src/pages.py:638
+#, fuzzy
+#| msgid "Unknown"
+msgid "Known"
+msgstr "Неизвестно"
+
+#: src/gtk/results_page.ui:105 src/pages.py:338
+msgid "IP Address"
+msgstr ""
+
+#: src/gtk/results_page.ui:149 src/pages.py:407
+msgid "Custom Name"
+msgstr ""
+
+#: src/gtk/results_page.ui:171 src/pages.py:295
+#, fuzzy
+#| msgid "Ports Open"
+msgid "Ports"
+msgstr "Открытые порты"
+
+#: src/gtk/results_page.ui:250 src/pages.py:722 src/pages.py:784
+#: src/pages.py:805
+msgid "Rescan"
+msgstr ""
+
+#: src/gtk/results_page.ui:275
+msgid "Scanning Network"
+msgstr "Сканирование сети"
+
+#: src/gtk/results_page.ui:276
+msgid "Discovering devices on your network... (this may take a while!)"
+msgstr "Обнаружение устройств в вашей сети... (может занять некоторое время)"
+
+#: src/gtk/results_page.ui:297 src/pages.py:701
+msgid "Preparing scan..."
+msgstr ""
+
+#: src/gtk/results_page.ui:306 src/pages.py:702
+msgid "Time Elapsed: 00:00"
+msgstr ""
+
+#: src/gtk/results_page.ui:396
+msgid "No Devices Found"
+msgstr "Устройства не найдены"
+
+#: src/gtk/results_page.ui:397
+msgid "No devices were found in the specified range!"
+msgstr "Устройства не найдены в указанном диапазоне!"
+
+#: src/gtk/results_page.ui:409
+msgid "Scan Error"
+msgstr "Ошибка сканирования"
+
+#: src/gtk/results_page.ui:410
+msgid "An error occurred while scanning the network!"
+msgstr "Ошибка при сканировании сети!"
+
+#: src/gtk/theme_selector.ui:15 src/gtk/theme_selector.ui:21
+msgid "Follow System"
+msgstr ""
+
+#: src/gtk/theme_selector.ui:30 src/gtk/theme_selector.ui:36
+msgid "Light"
+msgstr ""
+
+#: src/gtk/theme_selector.ui:45 src/gtk/theme_selector.ui:51
+msgid "Dark"
+msgstr ""
+
+#: src/pages.py:113
+msgid "Auto-detect"
+msgstr ""
+
+#: src/pages.py:114
+#, fuzzy
+#| msgid "Discover devices on your local network"
+msgid "Automatically detect your local network"
+msgstr "Обнаружение устройств в локальной сети"
+
+#: src/pages.py:121
+msgid "Home Network (192.168.1.x)"
+msgstr "Домашняя сеть (192.168.1.x)"
+
+#: src/pages.py:122
+msgid "Home Network (192.168.0.x)"
+msgstr "Домашняя сеть (192.168.0.x)"
+
+#: src/pages.py:123
+msgid "Corporate (10.0.0.x)"
+msgstr "Корпоративная (10.0.0.x)"
+
+#: src/pages.py:124
+msgid "Private (172.16.0.x)"
+msgstr "Частная (172.16.0.x)"
+
+#: src/pages.py:327
+#, fuzzy
+#| msgid "No devices found"
+msgid "New device"
+msgstr "Устройства не найдены"
+
+#: src/pages.py:331
+#, fuzzy
+#| msgid "Found {count} devices"
+#| msgid_plural "Found {count} devices"
+msgid "Known device"
+msgstr "Найдено {count} устройство"
+
+#: src/pages.py:356
+msgid "Copy IP"
+msgstr ""
+
+#: src/pages.py:400 src/widgets.py:69
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: src/pages.py:419
+msgid "Click to set name..."
+msgstr ""
+
+#: src/pages.py:421
+msgid "Apply"
+msgstr ""
+
+#: src/pages.py:586 src/widgets.py:81
+#, python-brace-format
+msgid "Copied {ip} to the clipboard"
+msgstr ""
+
+#: src/pages.py:592
+#, fuzzy
+#| msgid "No devices found"
+msgid "No devices to export"
+msgstr "Устройства не найдены"
+
+#: src/pages.py:596
+#, fuzzy
+#| msgid "Scan Results"
+msgid "Export Scan Results"
+msgstr "Результаты сканирования"
+
+#: src/pages.py:600
+msgid "CSV Files"
+msgstr ""
+
+#: src/pages.py:618
+msgid "Export cancelled or failed"
+msgstr ""
+
+#: src/pages.py:642
+msgid "Successfully exported to "
+msgstr ""
+
+#: src/pages.py:644
+msgid "Open Folder"
+msgstr ""
+
+#: src/pages.py:648
+msgid "Export failed: "
+msgstr ""
+
+#: src/pages.py:672
+#, python-brace-format
+msgid "Time Elapsed: {minutes:02d}:{seconds:02d}"
+msgstr ""
+
+#: src/pages.py:681
+#, python-brace-format
+msgid "Hosts Scanned: {scanned}/{total}"
+msgstr ""
+
+#: src/pages.py:692
+msgid "Scanning..."
+msgstr "Сканирование..."
+
+#: src/pages.py:706
+msgid "Scanning "
+msgstr "Сканирование "
+
+#: src/pages.py:732
+#, fuzzy, python-brace-format
+#| msgid "Scan stopped - Found {count} devices"
+#| msgid_plural "Scan stopped - Found {count} devices"
+msgid "Scan stopped - Found {count} devices"
+msgstr "Сканирование остановлено - найдено {count} устройство"
+
+#: src/pages.py:736
+msgid "Scan stopped - No devices found"
+msgstr "Сканирование остановлено - устройства не найдены"
+
+#: src/pages.py:756
+msgid "Loaded from history: "
+msgstr ""
+
+#: src/pages.py:795
+#, fuzzy, python-brace-format
+#| msgid "Found {count} devices"
+#| msgid_plural "Found {count} devices"
+msgid "Found {count} devices"
+msgstr "Найдено {count} устройство"
+
+#: src/pages.py:798
+msgid "No devices found"
+msgstr "Устройства не найдены"
+
+#: src/pages.py:813 src/pages.py:815
+msgid "Error: "
+msgstr "Ошибка: "
+
+#: src/pages.py:814
+msgid "An error occurred!"
+msgstr "Произошла ошибка!"
+
+#: src/pages.py:892
+msgid "Today"
+msgstr ""
+
+#: src/pages.py:894
+msgid "Yesterday"
+msgstr ""
+
+#: src/pages.py:948
+msgid "Deep"
+msgstr ""
+
+#: src/pages.py:949
+#, fuzzy, python-brace-format
+#| msgid "Found {count} devices"
+#| msgid_plural "Found {count} devices"
+msgid "{time} · {count} devices{deep}"
+msgstr "Найдено {count} устройство"
+
+#: src/pages.py:956
+msgid "Delete this scan"
+msgstr ""
+
+#: src/window.py:70
+msgid "Contributors"
+msgstr "Участники"
+
+#~ msgid "ZingyTomato"
+#~ msgstr "ZingyTomato"
+
+#~ msgid "Examples: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
+#~ msgstr "Примеры: 192.168.1.0/24, 10.0.0.1-50, 172.16.1.100-200"
+
+#~ msgid "Set IP range to: "
+#~ msgstr "Установлен диапазон IP: "
+
+#~ msgid "Stop Scanning"
+#~ msgstr "Остановить"
+
+#~ msgid "Scan Again"
+#~ msgstr "Повторить"
+
+#, python-brace-format
+#~ msgid "Scan stopped. Found {count} devices so far."
+#~ msgid_plural "Scan stopped. Found {count} devices so far."
+#~ msgstr[0] "Сканирование остановлено. Найдено {count} устройство."
+#~ msgstr[1] "Сканирование остановлено. Найдено {count} устройства."
+#~ msgstr[2] "Сканирование остановлено. Найдено {count} устройств."
+
+#~ msgid "Scan stopped. No devices found."
+#~ msgstr "Сканирование остановлено. Устройства не найдены."
+
+#, python-brace-format
+#~ msgid "Found {count} devices on the network."
+#~ msgid_plural "Found {count} devices on the network."
+#~ msgstr[0] "Найдено {count} устройство в сети."
+#~ msgstr[1] "Найдено {count} устройства в сети."
+#~ msgstr[2] "Найдено {count} устройств в сети."
+
+#~ msgid "No devices found in the specified range"
+#~ msgstr "Устройства не найдены в указанном диапазоне"
+
+#~ msgid "Unknown IP"
+#~ msgstr "Неизвестный IP"
+
+#~ msgid "No Ports Open"
+#~ msgstr "Открытых портов нет"
