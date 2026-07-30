@@ -17,7 +17,7 @@
   <url type="homepage">https://github.com/zingytomato/netpeek</url>
   <url type="vcs-browser">https://github.com/zingytomato/netpeek</url>
   <url type="bugtracker">https://github.com/zingytomato/netpeek/issues</url>
-  <url type="translate">https://hosted.weblate.org/projects/netpeek/netpeek/</url>
+  <url type="translate">https://hosted.weblate.org/engage/netpeek/</url>
   <launchable type="desktop-id">io.github.zingytomato.netpeek.desktop</launchable>
   <categories>
     <category>Network</category>
