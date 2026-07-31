@@ -31,8 +31,7 @@ msgstr "Otsi ja tuvasta seadmeid oma kohtvõrgust"
 
 #: data/io.github.zingytomato.netpeek.desktop.in:10
 msgid "Gnome;GTK;Networking;Scanner;Internet;"
-msgstr ""
-"Gnome;GTK;Networking;Scanner;Internet;võrk;kohtvõrk;võrgundus;skanner;skaneerimine;skaneerija;seadmed;kohalikud;arvutid;"
+msgstr "Gnome;GTK;Networking;Scanner;Internet;võrk;kohtvõrk;võrgundus;skanner;skaneerimine;skaneerija;seadmed;kohalikud;arvutid;"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:6
 #: data/io.github.zingytomato.netpeek.gschema.xml:7
