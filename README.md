@@ -7,9 +7,9 @@ A modern libadwaita-based network scanner for GNOME that helps you discover devi
 * [`📷 Screenshots`](#-screenshots)
 * [`⭐ Features`](#-features)
 * [`🔧 Installation`](#-installation)
+* [`🙌 Help translate!`](#-help-translate)
 * [`🔨 Local Development`](#-local-development)
-* [`👨🏻‍💻 Requirements`](#-requirements)
-* [`🙌 Help translate!`](#-help-translate!)
+* [`👨🏻‍💻 Requirements`](#%E2%80%8D-requirements)
 * [`❓ Support`](#-support)
 
 ## 📷 Screenshots
@@ -19,9 +19,11 @@ A modern libadwaita-based network scanner for GNOME that helps you discover devi
 
 ![Results Page](https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/2.png?raw=true)
 
-![No Devices Found](https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/3.png?raw=true)
-
 ![List View](https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/4.png?raw=true)
+
+![Deep Scan](https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/5.png?raw=true)
+
+![Previous Scans](https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/6.png?raw=true)
 
 ## ⭐ Features
 
@@ -54,7 +56,15 @@ flatpak install flathub io.github.zingytomato.netpeek
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/netpeek.svg)](https://repology.org/project/netpeek/versions)
 
-Fedora COPR: https://copr.fedorainfracloud.org/coprs/infiniti151/flatpak-apps/
+Fedora COPR: https://copr.fedorainfracloud.org/coprs/infiniti151/flatpak-apps/package/netpeek/
+
+## 🙌 Help translate!
+
+[![Translation status](https://hosted.weblate.org/widgets/netpeek/-/netpeek/multi-auto.svg)](https://hosted.weblate.org/engage/netpeek/)
+
+Translations to your native language are very much appreciated.
+
+[Translate on Weblate](https://hosted.weblate.org/engage/netpeek/)
 
 ## 🔨 Local Development
 
@@ -76,20 +86,10 @@ environment cross-distro. Thus, it is highly recommended you use it.
 
 ## 👨🏻‍💻 Requirements
 
-### Python Dependencies
-
-- `socket` - Network operations
-- `ipaddress` - IP address validation
-- `threading` - Concurrent scanning
-- `python-nmap` - Find active hosts using nmap
-
-## 🙌 Help translate!
-
-[![Translation status](https://hosted.weblate.org/widgets/netpeek/-/netpeek/multi-auto.svg)](https://hosted.weblate.org/engage/netpeek/)
-
-Translations to your native language are very much appreciated.
-
-[Translate on Weblate](https://hosted.weblate.org/engage/netpeek/)
+- **Python 3** with **PyGObject** (GTK4 bindings)
+- **[python-nmap](https://pypi.org/project/python-nmap/)** — nmap library for network scanning
+- **GTK4** and **libadwaita** (>= 1.6)
+- **[nmap](https://nmap.org/)**
 
 ## 📙 License
 

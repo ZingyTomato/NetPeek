@@ -17,6 +17,7 @@
   <url type="homepage">https://github.com/zingytomato/netpeek</url>
   <url type="vcs-browser">https://github.com/zingytomato/netpeek</url>
   <url type="bugtracker">https://github.com/zingytomato/netpeek/issues</url>
+  <url type="translate">https://hosted.weblate.org/engage/netpeek/</url>
   <launchable type="desktop-id">io.github.zingytomato.netpeek.desktop</launchable>
   <categories>
     <category>Network</category>
@@ -57,10 +58,30 @@
     </screenshot>
     <screenshot>
       <image>https://raw.githubusercontent.com/ZingyTomato/NetPeek/refs/heads/master/data/screenshots/4.png</image>
-      <caption>List View</caption>
+      <caption>Scan Results (List View)</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/ZingyTomato/NetPeek/refs/heads/master/data/screenshots/5.png</image>
+      <caption>Deep Scan Results</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/ZingyTomato/NetPeek/refs/heads/master/data/screenshots/6.png</image>
+      <caption>Previous Scans</caption>
     </screenshot>
   </screenshots>
   <releases>
+    <release version="0.3.1" date="2026-08-01">
+      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.3.1</url>
+      <description>
+        <p>Version 0.3.1</p>
+        <ul>
+          <li>Device cards now cap System Information and Services at one line, with expand/collapse buttons to reveal the full text.</li>
+          <li>Moved the thread count picker into the main menu.</li>
+          <li>Added better indication throughout the UI that a deep scan is taking place.</li>
+          <li>Added a Translate link to the About dialog.</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.3.0" date="2026-07-25">
       <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.3.0</url>
       <description>

@@ -36,5 +36,11 @@
       <summary>Enable deep scan mode</summary>
       <description>When enabled, retrieves more detailed system information like OS name, HTTP server etc.</description>
     </key>
+    <key name="thread-count" type="i">
+      <default>100</default>
+      <summary>Thread count for scanning</summary>
+      <description>Number of concurrent worker threads to use while scanning (1–500).</description>
+      <range min="1" max="500"/>
+    </key>
 	</schema>
 </schemalist>

@@ -66,13 +66,15 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         about.set_comments(_("Discover devices on your local network."))
         about.set_website("https://github.com/zingytomato/netpeek")
         about.set_issue_url("https://github.com/zingytomato/netpeek/issues")
+        about.add_link(_("Translate"), "https://hosted.weblate.org/engage/netpeek/")
         about.set_application_icon("io.github.zingytomato.netpeek")
         about.add_credit_section(_("Contributors"), ["ZingyTomato", "Gert-Dev", "Cameo007", "vmkspv", "oscfdezdz", "albanobattistella", "sjulien", "dawkagaming", "prescott66"])
         release_notes = """
         <ul>
-          <li>New Deep Scan mode for additional information like OS identification, software versions and more.</li>
-          <li>Expanded service detection for common self-hosted and DevOps services (MySQL, PostgreSQL, Redis, Home Assistant, Plex, etc.).</li>
-          <li>Improved UI adaptability for smaller screens.</li>
+          <li>Device cards now cap System Information and Services at one line, with expand/collapse buttons to reveal the full text.</li>
+          <li>Moved the thread count picker into the main menu.</li>
+          <li>Added better indication throughout the UI that a deep scan is taking place.</li>
+          <li>Added a Translate link to the About dialog.</li>
         </ul>
         """
         about.set_release_notes(release_notes)
@@ -91,7 +93,7 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         """Load a scan chosen from history into the results page"""
         if self.navigation_view.get_visible_page() != self.results_page:
             self.navigation_view.push(self.results_page)
-        self.results_page.load_from_history(scan.get('ip_range', ''), scan.get('devices', []))
+        self.results_page.load_from_history(scan.get('ip_range', ''), scan.get('devices', []), scan.get('deep_scan', False))
         self._came_from_history = True
 
     def _on_page_popped(self, navigation_view, page):

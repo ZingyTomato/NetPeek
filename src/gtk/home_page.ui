@@ -123,35 +123,6 @@
                                 </child>
 
                                 <child>
-                                  <object class="AdwSpinRow" id="thread_spinner">
-                                    <property name="title" translatable="yes">Thread Count</property>
-                                    <property name="subtitle" translatable="yes">Number of threads to use while scanning</property>
-                                    <property name="adjustment">
-                                      <object class="GtkAdjustment">
-                                        <property name="lower">1</property>
-                                        <property name="upper">500</property>
-                                        <property name="value">100</property>
-                                        <property name="step-increment">10</property>
-                                        <property name="page-increment">50</property>
-                                      </object>
-                                    </property>
-                                    <signal name="notify::value" handler="on_thread_count_changed"/>
-                                    <child type="suffix">
-                                      <object class="GtkButton" id="thread_apply_button">
-                                        <property name="icon-name">object-select-symbolic</property>
-                                        <property name="visible">false</property>
-                                        <property name="valign">center</property>
-                                        <property name="tooltip-text" translatable="yes">Apply thread count</property>
-                                        <style>
-                                          <class name="flat"/>
-                                        </style>
-                                        <signal name="clicked" handler="on_thread_count_apply"/>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-
-                                <child>
                                   <object class="AdwSwitchRow" id="deep_scan_row">
                                     <property name="title" translatable="yes">Deep Scan</property>
                                     <property name="subtitle" translatable="yes">Retrieves more detailed system information like OS name, HTTP server etc.</property>
@@ -201,6 +172,11 @@
     <section>
       <item>
         <attribute name="custom">theme</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name="custom">thread_count</attribute>
       </item>
     </section>
     <section>

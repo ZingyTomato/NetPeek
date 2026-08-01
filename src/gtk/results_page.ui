@@ -42,7 +42,6 @@
 
             <child type="end">
               <object class="GtkBox" id="action_box">
-                <property name="spacing">6</property>
 
                 <child>
                   <object class="GtkButton" id="export_button">
@@ -235,15 +234,8 @@
                 </child>
 
                 <child>
-                  <object class="GtkSeparator">
-                    <style>
-                      <class name="spacer"/>
-                    </style>
-                  </object>
-                </child>
-
-                <child>
                   <object class="GtkButton" id="rescan_button">
+                    <property name="margin-start">6</property>
                     <property name="child">
                       <object class="AdwButtonContent" id="rescan_button_content">
                         <property name="icon-name">view-refresh-symbolic</property>
