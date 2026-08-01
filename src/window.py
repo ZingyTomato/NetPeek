@@ -66,6 +66,7 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         about.set_comments(_("Discover devices on your local network."))
         about.set_website("https://github.com/zingytomato/netpeek")
         about.set_issue_url("https://github.com/zingytomato/netpeek/issues")
+        about.add_link(_("Translate"), "https://hosted.weblate.org/engage/netpeek/")
         about.set_application_icon("io.github.zingytomato.netpeek")
         about.add_credit_section(_("Contributors"), ["ZingyTomato", "Gert-Dev", "Cameo007", "vmkspv", "oscfdezdz", "albanobattistella", "sjulien", "dawkagaming", "prescott66"])
         release_notes = """

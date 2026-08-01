@@ -37,13 +37,19 @@ class DeviceCard(Adw.Bin):
     hostname_row = Gtk.Template.Child()
     ports_row = Gtk.Template.Child()
     services_row = Gtk.Template.Child()
+    services_expand_button = Gtk.Template.Child()
     os_row = Gtk.Template.Child()
+    os_expand_button = Gtk.Template.Child()
 
     def __init__(self, device, toast_overlay):
         super().__init__()
         self.device = device
         self.toast_overlay = toast_overlay
         self.clipboard = Gdk.Display.get_default().get_clipboard()
+        self._os_checked = False
+        self._services_checked = False
+        self.os_row.connect("map", self._on_os_row_map)
+        self.services_row.connect("map", self._on_services_row_map)
 
         # Bidirectional binding keeps this card's name entry and the list
         # view's custom name column in sync live, without either widget
@@ -69,9 +75,85 @@ class DeviceCard(Adw.Bin):
         self.hostname_row.set_subtitle(device.hostname if device.hostname != device.ip else _("Unknown"))
         self.ports_row.set_subtitle(device.ports_display)
         self.services_row.set_subtitle(device.services_display)
+        self.services_row.set_tooltip_text(device.services_display if device.services_display else None)
+        self.services_row.set_subtitle_lines(1)
+        self.services_expand_button.set_visible(False)
+        self.services_expand_button.set_active(False)
+        self._services_checked = False
 
         self.os_row.set_subtitle(device.os_display)
+        self.os_row.set_tooltip_text(device.os_display if device.os_display else None)
         self.os_row.set_visible(device.deep_scanned)
+        # The expand button only makes sense when the info actually wraps to
+        # more than one line; ellipsization is checked once the row is laid
+        # out (see _on_os_row_map).
+        self.os_expand_button.set_visible(False)
+        self.os_expand_button.set_active(False)
+        self.os_row.set_subtitle_lines(1)
+        self._os_checked = False
+
+    def _find_subtitle_label(self, row):
+        """Find the GtkLabel used for the row's subtitle"""
+        child = row.get_first_child()
+        while child is not None:
+            if isinstance(child, Gtk.Label) and "subtitle" in child.get_css_classes():
+                return child
+            found = self._find_subtitle_label(child)
+            if found:
+                return found
+            child = child.get_next_sibling()
+        return None
+
+    def _on_os_row_map(self, row):
+        """Check ellipsization once the row is mapped and laid out"""
+        if not self._os_checked:
+            GLib.idle_add(self._check_os_ellipsized)
+
+    def _check_os_ellipsized(self):
+        """Show the expand button only when the subtitle is ellipsized"""
+        if not self.os_row.get_mapped():
+            return GLib.SOURCE_CONTINUE
+        label = self._find_subtitle_label(self.os_row)
+        layout = label.get_layout() if label else None
+        if layout is None or label.get_width() <= 1:
+            return GLib.SOURCE_CONTINUE
+        self._os_checked = True
+        self.os_expand_button.set_visible(layout.is_ellipsized())
+        return GLib.SOURCE_REMOVE
+
+    def _on_services_row_map(self, row):
+        """Check ellipsization once the row is mapped and laid out"""
+        if not self._services_checked:
+            GLib.idle_add(self._check_services_ellipsized)
+
+    def _check_services_ellipsized(self):
+        """Show the expand button only when the subtitle is ellipsized"""
+        if not self.services_row.get_mapped():
+            return GLib.SOURCE_CONTINUE
+        label = self._find_subtitle_label(self.services_row)
+        layout = label.get_layout() if label else None
+        if layout is None or label.get_width() <= 1:
+            return GLib.SOURCE_CONTINUE
+        self._services_checked = True
+        self.services_expand_button.set_visible(layout.is_ellipsized())
+        return GLib.SOURCE_REMOVE
+
+    def _set_expanded(self, row, button, expanded, full_tooltip):
+        """Expand/collapse a row's subtitle"""
+        row.set_subtitle_lines(0 if expanded else 1)
+        button.set_icon_name("pan-up-symbolic" if expanded else "pan-down-symbolic")
+        button.set_tooltip_text(_("Show less") if expanded else full_tooltip)
+
+    @Gtk.Template.Callback()
+    def on_expand_toggled(self, button):
+        """Toggle expansion for the row the button belongs to"""
+        expanded = button.get_active()
+        if button is self.os_expand_button:
+            self._set_expanded(self.os_row, button, expanded,
+                               _("Show full system information"))
+        elif button is self.services_expand_button:
+            self._set_expanded(self.services_row, button, expanded,
+                               _("Show full service list"))
 
     @Gtk.Template.Callback()
     def on_ip_clicked(self, button):

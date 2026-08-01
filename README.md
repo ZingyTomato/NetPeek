@@ -19,9 +19,11 @@ A modern libadwaita-based network scanner for GNOME that helps you discover devi
 
 ![Results Page](https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/2.png?raw=true)
 
-![No Devices Found](https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/3.png?raw=true)
-
 ![List View](https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/4.png?raw=true)
+
+![Deep Scan](https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/5.png?raw=true)
+
+![Previous Scans](https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/6.png?raw=true)
 
 ## ⭐ Features
 

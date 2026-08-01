@@ -58,7 +58,15 @@
     </screenshot>
     <screenshot>
       <image>https://raw.githubusercontent.com/ZingyTomato/NetPeek/refs/heads/master/data/screenshots/4.png</image>
-      <caption>List View</caption>
+      <caption>Scan Results (List View)</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/ZingyTomato/NetPeek/refs/heads/master/data/screenshots/5.png</image>
+      <caption>Deep Scan Results</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/ZingyTomato/NetPeek/refs/heads/master/data/screenshots/6.png</image>
+      <caption>Previous Scans</caption>
     </screenshot>
   </screenshots>
   <releases>
