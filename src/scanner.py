@@ -70,9 +70,7 @@ class NetworkScanner:
             return False, _("Please enter an IP range")
 
         try:
-            if '/' in ip_range or '-' in ip_range:
-                pass
-            else:
+            if '/' not in ip_range and '-' not in ip_range:
                 ipaddress.IPv4Address(ip_range)
             return True, _("Valid IP range")
         except Exception as e:
@@ -118,7 +116,7 @@ class NetworkScanner:
         if deep_scan:
             # Service version detection (works without root)
             scan_arguments += " -sV --version-intensity 2"
-            # SMB OS discovery and share enumeration (NSE scripts, no root needed)
+            # SMB OS discovery (NSE script, no root needed)
             scan_arguments += " --script smb-os-discovery.nse"
 
         try:
@@ -141,7 +139,6 @@ class NetworkScanner:
             if host_info.state() == 'up':
                 if not hostname:
                     hostname = netinfo.resolve_hostname(str(host))
-                smb = 445 in open_ports or 139 in open_ports
                 services = list(dict.fromkeys(
                     svc for port, svc in self.SERVICE_PORTS.items()
                     if port in open_ports
@@ -152,7 +149,6 @@ class NetworkScanner:
                     "ip": str(host),
                     "ports": open_ports,
                     "ports_display": ", ".join(map(str, open_ports)) if open_ports else _("No common ports open"),
-                    "smb": smb,
                     "services": services,
                     "os_display": "",
                 }

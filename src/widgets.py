@@ -25,8 +25,18 @@ from gi.repository import Gtk, Adw, Gdk, GObject, GLib
 
 from . import storage
 
+
+class ToastMixin:
+    """Shared show_toast helper for widgets that have a toast_overlay."""
+
+    def show_toast(self, message, timeout=3):
+        toast = Adw.Toast(title=message)
+        toast.set_timeout(timeout)
+        self.toast_overlay.add_toast(toast)
+
+
 @Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/device_card.ui')
-class DeviceCard(Adw.Bin):
+class DeviceCard(ToastMixin, Adw.Bin):
     """Custom widget for displaying device information in a card format"""
     __gtype_name__ = 'DeviceCard'
 
@@ -48,8 +58,8 @@ class DeviceCard(Adw.Bin):
         self.clipboard = Gdk.Display.get_default().get_clipboard()
         self._os_checked = False
         self._services_checked = False
-        self.os_row.connect("map", self._on_os_row_map)
-        self.services_row.connect("map", self._on_services_row_map)
+        self.os_row.connect("map", self._on_row_map)
+        self.services_row.connect("map", self._on_row_map)
 
         # Bidirectional binding keeps this card's name entry and the list
         # view's custom name column in sync live, without either widget
@@ -104,38 +114,29 @@ class DeviceCard(Adw.Bin):
             child = child.get_next_sibling()
         return None
 
-    def _on_os_row_map(self, row):
-        """Check ellipsization once the row is mapped and laid out"""
-        if not self._os_checked:
-            GLib.idle_add(self._check_os_ellipsized)
+    def _row_state(self, row):
+        """Return (expand_button, checked_flag) for a given subtitle row"""
+        if row is self.os_row:
+            return self.os_expand_button, "_os_checked"
+        return self.services_expand_button, "_services_checked"
 
-    def _check_os_ellipsized(self):
+    def _on_row_map(self, row):
+        """Check ellipsization once the row is mapped and laid out"""
+        _button, checked_flag = self._row_state(row)
+        if not getattr(self, checked_flag):
+            GLib.idle_add(self._check_ellipsized, row)
+
+    def _check_ellipsized(self, row):
         """Show the expand button only when the subtitle is ellipsized"""
-        if not self.os_row.get_mapped():
+        if not row.get_mapped():
             return GLib.SOURCE_CONTINUE
-        label = self._find_subtitle_label(self.os_row)
+        label = self._find_subtitle_label(row)
         layout = label.get_layout() if label else None
         if layout is None or label.get_width() <= 1:
             return GLib.SOURCE_CONTINUE
-        self._os_checked = True
-        self.os_expand_button.set_visible(layout.is_ellipsized())
-        return GLib.SOURCE_REMOVE
-
-    def _on_services_row_map(self, row):
-        """Check ellipsization once the row is mapped and laid out"""
-        if not self._services_checked:
-            GLib.idle_add(self._check_services_ellipsized)
-
-    def _check_services_ellipsized(self):
-        """Show the expand button only when the subtitle is ellipsized"""
-        if not self.services_row.get_mapped():
-            return GLib.SOURCE_CONTINUE
-        label = self._find_subtitle_label(self.services_row)
-        layout = label.get_layout() if label else None
-        if layout is None or label.get_width() <= 1:
-            return GLib.SOURCE_CONTINUE
-        self._services_checked = True
-        self.services_expand_button.set_visible(layout.is_ellipsized())
+        button, checked_flag = self._row_state(row)
+        setattr(self, checked_flag, True)
+        button.set_visible(layout.is_ellipsized())
         return GLib.SOURCE_REMOVE
 
     def _set_expanded(self, row, button, expanded, full_tooltip):
@@ -172,11 +173,6 @@ class DeviceCard(Adw.Bin):
         if root:
             root.set_focus(None)
         self.name_row.set_position(-1)
-
-    def show_toast(self, message, timeout=3):
-        toast = Adw.Toast(title=message)
-        toast.set_timeout(timeout)
-        self.toast_overlay.add_toast(toast)
 
 @Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/theme_selector.ui')
 class ThemeSelector(Gtk.Box):

@@ -124,8 +124,3 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         self.navigation_view.connect("popped", self._on_page_popped)
 
         self.navigation_view.add(self.home_page)
-
-    def show_toast(self, message, timeout=3):
-        toast = Adw.Toast(title=_(message))
-        toast.set_timeout(timeout)
-        self.toast_overlay.add_toast(toast)

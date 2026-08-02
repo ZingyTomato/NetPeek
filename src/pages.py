@@ -27,22 +27,14 @@ gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Gtk, Adw, Gio, GLib, Gdk, GObject
 
-from .widgets import DeviceCard, PresetButton, ThemeSelector
+from .widgets import DeviceCard, PresetButton, ThemeSelector, ToastMixin
 from .scanner import NetworkScanner
 from .models import Device
 from . import storage
 
 
-def _format_timestamp(iso_string):
-    try:
-        dt = datetime.fromisoformat(iso_string)
-        return dt.astimezone().strftime('%b %d, %Y %H:%M')
-    except ValueError:
-        return iso_string
-
-
 @Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/home_page.ui')
-class HomePage(Adw.NavigationPage):
+class HomePage(ToastMixin, Adw.NavigationPage):
     """Home page with IP input functionality"""
     __gtype_name__ = 'HomePage'
 
@@ -198,14 +190,9 @@ class HomePage(Adw.NavigationPage):
             self.show_toast(_(message))
         return is_valid
 
-    def show_toast(self, message, timeout=3):
-        toast = Adw.Toast(title=_(message))
-        toast.set_timeout(timeout)
-        self.toast_overlay.add_toast(toast)
-
 
 @Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/results_page.ui')
-class ResultsPage(Adw.NavigationPage):
+class ResultsPage(ToastMixin, Adw.NavigationPage):
     """Results page for displaying scan results"""
     __gtype_name__ = 'ResultsPage'
 
@@ -828,11 +815,6 @@ class ResultsPage(Adw.NavigationPage):
         self.error_page.set_description(_("Error: ") + error_message)
         self.results_title.set_subtitle(_("An error occurred!"))
         self.show_toast(_("Error: ") + error_message, 5)
-
-    def show_toast(self, message, timeout=3):
-        toast = Adw.Toast(title=message)
-        toast.set_timeout(timeout)
-        self.toast_overlay.add_toast(toast)
 
 
 @Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/history_dialog.ui')

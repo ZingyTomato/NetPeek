@@ -81,12 +81,6 @@ def save_scans(scans):
     _save_json(_scans_path(), scans)
 
 
-def get_custom_name(key):
-    devices = load_devices()
-    record = devices.get(key)
-    return record.get("custom_name", "") if record else ""
-
-
 def set_custom_name(key, name):
     devices = load_devices()
     record = devices.setdefault(key, {})
