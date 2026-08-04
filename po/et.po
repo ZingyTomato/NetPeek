@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-30 09:46+0200\n"
-"PO-Revision-Date: 2026-07-31 03:43+0000\n"
+"PO-Revision-Date: 2026-08-04 06:01+0000\n"
 "Last-Translator: Priit Jõerüüt <jrthwlate@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Estonian <https://hosted.weblate.org/projects/netpeek/netpeek/"
 "et/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.8.dev0\n"
+"X-Generator: Weblate 2026.8.1.dev0\n"
 
 #: data/io.github.zingytomato.netpeek.desktop.in:2
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/gtk/home_page.ui:7
@@ -58,42 +58,50 @@ msgstr "Eelistatud kujundus"
 #: data/io.github.zingytomato.netpeek.gschema.xml:22
 msgid "One of \"default\" (follow system), \"light\", or \"dark\"."
 msgstr ""
+"Valikuvõimalused on „vaikimisi“ (järgi süsteemi kujundust), „hele kujundus“, "
+"„tume kujundus“."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:26
 msgid "Results view mode"
-msgstr ""
+msgstr "Tulemuste vaaterežiim"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:27
 msgid "One of \"cards\" or \"list\"."
-msgstr ""
+msgstr "Valikud on „kaardivaade“ või „loendivaade“."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:31
 msgid "Last used IP range"
-msgstr ""
+msgstr "Viimatikasutatud IP-aadresside vahemik"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:32
 msgid "The IP range entered in the last scan, restored on startup."
 msgstr ""
+"Viimasel skaneerimisel sisestatud IP-aadresside vahemik, mis taastatakse "
+"rakenduse uuesti käivitamisel."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:36
 msgid "Enable deep scan mode"
-msgstr ""
+msgstr "Lülita süvaotsingu režiim sisse"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:37
 msgid ""
 "When enabled, retrieves more detailed system information like OS name, HTTP "
 "server etc."
 msgstr ""
+"Siselülitamisel tuvastab üksikasjalikumat süsteemiteavet, nagu "
+"operatsioonisüsteem, HTTP-server, jne."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
 msgid "See what's on your network"
-msgstr ""
+msgstr "Vaata, mis leidub sinu võrgus"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:9
 msgid ""
 "NetPeek is a simple network scanner that helps you discover active devices "
 "on your local network."
 msgstr ""
+"NetPeek on lihtne võrguskanner, mis aitab tuvastada aktiivseid seadmeid sinu "
+"kohalikust võrgust."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:48
 msgid "Home screen"
@@ -195,20 +203,22 @@ msgstr "Skaneerimisel kasutatav lõimede arv"
 
 #: src/gtk/home_page.ui:144
 msgid "Apply thread count"
-msgstr ""
+msgstr "Rakenda valitud lõimede arv"
 
 #: src/gtk/home_page.ui:156
 msgid "Deep Scan"
-msgstr ""
+msgstr "Süvaotsing"
 
 #: src/gtk/home_page.ui:157
 msgid ""
 "Retrieves more detailed system information like OS name, HTTP server etc."
 msgstr ""
+"Tuvastab üksikasjalikumat süsteemiteavet, nagu operatsioonisüsteem, HTTP-"
+"server, jne."
 
 #: src/gtk/home_page.ui:179
 msgid "Scan my Network"
-msgstr ""
+msgstr "Skaneeri minu võrku"
 
 #: src/gtk/home_page.ui:214
 msgid "About"
@@ -224,39 +234,39 @@ msgstr "Skaneerimine on pooleli…"
 
 #: src/gtk/results_page.ui:21
 msgid "Devices found on your network:"
-msgstr ""
+msgstr "Sinu võrgus leidunud seadmed:"
 
 #: src/gtk/results_page.ui:27
 msgid "Stop the current network scan"
-msgstr ""
+msgstr "Lõpeta see võrguskaneerimine"
 
 #: src/gtk/results_page.ui:32 src/pages.py:534
 msgid "Stop"
-msgstr ""
+msgstr "Lõpeta"
 
 #: src/gtk/results_page.ui:50
 msgid "Export to CSV"
-msgstr ""
+msgstr "Ekspordi CSV-failina"
 
 #: src/gtk/results_page.ui:58
 msgid "Toggle list view"
-msgstr ""
+msgstr "Lülita loendivaade sisse/välja"
 
 #: src/gtk/results_page.ui:66
 msgid "Sort devices"
-msgstr ""
+msgstr "Järjesta seadmeid"
 
 #: src/gtk/results_page.ui:83 src/pages.py:638
 msgid "Known"
-msgstr ""
+msgstr "Teadaolev"
 
 #: src/gtk/results_page.ui:105 src/pages.py:338
 msgid "IP Address"
-msgstr ""
+msgstr "IP-aadress"
 
 #: src/gtk/results_page.ui:149 src/pages.py:407
 msgid "Custom Name"
-msgstr ""
+msgstr "Sinu lisatud nimi"
 
 #: src/gtk/results_page.ui:171 src/pages.py:295
 msgid "Ports"
@@ -273,7 +283,7 @@ msgstr "Skaneerin võrku"
 
 #: src/gtk/results_page.ui:276
 msgid "Discovering devices on your network... (this may take a while!)"
-msgstr ""
+msgstr "Tuvastan sinu võrgus leiduvaid seadmeid… (selleks võib kuluda aega!)"
 
 #: src/gtk/results_page.ui:297 src/pages.py:701
 msgid "Preparing scan..."
@@ -281,7 +291,7 @@ msgstr "Valmistun skaneerima…"
 
 #: src/gtk/results_page.ui:306 src/pages.py:702
 msgid "Time Elapsed: 00:00"
-msgstr ""
+msgstr "Kulunud aeg: 00:00"
 
 #: src/gtk/results_page.ui:396
 msgid "No Devices Found"
@@ -313,154 +323,154 @@ msgstr "Tume kujundus"
 
 #: src/pages.py:113
 msgid "Auto-detect"
-msgstr ""
+msgstr "Tuvasta automaatselt"
 
 #: src/pages.py:114
 msgid "Automatically detect your local network"
-msgstr ""
+msgstr "Tuvasta sinu kohtvõrk automaatselt"
 
 #: src/pages.py:121
 msgid "Home Network (192.168.1.x)"
-msgstr ""
+msgstr "Väike kohtvõrk (192.168.1.x)"
 
 #: src/pages.py:122
 msgid "Home Network (192.168.0.x)"
-msgstr ""
+msgstr "Väike privaatvõrk (192.168.0.x)"
 
 #: src/pages.py:123
 msgid "Corporate (10.0.0.x)"
-msgstr ""
+msgstr "Suur privaatvõrk (10.0.0.x)"
 
 #: src/pages.py:124
 msgid "Private (172.16.0.x)"
-msgstr ""
+msgstr "Keskmine privaatvõrk (172.16.0.x)"
 
 #: src/pages.py:327
 msgid "New device"
-msgstr ""
+msgstr "Uus seade"
 
 #: src/pages.py:331
 msgid "Known device"
-msgstr ""
+msgstr "Teadaolev seade"
 
 #: src/pages.py:356
 msgid "Copy IP"
-msgstr ""
+msgstr "Kopeeri IP-aadress"
 
 #: src/pages.py:400 src/widgets.py:69
 msgid "Unknown"
-msgstr ""
+msgstr "Tundmatu"
 
 #: src/pages.py:419
 msgid "Click to set name..."
-msgstr ""
+msgstr "Klõpsa nime lisamiseks…"
 
 #: src/pages.py:421
 msgid "Apply"
-msgstr ""
+msgstr "Rakenda"
 
 #: src/pages.py:586 src/widgets.py:81
 #, python-brace-format
 msgid "Copied {ip} to the clipboard"
-msgstr ""
+msgstr "{ip} in kopeeritud lõikelauale"
 
 #: src/pages.py:592
 msgid "No devices to export"
-msgstr ""
+msgstr "Pole seadmeid, mida eksportida"
 
 #: src/pages.py:596
 msgid "Export Scan Results"
-msgstr ""
+msgstr "Ekspordi skaneerimistulemused"
 
 #: src/pages.py:600
 msgid "CSV Files"
-msgstr ""
+msgstr "CSV-failid"
 
 #: src/pages.py:618
 msgid "Export cancelled or failed"
-msgstr ""
+msgstr "Eksportimine on katkestatud või ei õnenstunud"
 
 #: src/pages.py:642
 msgid "Successfully exported to "
-msgstr ""
+msgstr "Eksportimine õnnestus asukohta "
 
 #: src/pages.py:644
 msgid "Open Folder"
-msgstr ""
+msgstr "Ava kaust"
 
 #: src/pages.py:648
 msgid "Export failed: "
-msgstr ""
+msgstr "Eksportimine ei õnnestunud: "
 
 #: src/pages.py:672
 #, python-brace-format
 msgid "Time Elapsed: {minutes:02d}:{seconds:02d}"
-msgstr ""
+msgstr "Kulunud aeg: {minutes:02d}:{seconds:02d}"
 
 #: src/pages.py:681
 #, python-brace-format
 msgid "Hosts Scanned: {scanned}/{total}"
-msgstr ""
+msgstr "Skaneeritud hoste: {scanned}/{total}"
 
 #: src/pages.py:692
 msgid "Scanning..."
-msgstr ""
+msgstr "Skaneerin…"
 
 #: src/pages.py:706
 msgid "Scanning "
-msgstr ""
+msgstr "Skaneerin "
 
 #: src/pages.py:732
 #, python-brace-format
 msgid "Scan stopped - Found {count} devices"
-msgstr ""
+msgstr "Skaneerimine on lõppenud - leidus {count} seadet"
 
 #: src/pages.py:736
 msgid "Scan stopped - No devices found"
-msgstr ""
+msgstr "Skaneerimine on lõppenud - ühtegi seadet ei leidunud"
 
 #: src/pages.py:756
 msgid "Loaded from history: "
-msgstr ""
+msgstr "Laaditud ajaloost: "
 
 #: src/pages.py:795
 #, python-brace-format
 msgid "Found {count} devices"
-msgstr ""
+msgstr "Leidus {count} seadet"
 
 #: src/pages.py:798
 msgid "No devices found"
-msgstr ""
+msgstr "Ühtegi seadet ei leidu"
 
 #: src/pages.py:813 src/pages.py:815
 msgid "Error: "
-msgstr ""
+msgstr "Viga: "
 
 #: src/pages.py:814
 msgid "An error occurred!"
-msgstr ""
+msgstr "Tellis viga!"
 
 #: src/pages.py:892
 msgid "Today"
-msgstr ""
+msgstr "Täna"
 
 #: src/pages.py:894
 msgid "Yesterday"
-msgstr ""
+msgstr "Eile"
 
 #: src/pages.py:948
 msgid "Deep"
-msgstr ""
+msgstr "Süvaotsing"
 
 #: src/pages.py:949
 #, python-brace-format
 msgid "{time} · {count} devices{deep}"
-msgstr ""
+msgstr "{time} · {count} seadet{deep}"
 
 #: src/pages.py:956
 msgid "Delete this scan"
-msgstr ""
+msgstr "Kustuta see skaneerimine"
 
 #: src/window.py:70
 msgid "Contributors"
-msgstr ""
+msgstr "Kaasautorid"
