@@ -59,7 +59,6 @@ class NetworkScanner:
         self.max_workers = 100
 
     def set_max_workers(self, count):
-        """Set the maximum number of worker threads"""
         if 1 <= count <= 500:
             self.max_workers = count
         else:
@@ -224,7 +223,7 @@ class NetworkScanner:
 
     @staticmethod
     def _enrich_deep_scan(host_info, device, open_ports):
-        """Parse NSE script results and -sV service versions into OS and share info."""
+        """Parse NSE script results and service version output into OS and share info."""
         hostscript = host_info.get('hostscript', [])
         os_parts = []
 
@@ -242,7 +241,7 @@ class NetworkScanner:
                         if clean.startswith('OS:'):
                             os_parts.append(clean[3:].strip())
 
-        # 2. Service version info from -sV
+        # 2. Service version info gathered by the scanner
         version_strings = []
         if 'tcp' in host_info:
             for port in open_ports:
@@ -264,7 +263,7 @@ class NetworkScanner:
 
     @staticmethod
     def _enrich_with_arp(devices):
-        """Fill in MAC address from the kernel ARP table, best-effort."""
+        """Fill in the MAC address from the kernel ARP table when available."""
         arp_table = netinfo.read_arp_table()
         for device in devices:
             device["mac"] = arp_table.get(device["ip"], "")
@@ -273,8 +272,8 @@ class NetworkScanner:
     def _local_ip_via_udp_probe():
         """Ask the kernel which local address it would use to reach the internet.
 
-        A UDP connect() only performs a routing decision - no packet is sent -
-        so this works offline and needs no special permissions.
+        A UDP connect() only performs a routing decision without sending any
+        packet, so this works offline and needs no special permissions.
         """
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
             s.settimeout(1)
@@ -302,9 +301,9 @@ class NetworkScanner:
 
         Previously used socket.gethostbyname(gethostname()), which commonly
         resolves to 127.0.1.1 or the wrong interface depending on
-        /etc/hosts - unreliable, especially inside the Flatpak sandbox. A UDP
-        connect() only performs a kernel routing decision (no packet sent),
-        so it reliably reveals the real outbound interface instead.
+        /etc/hosts, and is unreliable especially inside the Flatpak sandbox.
+        A UDP connect() only performs a kernel routing decision (no packet
+        sent), so it reliably reveals the real outbound interface instead.
         """
         try:
             local_ip = NetworkScanner._local_ip_via_udp_probe()

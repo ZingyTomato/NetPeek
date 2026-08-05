@@ -58,7 +58,7 @@ def resolve_mdns_hostname(ip, timeout=0.4):
     reversed_name = ".".join(reversed(ip.split("."))) + ".in-addr.arpa"
     txid = random.randint(0, 0xFFFF)
     header = struct.pack(">HHHHHH", txid, 0x0000, 1, 0, 0, 0)
-    # Top bit of qclass set = "QU" (unicast-response) so we get a direct reply
+    # Top bit of qclass set to QU (unicast response) so we get a direct reply
     question = _encode_dns_name(reversed_name) + struct.pack(">HH", 12, 0x8001)
     packet = header + question
 
@@ -145,7 +145,7 @@ def resolve_netbios_name(ip, timeout=0.4):
 
 
 def resolve_hostname(ip):
-    """Best-effort hostname resolution: reverse DNS, then mDNS, then NetBIOS."""
+    """Try hostname resolution in order: reverse DNS, then mDNS, then NetBIOS."""
     try:
         return socket.gethostbyaddr(ip)[0]
     except Exception:

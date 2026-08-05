@@ -122,7 +122,6 @@ class HomePage(ToastMixin, Adw.NavigationPage):
         self.results_page = results_page
 
     def setup_presets(self):
-        """Setup preset IP range buttons and auto detect"""
         auto_button = Gtk.Button()
         auto_button.set_label(_("Auto-detect"))
         auto_button.set_tooltip_text(_("Automatically detect your local network"))
@@ -143,16 +142,13 @@ class HomePage(ToastMixin, Adw.NavigationPage):
             self.preset_box.append(preset_button)
 
     def auto_detect_network(self):
-        """Auto-detect network range"""
         detected_range = NetworkScanner.get_local_ip_range()
         self.ip_entry_row.set_text(detected_range)
 
     def _on_deep_scan_toggled(self, switch, _pspec):
-        """Persist deep scan preference when toggled."""
         self.settings.set_boolean('deep-scan', switch.get_active())
 
     def _on_thread_count_changed(self, spin):
-        """Persist thread count and apply to scanner."""
         self.scanner.set_max_workers(int(spin.get_value()))
         self.settings.set_int('thread-count', int(spin.get_value()))
 
@@ -175,15 +171,12 @@ class HomePage(ToastMixin, Adw.NavigationPage):
         self.ip_entry_row.set_position(-1)
 
     def on_auto_detect_clicked(self, button):
-        """Auto-detect local network IP range"""
         self.auto_detect_network()
 
     def on_preset_clicked(self, button, preset_range):
-        """If one of the IP presets were clicked"""
         self.ip_entry_row.set_text(preset_range)
 
     def validate_ip_range(self):
-        """Validate the IP entered"""
         ip_range = self.ip_entry_row.get_text().strip()
         is_valid, message = self.scanner.validate_ip_range(ip_range)
         if not is_valid:
@@ -216,6 +209,8 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
     sort_row_ports = Gtk.Template.Child()
     sort_row_services = Gtk.Template.Child()
     sort_row_os = Gtk.Template.Child()
+    search_entry = Gtk.Template.Child()
+    devices_content_stack = Gtk.Template.Child()
     results_stack = Gtk.Template.Child()
     spinner = Gtk.Template.Child()
     progress_label = Gtk.Template.Child()
@@ -244,8 +239,16 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.timer_source_id = None
 
         self.list_store = Gio.ListStore(item_type=Device)
+        self._search_text = ""
+        self._skip_blur_on_clear = False
+        self._last_typed = 0.0
+        self._last_pointer_press = 0.0
+        self._hovering = False
+        self._blur_check_id = None
+        self._typing_grace = 1.0
         self._setup_column_view()
-        self.flow_box.bind_model(self.sort_model, self._create_card)
+        self.flow_box.bind_model(self.filter_model, self._create_card)
+        self._setup_search_behavior()
         self._setup_responsive_header()
 
 
@@ -274,11 +277,44 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
     def _create_card(self, device):
         return DeviceCard(device, toast_overlay=self.toast_overlay)
 
+    def _filter_func(self, item):
+        """Gtk.CustomFilter match: substring search that ignores case over the
+        fields shown on the device cards and list rows.
+        """
+        query = self._search_text
+        if not query:
+            return True
+        haystack = " ".join((
+            item.ip,
+            item.hostname,
+            item.custom_name,
+            item.ports_display,
+            item.services_display,
+            item.os_display,
+            "new" if not item.known else "known",
+        )).lower()
+        return query.lower() in haystack
+
+    def _update_device_view(self):
+        """Show the device list, a hint when nothing matches, or the empty
+        state, depending on the current search query and the number of hosts.
+        """
+        if self.list_store.get_n_items() == 0:
+            self.results_stack.set_visible_child_name("empty")
+        else:
+            self.results_stack.set_visible_child_name("devices")
+            if self._search_text and self.filter_model.get_n_items() == 0:
+                self.devices_content_stack.set_visible_child_name("no_results")
+            else:
+                self.devices_content_stack.set_visible_child_name("results")
+
     def _setup_column_view(self):
         self.sort_model = Gtk.SortListModel(model=self.list_store)
+        self._filter = Gtk.CustomFilter.new(self._filter_func)
+        self.filter_model = Gtk.FilterListModel(model=self.sort_model, filter=self._filter)
 
         self.column_view = Gtk.ColumnView()
-        self.column_view.set_model(Gtk.NoSelection(model=self.sort_model))
+        self.column_view.set_model(Gtk.NoSelection(model=self.filter_model))
         self.column_view.set_show_row_separators(True)
         self.column_view.set_show_column_separators(True)
         self.list_view.set_child(self.column_view)
@@ -307,14 +343,12 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         return column
 
     def on_status_setup(self, factory, list_item):
-        """Setup status indicator cell"""
         icon = Gtk.Image()
         icon.set_margin_start(8)
         icon.set_margin_end(8)
         list_item.set_child(icon)
 
     def on_status_bind(self, factory, list_item):
-        """Bind status indicator"""
         icon = list_item.get_child()
         item = list_item.get_item()
 
@@ -339,7 +373,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         return column
 
     def on_ip_setup(self, factory, list_item):
-        """Setup IP column"""
         box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
         label = Gtk.Label()
         label.set_xalign(0)
@@ -356,7 +389,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         list_item.set_child(box)
 
     def on_ip_bind(self, factory, list_item):
-        """Bind IP address"""
         box = list_item.get_child()
         label = box.get_first_child()
         copy_btn = label.get_next_sibling()
@@ -380,7 +412,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         return column
 
     def on_hostname_setup(self, factory, list_item):
-        """Setup hostname column"""
         label = Gtk.Label()
         label.set_xalign(0)
         label.set_margin_start(8)
@@ -389,7 +420,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         list_item.set_child(label)
 
     def on_hostname_bind(self, factory, list_item):
-        """Bind hostname"""
         label = list_item.get_child()
         item = list_item.get_item()
 
@@ -408,7 +438,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         return column
 
     def on_custom_name_setup(self, factory, list_item):
-        """Setup custom name column with edit capability"""
         entry = Gtk.Entry()
         entry.set_margin_start(8)
         entry.set_margin_end(8)
@@ -418,7 +447,8 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         list_item.set_child(entry)
 
     def on_custom_name_bind(self, factory, list_item):
-        """Bind custom name, keeping the entry live-synced to the Device model
+        """Bind custom name, keeping the entry synced live with the Device
+        model
 
         so edits here and edits made via the card view's name row stay in
         sync without either widget knowing about the other.
@@ -577,8 +607,92 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.view_stack.set_visible_child_name('list' if is_list else 'cards')
         self.settings.set_string('view-mode', 'list' if is_list else 'cards')
 
+    @Gtk.Template.Callback()
+    def on_search_changed(self, entry):
+        """Refilter the device list when the search query changes."""
+        self._search_text = entry.get_text().strip()
+        self._filter.changed(Gtk.FilterChange.DIFFERENT)
+        self._update_device_view()
+        if not self._search_text and not self._skip_blur_on_clear:
+            now = time.monotonic()
+            if now - self._last_typed > self._typing_grace or \
+               now - self._last_pointer_press < 0.5:
+                self._clear_search_focus()
+        self._skip_blur_on_clear = False
+
+    @Gtk.Template.Callback()
+    def on_search_stopped(self, entry):
+        """Clear the query on Escape (focus follows the hover rules)."""
+        self._skip_blur_on_clear = True
+        entry.set_text("")
+
+    def _setup_search_behavior(self):
+        """Automatic focus release for the search entry.
+
+        The entry keeps normal behaviour where clicking focuses it; hovering
+        does not steal focus.  Moving the pointer away drops focus unless
+        the user is still typing (a one second grace after the last
+        keystroke).  Clearing the query with the cancel icon also drops
+        focus.
+        """
+        motion = Gtk.EventControllerMotion()
+        motion.connect("enter", self._on_search_hover_enter)
+        motion.connect("leave", self._on_search_hover_leave)
+        self.search_entry.add_controller(motion)
+
+        keys = Gtk.EventControllerKey()
+        keys.connect("key-pressed", self._on_search_key_pressed)
+        self.search_entry.add_controller(keys)
+
+        click = Gtk.GestureClick()
+        click.connect("pressed", self._on_search_pointer_pressed)
+        self.search_entry.add_controller(click)
+
+    def _on_search_hover_enter(self, controller, x, y):
+        # Track hover state only for the blur logic; hovering must not focus.
+        self._hovering = True
+
+    def _on_search_hover_leave(self, controller):
+        self._hovering = False
+        if self.search_entry.has_focus():
+            if time.monotonic() - self._last_typed > self._typing_grace:
+                self._clear_search_focus()
+            else:
+                self._schedule_blur_check()
+
+    def _on_search_key_pressed(self, controller, keyval, keycode, state):
+        if keyval == Gdk.KEY_Escape:
+            return False
+        self._last_typed = time.monotonic()
+        # A click before typing was a focus click, not a cancel press; only a
+        # fresh press (e.g. on the clear icon) should count as cancelling.
+        self._last_pointer_press = 0.0
+        self._schedule_blur_check()
+        return False
+
+    def _on_search_pointer_pressed(self, gesture, n_press, x, y):
+        self._last_pointer_press = time.monotonic()
+
+    def _schedule_blur_check(self):
+        """Blur the search entry shortly after the user stops typing while
+        the pointer is no longer over it."""
+        if self._blur_check_id is not None:
+            GLib.source_remove(self._blur_check_id)
+        self._blur_check_id = GLib.timeout_add(
+            int(self._typing_grace * 1000), self._maybe_blur)
+
+    def _maybe_blur(self):
+        self._blur_check_id = None
+        if not self._hovering and self.search_entry.has_focus():
+            self._clear_search_focus()
+        return GLib.SOURCE_REMOVE
+
+    def _clear_search_focus(self):
+        root = self.get_root()
+        if root:
+            root.set_focus(None)
+
     def copy_to_clipboard(self, text):
-        """Copy text to clipboard"""
         self.clipboard.set(text)
         self.show_toast(_("Copied {ip} to the clipboard").format(ip=text), 2)
 
@@ -604,7 +718,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         dialog.save(self.get_root(), None, self.on_export_response)
 
     def on_export_response(self, dialog, result):
-        """Handle export file dialog response"""
         try:
             file = dialog.save_finish(result)
             if file:
@@ -650,12 +763,10 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         launcher.open_containing_folder(self.get_root(), None, None)
 
     def start_timer(self):
-        """Start the scan timer"""
         self.scan_start_time = time.time()
         self.timer_source_id = GLib.timeout_add(1000, self.update_timer)
 
     def stop_timer(self):
-        """Stop the scan timer"""
         if self.timer_source_id:
             GLib.source_remove(self.timer_source_id)
             self.timer_source_id = None
@@ -674,7 +785,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         return True
 
     def on_progress_update(self, hosts_scanned, total_hosts):
-        """Handle progress updates from the scanner"""
         progress_text = _("Hosts Scanned: {scanned}/{total}").format(
             scanned=hosts_scanned,
             total=total_hosts
@@ -694,7 +804,12 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
 
         self.list_store.remove_all()
 
+        # Switch to the loading page instantly.  A crossfade would briefly
+        # keep the previous devices view, including the search bar, on
+        # screen.
+        self.results_stack.set_transition_type(Gtk.StackTransitionType.NONE)
         self.results_stack.set_visible_child_name("loading")
+        self.results_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
         self.progress_label.set_text(_("Preparing scan..."))
         self.timer_label.set_text(_("Time Elapsed: 00:00"))
 
@@ -713,7 +828,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
 
     @Gtk.Template.Callback()
     def on_stop_clicked(self, button):
-        """Handle stop scanning button click"""
         self.scanner.stop_scan()
         self.stop_button.set_visible(False)
         self.rescan_button.set_sensitive(True)
@@ -763,6 +877,9 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
 
     def _display_devices(self, devices_data):
         """Populate the shared list store and switch to the right stack page"""
+        # Every scan view starts with a clean search query, so queries never
+        # carry over between scans (regular, rescan, or loaded from history).
+        self.search_entry.set_text("")
         self.list_store.remove_all()
         for data in devices_data:
             self.list_store.append(Device(data))
@@ -775,10 +892,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.columns["os"].set_visible(has_os)
         self.sort_row_os.set_visible(has_os)
 
-        if devices_data:
-            self.results_stack.set_visible_child_name("devices")
-        else:
-            self.results_stack.set_visible_child_name("empty")
+        self._update_device_view()
 
     def on_scan_complete(self, devices):
         self.rescan_button.set_sensitive(True)
@@ -838,13 +952,12 @@ class HistoryDialog(Adw.Dialog):
         self._connect_scroll()
 
     def _connect_scroll(self):
-        """Show the scroll-to-top button when scrolled down."""
+        """Show the scroll to top button when the list is scrolled down."""
         vadj = self.history_scrolled.get_vadjustment()
         if vadj:
             vadj.connect('value-changed', self._on_scroll)
 
     def _on_scroll(self, vadj):
-        """Toggle scroll-to-top button visibility based on scroll position."""
         self.scroll_top_button.set_visible(vadj.get_value() > 100)
 
     def _on_closed(self, _dialog):
@@ -879,7 +992,7 @@ class HistoryDialog(Adw.Dialog):
 
     @staticmethod
     def _format_date_header(iso_string):
-        """Parse ISO timestamp and return a human-friendly date header."""
+        """Parse ISO timestamp and return a human readable date header."""
         try:
             dt = datetime.fromisoformat(iso_string)
             local_dt = dt.astimezone()
@@ -889,7 +1002,7 @@ class HistoryDialog(Adw.Dialog):
                 return _("Today")
             if scan_date == today - timedelta(days=1):
                 return _("Yesterday")
-            # Use GLib.DateTime for locale-aware formatting
+            # Use GLib.DateTime so date formatting follows the locale
             gdt = GLib.DateTime.new_local(
                 local_dt.year, local_dt.month, local_dt.day, 0, 0, 0
             )
@@ -909,7 +1022,7 @@ class HistoryDialog(Adw.Dialog):
 
         GLib.idle_add(self._restore_scroll)
 
-        # Group scans by date (newest-first from storage)
+        # Group scans by date (storage is already newest first)
         groups = {}
         for scan in scans:
             ts = scan.get('timestamp', '')
@@ -920,15 +1033,13 @@ class HistoryDialog(Adw.Dialog):
                 date_key = ts
             groups.setdefault(date_key, []).append(scan)
 
-        # Sort date groups newest-first
+        # Sort date groups newest first
         for date_key in sorted(groups.keys(), reverse=True):
             scans_in_group = groups[date_key]
-            # Build a header row for this date
             header = self._make_header_row(
                 self._format_date_header(scans_in_group[0].get('timestamp', ''))
             )
             self.history_list.append(header)
-            # Add scan rows under this date header
             for scan in scans_in_group:
                 self.history_list.append(self._build_row(scan))
 
@@ -936,7 +1047,6 @@ class HistoryDialog(Adw.Dialog):
         row = Adw.ActionRow()
         row.set_title(scan.get('ip_range', ''))
         device_count = len(scan.get('devices', []))
-        # Extract just the time from the ISO timestamp
         try:
             ts_dt = datetime.fromisoformat(scan.get('timestamp', ''))
             time_str = ts_dt.astimezone().strftime('%H:%M')
@@ -989,7 +1099,7 @@ class HistoryDialog(Adw.Dialog):
 
     @Gtk.Template.Callback()
     def on_scan_row_activated(self, listbox, row):
-        # Skip header rows — they're not activatable
+        # Skip header rows; they are not activatable
         if not row.get_selectable():
             return
         scan_data = getattr(row, 'scan_data', None)
@@ -999,7 +1109,6 @@ class HistoryDialog(Adw.Dialog):
 
     @Gtk.Template.Callback()
     def on_scroll_top_clicked(self, button):
-        """Scroll the history list back to the top."""
         vadj = self.history_scrolled.get_vadjustment()
         if vadj:
             vadj.set_value(0)

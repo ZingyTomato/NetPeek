@@ -158,7 +158,6 @@ class DeviceCard(ToastMixin, Adw.Bin):
 
     @Gtk.Template.Callback()
     def on_ip_clicked(self, button):
-        """Copy the IP address when the copy button is clicked"""
         ip_text = self.ip_row.get_title()
         self.clipboard.set(ip_text)
         self.show_toast(_("Copied {ip} to the clipboard").format(ip=ip_text))
@@ -196,7 +195,7 @@ class ThemeSelector(Gtk.Box):
             button.set_active(scheme == current)
 
         # Connected after the initial state is set so restoring the saved
-        # scheme doesn't re-activate the action before we're in a window.
+        # scheme doesn't reactivate the action before we're in a window.
         for button in self.schemes:
             button.connect("toggled", self.on_option_selected)
 

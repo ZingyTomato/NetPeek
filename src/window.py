@@ -97,7 +97,7 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         self._came_from_history = True
 
     def _on_page_popped(self, navigation_view, page):
-        """Re-open history dialog when navigating back from a history-loaded scan."""
+        """Reopen the history dialog when navigating back from a scan loaded from history."""
         if self._came_from_history and page == self.results_page:
             self._came_from_history = False
             dialog = HistoryDialog(self.on_history_scan_selected)
