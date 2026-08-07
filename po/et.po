@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-07 09:56+0200\n"
-"PO-Revision-Date: 2026-08-04 06:01+0000\n"
+"PO-Revision-Date: 2026-08-07 21:51+0000\n"
 "Last-Translator: Priit Jõerüüt <jrthwlate@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Estonian <https://hosted.weblate.org/projects/netpeek/netpeek/"
 "et/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.8.1.dev0\n"
+"X-Generator: Weblate 2026.9.dev0\n"
 
 #: data/io.github.zingytomato.netpeek.desktop.in:2
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/gtk/home_page.ui:7
@@ -93,13 +93,11 @@ msgstr ""
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:41
 msgid "Thread count for scanning"
-msgstr ""
+msgstr "Lõimede arv skaneerimisel"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:42
-#, fuzzy
-#| msgid "Number of threads to use while scanning"
 msgid "Number of concurrent worker threads to use while scanning (1–500)."
-msgstr "Skaneerimisel kasutatav lõimede arv"
+msgstr "Skaneerimisel kasutatav rööpsete protsessilõimede arv (1-500)."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
 msgid "See what's on your network"
@@ -127,16 +125,12 @@ msgid "Scan Results"
 msgstr "Skaneerimise tulemused"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:61
-#, fuzzy
-#| msgid "Scan Results"
 msgid "Scan Results (List View)"
-msgstr "Skaneerimise tulemused"
+msgstr "Skaneerimise tulemused (loendivaatena)"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:65
-#, fuzzy
-#| msgid "Scan Results"
 msgid "Deep Scan Results"
-msgstr "Skaneerimise tulemused"
+msgstr "Süvaskaneerimise tulemused"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:69
 #: src/gtk/history_dialog.ui:7 src/gtk/history_dialog.ui:16
@@ -174,17 +168,15 @@ msgstr "Teenused"
 
 #: src/gtk/device_card.ui:112 src/widgets.py:156
 msgid "Show full service list"
-msgstr ""
+msgstr "Näita teenuste täisloendit"
 
 #: src/gtk/device_card.ui:124 src/gtk/results_page.ui:214 src/pages.py:306
 msgid "System Information"
 msgstr "Süsteemiteave"
 
 #: src/gtk/device_card.ui:138 src/widgets.py:153
-#, fuzzy
-#| msgid "System Information"
 msgid "Show full system information"
-msgstr "Süsteemiteave"
+msgstr "Näita täismahus süsteemiteavet"
 
 #: src/gtk/history_dialog.ui:50
 msgid "Scroll to top"
@@ -339,10 +331,8 @@ msgid "Dark"
 msgstr "Tume kujundus"
 
 #: src/pages.py:74
-#, fuzzy
-#| msgid "Thread Count"
 msgid "Threads"
-msgstr "Lõimede arv"
+msgstr "Lõimesid"
 
 #: src/pages.py:135
 msgid "Auto-detect"
@@ -370,11 +360,11 @@ msgstr "Keskmine privaatvõrk (172.16.0.x)"
 
 #: src/pages.py:281 src/pages.py:589
 msgid "Show as grid"
-msgstr ""
+msgstr "Näita ruudustikuvaates"
 
 #: src/pages.py:281 src/pages.py:589
 msgid "Show as list"
-msgstr ""
+msgstr "Näita loendivaates"
 
 #: src/pages.py:336
 msgid "New device"
@@ -448,16 +438,12 @@ msgid "Scanning..."
 msgstr "Skaneerin…"
 
 #: src/pages.py:716
-#, fuzzy
-#| msgid "Deep Scan"
 msgid "Deep scanning"
-msgstr "Süvaotsing"
+msgstr "Süvaskaneering"
 
 #: src/pages.py:716
-#, fuzzy
-#| msgid "Scanning "
 msgid "Scanning"
-msgstr "Skaneerin "
+msgstr "Skaneerin"
 
 #: src/pages.py:743 src/pages.py:769 src/pages.py:809 src/pages.py:963
 msgid "Deep"
@@ -512,11 +498,11 @@ msgstr "Kustuta see skaneerimine"
 
 #: src/widgets.py:145
 msgid "Show less"
-msgstr ""
+msgstr "Näita vähem"
 
 #: src/window.py:69
 msgid "Translate"
-msgstr ""
+msgstr "Tõlgi"
 
 #: src/window.py:71
 msgid "Contributors"
