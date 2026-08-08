@@ -8,80 +8,84 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-07 09:56+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-08-07 21:51+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/netpeek/netpeek/"
+"cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
+"X-Generator: Weblate 2026.9.dev0\n"
 
 #: data/io.github.zingytomato.netpeek.desktop.in:2
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/gtk/home_page.ui:7
 #: src/gtk/home_page.ui:15 src/gtk/main_window.ui:7 src/window.py:62
 msgid "NetPeek"
-msgstr ""
+msgstr "NetPeek"
 
 #: data/io.github.zingytomato.netpeek.desktop.in:3
 msgid "Discover devices on your local network"
-msgstr ""
+msgstr "Objevte zařízení na své místní síti"
 
 #: data/io.github.zingytomato.netpeek.desktop.in:10
 msgid "Gnome;GTK;Networking;Scanner;Internet;"
-msgstr ""
+msgstr "Gnome;GTK;Síť;Skener;Internet;"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:6
 #: data/io.github.zingytomato.netpeek.gschema.xml:7
 msgid "Default window width"
-msgstr ""
+msgstr "Výchozí šířka okna"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:11
 #: data/io.github.zingytomato.netpeek.gschema.xml:12
 msgid "Default window height"
-msgstr ""
+msgstr "Výchozí výška okna"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:16
 msgid "Default window maximized behaviour"
-msgstr ""
+msgstr "Výchozí chování maximalizace okna"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:17
 msgid "Not maximised by default"
-msgstr ""
+msgstr "Ve výchozím stavu nemaximalizováno"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:21
 msgid "Preferred color scheme"
-msgstr ""
+msgstr "Upřednostňované schéma barev"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:22
 msgid "One of \"default\" (follow system), \"light\", or \"dark\"."
-msgstr ""
+msgstr "Jedno z: „výchozí“ (podle systému), „světlé“, nebo „tmavé“."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:26
 msgid "Results view mode"
-msgstr ""
+msgstr "Režim zobrazení výsledků"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:27
 msgid "One of \"cards\" or \"list\"."
-msgstr ""
+msgstr "Buď „karty“ nebo „seznam“."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:31
 msgid "Last used IP range"
-msgstr ""
+msgstr "Naposledy použitý rozsah IP adres"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:32
 msgid "The IP range entered in the last scan, restored on startup."
-msgstr ""
+msgstr "Rozsah IP adres zadaný v minulém skenu – obnovený při spouštění."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:36
 msgid "Enable deep scan mode"
-msgstr ""
+msgstr "Zapnout režim hloubkového skenování"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:37
 msgid ""
 "When enabled, retrieves more detailed system information like OS name, HTTP "
 "server etc."
 msgstr ""
+"Pokud zapnuto, obdrží podrobnější informace o systémech, jako např. název "
+"operačního systému, HTTP serveru, atd."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:41
 msgid "Thread count for scanning"
@@ -93,26 +97,28 @@ msgstr ""
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
 msgid "See what's on your network"
-msgstr ""
+msgstr "Zjistěte, co se nachází na vaší síti"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:9
 msgid ""
 "NetPeek is a simple network scanner that helps you discover active devices "
 "on your local network."
 msgstr ""
+"NetPeek je jednoduchý skener sítě, který pomáhá objevit aktivní zařízení na "
+"vaší místní síti."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:49
 msgid "Home screen"
-msgstr ""
+msgstr "Domovská obrazovka"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:53
 msgid "Scan in Progress"
-msgstr ""
+msgstr "Probíhající sken"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:57
 #: src/gtk/results_page.ui:20
 msgid "Scan Results"
-msgstr ""
+msgstr "Výsledky skenu"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:61
 msgid "Scan Results (List View)"
@@ -126,35 +132,35 @@ msgstr ""
 #: src/gtk/history_dialog.ui:7 src/gtk/history_dialog.ui:16
 #: src/gtk/home_page.ui:184
 msgid "Previous Scans"
-msgstr ""
+msgstr "Předchozí skeny"
 
 #: src/gtk/device_card.ui:22
 msgid "Name"
-msgstr ""
+msgstr "Název"
 
 #: src/gtk/device_card.ui:29
 msgid "Apply name"
-msgstr ""
+msgstr "Uplatnit název"
 
 #: src/gtk/device_card.ui:38 src/pages.py:648
 msgid "New"
-msgstr ""
+msgstr "Nové"
 
 #: src/gtk/device_card.ui:65
 msgid "Click to copy IP"
-msgstr ""
+msgstr "IP adresu zkopírujete kliknutím"
 
 #: src/gtk/device_card.ui:74 src/gtk/results_page.ui:126 src/pages.py:389
 msgid "Hostname"
-msgstr ""
+msgstr "Název stroje"
 
 #: src/gtk/device_card.ui:86
 msgid "Ports Open"
-msgstr ""
+msgstr "Otevřené porty"
 
 #: src/gtk/device_card.ui:98 src/gtk/results_page.ui:192 src/pages.py:305
 msgid "Services"
-msgstr ""
+msgstr "Služby"
 
 #: src/gtk/device_card.ui:112 src/widgets.py:156
 msgid "Show full service list"
@@ -162,7 +168,7 @@ msgstr ""
 
 #: src/gtk/device_card.ui:124 src/gtk/results_page.ui:214 src/pages.py:306
 msgid "System Information"
-msgstr ""
+msgstr "Informace o systému"
 
 #: src/gtk/device_card.ui:138 src/widgets.py:153
 msgid "Show full system information"
@@ -170,153 +176,155 @@ msgstr ""
 
 #: src/gtk/history_dialog.ui:50
 msgid "Scroll to top"
-msgstr ""
+msgstr "Odrolovat nahoru"
 
 #: src/gtk/history_dialog.ui:72
 msgid "No Previous Scans"
-msgstr ""
+msgstr "Žádné předchozí skeny"
 
 #: src/gtk/history_dialog.ui:73
 msgid "Your scan history will appear here."
-msgstr ""
+msgstr "Historie vámi provedených skenů se objeví zde."
 
 #: src/gtk/home_page.ui:21
 msgid "Main Menu"
-msgstr ""
+msgstr "Hlavní nabídka"
 
 #: src/gtk/home_page.ui:79 src/window.py:66
 msgid "Discover devices on your local network."
-msgstr ""
+msgstr "Objevujte zařízení na své místní síti."
 
 #: src/gtk/home_page.ui:102
 msgid "IP Range Configuration"
-msgstr ""
+msgstr "Nastavení rozsahu IP adres"
 
 #: src/gtk/home_page.ui:103
 msgid "Enter the IP range you want to scan:"
-msgstr ""
+msgstr "Zadejte rozsah IP adres, který chcete skenovat:"
 
 #: src/gtk/home_page.ui:107
 msgid "IP Range"
-msgstr ""
+msgstr "Rozsah IP adres"
 
 #: src/gtk/home_page.ui:115
 msgid "Apply IP range"
-msgstr ""
+msgstr "Uplatnit rozsah IP adres"
 
 #: src/gtk/home_page.ui:127
 msgid "Deep Scan"
-msgstr ""
+msgstr "Hloubkový sken"
 
 #: src/gtk/home_page.ui:128
 msgid ""
 "Retrieves more detailed system information like OS name, HTTP server etc."
 msgstr ""
+"Obdrží podrobnější informace o systému, jako je název operačního systému, "
+"HTTP server, atd."
 
 #: src/gtk/home_page.ui:150
 msgid "Scan my Network"
-msgstr ""
+msgstr "Skenovat mou síť"
 
 #: src/gtk/home_page.ui:190
 msgid "About"
-msgstr ""
+msgstr "O aplikaci"
 
 #: src/gtk/home_page.ui:194
 msgid "Quit"
-msgstr ""
+msgstr "Ukončit"
 
 #: src/gtk/results_page.ui:7
 msgid "Scanning in progress..."
-msgstr ""
+msgstr "Probíhá skenování…"
 
 #: src/gtk/results_page.ui:21
 msgid "Devices found on your network:"
-msgstr ""
+msgstr "Zařízení nalezená na vaší síti:"
 
 #: src/gtk/results_page.ui:27
 msgid "Stop the current network scan"
-msgstr ""
+msgstr "Zastavit stávající sken sítě"
 
 #: src/gtk/results_page.ui:32 src/pages.py:543
 msgid "Stop"
-msgstr ""
+msgstr "Zastavit"
 
 #: src/gtk/results_page.ui:49
 msgid "Export to CSV"
-msgstr ""
+msgstr "Exportovat do CSV"
 
 #: src/gtk/results_page.ui:57
 msgid "Toggle list view"
-msgstr ""
+msgstr "Vyp/zap. zobrazení v seznamu"
 
 #: src/gtk/results_page.ui:65
 msgid "Sort devices"
-msgstr ""
+msgstr "Seřadit zařízení"
 
 #: src/gtk/results_page.ui:82 src/pages.py:648
 msgid "Known"
-msgstr ""
+msgstr "Známé"
 
 #: src/gtk/results_page.ui:104 src/pages.py:347
 msgid "IP Address"
-msgstr ""
+msgstr "IP adresa"
 
 #: src/gtk/results_page.ui:148 src/pages.py:416
 msgid "Custom Name"
-msgstr ""
+msgstr "Uživatelsky určený název"
 
 #: src/gtk/results_page.ui:170 src/pages.py:304
 msgid "Ports"
-msgstr ""
+msgstr "Porty"
 
 #: src/gtk/results_page.ui:242 src/pages.py:733 src/pages.py:798
 #: src/pages.py:820
 msgid "Rescan"
-msgstr ""
+msgstr "Znovu naskenovat"
 
 #: src/gtk/results_page.ui:267
 msgid "Scanning Network"
-msgstr ""
+msgstr "Skenování sítě"
 
 #: src/gtk/results_page.ui:268
 msgid "Discovering devices on your network... (this may take a while!)"
-msgstr ""
+msgstr "Objevování zařízení na vaší síti… (může chvíli trvat!)"
 
 #: src/gtk/results_page.ui:289 src/pages.py:711
 msgid "Preparing scan..."
-msgstr ""
+msgstr "Příprava skenu…"
 
 #: src/gtk/results_page.ui:298 src/pages.py:712
 msgid "Time Elapsed: 00:00"
-msgstr ""
+msgstr "Uplynulý čas: 00:00"
 
 #: src/gtk/results_page.ui:388
 msgid "No Devices Found"
-msgstr ""
+msgstr "Nenalezena žádná zařízení"
 
 #: src/gtk/results_page.ui:389
 msgid "No devices were found in the specified range!"
-msgstr ""
+msgstr "V určeném rozsahu nenalezena žádná zařízení!"
 
 #: src/gtk/results_page.ui:401
 msgid "Scan Error"
-msgstr ""
+msgstr "Chyba skenu"
 
 #: src/gtk/results_page.ui:402
 msgid "An error occurred while scanning the network!"
-msgstr ""
+msgstr "Při skenování sítě došlo k chybě!"
 
 #: src/gtk/theme_selector.ui:15 src/gtk/theme_selector.ui:21
 msgid "Follow System"
-msgstr ""
+msgstr "Podle systému"
 
 #: src/gtk/theme_selector.ui:30 src/gtk/theme_selector.ui:36
 msgid "Light"
-msgstr ""
+msgstr "Světlé"
 
 #: src/gtk/theme_selector.ui:45 src/gtk/theme_selector.ui:51
 msgid "Dark"
-msgstr ""
+msgstr "Tmavé"
 
 #: src/pages.py:74
 msgid "Threads"
@@ -324,27 +332,27 @@ msgstr ""
 
 #: src/pages.py:135
 msgid "Auto-detect"
-msgstr ""
+msgstr "Automaticky zjišťovat"
 
 #: src/pages.py:136
 msgid "Automatically detect your local network"
-msgstr ""
+msgstr "Automaticky zjistit vaši místní síť"
 
 #: src/pages.py:143
 msgid "Home Network (192.168.1.x)"
-msgstr ""
+msgstr "Domácí síť (192.168.1.x)"
 
 #: src/pages.py:144
 msgid "Home Network (192.168.0.x)"
-msgstr ""
+msgstr "Domácí síť (192.168.0.x)"
 
 #: src/pages.py:145
 msgid "Corporate (10.0.0.x)"
-msgstr ""
+msgstr "Firemní (10.0.0.x)"
 
 #: src/pages.py:146
 msgid "Private (172.16.0.x)"
-msgstr ""
+msgstr "Ze soukromého roszahu (172.16.0.x)"
 
 #: src/pages.py:281 src/pages.py:589
 msgid "Show as grid"
@@ -356,74 +364,74 @@ msgstr ""
 
 #: src/pages.py:336
 msgid "New device"
-msgstr ""
+msgstr "Nové zařízení"
 
 #: src/pages.py:340
 msgid "Known device"
-msgstr ""
+msgstr "Už známé zařízení"
 
 #: src/pages.py:365
 msgid "Copy IP"
-msgstr ""
+msgstr "Zkopírovat IP adresu"
 
 #: src/pages.py:409 src/widgets.py:75
 msgid "Unknown"
-msgstr ""
+msgstr "Neznámé"
 
 #: src/pages.py:428
 msgid "Click to set name..."
-msgstr ""
+msgstr "Název nastavíte kliknutím…"
 
 #: src/pages.py:430
 msgid "Apply"
-msgstr ""
+msgstr "Uplatnit"
 
 #: src/pages.py:596 src/widgets.py:163
 #, python-brace-format
 msgid "Copied {ip} to the clipboard"
-msgstr ""
+msgstr "{ip} zkopírováno do schránky"
 
 #: src/pages.py:602
 msgid "No devices to export"
-msgstr ""
+msgstr "Žádná zařízení k exportu"
 
 #: src/pages.py:606
 msgid "Export Scan Results"
-msgstr ""
+msgstr "Export výsledků skenů"
 
 #: src/pages.py:610
 msgid "CSV Files"
-msgstr ""
+msgstr "CSV soubory"
 
 #: src/pages.py:628
 msgid "Export cancelled or failed"
-msgstr ""
+msgstr "Export zrušen nebo se nezdařil"
 
 #: src/pages.py:652
 msgid "Successfully exported to "
-msgstr ""
+msgstr "Úspěšně exportováno do "
 
 #: src/pages.py:654
 msgid "Open Folder"
-msgstr ""
+msgstr "Otevřít složku"
 
 #: src/pages.py:658
 msgid "Export failed: "
-msgstr ""
+msgstr "Export se nezdařil: "
 
 #: src/pages.py:682
 #, python-brace-format
 msgid "Time Elapsed: {minutes:02d}:{seconds:02d}"
-msgstr ""
+msgstr "Uplynulý čas: {minutes:02d}:{seconds:02d}"
 
 #: src/pages.py:691
 #, python-brace-format
 msgid "Hosts Scanned: {scanned}/{total}"
-msgstr ""
+msgstr "Naskenováno hostitelů: {scanned}/{total}"
 
 #: src/pages.py:702
 msgid "Scanning..."
-msgstr ""
+msgstr "Skenování…"
 
 #: src/pages.py:716
 msgid "Deep scanning"
@@ -435,54 +443,54 @@ msgstr ""
 
 #: src/pages.py:743 src/pages.py:769 src/pages.py:809 src/pages.py:963
 msgid "Deep"
-msgstr ""
+msgstr "Hloubkový"
 
 #: src/pages.py:744
 #, python-brace-format
 msgid "Scan stopped - Found {count} devices"
-msgstr ""
+msgstr "Skenování zastaveno – nalezeno {count} zařízení"
 
 #: src/pages.py:748
 msgid "Scan stopped - No devices found"
-msgstr ""
+msgstr "Skenování zastaveno – nenalezena žádná zařízení"
 
 #: src/pages.py:770
 msgid "Loaded from history: "
-msgstr ""
+msgstr "Načteno z historie: "
 
 #: src/pages.py:810
 #, python-brace-format
 msgid "Found {count} devices"
-msgstr ""
+msgstr "Nalezeno {count} zařízení"
 
 #: src/pages.py:813
 msgid "No devices found"
-msgstr ""
+msgstr "Nenalezena žádná zařízení"
 
 #: src/pages.py:828 src/pages.py:830
 msgid "Error: "
-msgstr ""
+msgstr "Chyba: "
 
 #: src/pages.py:829
 msgid "An error occurred!"
-msgstr ""
+msgstr "Došlo k chybě!"
 
 #: src/pages.py:907
 msgid "Today"
-msgstr ""
+msgstr "Dnes"
 
 #: src/pages.py:909
 msgid "Yesterday"
-msgstr ""
+msgstr "Včera"
 
 #: src/pages.py:964
 #, python-brace-format
 msgid "{time} · {count} devices{deep}"
-msgstr ""
+msgstr "{time} · {count} zařízení{deep}"
 
 #: src/pages.py:971
 msgid "Delete this scan"
-msgstr ""
+msgstr "Smazat tento sken"
 
 #: src/widgets.py:145
 msgid "Show less"
@@ -494,4 +502,4 @@ msgstr ""
 
 #: src/window.py:71
 msgid "Contributors"
-msgstr ""
+msgstr "Podíleli se"
