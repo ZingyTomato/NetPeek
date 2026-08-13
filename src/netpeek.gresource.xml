@@ -4,6 +4,7 @@
     <file preprocess="xml-stripblanks">gtk/main_window.ui</file>
     <file preprocess="xml-stripblanks">gtk/home_page.ui</file>
     <file preprocess="xml-stripblanks">gtk/results_page.ui</file>
+    <file preprocess="xml-stripblanks">gtk/scan_metadata_dialog.ui</file>
     <file preprocess="xml-stripblanks">gtk/device_card.ui</file>
     <file preprocess="xml-stripblanks">gtk/history_dialog.ui</file>
     <file preprocess="xml-stripblanks">gtk/theme_selector.ui</file>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+
+  <template class="ScanMetadataDialog" parent="AdwDialog">
+    <property name="title" translatable="yes">Scan Information</property>
+    <property name="content-width">380</property>
+    <property name="content-height">400</property>
+    <child>
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar">
+            <child type="title">
+              <object class="AdwWindowTitle">
+                <property name="title" translatable="yes">Scan Information</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow">
+            <property name="hscrollbar-policy">never</property>
+            <child>
+              <object class="AdwClamp">
+                <property name="maximum-size">360</property>
+                <property name="tightening-threshold">320</property>
+                <property name="margin-top">24</property>
+                <property name="margin-bottom">24</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
+                <child>
+                  <object class="AdwPreferencesGroup">
+                    <child>
+                      <object class="AdwActionRow" id="timestamp_row">
+                        <property name="title" translatable="yes">Date Taken</property>
+                        <child type="prefix">
+                          <object class="GtkImage">
+                            <property name="icon-name">alarm-symbolic</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="AdwActionRow" id="scan_type_row">
+                        <property name="title" translatable="yes">Scan Type</property>
+                        <child type="prefix">
+                          <object class="GtkImage">
+                            <property name="icon-name">system-search-symbolic</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="AdwActionRow" id="duration_row">
+                        <property name="title" translatable="yes">Scan Duration</property>
+                        <property name="visible">false</property>
+                        <child type="prefix">
+                          <object class="GtkImage">
+                            <property name="icon-name">media-playback-start-symbolic</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="AdwActionRow" id="new_count_row">
+                        <property name="title" translatable="yes">New Devices</property>
+                        <child type="prefix">
+                          <object class="GtkImage">
+                            <property name="icon-name">starred-symbolic</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="AdwActionRow" id="known_count_row">
+                        <property name="title" translatable="yes">Known Devices</property>
+                        <child type="prefix">
+                          <object class="GtkImage">
+                            <property name="icon-name">network-wireless-signal-excellent-symbolic</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

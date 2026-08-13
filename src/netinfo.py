@@ -156,21 +156,3 @@ def resolve_hostname(ip):
         return name
 
     return resolve_netbios_name(ip)
-
-
-def read_arp_table():
-    """Parse /proc/net/arp into an {ip: mac} map. Empty dict if unavailable."""
-    entries = {}
-    try:
-        with open("/proc/net/arp") as f:
-            lines = f.readlines()[1:]
-        for line in lines:
-            parts = line.split()
-            if len(parts) < 4:
-                continue
-            ip, mac = parts[0], parts[3]
-            if mac and mac != "00:00:00:00:00:00":
-                entries[ip] = mac
-    except OSError:
-        pass
-    return entries

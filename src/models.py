@@ -21,8 +21,6 @@ import ipaddress
 
 from gi.repository import GObject
 
-from . import storage
-
 
 class Device(GObject.Object):
     """A discovered network device, bindable to both card and list views."""
@@ -32,7 +30,6 @@ class Device(GObject.Object):
     ip = GObject.Property(type=str, default="")
     hostname = GObject.Property(type=str, default="")
     custom_name = GObject.Property(type=str, default="")
-    mac = GObject.Property(type=str, default="")
     ports_display = GObject.Property(type=str, default="")
     services_display = GObject.Property(type=str, default="")
     known = GObject.Property(type=bool, default=False)
@@ -46,7 +43,6 @@ class Device(GObject.Object):
         self.ip = data.get("ip", "")
         self.hostname = data.get("hostname") or self.ip
         self.custom_name = data.get("custom_name", "") or ""
-        self.mac = data.get("mac", "") or ""
         self.ports_display = data.get("ports_display", "")
         self.services = data.get("services") or []
         service_labels = {
@@ -86,4 +82,4 @@ class Device(GObject.Object):
 
     @property
     def registry_key(self):
-        return storage.device_key(self.mac, self.ip)
+        return self.ip

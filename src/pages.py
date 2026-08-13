@@ -220,6 +220,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
     list_view = Gtk.Template.Child()
     empty_page = Gtk.Template.Child()
     error_page = Gtk.Template.Child()
+    scan_info_button = Gtk.Template.Child()
 
     def __init__(self, navigation_view, toast_overlay, scanner, settings):
         super().__init__()
@@ -232,6 +233,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.clipboard = Gdk.Display.get_default().get_clipboard()
 
         self.current_ip_range = ""
+        self.current_scan = None
 
         self._deep_scan = False
 
@@ -251,6 +253,8 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self._setup_search_behavior()
         self._setup_responsive_header()
 
+        self._window_active_id = None
+        self.connect("map", self._on_results_page_map)
 
         self._sort_rows = {
             self.sort_row_known: "known",
@@ -533,10 +537,14 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.action_box.set_margin_bottom(6)
         self.action_box.set_margin_start(6)
         self.action_box.set_margin_end(6)
+        parent = self.scan_info_button.get_parent()
+        if parent is not self.action_box:
+            if parent is not None:
+                parent.remove(self.scan_info_button)
+            self.action_box.prepend(self.scan_info_button)
         for button in self._action_buttons():
             button.set_hexpand(False)
             button.set_halign(Gtk.Align.FILL)
-        self.export_button.set_margin_end(6)
         self.bottom_bar.set_child(self.action_box)
         self.bottom_bar.set_visible(True)
         self.view_toggle_button.set_visible(False)
@@ -555,9 +563,13 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         for button in self._action_buttons():
             button.set_hexpand(False)
             button.set_halign(Gtk.Align.FILL)
-        self.export_button.set_margin_end(0)
         self.view_toggle_button.set_visible(True)
         self.stop_button_content.set_label(_("Stop"))
+        parent = self.scan_info_button.get_parent()
+        if parent is not self.results_header:
+            if parent is not None:
+                parent.remove(self.scan_info_button)
+            self.results_header.pack_start(self.scan_info_button)
         self.results_header.pack_end(self.action_box)
 
     def _apply_sort(self, column):
@@ -648,6 +660,20 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         click.connect("pressed", self._on_search_pointer_pressed)
         self.search_entry.add_controller(click)
 
+    def _on_results_page_map(self, *args):
+        root = self.get_root()
+        if root is not None and self._window_active_id is None:
+            self._window_active_id = root.connect("notify::is-active", self._on_window_active_changed)
+
+    def _on_window_active_changed(self, window, pspec):
+        if window.is_active():
+            GLib.idle_add(self._clear_search_focus_if_focused)
+
+    def _clear_search_focus_if_focused(self):
+        if self.search_entry.is_focus() and \
+           time.monotonic() - self._last_pointer_press > self._typing_grace:
+            self._clear_search_focus()
+
     def _on_search_hover_enter(self, controller, x, y):
         # Track hover state only for the blur logic; hovering must not focus.
         self._hovering = True
@@ -731,7 +757,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         """Export devices to CSV file"""
         try:
             with open(file_path, 'w', newline='') as csvfile:
-                fieldnames = ['IP Address', 'Hostname', 'Custom Name', 'MAC Address',
+                fieldnames = ['IP Address', 'Hostname', 'Custom Name',
                               'Open Ports', 'Services', 'System Information', 'Status']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
@@ -741,7 +767,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
                         'IP Address': device.ip,
                         'Hostname': device.hostname,
                         'Custom Name': device.custom_name,
-                        'MAC Address': device.mac,
                         'Open Ports': device.ports_display,
                         'Services': device.services_display,
                         'System Information': device.os_display,
@@ -771,6 +796,11 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
             GLib.source_remove(self.timer_source_id)
             self.timer_source_id = None
 
+    def _scan_duration(self):
+        if self.scan_start_time:
+            return round(time.time() - self.scan_start_time)
+        return 0
+
     def update_timer(self):
         """Update the timer display"""
         if self.scan_start_time:
@@ -794,6 +824,8 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
     def start_scan(self, ip_range, deep_scan=False):
         self.current_ip_range = ip_range
         self._deep_scan = deep_scan
+        self.current_scan = None
+        self.scan_info_button.set_sensitive(False)
 
         self.rescan_button.set_sensitive(False)
         self.rescan_button_content.set_label(_("Scanning..."))
@@ -839,12 +871,16 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
 
         partial = self.scanner.get_partial_results()
         if partial:
-            annotated = storage.record_scan(self.current_ip_range, partial, deep_scan=self._deep_scan)
+            annotated, scan = storage.record_scan(self.current_ip_range, partial, deep_scan=self._deep_scan, duration_seconds=self._scan_duration())
+            self.current_scan = scan
+            self.scan_info_button.set_sensitive(True)
             self._display_devices(annotated)
             scan_mode = _("Deep") + " · " if self._deep_scan else ""
             self.results_title.set_subtitle(scan_mode + _("Scan stopped - Found {count} devices").format(count=len(annotated)))
             self.export_button.set_sensitive(True)
         else:
+            self.current_scan = None
+            self.scan_info_button.set_sensitive(False)
             self._display_devices([])
             self.results_title.set_subtitle(_("Scan stopped - No devices found"))
             self.view_toggle_button.set_sensitive(False)
@@ -863,8 +899,12 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         else:
             self.show_toast(_(message))
 
-    def load_from_history(self, ip_range, devices_data, deep_scan=False):
+    def load_from_history(self, scan):
         """Load a previously saved scan without rescanning"""
+        self.current_scan = scan
+        ip_range = scan.get('ip_range', '')
+        deep_scan = scan.get('deep_scan', False)
+        devices_data = scan.get('devices', [])
         self.current_ip_range = ip_range
         self._deep_scan = deep_scan
         scan_mode = _("Deep") + " · " if deep_scan else ""
@@ -874,6 +914,12 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.export_button.set_sensitive(bool(devices_data))
         self.view_toggle_button.set_sensitive(bool(devices_data))
         self.sort_menu_button.set_sensitive(bool(devices_data))
+        self.scan_info_button.set_sensitive(True)
+
+    @Gtk.Template.Callback()
+    def on_scan_info_clicked(self, button):
+        if self.current_scan:
+            ScanMetadataDialog(self.current_scan).present(self)
 
     def _display_devices(self, devices_data):
         """Populate the shared list store and switch to the right stack page"""
@@ -893,6 +939,8 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.sort_row_os.set_visible(has_os)
 
         self._update_device_view()
+        self._clear_search_focus()
+        GLib.idle_add(self._clear_search_focus)
 
     def on_scan_complete(self, devices):
         self.rescan_button.set_sensitive(True)
@@ -905,11 +953,15 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.stop_timer()
 
         if devices:
-            annotated = storage.record_scan(self.current_ip_range, devices, deep_scan=self._deep_scan)
+            annotated, scan = storage.record_scan(self.current_ip_range, devices, deep_scan=self._deep_scan, duration_seconds=self._scan_duration())
+            self.current_scan = scan
+            self.scan_info_button.set_sensitive(True)
             self._display_devices(annotated)
             scan_mode = _("Deep") + " · " if self._deep_scan else ""
             self.results_title.set_subtitle(scan_mode + _("Found {count} devices").format(count=len(annotated)))
         else:
+            self.current_scan = None
+            self.scan_info_button.set_sensitive(False)
             self._display_devices([])
             self.results_title.set_subtitle(_("No devices found"))
             self.view_toggle_button.set_sensitive(False)
@@ -924,6 +976,9 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.sort_menu_button.set_sensitive(False)
 
         self.stop_timer()
+
+        self.current_scan = None
+        self.scan_info_button.set_sensitive(False)
 
         self.results_stack.set_visible_child_name("error")
         self.error_page.set_description(_("Error: ") + error_message)
@@ -1112,3 +1167,45 @@ class HistoryDialog(Adw.Dialog):
         vadj = self.history_scrolled.get_vadjustment()
         if vadj:
             vadj.set_value(0)
+
+
+@Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/scan_metadata_dialog.ui')
+class ScanMetadataDialog(Adw.Dialog):
+    __gtype_name__ = 'ScanMetadataDialog'
+
+    timestamp_row = Gtk.Template.Child()
+    scan_type_row = Gtk.Template.Child()
+    duration_row = Gtk.Template.Child()
+    new_count_row = Gtk.Template.Child()
+    known_count_row = Gtk.Template.Child()
+
+    def __init__(self, scan, **kwargs):
+        super().__init__(**kwargs)
+        ts = scan.get('timestamp', '')
+        try:
+            dt = datetime.fromisoformat(ts).astimezone()
+            gdt = GLib.DateTime.new_local(
+                dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second
+            )
+            self.timestamp_row.set_subtitle(gdt.format('%A, %B %d, %Y · %H:%M') or ts)
+        except ValueError:
+            self.timestamp_row.set_subtitle(ts)
+        self.scan_type_row.set_subtitle(_("Deep") if scan.get('deep_scan', False) else _("Standard"))
+        duration = scan.get('duration_seconds') or 0
+        if duration:
+            self.duration_row.set_visible(True)
+            self.duration_row.set_subtitle(self._format_duration(duration))
+        devices = scan.get('devices', [])
+        self.new_count_row.set_subtitle(str(sum(1 for d in devices if not d.get('known', False))))
+        self.known_count_row.set_subtitle(str(sum(1 for d in devices if d.get('known', False))))
+
+    @staticmethod
+    def _format_duration(seconds):
+        seconds = int(seconds)
+        minutes, secs = divmod(seconds, 60)
+        if minutes < 60:
+            if minutes:
+                return _("{minutes} min {seconds} s").format(minutes=minutes, seconds=secs)
+            return _("{seconds} s").format(seconds=secs)
+        hours, minutes = divmod(minutes, 60)
+        return _("{hours} h {minutes} min").format(hours=hours, minutes=minutes)

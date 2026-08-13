@@ -202,7 +202,6 @@ class NetworkScanner:
                 if self.is_scanning and gen == self._scan_generation:
                     self.is_scanning = False
                     devices_sorted = sorted(devices, key=lambda x: ipaddress.IPv4Address(x['ip']))
-                    self._enrich_with_arp(devices_sorted)
                     GLib.idle_add(callback, devices_sorted)
 
             except Exception as e:
@@ -218,7 +217,6 @@ class NetworkScanner:
 
     def get_partial_results(self):
         devices = sorted(self.partial_results, key=lambda x: ipaddress.IPv4Address(x['ip']))
-        self._enrich_with_arp(devices)
         return devices
 
     @staticmethod
@@ -260,13 +258,6 @@ class NetworkScanner:
             os_parts.append(', '.join(seen[:3]))
 
         device["os_display"] = ' — '.join(os_parts) if os_parts else ''
-
-    @staticmethod
-    def _enrich_with_arp(devices):
-        """Fill in the MAC address from the kernel ARP table when available."""
-        arp_table = netinfo.read_arp_table()
-        for device in devices:
-            device["mac"] = arp_table.get(device["ip"], "")
 
     @staticmethod
     def _local_ip_via_udp_probe():

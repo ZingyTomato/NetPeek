@@ -40,6 +40,14 @@
               </object>
             </child>
 
+            <child type="start">
+              <object class="GtkButton" id="scan_info_button">
+                <property name="icon-name">dialog-information-symbolic</property>
+                <property name="tooltip-text" translatable="yes">Scan information</property>
+                <signal name="clicked" handler="on_scan_info_clicked"/>
+              </object>
+            </child>
+
             <child type="end">
               <object class="GtkBox" id="action_box">
 
