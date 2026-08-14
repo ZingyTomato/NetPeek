@@ -70,6 +70,18 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="0.3.2" date="2026-08-14">
+      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.3.2</url>
+      <description>
+        <p>Version 0.3.2</p>
+        <ul>
+          <li>Added search functionality to all scan pages.</li>
+          <li>Added a scan info dialog for current and previous scans.</li>
+          <li>Results view format is now preserved when resizing the window.</li>
+          <li>Updated nmap to version 7.991.</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.3.1" date="2026-08-01">
       <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.3.1</url>
       <description>

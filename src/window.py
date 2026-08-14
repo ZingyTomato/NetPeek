@@ -71,10 +71,10 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         about.add_credit_section(_("Contributors"), ["ZingyTomato", "Gert-Dev", "Cameo007", "vmkspv", "oscfdezdz", "albanobattistella", "sjulien", "dawkagaming", "prescott66"])
         release_notes = """
         <ul>
-          <li>Device cards now cap System Information and Services at one line, with expand/collapse buttons to reveal the full text.</li>
-          <li>Moved the thread count picker into the main menu.</li>
-          <li>Added better indication throughout the UI that a deep scan is taking place.</li>
-          <li>Added a Translate link to the About dialog.</li>
+          <li>Added search functionality to all scan pages.</li>
+          <li>Added a scan info dialog for current and previous scans.</li>
+          <li>Results view format is now preserved when resizing the window.</li>
+          <li>Updated nmap to version 7.991.</li>
         </ul>
         """
         about.set_release_notes(release_notes)
