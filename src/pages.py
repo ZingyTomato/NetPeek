@@ -218,6 +218,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
     view_stack = Gtk.Template.Child()
     flow_box = Gtk.Template.Child()
     list_view = Gtk.Template.Child()
+    devices_breakpoint_bin = Gtk.Template.Child()
     empty_page = Gtk.Template.Child()
     error_page = Gtk.Template.Child()
     scan_info_button = Gtk.Template.Child()
@@ -248,10 +249,13 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self._hovering = False
         self._blur_check_id = None
         self._typing_grace = 1.0
+        self._narrow_view_active = False
+        self._preferred_view_mode = 'cards'
         self._setup_column_view()
         self.flow_box.bind_model(self.filter_model, self._create_card)
         self._setup_search_behavior()
         self._setup_responsive_header()
+        self._setup_responsive_view()
 
         self._window_active_id = None
         self.connect("map", self._on_results_page_map)
@@ -520,6 +524,35 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         breakpoint.connect("apply", self._move_actions_to_bottom)
         breakpoint.connect("unapply", self._move_actions_to_header)
         self.page_breakpoint_bin.add_breakpoint(breakpoint)
+
+    def _setup_responsive_view(self):
+        """Force card view on narrow windows and restore the user's choice on wide."""
+        breakpoint = Adw.Breakpoint.new(
+            Adw.BreakpointCondition.parse("max-width: 500sp")
+        )
+        breakpoint.connect("apply", self._on_narrow_view_apply)
+        breakpoint.connect("unapply", self._on_narrow_view_unapply)
+        self.devices_breakpoint_bin.add_breakpoint(breakpoint)
+
+    def _on_narrow_view_apply(self, _breakpoint):
+        self._narrow_view_active = True
+        self._preferred_view_mode = self.settings.get_string('view-mode')
+        self.view_stack.set_visible_child_name('cards')
+        self.view_toggle_button.set_active(False)
+        self.view_toggle_button.set_icon_name('view-list-symbolic')
+        self.view_toggle_button.set_tooltip_text(_("Show as list"))
+
+    def _on_narrow_view_unapply(self, _breakpoint):
+        self._narrow_view_active = False
+        is_list = self._preferred_view_mode == 'list'
+        self.view_stack.set_visible_child_name('list' if is_list else 'cards')
+        self.view_toggle_button.set_active(is_list)
+        self.view_toggle_button.set_icon_name(
+            'view-grid-symbolic' if is_list else 'view-list-symbolic'
+        )
+        self.view_toggle_button.set_tooltip_text(
+            _("Show as grid") if is_list else _("Show as list")
+        )
 
     def _action_buttons(self):
         child = self.action_box.get_first_child()

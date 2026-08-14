@@ -361,12 +361,6 @@
                                   </object>
                                 </child>
                                 <child>
-                                  <object class="AdwBreakpoint">
-                                    <condition>max-width: 500sp</condition>
-                                    <setter object="view_stack" property="visible-child-name">cards</setter>
-                                  </object>
-                                </child>
-                                <child>
                                   <object class="GtkStack" id="view_stack">
                                     <property name="transition-type">crossfade</property>
                                     <child>
