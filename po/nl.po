@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: netpeek\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-07 09:56+0200\n"
+"POT-Creation-Date: 2026-08-14 16:21+0000\n"
 "PO-Revision-Date: 2026-07-30 09:05+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/netpeek/netpeek/nl/"
@@ -149,7 +149,7 @@ msgstr ""
 msgid "Apply name"
 msgstr ""
 
-#: src/gtk/device_card.ui:38 src/pages.py:648
+#: src/gtk/device_card.ui:38 src/pages.py:806
 msgid "New"
 msgstr ""
 
@@ -157,7 +157,7 @@ msgstr ""
 msgid "Click to copy IP"
 msgstr ""
 
-#: src/gtk/device_card.ui:74 src/gtk/results_page.ui:126 src/pages.py:389
+#: src/gtk/device_card.ui:74 src/gtk/results_page.ui:134 src/pages.py:416
 msgid "Hostname"
 msgstr "Hostnaam"
 
@@ -165,19 +165,19 @@ msgstr "Hostnaam"
 msgid "Ports Open"
 msgstr "Geopende poorten"
 
-#: src/gtk/device_card.ui:98 src/gtk/results_page.ui:192 src/pages.py:305
+#: src/gtk/device_card.ui:98 src/gtk/results_page.ui:200 src/pages.py:336
 msgid "Services"
 msgstr ""
 
-#: src/gtk/device_card.ui:112 src/widgets.py:156
+#: src/gtk/device_card.ui:112 src/widgets.py:157
 msgid "Show full service list"
 msgstr ""
 
-#: src/gtk/device_card.ui:124 src/gtk/results_page.ui:214 src/pages.py:306
+#: src/gtk/device_card.ui:124 src/gtk/results_page.ui:222 src/pages.py:337
 msgid "System Information"
 msgstr ""
 
-#: src/gtk/device_card.ui:138 src/widgets.py:153
+#: src/gtk/device_card.ui:138 src/widgets.py:154
 msgid "Show full system information"
 msgstr ""
 
@@ -252,81 +252,133 @@ msgstr "Apparaten gevonden op het lokale netwerk:"
 msgid "Stop the current network scan"
 msgstr "Stop de lopende scan van het netwerk"
 
-#: src/gtk/results_page.ui:32 src/pages.py:543
+#: src/gtk/results_page.ui:32 src/pages.py:600
 msgid "Stop"
 msgstr ""
 
-#: src/gtk/results_page.ui:49
+#: src/gtk/results_page.ui:46
+#, fuzzy
+#| msgid "Scan Again"
+msgid "Scan information"
+msgstr "Opnieuw scannen"
+
+#: src/gtk/results_page.ui:57
 msgid "Export to CSV"
 msgstr ""
 
-#: src/gtk/results_page.ui:57
+#: src/gtk/results_page.ui:65
 msgid "Toggle list view"
 msgstr ""
 
-#: src/gtk/results_page.ui:65
+#: src/gtk/results_page.ui:73
 #, fuzzy
 #| msgid "No devices found"
 msgid "Sort devices"
 msgstr "Geen apparaten gevonden"
 
-#: src/gtk/results_page.ui:82 src/pages.py:648
+#: src/gtk/results_page.ui:90 src/pages.py:806
 #, fuzzy
 #| msgid "Unknown"
 msgid "Known"
 msgstr "Onbekend"
 
-#: src/gtk/results_page.ui:104 src/pages.py:347
+#: src/gtk/results_page.ui:112 src/pages.py:376
 msgid "IP Address"
 msgstr ""
 
-#: src/gtk/results_page.ui:148 src/pages.py:416
+#: src/gtk/results_page.ui:156 src/pages.py:441
 msgid "Custom Name"
 msgstr ""
 
-#: src/gtk/results_page.ui:170 src/pages.py:304
+#: src/gtk/results_page.ui:178 src/pages.py:335
 #, fuzzy
 #| msgid "Ports Open"
 msgid "Ports"
 msgstr "Geopende poorten"
 
-#: src/gtk/results_page.ui:242 src/pages.py:733 src/pages.py:798
-#: src/pages.py:820
+#: src/gtk/results_page.ui:250 src/pages.py:899 src/pages.py:980
+#: src/pages.py:1006
 msgid "Rescan"
 msgstr ""
 
-#: src/gtk/results_page.ui:267
+#: src/gtk/results_page.ui:275
 msgid "Scanning Network"
 msgstr "Netwerk aan het scannen"
 
-#: src/gtk/results_page.ui:268
+#: src/gtk/results_page.ui:276
 msgid "Discovering devices on your network... (this may take a while!)"
 msgstr ""
 "Bezig met scannen apparaten op het lokale netwerk... (dit kan even duren)"
 
-#: src/gtk/results_page.ui:289 src/pages.py:711
+#: src/gtk/results_page.ui:297 src/pages.py:878
 msgid "Preparing scan..."
 msgstr "Scannen voorbereiden..."
 
-#: src/gtk/results_page.ui:298 src/pages.py:712
+#: src/gtk/results_page.ui:306 src/pages.py:879
 msgid "Time Elapsed: 00:00"
 msgstr "Tijd verstreken: 00:00"
 
-#: src/gtk/results_page.ui:388
+#: src/gtk/results_page.ui:338
+msgid "Search IP addresses, services, ports…"
+msgstr ""
+
+#: src/gtk/results_page.ui:420
+#, fuzzy
+#| msgid "No Devices Found"
+msgid "No Results Found"
+msgstr "Geen apparaten teruggevonden"
+
+#: src/gtk/results_page.ui:421
+msgid "No devices match your search query."
+msgstr ""
+
+#: src/gtk/results_page.ui:439
 msgid "No Devices Found"
 msgstr "Geen apparaten teruggevonden"
 
-#: src/gtk/results_page.ui:389
+#: src/gtk/results_page.ui:440
 msgid "No devices were found in the specified range!"
 msgstr "Geen apparaten teruggevonden in het opgegeven bereik"
 
-#: src/gtk/results_page.ui:401
+#: src/gtk/results_page.ui:452
 msgid "Scan Error"
 msgstr "Fout bij scannen"
 
-#: src/gtk/results_page.ui:402
+#: src/gtk/results_page.ui:453
 msgid "An error occurred while scanning the network!"
 msgstr "Fout bij het scannen van het netwerk"
+
+#: src/gtk/scan_metadata_dialog.ui:7 src/gtk/scan_metadata_dialog.ui:16
+#, fuzzy
+#| msgid "Scan Again"
+msgid "Scan Information"
+msgstr "Opnieuw scannen"
+
+#: src/gtk/scan_metadata_dialog.ui:36
+msgid "Date Taken"
+msgstr ""
+
+#: src/gtk/scan_metadata_dialog.ui:46
+msgid "Scan Type"
+msgstr ""
+
+#: src/gtk/scan_metadata_dialog.ui:56
+#, fuzzy
+#| msgid "Scan Again"
+msgid "Scan Duration"
+msgstr "Opnieuw scannen"
+
+#: src/gtk/scan_metadata_dialog.ui:67
+#, fuzzy
+#| msgid "No devices found"
+msgid "New Devices"
+msgstr "Geen apparaten gevonden"
+
+#: src/gtk/scan_metadata_dialog.ui:77
+#, fuzzy
+#| msgid "Found {count} devices"
+msgid "Known Devices"
+msgstr "{count} apparaten gevonden"
 
 #: src/gtk/theme_selector.ui:15 src/gtk/theme_selector.ui:21
 msgid "Follow System"
@@ -340,190 +392,210 @@ msgstr ""
 msgid "Dark"
 msgstr ""
 
-#: src/pages.py:74
+#: src/pages.py:66
 msgid "Threads"
 msgstr ""
 
-#: src/pages.py:135
+#: src/pages.py:126
 #, fuzzy
 #| msgid "Auto-Detect"
 msgid "Auto-detect"
 msgstr "Automatisch detecteren"
 
-#: src/pages.py:136
+#: src/pages.py:127
 #, fuzzy
 #| msgid "Try to automatically detect your network range."
 msgid "Automatically detect your local network"
 msgstr "Automatisch proberen huidig IP-bereik te vinden."
 
-#: src/pages.py:143
+#: src/pages.py:134
 msgid "Home Network (192.168.1.x)"
 msgstr "Thuis-netwerk (192.168.1.x)"
 
-#: src/pages.py:144
+#: src/pages.py:135
 msgid "Home Network (192.168.0.x)"
 msgstr "Thuis-netwerk (192.168.0.x)"
 
-#: src/pages.py:145
+#: src/pages.py:136
 msgid "Corporate (10.0.0.x)"
 msgstr "Bedrijf (10.0.0.x)"
 
-#: src/pages.py:146
+#: src/pages.py:137
 msgid "Private (172.16.0.x)"
 msgstr "Privaat (172.16.0.x)"
 
-#: src/pages.py:281 src/pages.py:589
+#: src/pages.py:279 src/pages.py:554 src/pages.py:651
 msgid "Show as grid"
 msgstr ""
 
-#: src/pages.py:281 src/pages.py:589
+#: src/pages.py:279 src/pages.py:543 src/pages.py:554 src/pages.py:651
 msgid "Show as list"
 msgstr ""
 
-#: src/pages.py:336
+#: src/pages.py:365
 #, fuzzy
 #| msgid "No devices found"
 msgid "New device"
 msgstr "Geen apparaten gevonden"
 
-#: src/pages.py:340
+#: src/pages.py:369
 #, fuzzy
 #| msgid "Found {count} devices"
 msgid "Known device"
 msgstr "{count} apparaten gevonden"
 
-#: src/pages.py:365
+#: src/pages.py:393
 msgid "Copy IP"
 msgstr ""
 
-#: src/pages.py:409 src/widgets.py:75
+#: src/pages.py:434 src/widgets.py:85
 msgid "Unknown"
 msgstr "Onbekend"
 
-#: src/pages.py:428
+#: src/pages.py:452
 msgid "Click to set name..."
 msgstr ""
 
-#: src/pages.py:430
+#: src/pages.py:454
 msgid "Apply"
 msgstr ""
 
-#: src/pages.py:596 src/widgets.py:163
+#: src/pages.py:756 src/widgets.py:163
 #, python-brace-format
 msgid "Copied {ip} to the clipboard"
 msgstr ""
 
-#: src/pages.py:602
+#: src/pages.py:762
 #, fuzzy
 #| msgid "No devices found"
 msgid "No devices to export"
 msgstr "Geen apparaten gevonden"
 
-#: src/pages.py:606
+#: src/pages.py:766
 #, fuzzy
 #| msgid "Scan Results"
 msgid "Export Scan Results"
 msgstr "Resultaten scan"
 
-#: src/pages.py:610
+#: src/pages.py:770
 msgid "CSV Files"
 msgstr ""
 
-#: src/pages.py:628
+#: src/pages.py:787
 msgid "Export cancelled or failed"
 msgstr ""
 
-#: src/pages.py:652
+#: src/pages.py:810
 msgid "Successfully exported to "
 msgstr ""
 
-#: src/pages.py:654
+#: src/pages.py:812
 msgid "Open Folder"
 msgstr ""
 
-#: src/pages.py:658
+#: src/pages.py:816
 msgid "Export failed: "
 msgstr ""
 
-#: src/pages.py:682
+#: src/pages.py:843
 #, python-brace-format
 msgid "Time Elapsed: {minutes:02d}:{seconds:02d}"
 msgstr "Tijd verstreken: {minutes:02d}:{seconds:02d}"
 
-#: src/pages.py:691
+#: src/pages.py:851
 #, python-brace-format
 msgid "Hosts Scanned: {scanned}/{total}"
 msgstr "Adressen gescand: {scanned}/{total}"
 
-#: src/pages.py:702
+#: src/pages.py:864
 msgid "Scanning..."
 msgstr "Bezig met scannen..."
 
-#: src/pages.py:716
+#: src/pages.py:883
 #, fuzzy
 #| msgid "Stop Scanning"
 msgid "Deep scanning"
 msgstr "Scannen stoppen"
 
-#: src/pages.py:716
+#: src/pages.py:883
 #, fuzzy
 #| msgid "Scanning "
 msgid "Scanning"
 msgstr "Scannen "
 
-#: src/pages.py:743 src/pages.py:769 src/pages.py:809 src/pages.py:963
+#: src/pages.py:911 src/pages.py:943 src/pages.py:993 src/pages.py:1143
+#: src/pages.py:1226
 msgid "Deep"
 msgstr ""
 
-#: src/pages.py:744
+#: src/pages.py:912
 #, python-brace-format
 msgid "Scan stopped - Found {count} devices"
 msgstr "Scan gestopt - {count} apparaten gevonden"
 
-#: src/pages.py:748
+#: src/pages.py:918
 msgid "Scan stopped - No devices found"
 msgstr "Scan gestopt - Geen apparaten gevonden"
 
-#: src/pages.py:770
+#: src/pages.py:944
 msgid "Loaded from history: "
 msgstr ""
 
-#: src/pages.py:810
+#: src/pages.py:994
 #, python-brace-format
 msgid "Found {count} devices"
 msgstr "{count} apparaten gevonden"
 
-#: src/pages.py:813
+#: src/pages.py:999
 msgid "No devices found"
 msgstr "Geen apparaten gevonden"
 
-#: src/pages.py:828 src/pages.py:830
+#: src/pages.py:1017 src/pages.py:1019
 msgid "Error: "
 msgstr "Fout: "
 
-#: src/pages.py:829
+#: src/pages.py:1018
 msgid "An error occurred!"
 msgstr "Er is iets misgelopen!"
 
-#: src/pages.py:907
+#: src/pages.py:1090
 msgid "Today"
 msgstr ""
 
-#: src/pages.py:909
+#: src/pages.py:1092
 msgid "Yesterday"
 msgstr ""
 
-#: src/pages.py:964
+#: src/pages.py:1144
 #, fuzzy, python-brace-format
 #| msgid "Found {count} devices"
 msgid "{time} · {count} devices{deep}"
 msgstr "{count} apparaten gevonden"
 
-#: src/pages.py:971
+#: src/pages.py:1151
 msgid "Delete this scan"
 msgstr ""
 
-#: src/widgets.py:145
+#: src/pages.py:1226
+msgid "Standard"
+msgstr ""
+
+#: src/pages.py:1241
+#, python-brace-format
+msgid "{minutes} min {seconds} s"
+msgstr ""
+
+#: src/pages.py:1242
+#, python-brace-format
+msgid "{seconds} s"
+msgstr ""
+
+#: src/pages.py:1244
+#, python-brace-format
+msgid "{hours} h {minutes} min"
+msgstr ""
+
+#: src/widgets.py:146
 msgid "Show less"
 msgstr ""
 
@@ -543,9 +615,6 @@ msgstr "Bijdragers"
 
 #~ msgid "Set IP range to: "
 #~ msgstr "IP-bereik ingesteld op: "
-
-#~ msgid "Scan Again"
-#~ msgstr "Opnieuw scannen"
 
 #, python-brace-format
 #~ msgid "Scan stopped. Found {count} devices so far."
