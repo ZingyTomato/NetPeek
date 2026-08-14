@@ -34,8 +34,10 @@ A modern libadwaita-based network scanner for GNOME that helps you discover devi
 - 🖥️ **Service Detection** - Automatically identifies common services (SMB, Cockpit, MySQL, PostgreSQL, Plex, Home Assistant, and more)
 - 🔬 **Deep Scan Mode** - Attempts OS detection & service version identification.
 - 📇 **Custom Names & History** - Rename devices, browse and reload previous scans
+- ℹ️ **Scan Info Dialog** - View detailed scan metadata for current and previous scans
 - 🌗 **Dark Mode** - Follow system, or force light/dark
 - ↕️ **Sortable Results** - Sort by known status, IP, hostname, custom name, ports, services, or OS
+- 🔎 **Searchable Results** - Search and filter devices across all scan pages
 - 📱 **Modern UI** - Built with GTK4 and Libadwaita
 - ⚡ **Multi-threaded** - Fast concurrent scanning with a configurable thread count
 - 🔧 **Flexible Input** - Supports CIDR notation, IP ranges, and single IPs
