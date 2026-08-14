@@ -59,10 +59,6 @@ def _now():
     return datetime.now(timezone.utc).isoformat()
 
 
-def device_key(mac, ip):
-    return mac or ip
-
-
 def load_devices():
     """Return the device registry as {key: device_record}."""
     return _load_json(_devices_path(), {})
@@ -81,12 +77,6 @@ def save_scans(scans):
     _save_json(_scans_path(), scans)
 
 
-def get_custom_name(key):
-    devices = load_devices()
-    record = devices.get(key)
-    return record.get("custom_name", "") if record else ""
-
-
 def set_custom_name(key, name):
     devices = load_devices()
     record = devices.setdefault(key, {})
@@ -100,7 +90,7 @@ def apply_custom_names(devices):
     registry = load_devices()
     refreshed = []
     for device in devices:
-        record = registry.get(device_key(device.get("mac", ""), device.get("ip", "")))
+        record = registry.get(device.get("ip", ""))
         merged = dict(device)
         if record is not None:
             merged["custom_name"] = record.get("custom_name", "")
@@ -108,18 +98,19 @@ def apply_custom_names(devices):
     return refreshed
 
 
-def record_scan(ip_range, devices, deep_scan=False):
+def record_scan(ip_range, devices, deep_scan=False, duration_seconds=0.0):
     """Persist a completed scan and update the device registry.
 
-    Annotates and returns the given device list with `custom_name` and
-    `known` (whether this device was already in the registry before now).
+    Annotates the given device list with `custom_name` and `known`
+    (whether this device was already in the registry before now) and
+    returns it along with the saved scan record.
     """
     registry = load_devices()
     now = _now()
     annotated = []
 
     for device in devices:
-        key = device_key(device.get("mac", ""), device.get("ip", ""))
+        key = device.get("ip", "")
         existing = registry.get(key)
         known = existing is not None
 
@@ -127,7 +118,6 @@ def record_scan(ip_range, devices, deep_scan=False):
         record["last_seen"] = now
         record["last_ip"] = device.get("ip", "")
         record["last_hostname"] = device.get("hostname", "")
-        record["mac"] = device.get("mac", "") or record.get("mac", "")
         record.setdefault("custom_name", "")
         registry[key] = record
 
@@ -139,15 +129,17 @@ def record_scan(ip_range, devices, deep_scan=False):
     save_devices(registry)
 
     scans = load_scans()
-    scans.insert(0, {
+    scan = {
         "timestamp": now,
         "ip_range": ip_range,
         "devices": annotated,
         "deep_scan": deep_scan,
-    })
+        "duration_seconds": duration_seconds,
+    }
+    scans.insert(0, scan)
     save_scans(scans[:MAX_SCAN_HISTORY])
 
-    return annotated
+    return annotated, scan
 
 
 def delete_scan(timestamp):

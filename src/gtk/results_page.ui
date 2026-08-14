@@ -40,6 +40,14 @@
               </object>
             </child>
 
+            <child type="start">
+              <object class="GtkButton" id="scan_info_button">
+                <property name="icon-name">dialog-information-symbolic</property>
+                <property name="tooltip-text" translatable="yes">Scan information</property>
+                <signal name="clicked" handler="on_scan_info_clicked"/>
+              </object>
+            </child>
+
             <child type="end">
               <object class="GtkBox" id="action_box">
 
@@ -312,49 +320,92 @@
               <object class="GtkStackPage">
                 <property name="name">devices</property>
                 <property name="child">
-                  <object class="AdwBreakpointBin" id="devices_breakpoint_bin">
-                    <property name="width-request">360</property>
-                    <property name="height-request">200</property>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="vexpand">True</property>
+
                     <child>
-                      <object class="AdwBreakpoint">
-                        <condition>max-width: 550sp</condition>
-                        <setter object="flow_box" property="max-children-per-line">1</setter>
+                      <object class="AdwClamp" id="search_clamp">
+                        <property name="maximum-size">480</property>
+                        <property name="tightening-threshold">400</property>
+                        <property name="margin-top">6</property>
+                        <property name="margin-bottom">6</property>
+                        <property name="margin-start">12</property>
+                        <property name="margin-end">12</property>
+                        <child>
+                          <object class="GtkSearchEntry" id="search_entry">
+                            <property name="hexpand">True</property>
+                            <property name="placeholder-text" translatable="yes">Search IP addresses, services, ports…</property>
+                            <signal name="search-changed" handler="on_search_changed"/>
+                            <signal name="stop-search" handler="on_search_stopped"/>
+                          </object>
+                        </child>
                       </object>
                     </child>
+
                     <child>
-                      <object class="AdwBreakpoint">
-                        <condition>max-width: 500sp</condition>
-                        <setter object="view_stack" property="visible-child-name">cards</setter>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkStack" id="view_stack">
+                      <object class="GtkStack" id="devices_content_stack">
                         <property name="transition-type">crossfade</property>
                         <child>
                           <object class="GtkStackPage">
-                            <property name="name">cards</property>
+                            <property name="name">results</property>
                             <property name="child">
-                              <object class="GtkScrolledWindow">
-                                <property name="hscrollbar-policy">never</property>
-                                <property name="vscrollbar-policy">automatic</property>
-                                <property name="vexpand">true</property>
-
+                              <object class="AdwBreakpointBin" id="devices_breakpoint_bin">
+                                <property name="width-request">360</property>
+                                <property name="height-request">200</property>
+                                <property name="vexpand">True</property>
                                 <child>
-                                  <object class="GtkFlowBox" id="flow_box">
-                                    <property name="valign">start</property>
-                                    <property name="halign">center</property>
-                                    <property name="max-children-per-line">4</property>
-                                    <property name="min-children-per-line">1</property>
-                                    <property name="row-spacing">12</property>
-                                    <property name="column-spacing">12</property>
-                                    <property name="margin-top">24</property>
-                                    <property name="margin-bottom">24</property>
-                                    <property name="margin-start">12</property>
-                                    <property name="margin-end">12</property>
-                                    <property name="selection-mode">none</property>
-                                    <style>
-                                      <class name="device-grid"/>
-                                    </style>
+                                  <object class="AdwBreakpoint">
+                                    <condition>max-width: 550sp</condition>
+                                    <setter object="flow_box" property="max-children-per-line">1</setter>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkStack" id="view_stack">
+                                    <property name="transition-type">crossfade</property>
+                                    <child>
+                                      <object class="GtkStackPage">
+                                        <property name="name">cards</property>
+                                        <property name="child">
+                                          <object class="GtkScrolledWindow">
+                                            <property name="hscrollbar-policy">never</property>
+                                            <property name="vscrollbar-policy">automatic</property>
+                                            <property name="vexpand">true</property>
+
+                                            <child>
+                                              <object class="GtkFlowBox" id="flow_box">
+                                                <property name="valign">start</property>
+                                                <property name="halign">center</property>
+                                                <property name="max-children-per-line">4</property>
+                                                <property name="min-children-per-line">1</property>
+                                                <property name="row-spacing">12</property>
+                                                <property name="column-spacing">12</property>
+                                                <property name="margin-top">12</property>
+                                                <property name="margin-bottom">24</property>
+                                                <property name="margin-start">12</property>
+                                                <property name="margin-end">12</property>
+                                                <property name="selection-mode">none</property>
+                                                <style>
+                                                  <class name="device-grid"/>
+                                                </style>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkStackPage">
+                                        <property name="name">list</property>
+                                        <property name="child">
+                                          <object class="GtkScrolledWindow" id="list_view">
+                                            <property name="hscrollbar-policy">automatic</property>
+                                            <property name="vscrollbar-policy">automatic</property>
+                                            <property name="vexpand">true</property>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
@@ -363,12 +414,12 @@
                         </child>
                         <child>
                           <object class="GtkStackPage">
-                            <property name="name">list</property>
+                            <property name="name">no_results</property>
                             <property name="child">
-                              <object class="GtkScrolledWindow" id="list_view">
-                                <property name="hscrollbar-policy">automatic</property>
-                                <property name="vscrollbar-policy">automatic</property>
-                                <property name="vexpand">true</property>
+                              <object class="AdwStatusPage" id="no_results_page">
+                                <property name="title" translatable="yes">No Results Found</property>
+                                <property name="description" translatable="yes">No devices match your search query.</property>
+                                <property name="icon-name">edit-find-symbolic</property>
                               </object>
                             </property>
                           </object>

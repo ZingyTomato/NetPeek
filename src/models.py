@@ -21,8 +21,6 @@ import ipaddress
 
 from gi.repository import GObject
 
-from . import storage
-
 
 class Device(GObject.Object):
     """A discovered network device, bindable to both card and list views."""
@@ -32,9 +30,7 @@ class Device(GObject.Object):
     ip = GObject.Property(type=str, default="")
     hostname = GObject.Property(type=str, default="")
     custom_name = GObject.Property(type=str, default="")
-    mac = GObject.Property(type=str, default="")
     ports_display = GObject.Property(type=str, default="")
-    smb = GObject.Property(type=bool, default=False)
     services_display = GObject.Property(type=str, default="")
     known = GObject.Property(type=bool, default=False)
     known_int = GObject.Property(type=int, default=0)
@@ -47,11 +43,8 @@ class Device(GObject.Object):
         self.ip = data.get("ip", "")
         self.hostname = data.get("hostname") or self.ip
         self.custom_name = data.get("custom_name", "") or ""
-        self.mac = data.get("mac", "") or ""
-        self.ports = data.get("ports", [])
         self.ports_display = data.get("ports_display", "")
-        self.smb = bool(data.get("smb", False))
-        self.services = data.get("services") or (["smb"] if self.smb else [])
+        self.services = data.get("services") or []
         service_labels = {
             "smb": _("SMB shares"),
             "cockpit": _("Cockpit"),
@@ -89,19 +82,4 @@ class Device(GObject.Object):
 
     @property
     def registry_key(self):
-        return storage.device_key(self.mac, self.ip)
-
-    def to_dict(self):
-        return {
-            "ip": self.ip,
-            "hostname": self.hostname,
-            "custom_name": self.custom_name,
-            "mac": self.mac,
-            "ports": self.ports,
-            "ports_display": self.ports_display,
-            "smb": self.smb,
-            "services": self.services,
-            "known": self.known,
-            "os_display": self.os_display,
-            "deep_scanned": self.deep_scanned,
-        }
+        return self.ip

@@ -59,7 +59,6 @@ class NetworkScanner:
         self.max_workers = 100
 
     def set_max_workers(self, count):
-        """Set the maximum number of worker threads"""
         if 1 <= count <= 500:
             self.max_workers = count
         else:
@@ -70,9 +69,7 @@ class NetworkScanner:
             return False, _("Please enter an IP range")
 
         try:
-            if '/' in ip_range or '-' in ip_range:
-                pass
-            else:
+            if '/' not in ip_range and '-' not in ip_range:
                 ipaddress.IPv4Address(ip_range)
             return True, _("Valid IP range")
         except Exception as e:
@@ -118,7 +115,7 @@ class NetworkScanner:
         if deep_scan:
             # Service version detection (works without root)
             scan_arguments += " -sV --version-intensity 2"
-            # SMB OS discovery and share enumeration (NSE scripts, no root needed)
+            # SMB OS discovery (NSE script, no root needed)
             scan_arguments += " --script smb-os-discovery.nse"
 
         try:
@@ -141,7 +138,6 @@ class NetworkScanner:
             if host_info.state() == 'up':
                 if not hostname:
                     hostname = netinfo.resolve_hostname(str(host))
-                smb = 445 in open_ports or 139 in open_ports
                 services = list(dict.fromkeys(
                     svc for port, svc in self.SERVICE_PORTS.items()
                     if port in open_ports
@@ -152,7 +148,6 @@ class NetworkScanner:
                     "ip": str(host),
                     "ports": open_ports,
                     "ports_display": ", ".join(map(str, open_ports)) if open_ports else _("No common ports open"),
-                    "smb": smb,
                     "services": services,
                     "os_display": "",
                 }
@@ -207,7 +202,6 @@ class NetworkScanner:
                 if self.is_scanning and gen == self._scan_generation:
                     self.is_scanning = False
                     devices_sorted = sorted(devices, key=lambda x: ipaddress.IPv4Address(x['ip']))
-                    self._enrich_with_arp(devices_sorted)
                     GLib.idle_add(callback, devices_sorted)
 
             except Exception as e:
@@ -223,12 +217,11 @@ class NetworkScanner:
 
     def get_partial_results(self):
         devices = sorted(self.partial_results, key=lambda x: ipaddress.IPv4Address(x['ip']))
-        self._enrich_with_arp(devices)
         return devices
 
     @staticmethod
     def _enrich_deep_scan(host_info, device, open_ports):
-        """Parse NSE script results and -sV service versions into OS and share info."""
+        """Parse NSE script results and service version output into OS and share info."""
         hostscript = host_info.get('hostscript', [])
         os_parts = []
 
@@ -246,7 +239,7 @@ class NetworkScanner:
                         if clean.startswith('OS:'):
                             os_parts.append(clean[3:].strip())
 
-        # 2. Service version info from -sV
+        # 2. Service version info gathered by the scanner
         version_strings = []
         if 'tcp' in host_info:
             for port in open_ports:
@@ -267,18 +260,11 @@ class NetworkScanner:
         device["os_display"] = ' — '.join(os_parts) if os_parts else ''
 
     @staticmethod
-    def _enrich_with_arp(devices):
-        """Fill in MAC address from the kernel ARP table, best-effort."""
-        arp_table = netinfo.read_arp_table()
-        for device in devices:
-            device["mac"] = arp_table.get(device["ip"], "")
-
-    @staticmethod
     def _local_ip_via_udp_probe():
         """Ask the kernel which local address it would use to reach the internet.
 
-        A UDP connect() only performs a routing decision - no packet is sent -
-        so this works offline and needs no special permissions.
+        A UDP connect() only performs a routing decision without sending any
+        packet, so this works offline and needs no special permissions.
         """
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
             s.settimeout(1)
@@ -306,9 +292,9 @@ class NetworkScanner:
 
         Previously used socket.gethostbyname(gethostname()), which commonly
         resolves to 127.0.1.1 or the wrong interface depending on
-        /etc/hosts - unreliable, especially inside the Flatpak sandbox. A UDP
-        connect() only performs a kernel routing decision (no packet sent),
-        so it reliably reveals the real outbound interface instead.
+        /etc/hosts, and is unreliable especially inside the Flatpak sandbox.
+        A UDP connect() only performs a kernel routing decision (no packet
+        sent), so it reliably reveals the real outbound interface instead.
         """
         try:
             local_ip = NetworkScanner._local_ip_via_udp_probe()

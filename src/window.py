@@ -71,10 +71,10 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         about.add_credit_section(_("Contributors"), ["ZingyTomato", "Gert-Dev", "Cameo007", "vmkspv", "oscfdezdz", "albanobattistella", "sjulien", "dawkagaming", "prescott66"])
         release_notes = """
         <ul>
-          <li>Device cards now cap System Information and Services at one line, with expand/collapse buttons to reveal the full text.</li>
-          <li>Moved the thread count picker into the main menu.</li>
-          <li>Added better indication throughout the UI that a deep scan is taking place.</li>
-          <li>Added a Translate link to the About dialog.</li>
+          <li>Added search functionality to all scan pages.</li>
+          <li>Added a scan info dialog for current and previous scans.</li>
+          <li>Results view format is now preserved when resizing the window.</li>
+          <li>Updated nmap to version 7.991.</li>
         </ul>
         """
         about.set_release_notes(release_notes)
@@ -93,11 +93,11 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         """Load a scan chosen from history into the results page"""
         if self.navigation_view.get_visible_page() != self.results_page:
             self.navigation_view.push(self.results_page)
-        self.results_page.load_from_history(scan.get('ip_range', ''), scan.get('devices', []), scan.get('deep_scan', False))
+        self.results_page.load_from_history(scan)
         self._came_from_history = True
 
     def _on_page_popped(self, navigation_view, page):
-        """Re-open history dialog when navigating back from a history-loaded scan."""
+        """Reopen the history dialog when navigating back from a scan loaded from history."""
         if self._came_from_history and page == self.results_page:
             self._came_from_history = False
             dialog = HistoryDialog(self.on_history_scan_selected)
@@ -124,8 +124,3 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         self.navigation_view.connect("popped", self._on_page_popped)
 
         self.navigation_view.add(self.home_page)
-
-    def show_toast(self, message, timeout=3):
-        toast = Adw.Toast(title=_(message))
-        toast.set_timeout(timeout)
-        self.toast_overlay.add_toast(toast)
