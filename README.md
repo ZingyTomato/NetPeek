@@ -37,7 +37,7 @@ A modern libadwaita-based network scanner for GNOME that helps you discover devi
 - ℹ️ **Scan Info Dialog** - View detailed scan metadata for current and previous scans
 - 🌗 **Dark Mode** - Follow system, or force light/dark
 - ↕️ **Sortable Results** - Sort by known status, IP, hostname, custom name, ports, services, or OS
-- 🔎 **Searchable Results** - Search and filter devices across all scan pages
+- 🔎 **Searchable Results** - Search and filter devices on scan pages
 - 📱 **Modern UI** - Built with GTK4 and Libadwaita
 - ⚡ **Multi-threaded** - Fast concurrent scanning with a configurable thread count
 - 🔧 **Flexible Input** - Supports CIDR notation, IP ranges, and single IPs
