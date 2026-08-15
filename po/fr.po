@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: netpeek\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-30 09:46+0200\n"
+"POT-Creation-Date: 2026-08-14 16:21+0000\n"
 "PO-Revision-Date: 2026-07-30 09:05+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/netpeek/netpeek/"
@@ -87,6 +87,14 @@ msgid ""
 "server etc."
 msgstr ""
 
+#: data/io.github.zingytomato.netpeek.gschema.xml:41
+msgid "Thread count for scanning"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:42
+msgid "Number of concurrent worker threads to use while scanning (1–500)."
+msgstr ""
+
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
 #, fuzzy
 #| msgid "See what's connected to your network"
@@ -101,21 +109,35 @@ msgstr ""
 "NetPeek est un scanner simple de réseau qui vous aide à découvrir les "
 "dispositifs actifs sur votre réseau local."
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:48
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:49
 msgid "Home screen"
 msgstr "Écran principal"
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:52
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:53
 msgid "Scan in Progress"
 msgstr "Scan en cours"
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:56
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:57
 #: src/gtk/results_page.ui:20
 msgid "Scan Results"
 msgstr "Résultats du scan"
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:60
-msgid "List View"
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:61
+#, fuzzy
+#| msgid "Scan Results"
+msgid "Scan Results (List View)"
+msgstr "Résultats du scan"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:65
+#, fuzzy
+#| msgid "Scan Results"
+msgid "Deep Scan Results"
+msgstr "Résultats du scan"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:69
+#: src/gtk/history_dialog.ui:7 src/gtk/history_dialog.ui:16
+#: src/gtk/home_page.ui:184
+msgid "Previous Scans"
 msgstr ""
 
 #: src/gtk/device_card.ui:22
@@ -126,7 +148,7 @@ msgstr ""
 msgid "Apply name"
 msgstr ""
 
-#: src/gtk/device_card.ui:38 src/pages.py:638
+#: src/gtk/device_card.ui:38 src/pages.py:806
 msgid "New"
 msgstr ""
 
@@ -134,7 +156,7 @@ msgstr ""
 msgid "Click to copy IP"
 msgstr ""
 
-#: src/gtk/device_card.ui:74 src/gtk/results_page.ui:127 src/pages.py:380
+#: src/gtk/device_card.ui:74 src/gtk/results_page.ui:134 src/pages.py:416
 msgid "Hostname"
 msgstr "Nom d'hôte"
 
@@ -142,17 +164,20 @@ msgstr "Nom d'hôte"
 msgid "Ports Open"
 msgstr "Ports ouverts"
 
-#: src/gtk/device_card.ui:98 src/gtk/results_page.ui:193 src/pages.py:296
+#: src/gtk/device_card.ui:98 src/gtk/results_page.ui:200 src/pages.py:336
 msgid "Services"
 msgstr ""
 
-#: src/gtk/device_card.ui:110 src/gtk/results_page.ui:215 src/pages.py:297
+#: src/gtk/device_card.ui:112 src/widgets.py:157
+msgid "Show full service list"
+msgstr ""
+
+#: src/gtk/device_card.ui:124 src/gtk/results_page.ui:222 src/pages.py:337
 msgid "System Information"
 msgstr ""
 
-#: src/gtk/history_dialog.ui:7 src/gtk/history_dialog.ui:16
-#: src/gtk/home_page.ui:208
-msgid "Previous Scans"
+#: src/gtk/device_card.ui:138 src/widgets.py:154
+msgid "Show full system information"
 msgstr ""
 
 #: src/gtk/history_dialog.ui:50
@@ -194,35 +219,23 @@ msgid "Apply IP range"
 msgstr "Plage IP valide!"
 
 #: src/gtk/home_page.ui:127
-msgid "Thread Count"
-msgstr ""
-
-#: src/gtk/home_page.ui:128
-msgid "Number of threads to use while scanning"
-msgstr ""
-
-#: src/gtk/home_page.ui:144
-msgid "Apply thread count"
-msgstr ""
-
-#: src/gtk/home_page.ui:156
 msgid "Deep Scan"
 msgstr ""
 
-#: src/gtk/home_page.ui:157
+#: src/gtk/home_page.ui:128
 msgid ""
 "Retrieves more detailed system information like OS name, HTTP server etc."
 msgstr ""
 
-#: src/gtk/home_page.ui:179
+#: src/gtk/home_page.ui:150
 msgid "Scan my Network"
 msgstr "Scanner mon réseau"
 
-#: src/gtk/home_page.ui:214
+#: src/gtk/home_page.ui:190
 msgid "About"
 msgstr "À propos de NetPeek"
 
-#: src/gtk/home_page.ui:218
+#: src/gtk/home_page.ui:194
 msgid "Quit"
 msgstr "Quitter"
 
@@ -238,46 +251,52 @@ msgstr "Dispositifs trouvés sur votre réseau:"
 msgid "Stop the current network scan"
 msgstr "Interrompre le scan de réseau en cours"
 
-#: src/gtk/results_page.ui:32 src/pages.py:534
+#: src/gtk/results_page.ui:32 src/pages.py:600
 msgid "Stop"
 msgstr ""
 
-#: src/gtk/results_page.ui:50
+#: src/gtk/results_page.ui:46
+#, fuzzy
+#| msgid "Scan Again"
+msgid "Scan information"
+msgstr "Scanner à nouveau"
+
+#: src/gtk/results_page.ui:57
 msgid "Export to CSV"
 msgstr ""
 
-#: src/gtk/results_page.ui:58
+#: src/gtk/results_page.ui:65
 msgid "Toggle list view"
 msgstr ""
 
-#: src/gtk/results_page.ui:66
+#: src/gtk/results_page.ui:73
 #, fuzzy
 #| msgid "No devices found"
 msgid "Sort devices"
 msgstr "Aucun dispositif trouvé"
 
-#: src/gtk/results_page.ui:83 src/pages.py:638
+#: src/gtk/results_page.ui:90 src/pages.py:806
 #, fuzzy
 #| msgid "Unknown"
 msgid "Known"
 msgstr "Inconnu"
 
-#: src/gtk/results_page.ui:105 src/pages.py:338
+#: src/gtk/results_page.ui:112 src/pages.py:376
 msgid "IP Address"
 msgstr ""
 
-#: src/gtk/results_page.ui:149 src/pages.py:407
+#: src/gtk/results_page.ui:156 src/pages.py:441
 msgid "Custom Name"
 msgstr ""
 
-#: src/gtk/results_page.ui:171 src/pages.py:295
+#: src/gtk/results_page.ui:178 src/pages.py:335
 #, fuzzy
 #| msgid "Ports Open"
 msgid "Ports"
 msgstr "Ports ouverts"
 
-#: src/gtk/results_page.ui:250 src/pages.py:722 src/pages.py:784
-#: src/pages.py:805
+#: src/gtk/results_page.ui:250 src/pages.py:899 src/pages.py:980
+#: src/pages.py:1006
 msgid "Rescan"
 msgstr ""
 
@@ -289,29 +308,75 @@ msgstr "Scan du réseau en cours"
 msgid "Discovering devices on your network... (this may take a while!)"
 msgstr "Découverte de dispositifs sur votre réseau... (peut prendre du temps!)"
 
-#: src/gtk/results_page.ui:297 src/pages.py:701
+#: src/gtk/results_page.ui:297 src/pages.py:878
 msgid "Preparing scan..."
 msgstr "Préparation du scan..."
 
-#: src/gtk/results_page.ui:306 src/pages.py:702
+#: src/gtk/results_page.ui:306 src/pages.py:879
 msgid "Time Elapsed: 00:00"
 msgstr "Temps écoulé: 00:00"
 
-#: src/gtk/results_page.ui:396
+#: src/gtk/results_page.ui:338
+msgid "Search IP addresses, services, ports…"
+msgstr ""
+
+#: src/gtk/results_page.ui:420
+#, fuzzy
+#| msgid "No Devices Found"
+msgid "No Results Found"
+msgstr "Aucun dispositif trouvé"
+
+#: src/gtk/results_page.ui:421
+msgid "No devices match your search query."
+msgstr ""
+
+#: src/gtk/results_page.ui:439
 msgid "No Devices Found"
 msgstr "Aucun dispositif trouvé"
 
-#: src/gtk/results_page.ui:397
+#: src/gtk/results_page.ui:440
 msgid "No devices were found in the specified range!"
 msgstr "Aucun dispositif n'a été trouvé dans la plage spécifiée!"
 
-#: src/gtk/results_page.ui:409
+#: src/gtk/results_page.ui:452
 msgid "Scan Error"
 msgstr "Erreur de scan"
 
-#: src/gtk/results_page.ui:410
+#: src/gtk/results_page.ui:453
 msgid "An error occurred while scanning the network!"
 msgstr "Une erreur s'est produite pendant le scan du réseau!"
+
+#: src/gtk/scan_metadata_dialog.ui:7 src/gtk/scan_metadata_dialog.ui:16
+#, fuzzy
+#| msgid "Scan Again"
+msgid "Scan Information"
+msgstr "Scanner à nouveau"
+
+#: src/gtk/scan_metadata_dialog.ui:36
+msgid "Date Taken"
+msgstr ""
+
+#: src/gtk/scan_metadata_dialog.ui:46
+msgid "Scan Type"
+msgstr ""
+
+#: src/gtk/scan_metadata_dialog.ui:56
+#, fuzzy
+#| msgid "Scan Again"
+msgid "Scan Duration"
+msgstr "Scanner à nouveau"
+
+#: src/gtk/scan_metadata_dialog.ui:67
+#, fuzzy
+#| msgid "No devices found"
+msgid "New Devices"
+msgstr "Aucun dispositif trouvé"
+
+#: src/gtk/scan_metadata_dialog.ui:77
+#, fuzzy
+#| msgid "Found {count} devices"
+msgid "Known Devices"
+msgstr "{count} dispositifs trouvés"
 
 #: src/gtk/theme_selector.ui:15 src/gtk/theme_selector.ui:21
 msgid "Follow System"
@@ -325,168 +390,216 @@ msgstr ""
 msgid "Dark"
 msgstr ""
 
-#: src/pages.py:113
+#: src/pages.py:66
+msgid "Threads"
+msgstr ""
+
+#: src/pages.py:126
 msgid "Auto-detect"
 msgstr ""
 
-#: src/pages.py:114
+#: src/pages.py:127
 #, fuzzy
 #| msgid "Discover devices on your local network"
 msgid "Automatically detect your local network"
 msgstr "Découvrir les dispositifs sur votre réseau local"
 
-#: src/pages.py:121
+#: src/pages.py:134
 msgid "Home Network (192.168.1.x)"
 msgstr "Réseau domestique (192.168.1.x)"
 
-#: src/pages.py:122
+#: src/pages.py:135
 msgid "Home Network (192.168.0.x)"
 msgstr "Réseau domestique (192.168.0.x)"
 
-#: src/pages.py:123
+#: src/pages.py:136
 msgid "Corporate (10.0.0.x)"
 msgstr "Entreprise (10.0.0.x)"
 
-#: src/pages.py:124
+#: src/pages.py:137
 msgid "Private (172.16.0.x)"
 msgstr "Privé (172.16.0.x)"
 
-#: src/pages.py:327
+#: src/pages.py:279 src/pages.py:554 src/pages.py:651
+msgid "Show as grid"
+msgstr ""
+
+#: src/pages.py:279 src/pages.py:543 src/pages.py:554 src/pages.py:651
+msgid "Show as list"
+msgstr ""
+
+#: src/pages.py:365
 #, fuzzy
 #| msgid "No devices found"
 msgid "New device"
 msgstr "Aucun dispositif trouvé"
 
-#: src/pages.py:331
+#: src/pages.py:369
 #, fuzzy
 #| msgid "Found {count} devices"
 msgid "Known device"
 msgstr "{count} dispositifs trouvés"
 
-#: src/pages.py:356
+#: src/pages.py:393
 msgid "Copy IP"
 msgstr ""
 
-#: src/pages.py:400 src/widgets.py:69
+#: src/pages.py:434 src/widgets.py:85
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: src/pages.py:419
+#: src/pages.py:452
 msgid "Click to set name..."
 msgstr ""
 
-#: src/pages.py:421
+#: src/pages.py:454
 msgid "Apply"
 msgstr ""
 
-#: src/pages.py:586 src/widgets.py:81
+#: src/pages.py:756 src/widgets.py:163
 #, python-brace-format
 msgid "Copied {ip} to the clipboard"
 msgstr ""
 
-#: src/pages.py:592
+#: src/pages.py:762
 #, fuzzy
 #| msgid "No devices found"
 msgid "No devices to export"
 msgstr "Aucun dispositif trouvé"
 
-#: src/pages.py:596
+#: src/pages.py:766
 #, fuzzy
 #| msgid "Scan Results"
 msgid "Export Scan Results"
 msgstr "Résultats du scan"
 
-#: src/pages.py:600
+#: src/pages.py:770
 msgid "CSV Files"
 msgstr ""
 
-#: src/pages.py:618
+#: src/pages.py:787
 msgid "Export cancelled or failed"
 msgstr ""
 
-#: src/pages.py:642
+#: src/pages.py:810
 msgid "Successfully exported to "
 msgstr ""
 
-#: src/pages.py:644
+#: src/pages.py:812
 msgid "Open Folder"
 msgstr ""
 
-#: src/pages.py:648
+#: src/pages.py:816
 msgid "Export failed: "
 msgstr ""
 
-#: src/pages.py:672
+#: src/pages.py:843
 #, python-brace-format
 msgid "Time Elapsed: {minutes:02d}:{seconds:02d}"
 msgstr "Temps écoulé: {minutes:02d}:{seconds:02d}"
 
-#: src/pages.py:681
+#: src/pages.py:851
 #, python-brace-format
 msgid "Hosts Scanned: {scanned}/{total}"
 msgstr "Hôtes scannés: {scanned}/{total}"
 
-#: src/pages.py:692
+#: src/pages.py:864
 msgid "Scanning..."
 msgstr "Scan en cours..."
 
-#: src/pages.py:706
-msgid "Scanning "
+#: src/pages.py:883
+#, fuzzy
+#| msgid "Stop Scanning"
+msgid "Deep scanning"
+msgstr "Interrompre le scan"
+
+#: src/pages.py:883
+#, fuzzy
+#| msgid "Scanning "
+msgid "Scanning"
 msgstr "Scan en cours "
 
-#: src/pages.py:732
+#: src/pages.py:911 src/pages.py:943 src/pages.py:993 src/pages.py:1143
+#: src/pages.py:1226
+msgid "Deep"
+msgstr ""
+
+#: src/pages.py:912
 #, python-brace-format
 msgid "Scan stopped - Found {count} devices"
 msgstr "Scan interrompu - {count} dispositifs trouvés"
 
-#: src/pages.py:736
+#: src/pages.py:918
 msgid "Scan stopped - No devices found"
 msgstr "Scan interrompu - Aucun dispositif trouvé"
 
-#: src/pages.py:756
+#: src/pages.py:944
 msgid "Loaded from history: "
 msgstr ""
 
-#: src/pages.py:795
+#: src/pages.py:994
 #, python-brace-format
 msgid "Found {count} devices"
 msgstr "{count} dispositifs trouvés"
 
-#: src/pages.py:798
+#: src/pages.py:999
 msgid "No devices found"
 msgstr "Aucun dispositif trouvé"
 
-#: src/pages.py:813 src/pages.py:815
+#: src/pages.py:1017 src/pages.py:1019
 msgid "Error: "
 msgstr "Erreur:"
 
-#: src/pages.py:814
+#: src/pages.py:1018
 msgid "An error occurred!"
 msgstr "Une erreur s'est produite!"
 
-#: src/pages.py:892
+#: src/pages.py:1090
 msgid "Today"
 msgstr ""
 
-#: src/pages.py:894
+#: src/pages.py:1092
 msgid "Yesterday"
 msgstr ""
 
-#: src/pages.py:948
-msgid "Deep"
-msgstr ""
-
-#: src/pages.py:949
+#: src/pages.py:1144
 #, fuzzy, python-brace-format
 #| msgid "Found {count} devices"
 msgid "{time} · {count} devices{deep}"
 msgstr "{count} dispositifs trouvés"
 
-#: src/pages.py:956
+#: src/pages.py:1151
 msgid "Delete this scan"
 msgstr ""
 
-#: src/window.py:70
+#: src/pages.py:1226
+msgid "Standard"
+msgstr ""
+
+#: src/pages.py:1241
+#, python-brace-format
+msgid "{minutes} min {seconds} s"
+msgstr ""
+
+#: src/pages.py:1242
+#, python-brace-format
+msgid "{seconds} s"
+msgstr ""
+
+#: src/pages.py:1244
+#, python-brace-format
+msgid "{hours} h {minutes} min"
+msgstr ""
+
+#: src/widgets.py:146
+msgid "Show less"
+msgstr ""
+
+#: src/window.py:69
+msgid "Translate"
+msgstr ""
+
+#: src/window.py:71
 msgid "Contributors"
 msgstr "Contributeurs"
 
@@ -495,12 +608,6 @@ msgstr "Contributeurs"
 
 #~ msgid "Set IP range to: "
 #~ msgstr "Fixer la plage IP sur:"
-
-#~ msgid "Stop Scanning"
-#~ msgstr "Interrompre le scan"
-
-#~ msgid "Scan Again"
-#~ msgstr "Scanner à nouveau"
 
 #, python-brace-format
 #~ msgid "Scan stopped. Found {count} devices so far."
