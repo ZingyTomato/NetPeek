@@ -132,10 +132,7 @@
                             </child>
 
                             <child>
-                              <object class="AdwWrapBox" id="preset_box">
-                                <property name="child-spacing">6</property>
-                                <property name="line-spacing">6</property>
-                                <property name="align">0.5</property>
+                              <object class="GtkBox" id="preset_box">
                                 <property name="halign">center</property>
                                 <property name="margin-top">12</property>
                               </object>

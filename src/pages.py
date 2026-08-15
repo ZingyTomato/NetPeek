@@ -27,7 +27,7 @@ gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Gtk, Adw, Gio, GLib, Gdk, GObject
 
-from .widgets import DeviceCard, PresetButton, ThemeSelector, ToastMixin
+from .widgets import DeviceCard, ThemeSelector, ToastMixin
 from .scanner import NetworkScanner
 from .models import Device
 from . import storage
@@ -85,12 +85,26 @@ class HomePage(ToastMixin, Adw.NavigationPage):
 
         self.setup_presets()
 
+        # Restore the last active preset
+        saved_preset = self.settings.get_string('last-preset')
+        if saved_preset:
+            target = "auto" if saved_preset == "auto" else saved_preset
+            for preset in self._PRESETS:
+                if (preset["range"] is None and target == "auto") or preset["range"] == target:
+                    self._active_preset = preset
+                    self.preset_button.set_label(preset["label"])
+                    self.preset_button.set_tooltip_text(_(preset["desc"]))
+                    self._rebuild_preset_menu()
+                    break
+
         # Bind deep scan switch to GSettings
         self.deep_scan_row.set_active(self.settings.get_boolean('deep-scan'))
         self.deep_scan_row.connect('notify::active', self._on_deep_scan_toggled)
 
         last_range = self.settings.get_string('last-ip-range')
-        if last_range:
+        if self._active_preset["range"] is None:
+            self.auto_detect_network()
+        elif last_range:
             self.ip_entry_row.set_text(last_range)
         else:
             detected_range = NetworkScanner.get_local_ip_range()
@@ -121,25 +135,55 @@ class HomePage(ToastMixin, Adw.NavigationPage):
     def connect_results_page(self, results_page):
         self.results_page = results_page
 
+    @staticmethod
+    def _preset_short_label(preset_range):
+        octets = preset_range.split("/")[0].split(".")
+        prefix_len = int(preset_range.split("/")[1]) // 8
+        octets[prefix_len:] = ["x"] * (4 - prefix_len)
+        return ".".join(octets)
+
+    _PRESETS = [
+        {"label": "Auto-detect", "range": None, "desc": "Automatically detect your local network"},
+        {"label": _preset_short_label("192.168.1.0/24"), "range": "192.168.1.0/24", "desc": "Home Network (192.168.1.x)"},
+        {"label": _preset_short_label("192.168.0.0/24"), "range": "192.168.0.0/24", "desc": "Home Network (192.168.0.x)"},
+        {"label": _preset_short_label("10.0.0.0/24"), "range": "10.0.0.0/24", "desc": "Corporate (10.0.0.x)"},
+        {"label": _preset_short_label("172.16.0.0/24"), "range": "172.16.0.0/24", "desc": "Private (172.16.0.x)"},
+    ]
+
     def setup_presets(self):
-        auto_button = Gtk.Button()
-        auto_button.set_label(_("Auto-detect"))
-        auto_button.set_tooltip_text(_("Automatically detect your local network"))
-        auto_button.add_css_class("pill")
-        auto_button.add_css_class("suggested-action")
-        auto_button.connect('clicked', self.on_auto_detect_clicked)
-        self.preset_box.append(auto_button)
+        self._active_preset = self._PRESETS[0]
 
-        presets = [
-            ("192.168.1.0/24", _("Home Network (192.168.1.x)")),
-            ("192.168.0.0/24", _("Home Network (192.168.0.x)")),
-            ("10.0.0.0/24", _("Corporate (10.0.0.x)")),
-            ("172.16.0.0/24", _("Private (172.16.0.x)"))
-        ]
+        self.preset_menu_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
-        for preset_range, tooltip in presets:
-            preset_button = PresetButton(preset_range, tooltip, self.on_preset_clicked)
-            self.preset_box.append(preset_button)
+        self.preset_popover = Gtk.Popover()
+        self.preset_popover.set_child(self.preset_menu_box)
+
+        self.preset_button = Adw.SplitButton()
+        self.preset_button.add_css_class("preset-split")
+        self.preset_button.set_label(_("Auto-detect"))
+        self.preset_button.set_tooltip_text(_("Automatically detect your local network"))
+        self.preset_button.set_popover(self.preset_popover)
+        self.preset_button.connect("clicked", self.on_preset_button_clicked)
+
+        self.preset_box.append(self.preset_button)
+        self._rebuild_preset_menu()
+
+    def _rebuild_preset_menu(self):
+        child = self.preset_menu_box.get_first_child()
+        while child is not None:
+            next_child = child.get_next_sibling()
+            self.preset_menu_box.remove(child)
+            child = next_child
+
+        for preset in self._PRESETS:
+            if preset is self._active_preset:
+                continue
+            btn = Gtk.Button(label=preset["label"])
+            btn.set_halign(Gtk.Align.FILL)
+            btn.add_css_class("flat")
+            btn.add_css_class("menu-item")
+            btn.connect("clicked", self._on_preset_row_clicked, preset)
+            self.preset_menu_box.append(btn)
 
     def auto_detect_network(self):
         detected_range = NetworkScanner.get_local_ip_range()
@@ -167,14 +211,30 @@ class HomePage(ToastMixin, Adw.NavigationPage):
     def on_ip_range_apply(self, _widget):
         """When the apply button is clicked or Enter is pressed in the IP entry"""
         self.validate_ip_range()
+        self.settings.set_string('last-ip-range', self.ip_entry_row.get_text().strip())
         self._clear_focus()
         self.ip_entry_row.set_position(-1)
 
-    def on_auto_detect_clicked(self, button):
-        self.auto_detect_network()
+    def on_preset_button_clicked(self, button):
+        if self._active_preset["range"] is None:
+            self.auto_detect_network()
+        else:
+            self.ip_entry_row.set_text(self._active_preset["range"])
+        self.settings.set_string('last-preset', self._active_preset["range"] or "auto")
+        self.settings.set_string('last-ip-range', self.ip_entry_row.get_text().strip())
 
-    def on_preset_clicked(self, button, preset_range):
-        self.ip_entry_row.set_text(preset_range)
+    def _on_preset_row_clicked(self, row_button, preset):
+        self._active_preset = preset
+        if preset["range"] is None:
+            self.auto_detect_network()
+        else:
+            self.ip_entry_row.set_text(preset["range"])
+        self.preset_button.set_label(preset["label"])
+        self.preset_button.set_tooltip_text(_(preset["desc"]))
+        self._rebuild_preset_menu()
+        self.preset_popover.popdown()
+        self.settings.set_string('last-preset', preset["range"] or "auto")
+        self.settings.set_string('last-ip-range', self.ip_entry_row.get_text().strip())
 
     def validate_ip_range(self):
         ip_range = self.ip_entry_row.get_text().strip()

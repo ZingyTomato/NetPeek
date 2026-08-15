@@ -31,6 +31,11 @@
       <summary>Last used IP range</summary>
       <description>The IP range entered in the last scan, restored on startup.</description>
     </key>
+    <key name="last-preset" type="s">
+      <default>'auto'</default>
+      <summary>Last selected preset</summary>
+      <description>The preset selected in the split button, restored on startup. "auto" for auto-detect, or an IP range like "192.168.1.0/24".</description>
+    </key>
     <key name="deep-scan" type="b">
       <default>false</default>
       <summary>Enable deep scan mode</summary>
