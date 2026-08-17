@@ -47,5 +47,20 @@
       <description>Number of concurrent worker threads to use while scanning (1–500).</description>
       <range min="1" max="500"/>
     </key>
+    <key name="history-filter-mode" type="s">
+      <default>'all'</default>
+      <summary>Last selected history filter</summary>
+      <description>One of "all", "today", "yesterday", "7d", "30d", or "custom".</description>
+    </key>
+    <key name="history-custom-start" type="s">
+      <default>''</default>
+      <summary>Custom filter start date</summary>
+      <description>ISO date string for custom filter start, e.g. "2026-01-15".</description>
+    </key>
+    <key name="history-custom-end" type="s">
+      <default>''</default>
+      <summary>Custom filter end date</summary>
+      <description>ISO date string for custom filter end, e.g. "2026-01-31".</description>
+    </key>
 	</schema>
 </schemalist>
