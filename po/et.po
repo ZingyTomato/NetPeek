@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-14 16:21+0000\n"
-"PO-Revision-Date: 2026-08-07 21:51+0000\n"
+"PO-Revision-Date: 2026-08-18 13:51+0000\n"
 "Last-Translator: Priit Jõerüüt <jrthwlate@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Estonian <https://hosted.weblate.org/projects/netpeek/netpeek/"
 "et/>\n"
@@ -254,10 +254,8 @@ msgid "Stop"
 msgstr "Lõpeta"
 
 #: src/gtk/results_page.ui:46
-#, fuzzy
-#| msgid "System Information"
 msgid "Scan information"
-msgstr "Süsteemiteave"
+msgstr "Skaneerimise teave"
 
 #: src/gtk/results_page.ui:57
 msgid "Export to CSV"
@@ -310,17 +308,15 @@ msgstr "Kulunud aeg: 00:00"
 
 #: src/gtk/results_page.ui:338
 msgid "Search IP addresses, services, ports…"
-msgstr ""
+msgstr "Otsi IP-aadresse, teenuseid, porte…"
 
 #: src/gtk/results_page.ui:420
-#, fuzzy
-#| msgid "No Devices Found"
 msgid "No Results Found"
-msgstr "Ühtegi seadet ei leidu"
+msgstr "Tulemusi ei leidu"
 
 #: src/gtk/results_page.ui:421
 msgid "No devices match your search query."
-msgstr ""
+msgstr "Ükski seade ei vasta sinu otsingule."
 
 #: src/gtk/results_page.ui:439
 msgid "No Devices Found"
@@ -339,36 +335,28 @@ msgid "An error occurred while scanning the network!"
 msgstr "Võrgu skaneerimisel tekkis viga!"
 
 #: src/gtk/scan_metadata_dialog.ui:7 src/gtk/scan_metadata_dialog.ui:16
-#, fuzzy
-#| msgid "System Information"
 msgid "Scan Information"
-msgstr "Süsteemiteave"
+msgstr "Skaneerimise teave"
 
 #: src/gtk/scan_metadata_dialog.ui:36
 msgid "Date Taken"
-msgstr ""
+msgstr "Skaneerimise kuupäev"
 
 #: src/gtk/scan_metadata_dialog.ui:46
 msgid "Scan Type"
-msgstr ""
+msgstr "Skaneerimise tüüp"
 
 #: src/gtk/scan_metadata_dialog.ui:56
-#, fuzzy
-#| msgid "Scan Error"
 msgid "Scan Duration"
-msgstr "Skaneerimisviga"
+msgstr "Skaneerimise kestus"
 
 #: src/gtk/scan_metadata_dialog.ui:67
-#, fuzzy
-#| msgid "New device"
 msgid "New Devices"
-msgstr "Uus seade"
+msgstr "Uued seadmed"
 
 #: src/gtk/scan_metadata_dialog.ui:77
-#, fuzzy
-#| msgid "Known device"
 msgid "Known Devices"
-msgstr "Teadaolev seade"
+msgstr "Teadaolevad seadmed"
 
 #: src/gtk/theme_selector.ui:15 src/gtk/theme_selector.ui:21
 msgid "Follow System"
@@ -551,22 +539,22 @@ msgstr "Kustuta see skaneerimine"
 
 #: src/pages.py:1226
 msgid "Standard"
-msgstr ""
+msgstr "Standardne"
 
 #: src/pages.py:1241
 #, python-brace-format
 msgid "{minutes} min {seconds} s"
-msgstr ""
+msgstr "{minutes} min {seconds} sek"
 
 #: src/pages.py:1242
 #, python-brace-format
 msgid "{seconds} s"
-msgstr ""
+msgstr "{seconds} sek"
 
 #: src/pages.py:1244
 #, python-brace-format
 msgid "{hours} h {minutes} min"
-msgstr ""
+msgstr "{hours} t {minutes} min"
 
 #: src/widgets.py:146
 msgid "Show less"
