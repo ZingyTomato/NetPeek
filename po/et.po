@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-14 16:21+0000\n"
+"POT-Creation-Date: 2026-08-23 10:04+0000\n"
 "PO-Revision-Date: 2026-08-18 13:51+0000\n"
 "Last-Translator: Priit Jõerüüt <jrthwlate@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Estonian <https://hosted.weblate.org/projects/netpeek/netpeek/"
@@ -80,10 +80,20 @@ msgstr ""
 "rakenduse uuesti käivitamisel."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:36
+msgid "Last selected preset"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:37
+msgid ""
+"The preset selected in the split button, restored on startup. \"auto\" for "
+"auto-detect, or an IP range like \"192.168.1.0/24\"."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:41
 msgid "Enable deep scan mode"
 msgstr "Lülita süvaotsingu režiim sisse"
 
-#: data/io.github.zingytomato.netpeek.gschema.xml:37
+#: data/io.github.zingytomato.netpeek.gschema.xml:42
 msgid ""
 "When enabled, retrieves more detailed system information like OS name, HTTP "
 "server etc."
@@ -91,13 +101,38 @@ msgstr ""
 "Siselülitamisel tuvastab üksikasjalikumat süsteemiteavet, nagu "
 "operatsioonisüsteem, HTTP-server, jne."
 
-#: data/io.github.zingytomato.netpeek.gschema.xml:41
+#: data/io.github.zingytomato.netpeek.gschema.xml:46
 msgid "Thread count for scanning"
 msgstr "Lõimede arv skaneerimisel"
 
-#: data/io.github.zingytomato.netpeek.gschema.xml:42
+#: data/io.github.zingytomato.netpeek.gschema.xml:47
 msgid "Number of concurrent worker threads to use while scanning (1–500)."
 msgstr "Skaneerimisel kasutatav rööpsete protsessilõimede arv (1-500)."
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:52
+msgid "Last selected history filter"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:53
+msgid ""
+"One of \"all\", \"today\", \"yesterday\", \"7d\", \"30d\", or \"custom\"."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:57
+msgid "Custom filter start date"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:58
+msgid "ISO date string for custom filter start, e.g. \"2026-01-15\"."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:62
+msgid "Custom filter end date"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:63
+msgid "ISO date string for custom filter end, e.g. \"2026-01-31\"."
+msgstr ""
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
 msgid "See what's on your network"
@@ -133,8 +168,7 @@ msgid "Deep Scan Results"
 msgstr "Süvaskaneerimise tulemused"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:69
-#: src/gtk/history_dialog.ui:7 src/gtk/history_dialog.ui:16
-#: src/gtk/home_page.ui:184
+#: src/gtk/history_dialog.ui:7 src/gtk/home_page.ui:181
 msgid "Previous Scans"
 msgstr "Eelmised skaneerimised"
 
@@ -146,7 +180,7 @@ msgstr "Nimi"
 msgid "Apply name"
 msgstr "Võta nimi kasutusele"
 
-#: src/gtk/device_card.ui:38 src/pages.py:806
+#: src/gtk/device_card.ui:38 src/pages.py:912
 msgid "New"
 msgstr "Uus"
 
@@ -154,7 +188,7 @@ msgstr "Uus"
 msgid "Click to copy IP"
 msgstr "IP-aadressi kopeerimiseks klõpsa"
 
-#: src/gtk/device_card.ui:74 src/gtk/results_page.ui:134 src/pages.py:416
+#: src/gtk/device_card.ui:74 src/gtk/results_page.ui:134 src/pages.py:487
 msgid "Hostname"
 msgstr "Hostinimi"
 
@@ -162,7 +196,7 @@ msgstr "Hostinimi"
 msgid "Ports Open"
 msgstr "Avatud pordid"
 
-#: src/gtk/device_card.ui:98 src/gtk/results_page.ui:200 src/pages.py:336
+#: src/gtk/device_card.ui:98 src/gtk/results_page.ui:200 src/pages.py:407
 msgid "Services"
 msgstr "Teenused"
 
@@ -170,7 +204,7 @@ msgstr "Teenused"
 msgid "Show full service list"
 msgstr "Näita teenuste täisloendit"
 
-#: src/gtk/device_card.ui:124 src/gtk/results_page.ui:222 src/pages.py:337
+#: src/gtk/device_card.ui:124 src/gtk/results_page.ui:222 src/pages.py:408
 msgid "System Information"
 msgstr "Süsteemiteave"
 
@@ -178,15 +212,49 @@ msgstr "Süsteemiteave"
 msgid "Show full system information"
 msgstr "Näita täismahus süsteemiteavet"
 
-#: src/gtk/history_dialog.ui:50
+#: src/gtk/history_dialog.ui:31 src/pages.py:1323
+msgid "All"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:32
+msgid "Filter scans by date"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:57 src/pages.py:1330
+#, fuzzy
+#| msgid "Custom Name"
+msgid "Custom Range…"
+msgstr "Sinu lisatud nimi"
+
+#: src/gtk/history_dialog.ui:58
+msgid "Pick a custom date range"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:87
+msgid "From"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:118
+msgid "To"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:150
+msgid "Clear"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:158 src/pages.py:525
+msgid "Apply"
+msgstr "Rakenda"
+
+#: src/gtk/history_dialog.ui:201
 msgid "Scroll to top"
 msgstr "Keri loendi algusesse"
 
-#: src/gtk/history_dialog.ui:72
+#: src/gtk/history_dialog.ui:223 src/pages.py:1421
 msgid "No Previous Scans"
 msgstr "Eelmisi skaneerimisi ei leidu"
 
-#: src/gtk/history_dialog.ui:73
+#: src/gtk/history_dialog.ui:224 src/pages.py:1422
 msgid "Your scan history will appear here."
 msgstr "Sinu varasemad skaneerimised saavad olema nähtavad siin."
 
@@ -225,15 +293,15 @@ msgstr ""
 "Tuvastab üksikasjalikumat süsteemiteavet, nagu operatsioonisüsteem, HTTP-"
 "server, jne."
 
-#: src/gtk/home_page.ui:150
+#: src/gtk/home_page.ui:147
 msgid "Scan my Network"
 msgstr "Skaneeri minu võrku"
 
-#: src/gtk/home_page.ui:190
+#: src/gtk/home_page.ui:187
 msgid "About"
 msgstr "Rakenduse teave"
 
-#: src/gtk/home_page.ui:194
+#: src/gtk/home_page.ui:191
 msgid "Quit"
 msgstr "Välju"
 
@@ -249,7 +317,7 @@ msgstr "Sinu võrgus leidunud seadmed:"
 msgid "Stop the current network scan"
 msgstr "Lõpeta see võrguskaneerimine"
 
-#: src/gtk/results_page.ui:32 src/pages.py:600
+#: src/gtk/results_page.ui:32 src/pages.py:674
 msgid "Stop"
 msgstr "Lõpeta"
 
@@ -269,24 +337,24 @@ msgstr "Lülita loendivaade sisse/välja"
 msgid "Sort devices"
 msgstr "Järjesta seadmeid"
 
-#: src/gtk/results_page.ui:90 src/pages.py:806
+#: src/gtk/results_page.ui:90 src/pages.py:912
 msgid "Known"
 msgstr "Teadaolev"
 
-#: src/gtk/results_page.ui:112 src/pages.py:376
+#: src/gtk/results_page.ui:112 src/pages.py:447
 msgid "IP Address"
 msgstr "IP-aadress"
 
-#: src/gtk/results_page.ui:156 src/pages.py:441
+#: src/gtk/results_page.ui:156 src/pages.py:512
 msgid "Custom Name"
 msgstr "Sinu lisatud nimi"
 
-#: src/gtk/results_page.ui:178 src/pages.py:335
+#: src/gtk/results_page.ui:178 src/pages.py:406
 msgid "Ports"
 msgstr "Pordid"
 
-#: src/gtk/results_page.ui:250 src/pages.py:899 src/pages.py:980
-#: src/pages.py:1006
+#: src/gtk/results_page.ui:250 src/pages.py:1005 src/pages.py:1085
+#: src/pages.py:1111
 msgid "Rescan"
 msgstr "Skaneeri uuesti"
 
@@ -298,11 +366,11 @@ msgstr "Skaneerin võrku"
 msgid "Discovering devices on your network... (this may take a while!)"
 msgstr "Tuvastan sinu võrgus leiduvaid seadmeid… (selleks võib kuluda aega!)"
 
-#: src/gtk/results_page.ui:297 src/pages.py:878
+#: src/gtk/results_page.ui:297 src/pages.py:984
 msgid "Preparing scan..."
 msgstr "Valmistun skaneerima…"
 
-#: src/gtk/results_page.ui:306 src/pages.py:879
+#: src/gtk/results_page.ui:306 src/pages.py:985
 msgid "Time Elapsed: 00:00"
 msgstr "Kulunud aeg: 00:00"
 
@@ -310,27 +378,27 @@ msgstr "Kulunud aeg: 00:00"
 msgid "Search IP addresses, services, ports…"
 msgstr "Otsi IP-aadresse, teenuseid, porte…"
 
-#: src/gtk/results_page.ui:420
+#: src/gtk/results_page.ui:421
 msgid "No Results Found"
 msgstr "Tulemusi ei leidu"
 
-#: src/gtk/results_page.ui:421
+#: src/gtk/results_page.ui:422
 msgid "No devices match your search query."
 msgstr "Ükski seade ei vasta sinu otsingule."
 
-#: src/gtk/results_page.ui:439
+#: src/gtk/results_page.ui:440
 msgid "No Devices Found"
 msgstr "Ühtegi seadet ei leidu"
 
-#: src/gtk/results_page.ui:440
+#: src/gtk/results_page.ui:441
 msgid "No devices were found in the specified range!"
 msgstr "Antud aadressivahemikust ei leidu ühtegi seadet!"
 
-#: src/gtk/results_page.ui:452
+#: src/gtk/results_page.ui:453
 msgid "Scan Error"
 msgstr "Skaneerimisviga"
 
-#: src/gtk/results_page.ui:453
+#: src/gtk/results_page.ui:454
 msgid "An error occurred while scanning the network!"
 msgstr "Võrgu skaneerimisel tekkis viga!"
 
@@ -370,188 +438,186 @@ msgstr "Hele kujundus"
 msgid "Dark"
 msgstr "Tume kujundus"
 
-#: src/pages.py:66
+#: src/pages.py:67
 msgid "Threads"
 msgstr "Lõimesid"
 
-#: src/pages.py:126
+#: src/pages.py:172
 msgid "Auto-detect"
 msgstr "Tuvasta automaatselt"
 
-#: src/pages.py:127
+#: src/pages.py:173
 msgid "Automatically detect your local network"
 msgstr "Tuvasta sinu kohtvõrk automaatselt"
 
-#: src/pages.py:134
-msgid "Home Network (192.168.1.x)"
-msgstr "Väike kohtvõrk (192.168.1.x)"
-
-#: src/pages.py:135
-msgid "Home Network (192.168.0.x)"
-msgstr "Väike privaatvõrk (192.168.0.x)"
-
-#: src/pages.py:136
-msgid "Corporate (10.0.0.x)"
-msgstr "Suur privaatvõrk (10.0.0.x)"
-
-#: src/pages.py:137
-msgid "Private (172.16.0.x)"
-msgstr "Keskmine privaatvõrk (172.16.0.x)"
-
-#: src/pages.py:279 src/pages.py:554 src/pages.py:651
+#: src/pages.py:350 src/pages.py:626 src/pages.py:726
 msgid "Show as grid"
 msgstr "Näita ruudustikuvaates"
 
-#: src/pages.py:279 src/pages.py:543 src/pages.py:554 src/pages.py:651
+#: src/pages.py:350 src/pages.py:614 src/pages.py:626 src/pages.py:726
 msgid "Show as list"
 msgstr "Näita loendivaates"
 
-#: src/pages.py:365
+#: src/pages.py:436
 msgid "New device"
 msgstr "Uus seade"
 
-#: src/pages.py:369
+#: src/pages.py:440
 msgid "Known device"
 msgstr "Teadaolev seade"
 
-#: src/pages.py:393
+#: src/pages.py:464
 msgid "Copy IP"
 msgstr "Kopeeri IP-aadress"
 
-#: src/pages.py:434 src/widgets.py:85
+#: src/pages.py:505 src/widgets.py:85
 msgid "Unknown"
 msgstr "Tundmatu"
 
-#: src/pages.py:452
+#: src/pages.py:523
 msgid "Click to set name..."
 msgstr "Klõpsa nime lisamiseks…"
 
-#: src/pages.py:454
-msgid "Apply"
-msgstr "Rakenda"
-
-#: src/pages.py:756 src/widgets.py:163
+#: src/pages.py:862 src/widgets.py:163
 #, python-brace-format
 msgid "Copied {ip} to the clipboard"
 msgstr "{ip} in kopeeritud lõikelauale"
 
-#: src/pages.py:762
+#: src/pages.py:868
 msgid "No devices to export"
 msgstr "Pole seadmeid, mida eksportida"
 
-#: src/pages.py:766
+#: src/pages.py:872
 msgid "Export Scan Results"
 msgstr "Ekspordi skaneerimistulemused"
 
-#: src/pages.py:770
+#: src/pages.py:876
 msgid "CSV Files"
 msgstr "CSV-failid"
 
-#: src/pages.py:787
+#: src/pages.py:893
 msgid "Export cancelled or failed"
 msgstr "Eksportimine on katkestatud või ei õnenstunud"
 
-#: src/pages.py:810
+#: src/pages.py:916
 msgid "Successfully exported to "
 msgstr "Eksportimine õnnestus asukohta "
 
-#: src/pages.py:812
+#: src/pages.py:918
 msgid "Open Folder"
 msgstr "Ava kaust"
 
-#: src/pages.py:816
+#: src/pages.py:922
 msgid "Export failed: "
 msgstr "Eksportimine ei õnnestunud: "
 
-#: src/pages.py:843
+#: src/pages.py:949
 #, python-brace-format
 msgid "Time Elapsed: {minutes:02d}:{seconds:02d}"
 msgstr "Kulunud aeg: {minutes:02d}:{seconds:02d}"
 
-#: src/pages.py:851
+#: src/pages.py:957
 #, python-brace-format
 msgid "Hosts Scanned: {scanned}/{total}"
 msgstr "Skaneeritud hoste: {scanned}/{total}"
 
-#: src/pages.py:864
+#: src/pages.py:970
 msgid "Scanning..."
 msgstr "Skaneerin…"
 
-#: src/pages.py:883
+#: src/pages.py:989
 msgid "Deep scanning"
 msgstr "Süvaskaneering"
 
-#: src/pages.py:883
+#: src/pages.py:989
 msgid "Scanning"
 msgstr "Skaneerin"
 
-#: src/pages.py:911 src/pages.py:943 src/pages.py:993 src/pages.py:1143
-#: src/pages.py:1226
+#: src/pages.py:1017 src/pages.py:1049 src/pages.py:1098 src/pages.py:1464
+#: src/pages.py:1525
 msgid "Deep"
 msgstr "Süvaotsing"
 
-#: src/pages.py:912
+#: src/pages.py:1018
 #, python-brace-format
 msgid "Scan stopped - Found {count} devices"
 msgstr "Skaneerimine on lõppenud - leidus {count} seadet"
 
-#: src/pages.py:918
+#: src/pages.py:1024
 msgid "Scan stopped - No devices found"
 msgstr "Skaneerimine on lõppenud - ühtegi seadet ei leidunud"
 
-#: src/pages.py:944
+#: src/pages.py:1050
 msgid "Loaded from history: "
 msgstr "Laaditud ajaloost: "
 
-#: src/pages.py:994
+#: src/pages.py:1099
 #, python-brace-format
 msgid "Found {count} devices"
 msgstr "Leidus {count} seadet"
 
-#: src/pages.py:999
+#: src/pages.py:1104
 msgid "No devices found"
 msgstr "Ühtegi seadet ei leidu"
 
-#: src/pages.py:1017 src/pages.py:1019
+#: src/pages.py:1122 src/pages.py:1124
 msgid "Error: "
 msgstr "Viga: "
 
-#: src/pages.py:1018
+#: src/pages.py:1123
 msgid "An error occurred!"
 msgstr "Tellis viga!"
 
-#: src/pages.py:1090
+#: src/pages.py:1295
+msgid "Invalid date selected."
+msgstr ""
+
+#: src/pages.py:1298
+msgid "End date must be after start date."
+msgstr ""
+
+#: src/pages.py:1397
 msgid "Today"
 msgstr "Täna"
 
-#: src/pages.py:1092
+#: src/pages.py:1399
 msgid "Yesterday"
 msgstr "Eile"
 
-#: src/pages.py:1144
+#: src/pages.py:1427
+#, fuzzy
+#| msgid "No Devices Found"
+msgid "No Scans Found"
+msgstr "Ühtegi seadet ei leidu"
+
+#: src/pages.py:1428
+msgid "No scans match the selected time range."
+msgstr ""
+
+#: src/pages.py:1465
 #, python-brace-format
 msgid "{time} · {count} devices{deep}"
 msgstr "{time} · {count} seadet{deep}"
 
-#: src/pages.py:1151
+#: src/pages.py:1472
 msgid "Delete this scan"
 msgstr "Kustuta see skaneerimine"
 
-#: src/pages.py:1226
+#: src/pages.py:1525
 msgid "Standard"
 msgstr "Standardne"
 
-#: src/pages.py:1241
+#: src/pages.py:1540
 #, python-brace-format
 msgid "{minutes} min {seconds} s"
 msgstr "{minutes} min {seconds} sek"
 
-#: src/pages.py:1242
+#: src/pages.py:1541
 #, python-brace-format
 msgid "{seconds} s"
 msgstr "{seconds} sek"
 
-#: src/pages.py:1244
+#: src/pages.py:1543
 #, python-brace-format
 msgid "{hours} h {minutes} min"
 msgstr "{hours} t {minutes} min"
@@ -567,6 +633,18 @@ msgstr "Tõlgi"
 #: src/window.py:71
 msgid "Contributors"
 msgstr "Kaasautorid"
+
+#~ msgid "Home Network (192.168.1.x)"
+#~ msgstr "Väike kohtvõrk (192.168.1.x)"
+
+#~ msgid "Home Network (192.168.0.x)"
+#~ msgstr "Väike privaatvõrk (192.168.0.x)"
+
+#~ msgid "Corporate (10.0.0.x)"
+#~ msgstr "Suur privaatvõrk (10.0.0.x)"
+
+#~ msgid "Private (172.16.0.x)"
+#~ msgstr "Keskmine privaatvõrk (172.16.0.x)"
 
 #~ msgid "List View"
 #~ msgstr "Loendivaade"
