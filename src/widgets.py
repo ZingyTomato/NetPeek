@@ -205,21 +205,3 @@ class ThemeSelector(Gtk.Box):
                 "app.color-scheme", GLib.Variant("s", self.schemes[button]))
 
 
-class PresetButton(Gtk.Button):
-    """Custom preset button for IP ranges"""
-
-    def __init__(self, preset_range, tooltip_text, callback=None):
-        super().__init__()
-
-        ip_address = preset_range.split("/")[0].split(".")
-        prefix_length = int(preset_range.split("/")[1]) // 8
-        ip_address[prefix_length:] = ["x" for _ in range(4 - prefix_length)]
-
-        self.set_label(".".join(ip_address))
-        self.set_tooltip_text(_(tooltip_text))
-        self.add_css_class("pill")
-
-        self.preset_range = preset_range
-
-        if callback:
-            self.connect('clicked', callback, preset_range)

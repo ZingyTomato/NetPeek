@@ -20,14 +20,14 @@
 import gi
 import time
 import csv
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Gtk, Adw, Gio, GLib, Gdk, GObject
 
-from .widgets import DeviceCard, PresetButton, ThemeSelector, ToastMixin
+from .widgets import DeviceCard, ThemeSelector, ToastMixin
 from .scanner import NetworkScanner
 from .models import Device
 from . import storage
@@ -42,6 +42,7 @@ class HomePage(ToastMixin, Adw.NavigationPage):
     ip_apply_button = Gtk.Template.Child()
     scan_button = Gtk.Template.Child()
     preset_box = Gtk.Template.Child()
+    mobile_breakpoint = Gtk.Template.Child()
     primary_popover = Gtk.Template.Child()
     deep_scan_row = Gtk.Template.Child()
 
@@ -84,13 +85,29 @@ class HomePage(ToastMixin, Adw.NavigationPage):
         self._setup_apply_button_focus(self.ip_entry_row, self.ip_apply_button)
 
         self.setup_presets()
+        self.mobile_breakpoint.connect('apply', self._on_mobile_layout_apply)
+        self.mobile_breakpoint.connect('unapply', self._on_mobile_layout_unapply)
+
+        # Restore the last active preset
+        saved_preset = self.settings.get_string('last-preset')
+        if saved_preset:
+            target = "auto" if saved_preset == "auto" else saved_preset
+            for preset in self._PRESETS:
+                if (preset["range"] is None and target == "auto") or preset["range"] == target:
+                    self._active_preset = preset
+                    self.preset_button.set_label(preset["label"])
+                    self.preset_button.set_tooltip_text(_(preset["desc"]))
+                    self._rebuild_preset_menu()
+                    break
 
         # Bind deep scan switch to GSettings
         self.deep_scan_row.set_active(self.settings.get_boolean('deep-scan'))
         self.deep_scan_row.connect('notify::active', self._on_deep_scan_toggled)
 
         last_range = self.settings.get_string('last-ip-range')
-        if last_range:
+        if self._active_preset["range"] is None:
+            self.auto_detect_network()
+        elif last_range:
             self.ip_entry_row.set_text(last_range)
         else:
             detected_range = NetworkScanner.get_local_ip_range()
@@ -111,6 +128,12 @@ class HomePage(ToastMixin, Adw.NavigationPage):
             root.set_focus(None)
         return GLib.SOURCE_REMOVE
 
+    def _on_mobile_layout_apply(self, _breakpoint):
+        self.preset_menu_box.add_css_class('mobile-layout')
+
+    def _on_mobile_layout_unapply(self, _breakpoint):
+        self.preset_menu_box.remove_css_class('mobile-layout')
+
     def _setup_apply_button_focus(self, row, button):
         """Reveal a row's apply button whenever that row holds keyboard focus"""
         controller = Gtk.EventControllerFocus()
@@ -121,25 +144,56 @@ class HomePage(ToastMixin, Adw.NavigationPage):
     def connect_results_page(self, results_page):
         self.results_page = results_page
 
+    @staticmethod
+    def _preset_short_label(preset_range):
+        octets = preset_range.split("/")[0].split(".")
+        prefix_len = int(preset_range.split("/")[1]) // 8
+        octets[prefix_len:] = ["x"] * (4 - prefix_len)
+        return ".".join(octets)
+
+    _PRESETS = [
+        {"label": "Auto-detect", "range": None, "desc": "Automatically detect your local network"},
+        {"label": _preset_short_label("192.168.1.0/24"), "range": "192.168.1.0/24", "desc": "Home Network (192.168.1.x)"},
+        {"label": _preset_short_label("192.168.0.0/24"), "range": "192.168.0.0/24", "desc": "Home Network (192.168.0.x)"},
+        {"label": _preset_short_label("10.0.0.0/24"), "range": "10.0.0.0/24", "desc": "Corporate (10.0.0.x)"},
+        {"label": _preset_short_label("172.16.0.0/24"), "range": "172.16.0.0/24", "desc": "Private (172.16.0.x)"},
+    ]
+
     def setup_presets(self):
-        auto_button = Gtk.Button()
-        auto_button.set_label(_("Auto-detect"))
-        auto_button.set_tooltip_text(_("Automatically detect your local network"))
-        auto_button.add_css_class("pill")
-        auto_button.add_css_class("suggested-action")
-        auto_button.connect('clicked', self.on_auto_detect_clicked)
-        self.preset_box.append(auto_button)
+        self._active_preset = self._PRESETS[0]
 
-        presets = [
-            ("192.168.1.0/24", _("Home Network (192.168.1.x)")),
-            ("192.168.0.0/24", _("Home Network (192.168.0.x)")),
-            ("10.0.0.0/24", _("Corporate (10.0.0.x)")),
-            ("172.16.0.0/24", _("Private (172.16.0.x)"))
-        ]
+        self.preset_menu_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
-        for preset_range, tooltip in presets:
-            preset_button = PresetButton(preset_range, tooltip, self.on_preset_clicked)
-            self.preset_box.append(preset_button)
+        self.preset_popover = Gtk.Popover()
+        self.preset_popover.set_child(self.preset_menu_box)
+
+        self.preset_button = Adw.SplitButton()
+        self.preset_button.add_css_class("preset-split")
+        self.preset_button.set_label(_("Auto-detect"))
+        self.preset_button.set_tooltip_text(_("Automatically detect your local network"))
+        self.preset_button.set_popover(self.preset_popover)
+        self.preset_button.connect("clicked", self.on_preset_button_clicked)
+
+        self.preset_box.append(self.preset_button)
+        self._rebuild_preset_menu()
+
+    def _rebuild_preset_menu(self):
+        child = self.preset_menu_box.get_first_child()
+        while child is not None:
+            next_child = child.get_next_sibling()
+            self.preset_menu_box.remove(child)
+            child = next_child
+
+        for preset in self._PRESETS:
+            if preset is self._active_preset:
+                continue
+            btn = Gtk.Button(label=preset["label"])
+            btn.set_halign(Gtk.Align.FILL)
+            btn.add_css_class("flat")
+            btn.add_css_class("menu-item")
+            btn.add_css_class("preset-menu-item")
+            btn.connect("clicked", self._on_preset_row_clicked, preset)
+            self.preset_menu_box.append(btn)
 
     def auto_detect_network(self):
         detected_range = NetworkScanner.get_local_ip_range()
@@ -167,14 +221,30 @@ class HomePage(ToastMixin, Adw.NavigationPage):
     def on_ip_range_apply(self, _widget):
         """When the apply button is clicked or Enter is pressed in the IP entry"""
         self.validate_ip_range()
+        self.settings.set_string('last-ip-range', self.ip_entry_row.get_text().strip())
         self._clear_focus()
         self.ip_entry_row.set_position(-1)
 
-    def on_auto_detect_clicked(self, button):
-        self.auto_detect_network()
+    def on_preset_button_clicked(self, button):
+        if self._active_preset["range"] is None:
+            self.auto_detect_network()
+        else:
+            self.ip_entry_row.set_text(self._active_preset["range"])
+        self.settings.set_string('last-preset', self._active_preset["range"] or "auto")
+        self.settings.set_string('last-ip-range', self.ip_entry_row.get_text().strip())
 
-    def on_preset_clicked(self, button, preset_range):
-        self.ip_entry_row.set_text(preset_range)
+    def _on_preset_row_clicked(self, row_button, preset):
+        self._active_preset = preset
+        if preset["range"] is None:
+            self.auto_detect_network()
+        else:
+            self.ip_entry_row.set_text(preset["range"])
+        self.preset_button.set_label(preset["label"])
+        self.preset_button.set_tooltip_text(_(preset["desc"]))
+        self._rebuild_preset_menu()
+        self.preset_popover.popdown()
+        self.settings.set_string('last-preset', preset["range"] or "auto")
+        self.settings.set_string('last-ip-range', self.ip_entry_row.get_text().strip())
 
     def validate_ip_range(self):
         ip_range = self.ip_entry_row.get_text().strip()
@@ -251,6 +321,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self._typing_grace = 1.0
         self._narrow_view_active = False
         self._preferred_view_mode = 'cards'
+        self._focus_before_window_deactivate = None
         self._setup_column_view()
         self.flow_box.bind_model(self.filter_model, self._create_card)
         self._setup_search_behavior()
@@ -541,6 +612,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.view_toggle_button.set_active(False)
         self.view_toggle_button.set_icon_name('view-list-symbolic')
         self.view_toggle_button.set_tooltip_text(_("Show as list"))
+        self._schedule_search_focus_cleanup()
 
     def _on_narrow_view_unapply(self, _breakpoint):
         self._narrow_view_active = False
@@ -553,6 +625,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.view_toggle_button.set_tooltip_text(
             _("Show as grid") if is_list else _("Show as list")
         )
+        self._schedule_search_focus_cleanup()
 
     def _action_buttons(self):
         child = self.action_box.get_first_child()
@@ -582,6 +655,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.bottom_bar.set_visible(True)
         self.view_toggle_button.set_visible(False)
         self.stop_button_content.set_label("")
+        self._schedule_search_focus_cleanup()
 
     def _move_actions_to_header(self, breakpoint):
         self.bottom_bar.set_child(None)
@@ -604,6 +678,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
                 parent.remove(self.scan_info_button)
             self.results_header.pack_start(self.scan_info_button)
         self.results_header.pack_end(self.action_box)
+        self._schedule_search_focus_cleanup()
 
     def _apply_sort(self, column):
         sorter = self.column_view.get_sorter()
@@ -699,12 +774,43 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
             self._window_active_id = root.connect("notify::is-active", self._on_window_active_changed)
 
     def _on_window_active_changed(self, window, pspec):
-        if window.is_active():
-            GLib.idle_add(self._clear_search_focus_if_focused)
+        if not window.is_active():
+            focus_widget = window.get_focus()
+            if focus_widget is self.search_entry:
+                now = time.monotonic()
+                last_search_interaction = max(self._last_pointer_press,
+                                              self._last_typed)
+                if now - last_search_interaction <= self._typing_grace:
+                    self._focus_before_window_deactivate = focus_widget
+                else:
+                    self._focus_before_window_deactivate = None
+            else:
+                self._focus_before_window_deactivate = focus_widget
+            return
+
+        GLib.timeout_add(250, self._restore_focus_after_window_activation)
+
+    def _restore_focus_after_window_activation(self):
+        focus_widget = self._focus_before_window_deactivate
+        self._focus_before_window_deactivate = None
+
+        root = self.get_root()
+        if focus_widget is not None and root is not None and \
+           focus_widget.get_root() is root and focus_widget.get_visible() and \
+           focus_widget.get_sensitive():
+            focus_widget.grab_focus()
+        else:
+            self._clear_search_focus_if_focused()
+        return GLib.SOURCE_REMOVE
+
+    def _schedule_search_focus_cleanup(self):
+        GLib.timeout_add(250, self._clear_search_focus_if_focused)
 
     def _clear_search_focus_if_focused(self):
+        now = time.monotonic()
+        last_search_interaction = max(self._last_pointer_press, self._last_typed)
         if self.search_entry.is_focus() and \
-           time.monotonic() - self._last_pointer_press > self._typing_grace:
+           now - last_search_interaction > self._typing_grace:
             self._clear_search_focus()
 
     def _on_search_hover_enter(self, controller, x, y):
@@ -972,8 +1078,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.sort_row_os.set_visible(has_os)
 
         self._update_device_view()
-        self._clear_search_focus()
-        GLib.idle_add(self._clear_search_focus)
+        self._schedule_search_focus_cleanup()
 
     def on_scan_complete(self, devices):
         self.rescan_button.set_sensitive(True)
@@ -1020,27 +1125,95 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
 
 
 @Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/history_dialog.ui')
-class HistoryDialog(Adw.Dialog):
-    """Dialog listing previous scans grouped by date"""
+class HistoryDialog(Adw.Dialog, ToastMixin):
+    """Dialog listing previous scans grouped by date, with date range filtering"""
     __gtype_name__ = 'HistoryDialog'
 
+    toast_overlay = Gtk.Template.Child()
     history_stack = Gtk.Template.Child()
     history_list = Gtk.Template.Child()
     history_scrolled = Gtk.Template.Child()
     scroll_top_button = Gtk.Template.Child()
+    filter_button = Gtk.Template.Child()
+    filter_popover = Gtk.Template.Child()
+    preset_list = Gtk.Template.Child()
+    custom_toggle = Gtk.Template.Child()
+    custom_revealer = Gtk.Template.Child()
+    start_day = Gtk.Template.Child()
+    start_month = Gtk.Template.Child()
+    start_year = Gtk.Template.Child()
+    end_day = Gtk.Template.Child()
+    end_month = Gtk.Template.Child()
+    end_year = Gtk.Template.Child()
+    custom_apply_button = Gtk.Template.Child()
+    custom_clear_button = Gtk.Template.Child()
+    empty_status_page = Gtk.Template.Child()
 
-    # Persist scroll position across dialog instances
-    _saved_scroll_y = 0
+    _PRESETS = [
+        {"label": "All", "mode": "all"},
+        {"label": "Today", "mode": "today"},
+        {"label": "Yesterday", "mode": "yesterday"},
+        {"label": "Last 7 Days", "mode": "7d"},
+        {"label": "Last 30 Days", "mode": "30d"},
+    ]
 
-    def __init__(self, on_select, **kwargs):
+    _MONTHS = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December",
+    ]
+
+    _scroll_positions = {}
+
+    def __init__(self, on_select, settings, **kwargs):
         super().__init__(**kwargs)
         self._on_select = on_select
+        self._settings = settings
+        self._mode = settings.get_string('history-filter-mode')
+        cs = settings.get_string('history-custom-start')
+        ce = settings.get_string('history-custom-end')
+        self._custom_start = date.fromisoformat(cs) if cs else None
+        self._custom_end = date.fromisoformat(ce) if ce else None
         self.connect('closed', self._on_closed)
-        self._populate()
+        self._build_preset_list()
+        self._build_date_dropdowns()
+        self._connect_signals()
+        self._update_button_labels()
+        self._rebuild_list()
         self._connect_scroll()
 
+    def _build_preset_list(self):
+        for preset in self._PRESETS:
+            row = Gtk.ListBoxRow()
+            row.set_activatable(True)
+            row._filter_mode = preset["mode"]
+            label = Gtk.Label(label=_(preset["label"]))
+            label.set_halign(Gtk.Align.START)
+            label.set_margin_start(12)
+            label.set_margin_end(12)
+            label.set_margin_top(6)
+            label.set_margin_bottom(6)
+            row.set_child(label)
+            self.preset_list.append(row)
+        self.preset_list.connect('row-activated', self._on_preset_row_activated)
+
+    def _build_date_dropdowns(self):
+        days = Gtk.StringList.new([str(d) for d in range(1, 32)])
+        months = Gtk.StringList.new(self._MONTHS)
+        now = self._today_local()
+        years = Gtk.StringList.new([str(y) for y in range(now.year - 5, now.year + 2)])
+        for dropdown in (self.start_day, self.end_day):
+            dropdown.set_model(days)
+        for dropdown in (self.start_month, self.end_month):
+            dropdown.set_model(months)
+        for dropdown in (self.start_year, self.end_year):
+            dropdown.set_model(years)
+
+    def _connect_signals(self):
+        self.custom_toggle.connect('toggled', self._on_custom_toggled)
+        self.custom_apply_button.connect('clicked', self._on_custom_apply)
+        self.custom_clear_button.connect('clicked', self._on_custom_clear)
+
     def _connect_scroll(self):
-        """Show the scroll to top button when the list is scrolled down."""
         vadj = self.history_scrolled.get_vadjustment()
         if vadj:
             vadj.connect('value-changed', self._on_scroll)
@@ -1049,21 +1222,156 @@ class HistoryDialog(Adw.Dialog):
         self.scroll_top_button.set_visible(vadj.get_value() > 100)
 
     def _on_closed(self, _dialog):
-        """Save scroll position before the dialog is destroyed."""
         vadj = self.history_scrolled.get_vadjustment()
         if vadj:
-            HistoryDialog._saved_scroll_y = vadj.get_value()
+            key = (self._mode, self._custom_start, self._custom_end)
+            HistoryDialog._scroll_positions[key] = int(vadj.get_value())
+        self._settings.set_string('history-filter-mode', self._mode)
+        self._settings.set_string('history-custom-start',
+                                   self._custom_start.isoformat() if self._custom_start else '')
+        self._settings.set_string('history-custom-end',
+                                   self._custom_end.isoformat() if self._custom_end else '')
+
+    def _reset_scroll(self):
+        vadj = self.history_scrolled.get_vadjustment()
+        if vadj:
+            vadj.set_value(0)
 
     def _restore_scroll(self):
-        """Restore the saved scroll position after rebuilding the list."""
         vadj = self.history_scrolled.get_vadjustment()
-        if vadj and HistoryDialog._saved_scroll_y > 0:
-            vadj.set_value(min(HistoryDialog._saved_scroll_y, vadj.get_upper() - vadj.get_page_size()))
+        key = (self._mode, self._custom_start, self._custom_end)
+        saved = HistoryDialog._scroll_positions.get(key, 0)
+        if vadj and saved > 0:
+            vadj.set_value(min(saved, vadj.get_upper() - vadj.get_page_size()))
         return False
+
+
+    # ---- Preset handling ----
+
+    def _on_preset_row_activated(self, _listbox, row):
+        self._mode = row._filter_mode
+        self.custom_toggle.set_active(False)
+        self._update_button_labels()
+        self.filter_popover.popdown()
+        self._reset_scroll()
+        self._rebuild_list()
+
+    # ---- Custom range ----
+
+    def _on_custom_toggled(self, toggle):
+        reveal = toggle.get_active()
+        self.custom_revealer.set_reveal_child(reveal)
+        if reveal:
+            self._seed_date_dropdowns(self._custom_start or self._today_local(),
+                                      self._custom_end or self._today_local())
+
+    def _seed_date_dropdowns(self, start, end):
+        self._set_dropdown_date(self.start_day, self.start_month, self.start_year, start)
+        self._set_dropdown_date(self.end_day, self.end_month, self.end_year, end)
+
+    @staticmethod
+    def _set_dropdown_date(day_dd, month_dd, year_dd, d):
+        year_list = [int(year_dd.get_model().get_string(i)) for i in range(year_dd.get_model().get_n_items())]
+        day_dd.set_selected(d.day - 1)
+        month_dd.set_selected(d.month - 1)
+        if d.year in year_list:
+            year_dd.set_selected(year_list.index(d.year))
+
+    def _get_dropdown_date(self, day_dd, month_dd, year_dd):
+        day = day_dd.get_selected() + 1
+        month = month_dd.get_selected() + 1
+        year_str = year_dd.get_model().get_string(year_dd.get_selected())
+        if not year_str:
+            return None
+        try:
+            return date(int(year_str), month, day)
+        except ValueError:
+            return None
+
+    def _on_custom_apply(self, _button):
+        start = self._get_dropdown_date(self.start_day, self.start_month, self.start_year)
+        end = self._get_dropdown_date(self.end_day, self.end_month, self.end_year)
+        if start is None or end is None:
+            self.show_toast(_("Invalid date selected."))
+            return
+        if start > end:
+            self.show_toast(_("End date must be after start date."))
+            return
+        self._custom_start = start
+        self._custom_end = end
+        self._mode = 'custom'
+        self._update_button_labels()
+        self.custom_toggle.set_active(False)
+        self._reset_scroll()
+        self._rebuild_list()
+
+    def _on_custom_clear(self, _button):
+        self._custom_start = None
+        self._custom_end = None
+        self._mode = 'all'
+        self._update_button_labels()
+        self.custom_toggle.set_active(False)
+        self._reset_scroll()
+        self._rebuild_list()
+
+    def _update_button_labels(self):
+        for preset in self._PRESETS:
+            if preset['mode'] == self._mode:
+                self.filter_button.set_label(_(preset['label']))
+                break
+        else:
+            self.filter_button.set_label(_("All"))
+
+        if self._mode == 'custom' and self._custom_start and self._custom_end:
+            self.custom_toggle.set_label('%s \u2013 %s' % (
+                self._custom_start.strftime('%b %d'),
+                self._custom_end.strftime('%b %d')))
+        else:
+            self.custom_toggle.set_label(_("Custom Range…"))
+
+    # ---- Date range helpers ----
+
+    @staticmethod
+    def _today_local():
+        return datetime.now().astimezone().date()
+
+    def _range_for_mode(self, mode):
+        today = self._today_local()
+        if mode == 'today':
+            return today, today
+        if mode == 'yesterday':
+            yesterday = today - timedelta(days=1)
+            return yesterday, yesterday
+        if mode == '7d':
+            return today - timedelta(days=6), today
+        if mode == '30d':
+            return today - timedelta(days=29), today
+        if mode == 'custom' and self._custom_start and self._custom_end:
+            return self._custom_start, self._custom_end
+        return None
+
+    def _scan_date(self, scan):
+        ts = scan.get('timestamp', '')
+        try:
+            dt = datetime.fromisoformat(ts)
+            return dt.astimezone().date()
+        except ValueError:
+            return None
+
+    def _get_filtered_scans(self):
+        scans = storage.load_scans()
+        rng = self._range_for_mode(self._mode)
+        if rng is None:
+            return scans
+        date_from, date_to = rng
+        return [s for s in scans
+                if (sd := self._scan_date(s)) is not None
+                and date_from <= sd <= date_to]
+
+    # ---- List building ----
 
     @staticmethod
     def _make_header_row(title):
-        """Create a date section header compatible with all Libadwaita versions."""
         label = Gtk.Label(label=title)
         label.set_halign(Gtk.Align.START)
         label.set_margin_start(16)
@@ -1080,7 +1388,6 @@ class HistoryDialog(Adw.Dialog):
 
     @staticmethod
     def _format_date_header(iso_string):
-        """Parse ISO timestamp and return a human readable date header."""
         try:
             dt = datetime.fromisoformat(iso_string)
             local_dt = dt.astimezone()
@@ -1090,7 +1397,6 @@ class HistoryDialog(Adw.Dialog):
                 return _("Today")
             if scan_date == today - timedelta(days=1):
                 return _("Yesterday")
-            # Use GLib.DateTime so date formatting follows the locale
             gdt = GLib.DateTime.new_local(
                 local_dt.year, local_dt.month, local_dt.day, 0, 0, 0
             )
@@ -1100,19 +1406,33 @@ class HistoryDialog(Adw.Dialog):
         except ValueError:
             return iso_string
 
-    def _populate(self):
+    def _rebuild_list(self):
+        child = self.history_list.get_first_child()
+        while child is not None:
+            next_child = child.get_next_sibling()
+            self.history_list.remove(child)
+            child = next_child
+
         scans = storage.load_scans()
-        if not scans:
+        total_scans = len(scans)
+        filtered = self._get_filtered_scans()
+
+        if total_scans == 0:
+            self.empty_status_page.set_title(_("No Previous Scans"))
+            self.empty_status_page.set_description(_("Your scan history will appear here."))
+            self.history_stack.set_visible_child_name('empty')
+            return
+
+        if not filtered:
+            self.empty_status_page.set_title(_("No Scans Found"))
+            self.empty_status_page.set_description(_("No scans match the selected time range."))
             self.history_stack.set_visible_child_name('empty')
             return
 
         self.history_stack.set_visible_child_name('list')
 
-        GLib.idle_add(self._restore_scroll)
-
-        # Group scans by date (storage is already newest first)
         groups = {}
-        for scan in scans:
+        for scan in filtered:
             ts = scan.get('timestamp', '')
             try:
                 dt = datetime.fromisoformat(ts)
@@ -1121,7 +1441,6 @@ class HistoryDialog(Adw.Dialog):
                 date_key = ts
             groups.setdefault(date_key, []).append(scan)
 
-        # Sort date groups newest first
         for date_key in sorted(groups.keys(), reverse=True):
             scans_in_group = groups[date_key]
             header = self._make_header_row(
@@ -1130,6 +1449,8 @@ class HistoryDialog(Adw.Dialog):
             self.history_list.append(header)
             for scan in scans_in_group:
                 self.history_list.append(self._build_row(scan))
+
+        GLib.idle_add(self._restore_scroll)
 
     def _build_row(self, scan):
         row = Adw.ActionRow()
@@ -1161,33 +1482,11 @@ class HistoryDialog(Adw.Dialog):
         scan_data = getattr(row, 'scan_data', None)
         if not scan_data:
             return
-
         storage.delete_scan(scan_data.get('timestamp', ''))
-
-        # Find the header row above this scan row
-        header = row.get_prev_sibling()
-        self.history_list.remove(row)
-
-        # If the header's section is now empty, remove the header too
-        if header is not None and not header.get_selectable():
-            next_sibling = header.get_next_sibling()
-            if next_sibling is None or not next_sibling.get_selectable():
-                self.history_list.remove(header)
-
-        # Check if any selectable (scan) rows remain
-        has_scan = False
-        child = self.history_list.get_first_child()
-        while child is not None:
-            if child.get_selectable():
-                has_scan = True
-                break
-            child = child.get_next_sibling()
-        if not has_scan:
-            self.history_stack.set_visible_child_name('empty')
+        self._rebuild_list()
 
     @Gtk.Template.Callback()
     def on_scan_row_activated(self, listbox, row):
-        # Skip header rows; they are not activatable
         if not row.get_selectable():
             return
         scan_data = getattr(row, 'scan_data', None)
