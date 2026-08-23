@@ -42,6 +42,7 @@ class HomePage(ToastMixin, Adw.NavigationPage):
     ip_apply_button = Gtk.Template.Child()
     scan_button = Gtk.Template.Child()
     preset_box = Gtk.Template.Child()
+    mobile_breakpoint = Gtk.Template.Child()
     primary_popover = Gtk.Template.Child()
     deep_scan_row = Gtk.Template.Child()
 
@@ -84,6 +85,8 @@ class HomePage(ToastMixin, Adw.NavigationPage):
         self._setup_apply_button_focus(self.ip_entry_row, self.ip_apply_button)
 
         self.setup_presets()
+        self.mobile_breakpoint.connect('apply', self._on_mobile_layout_apply)
+        self.mobile_breakpoint.connect('unapply', self._on_mobile_layout_unapply)
 
         # Restore the last active preset
         saved_preset = self.settings.get_string('last-preset')
@@ -124,6 +127,12 @@ class HomePage(ToastMixin, Adw.NavigationPage):
         if root:
             root.set_focus(None)
         return GLib.SOURCE_REMOVE
+
+    def _on_mobile_layout_apply(self, _breakpoint):
+        self.preset_menu_box.add_css_class('mobile-layout')
+
+    def _on_mobile_layout_unapply(self, _breakpoint):
+        self.preset_menu_box.remove_css_class('mobile-layout')
 
     def _setup_apply_button_focus(self, row, button):
         """Reveal a row's apply button whenever that row holds keyboard focus"""
@@ -182,6 +191,7 @@ class HomePage(ToastMixin, Adw.NavigationPage):
             btn.set_halign(Gtk.Align.FILL)
             btn.add_css_class("flat")
             btn.add_css_class("menu-item")
+            btn.add_css_class("preset-menu-item")
             btn.connect("clicked", self._on_preset_row_clicked, preset)
             self.preset_menu_box.append(btn)
 
@@ -311,6 +321,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self._typing_grace = 1.0
         self._narrow_view_active = False
         self._preferred_view_mode = 'cards'
+        self._focus_before_window_deactivate = None
         self._setup_column_view()
         self.flow_box.bind_model(self.filter_model, self._create_card)
         self._setup_search_behavior()
@@ -601,6 +612,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.view_toggle_button.set_active(False)
         self.view_toggle_button.set_icon_name('view-list-symbolic')
         self.view_toggle_button.set_tooltip_text(_("Show as list"))
+        self._schedule_search_focus_cleanup()
 
     def _on_narrow_view_unapply(self, _breakpoint):
         self._narrow_view_active = False
@@ -613,6 +625,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.view_toggle_button.set_tooltip_text(
             _("Show as grid") if is_list else _("Show as list")
         )
+        self._schedule_search_focus_cleanup()
 
     def _action_buttons(self):
         child = self.action_box.get_first_child()
@@ -642,6 +655,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.bottom_bar.set_visible(True)
         self.view_toggle_button.set_visible(False)
         self.stop_button_content.set_label("")
+        self._schedule_search_focus_cleanup()
 
     def _move_actions_to_header(self, breakpoint):
         self.bottom_bar.set_child(None)
@@ -664,6 +678,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
                 parent.remove(self.scan_info_button)
             self.results_header.pack_start(self.scan_info_button)
         self.results_header.pack_end(self.action_box)
+        self._schedule_search_focus_cleanup()
 
     def _apply_sort(self, column):
         sorter = self.column_view.get_sorter()
@@ -759,12 +774,43 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
             self._window_active_id = root.connect("notify::is-active", self._on_window_active_changed)
 
     def _on_window_active_changed(self, window, pspec):
-        if window.is_active():
-            GLib.idle_add(self._clear_search_focus_if_focused)
+        if not window.is_active():
+            focus_widget = window.get_focus()
+            if focus_widget is self.search_entry:
+                now = time.monotonic()
+                last_search_interaction = max(self._last_pointer_press,
+                                              self._last_typed)
+                if now - last_search_interaction <= self._typing_grace:
+                    self._focus_before_window_deactivate = focus_widget
+                else:
+                    self._focus_before_window_deactivate = None
+            else:
+                self._focus_before_window_deactivate = focus_widget
+            return
+
+        GLib.timeout_add(250, self._restore_focus_after_window_activation)
+
+    def _restore_focus_after_window_activation(self):
+        focus_widget = self._focus_before_window_deactivate
+        self._focus_before_window_deactivate = None
+
+        root = self.get_root()
+        if focus_widget is not None and root is not None and \
+           focus_widget.get_root() is root and focus_widget.get_visible() and \
+           focus_widget.get_sensitive():
+            focus_widget.grab_focus()
+        else:
+            self._clear_search_focus_if_focused()
+        return GLib.SOURCE_REMOVE
+
+    def _schedule_search_focus_cleanup(self):
+        GLib.timeout_add(250, self._clear_search_focus_if_focused)
 
     def _clear_search_focus_if_focused(self):
+        now = time.monotonic()
+        last_search_interaction = max(self._last_pointer_press, self._last_typed)
         if self.search_entry.is_focus() and \
-           time.monotonic() - self._last_pointer_press > self._typing_grace:
+           now - last_search_interaction > self._typing_grace:
             self._clear_search_focus()
 
     def _on_search_hover_enter(self, controller, x, y):
@@ -1032,8 +1078,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.sort_row_os.set_visible(has_os)
 
         self._update_device_view()
-        self._clear_search_focus()
-        GLib.idle_add(self._clear_search_focus)
+        self._schedule_search_focus_cleanup()
 
     def on_scan_complete(self, devices):
         self.rescan_button.set_sensitive(True)

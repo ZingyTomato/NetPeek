@@ -76,3 +76,9 @@ flowbox.device-grid > flowboxchild:active {
   padding-left: 8px;
   padding-right: 12px;
 }
+
+.mobile-layout .preset-menu-item {
+  min-height: 48px;
+  padding-left: 16px;
+  padding-right: 16px;
+}

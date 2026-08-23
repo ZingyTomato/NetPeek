@@ -8,7 +8,7 @@
     <property name="width-request">340</property>
     <property name="height-request">400</property>
     <property name="content-width">480</property>
-    <property name="content-height">540</property>
+    <property name="content-height">640</property>
     <child>
       <object class="AdwToastOverlay" id="toast_overlay">
         <child>

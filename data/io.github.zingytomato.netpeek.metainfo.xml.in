@@ -70,6 +70,16 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="0.3.3" date="2026-08-23">
+      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.3.3</url>
+      <description>
+        <p>Version 0.3.3</p>
+        <ul>
+          <li>Grouped all IP presets into a single button.</li>
+          <li>Added date filters and custom date ranges to scan history.</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.3.2" date="2026-08-14">
       <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.3.2</url>
       <description>

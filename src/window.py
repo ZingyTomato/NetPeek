@@ -71,10 +71,8 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         about.add_credit_section(_("Contributors"), ["ZingyTomato", "Gert-Dev", "Cameo007", "vmkspv", "oscfdezdz", "albanobattistella", "sjulien", "dawkagaming", "prescott66"])
         release_notes = """
         <ul>
-          <li>Added search functionality to all scan pages.</li>
-          <li>Added a scan info dialog for current and previous scans.</li>
-          <li>Results view format is now preserved when resizing the window.</li>
-          <li>Updated nmap to version 7.991.</li>
+          <li>Grouped all IP presets into a single button.</li>
+          <li>Added date filters and custom date ranges to scan history.</li>
         </ul>
         """
         about.set_release_notes(release_notes)

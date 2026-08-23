@@ -5,7 +5,7 @@
 
   <template class="NetworkScannerWindow" parent="AdwApplicationWindow">
     <property name="title" translatable="yes">NetPeek</property>
-    <property name="default-width">1000</property>
+    <property name="default-width">1100</property>
     <property name="default-height">700</property>
     <property name="width-request">360</property>
     <property name="height-request">294</property>
