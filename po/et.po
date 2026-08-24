@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-23 10:04+0000\n"
-"PO-Revision-Date: 2026-08-18 13:51+0000\n"
+"PO-Revision-Date: 2026-08-25 06:51+0000\n"
 "Last-Translator: Priit Jõerüüt <jrthwlate@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Estonian <https://hosted.weblate.org/projects/netpeek/netpeek/"
 "et/>\n"
@@ -81,13 +81,16 @@ msgstr ""
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:36
 msgid "Last selected preset"
-msgstr ""
+msgstr "Viimati valitud eelseadistus"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:37
 msgid ""
 "The preset selected in the split button, restored on startup. \"auto\" for "
 "auto-detect, or an IP range like \"192.168.1.0/24\"."
 msgstr ""
+"Jagamisnupust valitud eelseadistus, mis taastatakse käivitamisel. Sisesta „"
+"auto“ automaatse tuvastamise jaoks või soovitud IP-vahemik, näiteks „"
+"192.168.1.0/24“."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:41
 msgid "Enable deep scan mode"
@@ -111,28 +114,29 @@ msgstr "Skaneerimisel kasutatav rööpsete protsessilõimede arv (1-500)."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:52
 msgid "Last selected history filter"
-msgstr ""
+msgstr "Viimati valitud ajaloofilter"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:53
 msgid ""
 "One of \"all\", \"today\", \"yesterday\", \"7d\", \"30d\", or \"custom\"."
 msgstr ""
+"Väärtused võivad olla „all“, „today“, „yesterday“, „7d“, „30d“ või „custom“."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:57
 msgid "Custom filter start date"
-msgstr ""
+msgstr "Sinu loodud filtri alguskuupäev"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:58
 msgid "ISO date string for custom filter start, e.g. \"2026-01-15\"."
-msgstr ""
+msgstr "ISO-vormingus kuupäev märgistamaks algust, nt „2026-01-15“."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:62
 msgid "Custom filter end date"
-msgstr ""
+msgstr "Sinu loodud filtri lõpikuupäev"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:63
 msgid "ISO date string for custom filter end, e.g. \"2026-01-31\"."
-msgstr ""
+msgstr "ISO-vormingus kuupäev märgistamaks lõppu, nt „2026-01-31“."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
 msgid "See what's on your network"
@@ -214,33 +218,31 @@ msgstr "Näita täismahus süsteemiteavet"
 
 #: src/gtk/history_dialog.ui:31 src/pages.py:1323
 msgid "All"
-msgstr ""
+msgstr "Kõik"
 
 #: src/gtk/history_dialog.ui:32
 msgid "Filter scans by date"
-msgstr ""
+msgstr "Filtreeri skaneerimisi kuupäeva alusel"
 
 #: src/gtk/history_dialog.ui:57 src/pages.py:1330
-#, fuzzy
-#| msgid "Custom Name"
 msgid "Custom Range…"
-msgstr "Sinu lisatud nimi"
+msgstr "Sinu valitud vahemik…"
 
 #: src/gtk/history_dialog.ui:58
 msgid "Pick a custom date range"
-msgstr ""
+msgstr "Vali soovitud vahemik"
 
 #: src/gtk/history_dialog.ui:87
 msgid "From"
-msgstr ""
+msgstr "Alates"
 
 #: src/gtk/history_dialog.ui:118
 msgid "To"
-msgstr ""
+msgstr "Kuni"
 
 #: src/gtk/history_dialog.ui:150
 msgid "Clear"
-msgstr ""
+msgstr "Tühjenda filter"
 
 #: src/gtk/history_dialog.ui:158 src/pages.py:525
 msgid "Apply"
@@ -570,11 +572,11 @@ msgstr "Tellis viga!"
 
 #: src/pages.py:1295
 msgid "Invalid date selected."
-msgstr ""
+msgstr "Oled valinud vigases vormingus kuupäeva."
 
 #: src/pages.py:1298
 msgid "End date must be after start date."
-msgstr ""
+msgstr "Lõpp peab olema peale algust."
 
 #: src/pages.py:1397
 msgid "Today"
@@ -585,14 +587,12 @@ msgid "Yesterday"
 msgstr "Eile"
 
 #: src/pages.py:1427
-#, fuzzy
-#| msgid "No Devices Found"
 msgid "No Scans Found"
-msgstr "Ühtegi seadet ei leidu"
+msgstr "Ühtegi skaneerimist ei leidu"
 
 #: src/pages.py:1428
 msgid "No scans match the selected time range."
-msgstr ""
+msgstr "Antud ajavahemikule ei vasta ühtegi skaneeringut."
 
 #: src/pages.py:1465
 #, python-brace-format
