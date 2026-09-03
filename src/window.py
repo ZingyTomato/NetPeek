@@ -56,6 +56,19 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         previous_scans_action.connect("activate", self.on_previous_scans_action)
         self.add_action(previous_scans_action)
 
+        find_action = Gio.SimpleAction.new("find", None)
+        find_action.connect("activate", self.on_find_action)
+        self.add_action(find_action)
+
+        rescan_action = Gio.SimpleAction.new("rescan", None)
+        rescan_action.connect("activate", self.on_rescan_action)
+        self.add_action(rescan_action)
+
+        application = self.get_application()
+        application.set_accels_for_action("app.quit", ["<Primary>q"])
+        application.set_accels_for_action("win.find", ["<Primary>f"])
+        application.set_accels_for_action("win.rescan", ["<Primary>r"])
+
     def on_about_action(self, action, param):
         version = self.get_application().get_version()
         about = Adw.AboutDialog()
@@ -81,6 +94,14 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
 
     def on_quit_action(self, action, param):
         self.get_application().quit()
+
+    def on_find_action(self, action, param):
+        if self.navigation_view.get_visible_page() == self.results_page:
+            self.results_page.search_entry.grab_focus()
+
+    def on_rescan_action(self, action, param):
+        if self.navigation_view.get_visible_page() == self.results_page:
+            self.results_page.on_rescan_clicked(None)
 
     def on_previous_scans_action(self, action, param):
         """Show the previous scans dialog"""

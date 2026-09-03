@@ -144,7 +144,7 @@
 
                     <child>
                       <object class="GtkButton" id="scan_button">
-                        <property name="label" translatable="yes">Scan my Network</property>
+                        <property name="label" translatable="yes">Scan Network</property>
                         <property name="width-request">200</property>
                         <property name="height-request">48</property>
                         <property name="halign">center</property>
@@ -184,12 +184,8 @@
     </section>
     <section>
       <item>
-        <attribute name="label" translatable="yes">About</attribute>
+        <attribute name="label" translatable="yes">About NetPeek</attribute>
         <attribute name="action">app.about</attribute>
-      </item>
-      <item>
-        <attribute name="label" translatable="yes">Quit</attribute>
-        <attribute name="action">app.quit</attribute>
       </item>
     </section>
   </menu>

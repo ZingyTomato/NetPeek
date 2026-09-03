@@ -204,4 +204,3 @@ class ThemeSelector(Gtk.Box):
             self.activate_action(
                 "app.color-scheme", GLib.Variant("s", self.schemes[button]))
 
-

@@ -34,9 +34,6 @@
                   </object>
                 </property>
                 <signal name="clicked" handler="on_stop_clicked"/>
-                <style>
-                  <class name="destructive-action"/>
-                </style>
               </object>
             </child>
 
@@ -438,8 +435,15 @@
                 <property name="child">
                   <object class="AdwStatusPage" id="empty_page">
                     <property name="title" translatable="yes">No Devices Found</property>
-                    <property name="description" translatable="yes">No devices were found in the specified range!</property>
+                    <property name="description" translatable="yes">No devices were found in the specified range.</property>
                     <property name="icon-name">network-wireless-offline-symbolic</property>
+                    <child>
+                      <object class="GtkButton" id="empty_rescan_button">
+                        <property name="label" translatable="yes">Scan Again</property>
+                        <signal name="clicked" handler="on_rescan_clicked"/>
+                        <style><class name="suggested-action"/><class name="pill"/></style>
+                      </object>
+                    </child>
                   </object>
                 </property>
               </object>
@@ -451,8 +455,15 @@
                 <property name="child">
                   <object class="AdwStatusPage" id="error_page">
                     <property name="title" translatable="yes">Scan Error</property>
-                    <property name="description" translatable="yes">An error occurred while scanning the network!</property>
+                    <property name="description" translatable="yes">An error occurred while scanning the network.</property>
                     <property name="icon-name">dialog-error-symbolic</property>
+                    <child>
+                      <object class="GtkButton" id="error_rescan_button">
+                        <property name="label" translatable="yes">Try Again</property>
+                        <signal name="clicked" handler="on_rescan_clicked"/>
+                        <style><class name="suggested-action"/><class name="pill"/></style>
+                      </object>
+                    </child>
                   </object>
                 </property>
               </object>

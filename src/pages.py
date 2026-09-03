@@ -1482,8 +1482,29 @@ class HistoryDialog(Adw.Dialog, ToastMixin):
         scan_data = getattr(row, 'scan_data', None)
         if not scan_data:
             return
+
+        confirmation = Adw.AlertDialog.new(
+            _("Delete Scan?"),
+            _("This scan will be permanently removed from your history."),
+        )
+        confirmation.add_response("cancel", _("Cancel"))
+        confirmation.add_response("delete", _("Delete"))
+        confirmation.set_response_appearance(
+            "delete", Adw.ResponseAppearance.DESTRUCTIVE)
+        confirmation.set_default_response("cancel")
+        confirmation.set_close_response("cancel")
+        confirmation.connect(
+            "response",
+            lambda _dialog, response: self._delete_confirmed(response, scan_data),
+        )
+        confirmation.present(self)
+
+    def _delete_confirmed(self, response, scan_data):
+        if response != "delete":
+            return
         storage.delete_scan(scan_data.get('timestamp', ''))
         self._rebuild_list()
+        self.show_toast(_("Scan deleted"))
 
     @Gtk.Template.Callback()
     def on_scan_row_activated(self, listbox, row):
