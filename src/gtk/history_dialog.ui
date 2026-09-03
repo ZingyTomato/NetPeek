@@ -31,16 +31,7 @@
                     <property name="label" translatable="yes">All</property>
                     <property name="tooltip-text" translatable="yes">Filter scans by date</property>
                     <property name="popover">
-                      <object class="GtkPopover" id="filter_popover">
-                        <child>
-                          <object class="GtkListBox" id="preset_list">
-                            <property name="selection-mode">none</property>
-                            <style>
-                              <class name="menu"/>
-                            </style>
-                          </object>
-                        </child>
-                      </object>
+                      <object class="GtkPopoverMenu" id="filter_popover"/>
                     </property>
                     <style>
                       <class name="flat"/>

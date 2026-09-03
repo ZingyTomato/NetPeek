@@ -124,6 +124,7 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
 
     def setup_pages(self):
         self.home_page = HomePage(
+            window=self,
             navigation_view=self.navigation_view,
             toast_overlay=self.toast_overlay,
             scanner=self.scanner,

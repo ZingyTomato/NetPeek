@@ -42,13 +42,13 @@ class HomePage(ToastMixin, Adw.NavigationPage):
     ip_apply_button = Gtk.Template.Child()
     scan_button = Gtk.Template.Child()
     preset_box = Gtk.Template.Child()
-    mobile_breakpoint = Gtk.Template.Child()
     primary_popover = Gtk.Template.Child()
     deep_scan_row = Gtk.Template.Child()
 
-    def __init__(self, navigation_view, toast_overlay, scanner, settings):
+    def __init__(self, window, navigation_view, toast_overlay, scanner, settings):
         super().__init__()
 
+        self.window = window
         self.navigation_view = navigation_view
         self.toast_overlay = toast_overlay
         self.scanner = scanner
@@ -85,8 +85,6 @@ class HomePage(ToastMixin, Adw.NavigationPage):
         self._setup_apply_button_focus(self.ip_entry_row, self.ip_apply_button)
 
         self.setup_presets()
-        self.mobile_breakpoint.connect('apply', self._on_mobile_layout_apply)
-        self.mobile_breakpoint.connect('unapply', self._on_mobile_layout_unapply)
 
         # Restore the last active preset
         saved_preset = self.settings.get_string('last-preset')
@@ -128,12 +126,6 @@ class HomePage(ToastMixin, Adw.NavigationPage):
             root.set_focus(None)
         return GLib.SOURCE_REMOVE
 
-    def _on_mobile_layout_apply(self, _breakpoint):
-        self.preset_menu_box.add_css_class('mobile-layout')
-
-    def _on_mobile_layout_unapply(self, _breakpoint):
-        self.preset_menu_box.remove_css_class('mobile-layout')
-
     def _setup_apply_button_focus(self, row, button):
         """Reveal a row's apply button whenever that row holds keyboard focus"""
         controller = Gtk.EventControllerFocus()
@@ -162,38 +154,67 @@ class HomePage(ToastMixin, Adw.NavigationPage):
     def setup_presets(self):
         self._active_preset = self._PRESETS[0]
 
-        self.preset_menu_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-
-        self.preset_popover = Gtk.Popover()
-        self.preset_popover.set_child(self.preset_menu_box)
+        self.preset_menu_model = Gio.Menu()
+        self.preset_popover = Gtk.PopoverMenu.new_from_model(self.preset_menu_model)
+        self.preset_popover.add_css_class("preset-popover")
 
         self.preset_button = Adw.SplitButton()
         self.preset_button.add_css_class("preset-split")
         self.preset_button.set_label(_("Auto-detect"))
         self.preset_button.set_tooltip_text(_("Automatically detect your local network"))
+        self.preset_button.set_dropdown_tooltip(_("Choose a different preset range"))
+        self.preset_button.set_can_shrink(True)
         self.preset_button.set_popover(self.preset_popover)
         self.preset_button.connect("clicked", self.on_preset_button_clicked)
 
+        select_action = Gio.SimpleAction.new(
+            "preset-select",
+            GLib.VariantType.new("s"),
+        )
+        select_action.connect("activate", self._on_preset_menu_select)
+        self.window.add_action(select_action)
+
         self.preset_box.append(self.preset_button)
         self._rebuild_preset_menu()
+        self._setup_popover_position()
+
+    def _setup_popover_position(self):
+        bp_mobile = Adw.Breakpoint.new(
+            Adw.BreakpointCondition.parse("max-width: 400sp")
+        )
+        bp_mobile.add_setter(self.preset_popover, "position", Gtk.PositionType.TOP)
+        bp_mobile.connect(
+            "apply", lambda _: self.preset_popover.add_css_class("mobile-layout")
+        )
+        bp_mobile.connect(
+            "unapply", lambda _: self.preset_popover.remove_css_class("mobile-layout")
+        )
+        self.window.add_breakpoint(bp_mobile)
+
+        bp_desktop = Adw.Breakpoint.new(
+            Adw.BreakpointCondition.parse("min-width: 400sp")
+        )
+        bp_desktop.add_setter(self.preset_popover, "position", Gtk.PositionType.TOP)
+        bp_desktop.connect(
+            "apply", lambda _: self.preset_popover.remove_css_class("mobile-layout")
+        )
+        bp_desktop.connect(
+            "unapply", lambda _: self.preset_popover.add_css_class("mobile-layout")
+        )
+        self.window.add_breakpoint(bp_desktop)
 
     def _rebuild_preset_menu(self):
-        child = self.preset_menu_box.get_first_child()
-        while child is not None:
-            next_child = child.get_next_sibling()
-            self.preset_menu_box.remove(child)
-            child = next_child
+        self.preset_menu_model.remove_all()
 
-        for preset in self._PRESETS:
+        for i, preset in enumerate(self._PRESETS):
             if preset is self._active_preset:
                 continue
-            btn = Gtk.Button(label=preset["label"])
-            btn.set_halign(Gtk.Align.FILL)
-            btn.add_css_class("flat")
-            btn.add_css_class("menu-item")
-            btn.add_css_class("preset-menu-item")
-            btn.connect("clicked", self._on_preset_row_clicked, preset)
-            self.preset_menu_box.append(btn)
+            item = Gio.MenuItem.new(preset["label"], None)
+            item.set_action_and_target_value(
+                "win.preset-select",
+                GLib.Variant.new_string(str(i)),
+            )
+            self.preset_menu_model.append_item(item)
 
     def auto_detect_network(self):
         detected_range = NetworkScanner.get_local_ip_range()
@@ -233,7 +254,12 @@ class HomePage(ToastMixin, Adw.NavigationPage):
         self.settings.set_string('last-preset', self._active_preset["range"] or "auto")
         self.settings.set_string('last-ip-range', self.ip_entry_row.get_text().strip())
 
-    def _on_preset_row_clicked(self, row_button, preset):
+    def _on_preset_menu_select(self, _action, parameter):
+        try:
+            index = int(parameter.get_string())
+        except (ValueError, AttributeError):
+            return
+        preset = self._PRESETS[index]
         self._active_preset = preset
         if preset["range"] is None:
             self.auto_detect_network()
@@ -1136,7 +1162,6 @@ class HistoryDialog(Adw.Dialog, ToastMixin):
     scroll_top_button = Gtk.Template.Child()
     filter_button = Gtk.Template.Child()
     filter_popover = Gtk.Template.Child()
-    preset_list = Gtk.Template.Child()
     custom_toggle = Gtk.Template.Child()
     custom_revealer = Gtk.Template.Child()
     start_day = Gtk.Template.Child()
@@ -1174,27 +1199,58 @@ class HistoryDialog(Adw.Dialog, ToastMixin):
         self._custom_start = date.fromisoformat(cs) if cs else None
         self._custom_end = date.fromisoformat(ce) if ce else None
         self.connect('closed', self._on_closed)
-        self._build_preset_list()
+
+        self.filter_popover.add_css_class("filter-popover")
+        self.filter_menu_model = Gio.Menu()
+        self.filter_popover.set_menu_model(self.filter_menu_model)
+        self.install_action("filter.select", "s", self._on_filter_menu_select)
+        self._build_filter_menu()
+
+        bp_desktop = Adw.Breakpoint.new(
+            Adw.BreakpointCondition.parse("min-width: 400sp")
+        )
+        bp_desktop.add_setter(
+            self.filter_popover, "position", Gtk.PositionType.BOTTOM
+        )
+        bp_desktop.connect(
+            "apply", lambda _: self.filter_popover.remove_css_class("mobile-layout")
+        )
+        bp_desktop.connect(
+            "unapply", lambda _: self.filter_popover.add_css_class("mobile-layout")
+        )
+        self.add_breakpoint(bp_desktop)
+
+        bp_mobile = Adw.Breakpoint.new(
+            Adw.BreakpointCondition.parse("max-width: 400sp")
+        )
+        bp_mobile.add_setter(
+            self.filter_popover, "position", Gtk.PositionType.TOP
+        )
+        bp_mobile.connect(
+            "apply", lambda _: self.filter_popover.add_css_class("mobile-layout")
+        )
+        bp_mobile.connect(
+            "unapply", lambda _: self.filter_popover.remove_css_class("mobile-layout")
+        )
+        self.add_breakpoint(bp_mobile)
+
         self._build_date_dropdowns()
         self._connect_signals()
         self._update_button_labels()
         self._rebuild_list()
         self._connect_scroll()
 
-    def _build_preset_list(self):
-        for preset in self._PRESETS:
-            row = Gtk.ListBoxRow()
-            row.set_activatable(True)
-            row._filter_mode = preset["mode"]
-            label = Gtk.Label(label=_(preset["label"]))
-            label.set_halign(Gtk.Align.START)
-            label.set_margin_start(12)
-            label.set_margin_end(12)
-            label.set_margin_top(6)
-            label.set_margin_bottom(6)
-            row.set_child(label)
-            self.preset_list.append(row)
-        self.preset_list.connect('row-activated', self._on_preset_row_activated)
+    def _build_filter_menu(self):
+        self.filter_menu_model.remove_all()
+        for i, preset in enumerate(self._PRESETS):
+            if preset["mode"] == self._mode:
+                continue
+            item = Gio.MenuItem.new(_(preset["label"]), None)
+            item.set_action_and_target_value(
+                "filter.select",
+                GLib.Variant.new_string(str(i)),
+            )
+            self.filter_menu_model.append_item(item)
 
     def _build_date_dropdowns(self):
         days = Gtk.StringList.new([str(d) for d in range(1, 32)])
@@ -1248,11 +1304,13 @@ class HistoryDialog(Adw.Dialog, ToastMixin):
 
     # ---- Preset handling ----
 
-    def _on_preset_row_activated(self, _listbox, row):
-        self._mode = row._filter_mode
+    def _on_filter_menu_select(self, _widget, _action, param):
+        index = int(param.get_string())
+        self._mode = self._PRESETS[index]["mode"]
         self.custom_toggle.set_active(False)
         self._update_button_labels()
         self.filter_popover.popdown()
+        self._build_filter_menu()
         self._reset_scroll()
         self._rebuild_list()
 
