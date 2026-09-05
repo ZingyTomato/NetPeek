@@ -136,6 +136,10 @@ class HomePage(ToastMixin, Adw.NavigationPage):
     def connect_results_page(self, results_page):
         self.results_page = results_page
 
+    def focus_ip_entry(self):
+        """Focus the IP range entry (for win.focus-ip)."""
+        self.ip_entry_row.grab_focus()
+
     @staticmethod
     def _preset_short_label(preset_range):
         octets = preset_range.split("/")[0].split(".")
@@ -377,6 +381,30 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
 
     def connect_home_page(self, home_page):
         self.home_page = home_page
+
+    # ---- Keyboard shortcut helpers (called by win.* actions) ----
+
+    def focus_search(self):
+        self.search_entry.grab_focus()
+
+    def stop_if_scanning(self):
+        if self.stop_button.get_visible():
+            self.on_stop_clicked(None)
+            return True
+        return False
+
+    def export_results(self):
+        if self.export_button.get_sensitive():
+            self.on_export_clicked(None)
+
+    def toggle_view(self):
+        if self.view_toggle_button.get_sensitive():
+            self.view_toggle_button.set_active(
+                not self.view_toggle_button.get_active())
+
+    def show_scan_info(self):
+        if self.current_scan:
+            self.on_scan_info_clicked(None)
 
     def _create_card(self, device):
         return DeviceCard(device, toast_overlay=self.toast_overlay)

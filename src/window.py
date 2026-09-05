@@ -44,64 +44,70 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         self.create_actions()
 
     def create_actions(self):
-        about_action = Gio.SimpleAction.new("about", None)
-        about_action.connect("activate", self.on_about_action)
-        self.get_application().add_action(about_action)
-
-        quit_action = Gio.SimpleAction.new("quit", None)
-        quit_action.connect("activate", self.on_quit_action)
-        self.get_application().add_action(quit_action)
-
-        previous_scans_action = Gio.SimpleAction.new("previous-scans", None)
-        previous_scans_action.connect("activate", self.on_previous_scans_action)
-        self.add_action(previous_scans_action)
-
-        find_action = Gio.SimpleAction.new("find", None)
-        find_action.connect("activate", self.on_find_action)
-        self.add_action(find_action)
-
-        rescan_action = Gio.SimpleAction.new("rescan", None)
-        rescan_action.connect("activate", self.on_rescan_action)
-        self.add_action(rescan_action)
-
-        application = self.get_application()
-        application.set_accels_for_action("app.quit", ["<Primary>q"])
-        application.set_accels_for_action("win.find", ["<Primary>f"])
-        application.set_accels_for_action("win.rescan", ["<Primary>r"])
-
-    def on_about_action(self, action, param):
-        version = self.get_application().get_version()
-        about = Adw.AboutDialog()
-        about.set_application_name(_("NetPeek"))
-        about.set_version(version)
-        about.set_developer_name("ZingyTomato")
-        about.set_license_type(Gtk.License.GPL_3_0)
-        about.set_comments(_("Discover devices on your local network."))
-        about.set_website("https://github.com/zingytomato/netpeek")
-        about.set_issue_url("https://github.com/zingytomato/netpeek/issues")
-        about.add_link(_("Translate"), "https://hosted.weblate.org/engage/netpeek/")
-        about.set_application_icon("io.github.zingytomato.netpeek")
-        about.add_credit_section(_("Contributors"), ["ZingyTomato", "Gert-Dev", "Cameo007", "vmkspv", "oscfdezdz", "albanobattistella", "sjulien", "dawkagaming", "prescott66"])
-        release_notes = """
-        <ul>
-          <li>Grouped all IP presets into a single button.</li>
-          <li>Added date filters and custom date ranges to scan history.</li>
-        </ul>
-        """
-        about.set_release_notes(release_notes)
-        about.set_release_notes_version(version)
-        about.present(self)
-
-    def on_quit_action(self, action, param):
-        self.get_application().quit()
+        # Window-scoped actions. Accelerators are set centrally in
+        # NetworkScannerApp._setup_accels() (the GNOME/GTK way).
+        # app.quit / app.about live on the application (see app.py).
+        win_actions = {
+            "previous-scans": self.on_previous_scans_action,
+            "find": self.on_find_action,
+            "rescan": self.on_rescan_action,
+            "start-scan": self.on_start_scan_action,
+            "focus-ip": self.on_focus_ip_action,
+            "stop-scan": self.on_stop_scan_action,
+            "export": self.on_export_action,
+            "toggle-view": self.on_toggle_view_action,
+            "show-scan-info": self.on_show_scan_info_action,
+            "go-back": self.on_go_back_action,
+        }
+        for name, handler in win_actions.items():
+            action = Gio.SimpleAction.new(name, None)
+            action.connect("activate", handler)
+            self.add_action(action)
 
     def on_find_action(self, action, param):
         if self.navigation_view.get_visible_page() == self.results_page:
-            self.results_page.search_entry.grab_focus()
+            self.results_page.focus_search()
 
     def on_rescan_action(self, action, param):
         if self.navigation_view.get_visible_page() == self.results_page:
             self.results_page.on_rescan_clicked(None)
+
+    def on_start_scan_action(self, action, param):
+        visible = self.navigation_view.get_visible_page()
+        if visible == self.home_page:
+            self.home_page.on_scan_clicked(None)
+        elif visible == self.results_page:
+            # Ctrl+Enter on results behaves like rescan.
+            self.results_page.on_rescan_clicked(None)
+
+    def on_focus_ip_action(self, action, param):
+        if self.navigation_view.get_visible_page() == self.home_page:
+            self.home_page.focus_ip_entry()
+
+    def on_stop_scan_action(self, action, param):
+        if self.navigation_view.get_visible_page() != self.results_page:
+            return
+        # Let the search entry consume Ctrl+. first for its emoji picker;
+        # otherwise stop the scan.
+        if self.results_page.search_entry.is_focus():
+            return
+        self.results_page.stop_if_scanning()
+
+    def on_export_action(self, action, param):
+        if self.navigation_view.get_visible_page() == self.results_page:
+            self.results_page.export_results()
+
+    def on_toggle_view_action(self, action, param):
+        if self.navigation_view.get_visible_page() == self.results_page:
+            self.results_page.toggle_view()
+
+    def on_show_scan_info_action(self, action, param):
+        if self.navigation_view.get_visible_page() == self.results_page:
+            self.results_page.show_scan_info()
+
+    def on_go_back_action(self, action, param):
+        if self.navigation_view.get_visible_page() != self.home_page:
+            self.navigation_view.pop()
 
     def on_previous_scans_action(self, action, param):
         """Show the previous scans dialog"""

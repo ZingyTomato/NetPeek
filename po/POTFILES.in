@@ -9,6 +9,7 @@ src/gtk/home_page.ui
 src/gtk/main_window.ui
 src/gtk/results_page.ui
 src/gtk/scan_metadata_dialog.ui
+src/gtk/shortcuts-dialog.ui
 src/gtk/theme_selector.ui
 src/netpeek.py
 src/window.py

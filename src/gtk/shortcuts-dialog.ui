@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.8"/>
+
+  <object class="AdwShortcutsDialog" id="shortcuts_dialog">
+    <child>
+      <object class="AdwShortcutsSection">
+        <property name="title" translatable="yes" context="shortcut window">General</property>
+        <child>
+          <object class="AdwShortcutsItem">
+            <property name="title" translatable="yes" context="shortcut window">Show Shortcuts</property>
+            <property name="action-name">app.shortcuts</property>
+            <property name="accelerator">&lt;Primary&gt;question</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwShortcutsItem">
+            <property name="title" translatable="yes" context="shortcut window">Previous Scans</property>
+            <property name="action-name">win.previous-scans</property>
+            <property name="accelerator">&lt;Primary&gt;h</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwShortcutsItem">
+            <property name="title" translatable="yes" context="shortcut window">Go Back</property>
+            <property name="action-name">win.go-back</property>
+            <property name="accelerator">&lt;Alt&gt;Left</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwShortcutsItem">
+            <property name="title" translatable="yes" context="shortcut window">Close Dialog</property>
+            <property name="accelerator">Escape</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwShortcutsItem">
+            <property name="title" translatable="yes" context="shortcut window">Quit</property>
+            <property name="action-name">app.quit</property>
+            <property name="accelerator">&lt;Primary&gt;q</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwShortcutsSection">
+        <property name="title" translatable="yes" context="shortcut window">Scanning</property>
+        <child>
+          <object class="AdwShortcutsItem">
+            <property name="title" translatable="yes" context="shortcut window">Start Scan</property>
+            <property name="action-name">win.start-scan</property>
+            <property name="accelerator">&lt;Primary&gt;Return</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwShortcutsItem">
+            <property name="title" translatable="yes" context="shortcut window">Focus IP Range Entry</property>
+            <property name="action-name">win.focus-ip</property>
+            <property name="accelerator">&lt;Primary&gt;l</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwShortcutsSection">
+        <property name="title" translatable="yes" context="shortcut window">Results</property>
+        <child>
+          <object class="AdwShortcutsItem">
+            <property name="title" translatable="yes" context="shortcut window">Search Devices</property>
+            <property name="action-name">win.find</property>
+            <property name="accelerator">&lt;Primary&gt;f</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwShortcutsItem">
+            <property name="title" translatable="yes" context="shortcut window">Rescan</property>
+            <property name="action-name">win.rescan</property>
+            <property name="accelerator">&lt;Primary&gt;r</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwShortcutsItem">
+            <property name="title" translatable="yes" context="shortcut window">Stop Scan</property>
+            <property name="action-name">win.stop-scan</property>
+            <property name="accelerator">&lt;Primary&gt;period</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwShortcutsItem">
+            <property name="title" translatable="yes" context="shortcut window">Export Results</property>
+            <property name="action-name">win.export</property>
+            <property name="accelerator">&lt;Primary&gt;e</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwShortcutsItem">
+            <property name="title" translatable="yes" context="shortcut window">Toggle Grid/List View</property>
+            <property name="action-name">win.toggle-view</property>
+            <property name="accelerator">&lt;Primary&gt;t</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwShortcutsItem">
+            <property name="title" translatable="yes" context="shortcut window">Scan Information</property>
+            <property name="action-name">win.show-scan-info</property>
+            <property name="accelerator">&lt;Primary&gt;i</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

@@ -181,6 +181,10 @@
         <attribute name="label" translatable="yes">Previous Scans</attribute>
         <attribute name="action">win.previous-scans</attribute>
       </item>
+      <item>
+        <attribute name="label" translatable="yes">Keyboard Shortcuts</attribute>
+        <attribute name="action">app.shortcuts</attribute>
+      </item>
     </section>
     <section>
       <item>

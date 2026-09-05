@@ -8,6 +8,7 @@
     <file preprocess="xml-stripblanks">gtk/device_card.ui</file>
     <file preprocess="xml-stripblanks">gtk/history_dialog.ui</file>
     <file preprocess="xml-stripblanks">gtk/theme_selector.ui</file>
+    <file alias="shortcuts-dialog.ui" preprocess="xml-stripblanks">gtk/shortcuts-dialog.ui</file>
     <file>gtk/style.css</file>
   </gresource>
   <gresource prefix="/io/github/zingytomato/netpeek/icons/scalable/apps">
