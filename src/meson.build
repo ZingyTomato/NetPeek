@@ -30,7 +30,6 @@ netpeek_sources = [
   '__init__.py',
   'netpeek.py',
   'window.py',
-  'pages.py',
   'app.py',
   'scanner.py',
   'widgets.py',
@@ -39,4 +38,14 @@ netpeek_sources = [
   'netinfo.py'
 ]
 
+pages_sources = [
+  'pages/__init__.py',
+  'pages/home.py',
+  'pages/results.py',
+  'pages/history.py',
+  'pages/scan_info.py',
+  'pages/helpers.py',
+]
+
 install_data(netpeek_sources, install_dir: moduledir)
+install_data(pages_sources, install_dir: moduledir / 'pages')

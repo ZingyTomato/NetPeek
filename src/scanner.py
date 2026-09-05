@@ -26,29 +26,16 @@ from concurrent.futures import ThreadPoolExecutor
 from gi.repository import GLib
 
 from . import netinfo
+from .models import SERVICE_PORTS, BASE_PORTS, dedup
+
 
 class NetworkScanner:
     """Network scanning functionality"""
 
-    # Map of known service ports to service identifiers.
-    # Only includes ports that are distinctive enough for a reliable guess.
-    SERVICE_PORTS = {
-        139: "smb",
-        445: "smb",
-        9090: "cockpit",
-        3306: "mysql",
-        5432: "postgresql",
-        6379: "redis",
-        8123: "homeassistant",
-        32400: "plex",
-        631: "cups",
-        27017: "mongodb",
-        8006: "proxmox",
-        5001: "synology",
-    }
+    SERVICE_PORTS = SERVICE_PORTS
 
     def __init__(self):
-        self.common_ports = [22, 80, 443, 3389, 53, 21, 23, 8080, 8443, 8006, 5000, 5001, 445, 139, 9090, 3000, 3306, 5432, 6379, 8123, 32400, 9000, 631, 27017]
+        self.common_ports = sorted(set(BASE_PORTS) | set(SERVICE_PORTS))
         self.is_scanning = False
         self._scan_generation = 0
         self.hosts_scanned = 0
@@ -71,11 +58,13 @@ class NetworkScanner:
         try:
             if '/' not in ip_range and '-' not in ip_range:
                 ipaddress.IPv4Address(ip_range)
+            elif not self.parse_ip_range_for_list(ip_range, quiet=True):
+                raise ValueError(ip_range)
             return True, _("Valid IP range")
         except Exception as e:
             return False, _("Invalid IP range: {e}").format(e=e)
 
-    def parse_ip_range_for_list(self, ip_range):
+    def parse_ip_range_for_list(self, ip_range, quiet=False):
         hosts = []
         try:
             if '/' in ip_range:
@@ -100,7 +89,8 @@ class NetworkScanner:
             else:
                 hosts = [ipaddress.IPv4Address(ip_range)]
         except Exception as e:
-            print(_("Error parsing IP range: {e}").format(e=e))
+            if not quiet:
+                print(_("Error parsing IP range: {e}").format(e=e))
             hosts = []
         return hosts
 
@@ -113,10 +103,8 @@ class NetworkScanner:
         scan_arguments = f"-sT -p {ports_str}"
 
         if deep_scan:
-            # Service version detection (works without root)
-            scan_arguments += " -sV --version-intensity 2"
-            # SMB OS discovery (NSE script, no root needed)
-            scan_arguments += " --script smb-os-discovery.nse"
+            # Version + SMB discovery, no root needed.
+            scan_arguments += " -sV --version-intensity 2 --script smb-os-discovery.nse"
 
         try:
             nm.scan(hosts=str(host), arguments=scan_arguments)
@@ -138,10 +126,10 @@ class NetworkScanner:
             if host_info.state() == 'up':
                 if not hostname:
                     hostname = netinfo.resolve_hostname(str(host))
-                services = list(dict.fromkeys(
+                services = dedup(
                     svc for port, svc in self.SERVICE_PORTS.items()
                     if port in open_ports
-                ))
+                )
 
                 device = {
                     "hostname": hostname or str(host),
@@ -159,8 +147,13 @@ class NetworkScanner:
 
                 with self.lock:
                     devices.append(device)
-                    if generation is None or generation == self._scan_generation:
+                    current = generation is None or generation == self._scan_generation
+                    if current:
                         self.partial_results.append(device)
+                        self.hosts_scanned += 1
+                        if progress_callback:
+                            GLib.idle_add(progress_callback, self.hosts_scanned, self.total_hosts)
+                return
 
         with self.lock:
             if generation is None or generation == self._scan_generation:
@@ -186,13 +179,10 @@ class NetworkScanner:
                 devices = []
 
                 with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
-                    futures = []
-                    for host in hosts_to_scan:
-                        if not self.is_scanning:
-                            break
-                        future = executor.submit(self.scan_single_ip, host, devices, progress_callback, deep_scan, gen)
-                        futures.append(future)
-
+                    futures = [
+                        executor.submit(self.scan_single_ip, host, devices, progress_callback, deep_scan, gen)
+                        for host in hosts_to_scan if self.is_scanning
+                    ]
                     for future in futures:
                         try:
                             future.result()
@@ -221,11 +211,11 @@ class NetworkScanner:
 
     @staticmethod
     def _enrich_deep_scan(host_info, device, open_ports):
-        """Parse NSE script results and service version output into OS and share info."""
+        """Parse NSE and version output into OS info."""
         hostscript = host_info.get('hostscript', [])
         os_parts = []
 
-        # 1. SMB OS discovery (most accurate for Windows hosts)
+        # SMB discovery is the most accurate for Windows hosts.
         for script in hostscript:
             if script.get('id') == 'smb-os-discovery':
                 output = script.get('output', '')
@@ -234,12 +224,11 @@ class NetworkScanner:
                     if line.startswith('OS:'):
                         os_parts.append(line[3:].strip())
                     elif line.startswith('|_'):
-                        # Handle continuation lines
                         clean = line[2:].strip()
                         if clean.startswith('OS:'):
                             os_parts.append(clean[3:].strip())
 
-        # 2. Service version info gathered by the scanner
+        # Service versions gathered by the scanner.
         version_strings = []
         if 'tcp' in host_info:
             for port in open_ports:
@@ -253,19 +242,13 @@ class NetworkScanner:
                     version_strings.append(' '.join(parts))
 
         if version_strings:
-            # Deduplicate and limit to 3 services
-            seen = list(dict.fromkeys(version_strings))
-            os_parts.append(', '.join(seen[:3]))
+            os_parts.append(', '.join(dedup(version_strings)[:3]))
 
         device["os_display"] = ' — '.join(os_parts) if os_parts else ''
 
     @staticmethod
     def _local_ip_via_udp_probe():
-        """Ask the kernel which local address it would use to reach the internet.
-
-        A UDP connect() only performs a routing decision without sending any
-        packet, so this works offline and needs no special permissions.
-        """
+        """Find the local address used for outbound traffic."""
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
             s.settimeout(1)
             s.connect(("8.8.8.8", 80))
@@ -273,7 +256,7 @@ class NetworkScanner:
 
     @staticmethod
     def _default_gateway_from_proc_route():
-        """Fallback: read the default gateway straight from the kernel route table."""
+        """Read the default gateway from the kernel route table."""
         with open('/proc/net/route') as f:
             lines = f.readlines()[1:]
         for line in lines:
@@ -288,14 +271,7 @@ class NetworkScanner:
 
     @staticmethod
     def get_local_ip_range():
-        """Detect the local /24 network range.
-
-        Previously used socket.gethostbyname(gethostname()), which commonly
-        resolves to 127.0.1.1 or the wrong interface depending on
-        /etc/hosts, and is unreliable especially inside the Flatpak sandbox.
-        A UDP connect() only performs a kernel routing decision (no packet
-        sent), so it reliably reveals the real outbound interface instead.
-        """
+        """Detect the local /24 range from the outbound interface."""
         try:
             local_ip = NetworkScanner._local_ip_via_udp_probe()
             if local_ip:

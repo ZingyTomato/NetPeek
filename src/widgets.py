@@ -35,6 +35,50 @@ class ToastMixin:
         self.toast_overlay.add_toast(toast)
 
 
+def reveal_apply_on_focus(row, button):
+    controller = Gtk.EventControllerFocus()
+    controller.connect("enter", lambda c: button.set_visible(True))
+    controller.connect("leave", lambda c: button.set_visible(False))
+    row.add_controller(controller)
+    button.set_visible(False)
+
+
+def clear_focus(widget):
+    root = widget.get_root()
+    if root:
+        root.set_focus(None)
+
+
+def copy_ip_to_clipboard(clipboard, toast_overlay, ip):
+    if clipboard is None or not ip:
+        return
+    clipboard.set(ip)
+    if toast_overlay is not None:
+        toast = Adw.Toast(title=_("Copied {ip} to the clipboard").format(ip=ip))
+        toast.set_timeout(3)
+        toast_overlay.add_toast(toast)
+
+
+def persist_custom_name(device):
+    storage.set_custom_name(device.registry_key, device.custom_name)
+
+
+def _safe_disconnect(obj, handler_id):
+    if obj is not None and handler_id is not None:
+        try:
+            obj.disconnect(handler_id)
+        except Exception:
+            pass
+
+
+def _safe_unbind(binding):
+    if binding is not None:
+        try:
+            binding.unbind()
+        except Exception:
+            pass
+
+
 @Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/device_card.ui')
 class DeviceCard(ToastMixin, Adw.Bin):
     """Custom widget for displaying device information in a card format"""
@@ -61,17 +105,12 @@ class DeviceCard(ToastMixin, Adw.Bin):
         self.os_row.connect("map", self._on_row_map)
         self.services_row.connect("map", self._on_row_map)
 
-        # Bidirectional binding keeps this card's name entry and the list
-        # view's custom name column in sync live, without either widget
-        # having to know about the other.
+        # Keep card and list custom names in sync.
         device.bind_property(
             "custom-name", self.name_row, "text",
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
 
-        focus_controller = Gtk.EventControllerFocus()
-        focus_controller.connect("enter", lambda c: self.name_apply_button.set_visible(True))
-        focus_controller.connect("leave", lambda c: self.name_apply_button.set_visible(False))
-        self.name_row.add_controller(focus_controller)
+        reveal_apply_on_focus(self.name_row, self.name_apply_button)
 
         self.refresh()
 
@@ -82,7 +121,7 @@ class DeviceCard(ToastMixin, Adw.Bin):
         self.new_badge.set_visible(not device.known)
 
         self.ip_row.set_title(device.ip)
-        self.hostname_row.set_subtitle(device.hostname if device.hostname != device.ip else _("Unknown"))
+        self.hostname_row.set_subtitle(device.hostname_or_unknown)
         self.ports_row.set_subtitle(device.ports_display)
         self.services_row.set_subtitle(device.services_display)
         self.services_row.set_tooltip_text(device.services_display if device.services_display else None)
@@ -94,9 +133,7 @@ class DeviceCard(ToastMixin, Adw.Bin):
         self.os_row.set_subtitle(device.os_display)
         self.os_row.set_tooltip_text(device.os_display if device.os_display else None)
         self.os_row.set_visible(device.deep_scanned)
-        # The expand button only makes sense when the info actually wraps to
-        # more than one line; ellipsization is checked once the row is laid
-        # out (see _on_os_row_map).
+        # Only show expand when text is ellipsized after layout.
         self.os_expand_button.set_visible(False)
         self.os_expand_button.set_active(False)
         self.os_row.set_subtitle_lines(1)
@@ -158,19 +195,14 @@ class DeviceCard(ToastMixin, Adw.Bin):
 
     @Gtk.Template.Callback()
     def on_ip_clicked(self, button):
-        ip_text = self.ip_row.get_title()
-        self.clipboard.set(ip_text)
-        self.show_toast(_("Copied {ip} to the clipboard").format(ip=ip_text))
+        copy_ip_to_clipboard(self.clipboard, self.toast_overlay, self.ip_row.get_title())
 
     @Gtk.Template.Callback()
     def on_name_apply(self, _widget):
         """Persist a custom name when the apply button is clicked or Enter is pressed"""
-        # The name entry's text is already synced onto self.device.custom_name
-        # via the bind_property() set up in __init__.
-        storage.set_custom_name(self.device.registry_key, self.device.custom_name)
-        root = self.get_root()
-        if root:
-            root.set_focus(None)
+        # Name already synced via property binding.
+        persist_custom_name(self.device)
+        clear_focus(self)
         self.name_row.set_position(-1)
 
 class DeviceMobileRow(ToastMixin, Adw.ExpanderRow):
@@ -246,18 +278,11 @@ class DeviceMobileRow(ToastMixin, Adw.ExpanderRow):
         self._os_row.add_prefix(os_icon)
         self.add_row(self._os_row)
 
-        self._focus_controller = Gtk.EventControllerFocus()
-        self._focus_controller.connect(
-            "enter", lambda c: self._name_apply_button.set_visible(True))
-        self._focus_controller.connect(
-            "leave", lambda c: self._name_apply_button.set_visible(False))
-        self._name_row.add_controller(self._focus_controller)
-        self._name_apply_button.set_visible(False)
+        reveal_apply_on_focus(self._name_row, self._name_apply_button)
 
     def bind_device(self, device):
         self.unbind_device()
         self._device = device
-        # Reset recycled state.
         self.set_expanded(False)
 
         self._name_binding = device.bind_property(
@@ -273,8 +298,7 @@ class DeviceMobileRow(ToastMixin, Adw.ExpanderRow):
             "clicked", lambda _b: self._on_name_apply())
 
         self._refresh_header()
-        self._hostname_row.set_subtitle(
-            device.hostname if device.hostname != device.ip else _("Unknown"))
+        self._hostname_row.set_subtitle(device.hostname_or_unknown)
         self._ports_row.set_subtitle(device.ports_display)
         self._services_row.set_subtitle(device.services_display)
         self._services_row.set_visible(bool(device.services_display))
@@ -282,35 +306,15 @@ class DeviceMobileRow(ToastMixin, Adw.ExpanderRow):
         self._os_row.set_visible(device.deep_scanned)
 
     def unbind_device(self):
-        if self._device is not None and self._notify_handler is not None:
-            try:
-                self._device.disconnect(self._notify_handler)
-            except Exception:
-                pass
+        _safe_disconnect(self._device, self._notify_handler)
         self._notify_handler = None
-        if self._name_binding is not None:
-            try:
-                self._name_binding.unbind()
-            except Exception:
-                pass
+        _safe_unbind(self._name_binding)
         self._name_binding = None
-        if self._copy_handler is not None:
-            try:
-                self._copy_button.disconnect(self._copy_handler)
-            except Exception:
-                pass
+        _safe_disconnect(self._copy_button, self._copy_handler)
         self._copy_handler = None
-        if self._name_activate_handler is not None:
-            try:
-                self._name_row.disconnect(self._name_activate_handler)
-            except Exception:
-                pass
+        _safe_disconnect(self._name_row, self._name_activate_handler)
         self._name_activate_handler = None
-        if self._name_apply_handler is not None:
-            try:
-                self._name_apply_button.disconnect(self._name_apply_handler)
-            except Exception:
-                pass
+        _safe_disconnect(self._name_apply_button, self._name_apply_handler)
         self._name_apply_handler = None
         self._device = None
 
@@ -318,18 +322,8 @@ class DeviceMobileRow(ToastMixin, Adw.ExpanderRow):
         device = self._device
         if device is None:
             return
-        hostname_known = device.hostname and device.hostname != device.ip
-        title = device.ip
-        if device.custom_name:
-            subtitle = device.custom_name
-            if hostname_known and device.hostname != device.custom_name:
-                subtitle += " · " + device.hostname
-        elif hostname_known:
-            subtitle = device.hostname
-        else:
-            subtitle = device.ports_display or _("Unknown device")
-        self.set_title(title)
-        self.set_subtitle(subtitle)
+        self.set_title(device.ip)
+        self.set_subtitle(device.header_subtitle())
 
         if not device.known:
             self._status_icon.set_from_icon_name("starred-symbolic")
@@ -343,22 +337,16 @@ class DeviceMobileRow(ToastMixin, Adw.ExpanderRow):
             self._new_badge.set_visible(False)
 
     def _on_copy_clicked(self):
-        if self._device is None or self.clipboard is None:
+        if self._device is None:
             return
-        ip_text = self._device.ip
-        self.clipboard.set(ip_text)
-        if self.toast_overlay is not None:
-            self.show_toast(_("Copied {ip} to the clipboard").format(ip=ip_text))
+        copy_ip_to_clipboard(self.clipboard, self.toast_overlay, self._device.ip)
 
     def _on_name_apply(self):
         if self._device is None:
             return
-        storage.set_custom_name(
-            self._device.registry_key, self._device.custom_name)
+        persist_custom_name(self._device)
         self._refresh_header()
-        root = self.get_root()
-        if root:
-            root.set_focus(None)
+        clear_focus(self)
         try:
             self._name_row.set_position(-1)
         except Exception:
@@ -386,8 +374,7 @@ class ThemeSelector(Gtk.Box):
         for button, scheme in self.schemes.items():
             button.set_active(scheme == current)
 
-        # Connected after the initial state is set so restoring the saved
-        # scheme doesn't reactivate the action before we're in a window.
+        # Connect after init to avoid triggering on restore.
         for button in self.schemes:
             button.connect("toggled", self.on_option_selected)
 

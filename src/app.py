@@ -25,6 +25,8 @@ from gi.repository import Gtk, Adw, Gdk, Gio, GLib
 
 from .window import NetworkScannerWindow
 
+COLOR_SCHEME_IDS = ("default", "light", "dark")
+
 COLOR_SCHEMES = {
     "light": Adw.ColorScheme.FORCE_LIGHT,
     "dark": Adw.ColorScheme.FORCE_DARK,
@@ -36,8 +38,7 @@ class NetworkScannerApp(Adw.Application):
 
     def __init__(self):
         super().__init__(application_id='io.github.zingytomato.netpeek')
-        # Base path for Adw.Application automatic resources
-        # (shortcuts-dialog.ui -> app.shortcuts + Ctrl+?).
+        # Base path for app resources like the shortcuts dialog.
         self.set_resource_base_path('/io/github/zingytomato/netpeek')
         self.settings = Gio.Settings.new('io.github.zingytomato.netpeek')
 
@@ -46,8 +47,7 @@ class NetworkScannerApp(Adw.Application):
 
     def do_startup(self):
         Adw.Application.do_startup(self)
-        # Make the bundled app icons resolvable without an installed icon
-        # cache, so they also show up in development runs (e.g. Builder).
+        # Use bundled icons even without an installed icon cache.
         Gtk.IconTheme.get_for_display(Gdk.Display.get_default()).add_resource_path(
             '/io/github/zingytomato/netpeek/icons')
         self._load_css()
@@ -61,6 +61,11 @@ class NetworkScannerApp(Adw.Application):
             Gdk.Display.get_default(), provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
+    def _add_action(self, name, handler):
+        action = Gio.SimpleAction.new(name, None)
+        action.connect("activate", handler)
+        self.add_action(action)
+
     def _create_color_scheme_action(self):
         action = Gio.SimpleAction.new_stateful(
             "color-scheme",
@@ -71,18 +76,11 @@ class NetworkScannerApp(Adw.Application):
         self.add_action(action)
 
     def _create_app_actions(self):
-        about_action = Gio.SimpleAction.new("about", None)
-        about_action.connect("activate", self.on_about_action)
-        self.add_action(about_action)
-
-        quit_action = Gio.SimpleAction.new("quit", None)
-        quit_action.connect("activate", self.on_quit_action)
-        self.add_action(quit_action)
+        self._add_action("about", self.on_about_action)
+        self._add_action("quit", self.on_quit_action)
 
     def _setup_accels(self):
-        # GNOME way: accelerators live on the application, actions on
-        # app (global) or win (active window). Adw.Application provides
-        # app.shortcuts (Ctrl+?) automatically from shortcuts-dialog.ui.
+        # App-wide shortcuts; window actions are defined in window.py.
         self.set_accels_for_action("app.quit", ["<Primary>q"])
         self.set_accels_for_action("win.previous-scans", ["<Primary>h"])
         self.set_accels_for_action("win.go-back", ["<Alt>Left"])
@@ -134,5 +132,6 @@ class NetworkScannerApp(Adw.Application):
 
     def do_activate(self):
         """Called when the application is activated"""
-        self.window = NetworkScannerWindow(application=self, settings=self.settings)
+        if not hasattr(self, "window") or self.window is None:
+            self.window = NetworkScannerWindow(application=self, settings=self.settings)
         self.window.present()

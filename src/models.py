@@ -21,9 +21,46 @@ import ipaddress
 
 from gi.repository import GObject
 
+# Distinctive ports mapped to service names.
+SERVICE_PORTS = {
+    139: "smb",
+    445: "smb",
+    9090: "cockpit",
+    3306: "mysql",
+    5432: "postgresql",
+    6379: "redis",
+    8123: "homeassistant",
+    32400: "plex",
+    631: "cups",
+    27017: "mongodb",
+    8006: "proxmox",
+    5001: "synology",
+}
+
+SERVICE_LABELS = {
+    "smb": _("SMB shares"),
+    "cockpit": _("Cockpit"),
+    "mysql": _("MySQL"),
+    "postgresql": _("PostgreSQL"),
+    "redis": _("Redis"),
+    "homeassistant": _("Home Assistant"),
+    "plex": _("Plex"),
+    "cups": _("CUPS"),
+    "mongodb": _("MongoDB"),
+    "proxmox": _("Proxmox"),
+    "synology": _("Synology DSM"),
+}
+
+# Scanned even when they don't map to a known service.
+BASE_PORTS = [22, 80, 443, 3389, 53, 21, 23, 8080, 8443, 5000, 3000, 9000]
+
+
+def dedup(seq):
+    return list(dict.fromkeys(seq))
+
 
 class Device(GObject.Object):
-    """A discovered network device, bindable to both card and list views."""
+    """A discovered network device, bindable to card and list views."""
 
     __gtype_name__ = "NetpeekDevice"
 
@@ -45,20 +82,7 @@ class Device(GObject.Object):
         self.custom_name = data.get("custom_name", "") or ""
         self.ports_display = data.get("ports_display", "")
         self.services = data.get("services") or []
-        service_labels = {
-            "smb": _("SMB shares"),
-            "cockpit": _("Cockpit"),
-            "mysql": _("MySQL"),
-            "postgresql": _("PostgreSQL"),
-            "redis": _("Redis"),
-            "homeassistant": _("Home Assistant"),
-            "plex": _("Plex"),
-            "cups": _("CUPS"),
-            "mongodb": _("MongoDB"),
-            "proxmox": _("Proxmox"),
-            "synology": _("Synology DSM"),
-        }
-        self.services_display = ", ".join(service_labels.get(s, s) for s in self.services)
+        self.services_display = ", ".join(SERVICE_LABELS.get(s, s) for s in self.services)
         self.known = bool(data.get("known", False))
         self.known_int = 1 if self.known else 0
         self.ip_sort_key = self._ip_to_int(self.ip)
@@ -79,6 +103,21 @@ class Device(GObject.Object):
         if self.hostname and self.hostname != self.ip:
             return self.hostname
         return self.ip
+
+    @property
+    def hostname_or_unknown(self):
+        if self.hostname and self.hostname != self.ip:
+            return self.hostname
+        return _("Unknown")
+
+    def header_subtitle(self):
+        if self.custom_name:
+            if self.hostname and self.hostname != self.ip and self.hostname != self.custom_name:
+                return f"{self.custom_name} · {self.hostname}"
+            return self.custom_name
+        if self.hostname and self.hostname != self.ip:
+            return self.hostname
+        return self.ports_display or _("Unknown device")
 
     @property
     def registry_key(self):

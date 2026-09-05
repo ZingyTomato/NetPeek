@@ -53,46 +53,61 @@ def _decode_dns_name(data, offset):
     return ".".join(labels), (resume_at if jumped else offset)
 
 
+def _build_dns_query(qname_encoded, qtype, qclass):
+    txid = random.randint(0, 0xFFFF)
+    header = struct.pack(">HHHHHH", txid, 0x0000, 1, 0, 0, 0)
+    return header + qname_encoded + struct.pack(">HH", qtype, qclass)
+
+
+def _udp_exchange(packet, addr, timeout=0.4, expect_from=None):
+    # Send one datagram and collect replies until timeout.
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.settimeout(timeout)
+    try:
+        sock.sendto(packet, addr)
+        while True:
+            try:
+                data, from_addr = sock.recvfrom(4096)
+            except socket.timeout:
+                return
+            if expect_from and from_addr[0] != expect_from:
+                continue
+            yield data
+    finally:
+        sock.close()
+
+
 def resolve_mdns_hostname(ip, timeout=0.4):
     """Query mDNS for the reverse (PTR) name of an IP. Returns hostname or None."""
     reversed_name = ".".join(reversed(ip.split("."))) + ".in-addr.arpa"
-    txid = random.randint(0, 0xFFFF)
-    header = struct.pack(">HHHHHH", txid, 0x0000, 1, 0, 0, 0)
-    # Top bit of qclass set to QU (unicast response) so we get a direct reply
-    question = _encode_dns_name(reversed_name) + struct.pack(">HH", 12, 0x8001)
-    packet = header + question
+    # QU bit asks for a direct unicast reply.
+    packet = _build_dns_query(_encode_dns_name(reversed_name), 12, 0x8001)
 
-    sock = None
     try:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.settimeout(timeout)
-        sock.sendto(packet, ("224.0.0.251", 5353))
+        replies = _udp_exchange(packet, ("224.0.0.251", 5353), timeout, expect_from=ip)
+        try:
+            for data in replies:
+                ancount = struct.unpack_from(">H", data, 6)[0]
+                if ancount < 1:
+                    continue
 
-        while True:
-            data, addr = sock.recvfrom(4096)
-            if addr[0] != ip:
-                continue
-            ancount = struct.unpack_from(">H", data, 6)[0]
-            if ancount < 1:
-                continue
-
-            offset = 12
-            _, offset = _decode_dns_name(data, offset)
-            offset += 4  # qtype + qclass
-
-            for _ in range(ancount):
+                offset = 12
                 _, offset = _decode_dns_name(data, offset)
-                rtype, _, _, rdlength = struct.unpack_from(">HHIH", data, offset)
-                offset += 10
-                if rtype == 12:  # PTR
-                    name, _ = _decode_dns_name(data, offset)
-                    return name.rstrip(".") or None
-                offset += rdlength
+                offset += 4  # qtype + qclass
+
+                for _ in range(ancount):
+                    _, offset = _decode_dns_name(data, offset)
+                    rtype, _, _, rdlength = struct.unpack_from(">HHIH", data, offset)
+                    offset += 10
+                    if rtype == 12:  # PTR
+                        name, _ = _decode_dns_name(data, offset)
+                        return name.rstrip(".") or None
+                    offset += rdlength
+        finally:
+            replies.close()
     except Exception:
         return None
-    finally:
-        if sock:
-            sock.close()
+    return None
 
 
 def _encode_netbios_query_name():
@@ -103,49 +118,43 @@ def _encode_netbios_query_name():
 
 def resolve_netbios_name(ip, timeout=0.4):
     """Query NBNS (NetBIOS Node Status) for the host's name. Returns name or None."""
-    txid = random.randint(0, 0xFFFF)
-    header = struct.pack(">HHHHHH", txid, 0x0000, 1, 0, 0, 0)
-    question = _encode_netbios_query_name() + struct.pack(">HH", 0x21, 0x01)
-    packet = header + question
+    packet = _build_dns_query(_encode_netbios_query_name(), 0x21, 0x01)
 
-    sock = None
     try:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.settimeout(timeout)
-        sock.sendto(packet, (ip, 137))
-        data, _ = sock.recvfrom(4096)
+        replies = _udp_exchange(packet, (ip, 137), timeout)
+        try:
+            for data in replies:
+                offset = 12
+                _, offset = _decode_dns_name(data, offset)
+                offset += 10  # type + class + ttl + rdlength
+                num_names = data[offset]
+                offset += 1
 
-        offset = 12
-        _, offset = _decode_dns_name(data, offset)
-        offset += 10  # type + class + ttl + rdlength
-        num_names = data[offset]
-        offset += 1
+                fallback = None
+                for _ in range(num_names):
+                    raw_name = data[offset:offset + 15]
+                    suffix = data[offset + 15]
+                    flags = struct.unpack_from(">H", data, offset + 16)[0]
+                    offset += 18
 
-        fallback = None
-        for _ in range(num_names):
-            raw_name = data[offset:offset + 15]
-            suffix = data[offset + 15]
-            flags = struct.unpack_from(">H", data, offset + 16)[0]
-            offset += 18
-
-            name = raw_name.decode("ascii", errors="replace").strip()
-            if not name or name == "*":
-                continue
-            is_group = bool(flags & 0x8000)
-            if suffix == 0x00 and not is_group:
-                return name
-            if fallback is None:
-                fallback = name
-        return fallback
+                    name = raw_name.decode("ascii", errors="replace").strip()
+                    if not name or name == "*":
+                        continue
+                    is_group = bool(flags & 0x8000)
+                    if suffix == 0x00 and not is_group:
+                        return name
+                    if fallback is None:
+                        fallback = name
+                return fallback
+        finally:
+            replies.close()
     except Exception:
         return None
-    finally:
-        if sock:
-            sock.close()
+    return None
 
 
 def resolve_hostname(ip):
-    """Try hostname resolution in order: reverse DNS, then mDNS, then NetBIOS."""
+    """Try reverse DNS, then mDNS, then NetBIOS."""
     try:
         return socket.gethostbyaddr(ip)[0]
     except Exception:

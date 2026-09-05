@@ -40,13 +40,12 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         self.settings = settings
         self.scanner = NetworkScanner()
         self._came_from_history = False
+        self._history_scan_ts = None
         self.setup_pages()
         self.create_actions()
 
     def create_actions(self):
-        # Window-scoped actions. Accelerators are set centrally in
-        # NetworkScannerApp._setup_accels() (the GNOME/GTK way).
-        # app.quit / app.about live on the application (see app.py).
+        # Window actions here; accelerators live in app.py.
         win_actions = {
             "previous-scans": self.on_previous_scans_action,
             "find": self.on_find_action,
@@ -64,55 +63,58 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
             action.connect("activate", handler)
             self.add_action(action)
 
-    def on_find_action(self, action, param):
+    def _on_results_page(self, func):
         if self.navigation_view.get_visible_page() == self.results_page:
-            self.results_page.focus_search()
+            func(self.results_page)
+
+    def _on_home_page(self, func):
+        if self.navigation_view.get_visible_page() == self.home_page:
+            func(self.home_page)
+
+    def on_find_action(self, action, param):
+        self._on_results_page(lambda p: p.focus_search())
 
     def on_rescan_action(self, action, param):
-        if self.navigation_view.get_visible_page() == self.results_page:
-            self.results_page.on_rescan_clicked(None)
+        self._on_results_page(lambda p: p.on_rescan_clicked(None))
 
     def on_start_scan_action(self, action, param):
         visible = self.navigation_view.get_visible_page()
         if visible == self.home_page:
             self.home_page.on_scan_clicked(None)
         elif visible == self.results_page:
-            # Ctrl+Enter on results behaves like rescan.
             self.results_page.on_rescan_clicked(None)
 
     def on_focus_ip_action(self, action, param):
-        if self.navigation_view.get_visible_page() == self.home_page:
-            self.home_page.focus_ip_entry()
+        self._on_home_page(lambda p: p.focus_ip_entry())
 
     def on_stop_scan_action(self, action, param):
-        if self.navigation_view.get_visible_page() != self.results_page:
-            return
-        # Let the search entry consume Ctrl+. first for its emoji picker;
-        # otherwise stop the scan.
-        if self.results_page.search_entry.is_focus():
-            return
-        self.results_page.stop_if_scanning()
+        def stop(page):
+            # Skip stop if search is using Ctrl+. for emoji.
+            if page.search_entry.is_focus():
+                return
+            page.stop_if_scanning()
+        self._on_results_page(stop)
 
     def on_export_action(self, action, param):
-        if self.navigation_view.get_visible_page() == self.results_page:
-            self.results_page.export_results()
+        self._on_results_page(lambda p: p.export_results())
 
     def on_toggle_view_action(self, action, param):
-        if self.navigation_view.get_visible_page() == self.results_page:
-            self.results_page.toggle_view()
+        self._on_results_page(lambda p: p.toggle_view())
 
     def on_show_scan_info_action(self, action, param):
-        if self.navigation_view.get_visible_page() == self.results_page:
-            self.results_page.show_scan_info()
+        self._on_results_page(lambda p: p.show_scan_info())
 
     def on_go_back_action(self, action, param):
         if self.navigation_view.get_visible_page() != self.home_page:
             self.navigation_view.pop()
 
-    def on_previous_scans_action(self, action, param):
-        """Show the previous scans dialog"""
+    def _show_history(self):
         dialog = HistoryDialog(self.on_history_scan_selected, settings=self.settings)
         dialog.present(self)
+
+    def on_previous_scans_action(self, action, param):
+        """Show the previous scans dialog"""
+        self._show_history()
 
     def on_history_scan_selected(self, scan):
         """Load a scan chosen from history into the results page"""
@@ -120,13 +122,18 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
             self.navigation_view.push(self.results_page)
         self.results_page.load_from_history(scan)
         self._came_from_history = True
+        self._history_scan_ts = scan.get('timestamp')
 
     def _on_page_popped(self, navigation_view, page):
-        """Reopen the history dialog when navigating back from a scan loaded from history."""
+        """Reopen history after going back from a history-loaded scan."""
         if self._came_from_history and page == self.results_page:
+            current = self.results_page.current_scan
+            current_ts = current.get('timestamp') if current else None
+            show_again = current_ts is not None and current_ts == self._history_scan_ts
             self._came_from_history = False
-            dialog = HistoryDialog(self.on_history_scan_selected, settings=self.settings)
-            dialog.present(self)
+            self._history_scan_ts = None
+            if show_again:
+                self._show_history()
 
     def setup_pages(self):
         self.home_page = HomePage(
