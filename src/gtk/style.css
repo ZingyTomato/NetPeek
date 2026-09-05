@@ -88,3 +88,24 @@ popover.menu.preset-popover.mobile-layout modelbutton,
 popover.menu.filter-popover.mobile-layout modelbutton {
   min-height: 44px;
 }
+
+
+listview.mobile-device-list {
+  background: transparent;
+}
+
+listview.mobile-device-list row {
+  background: transparent;
+  padding: 0;
+}
+
+.mobile-device-row {
+  margin: 6px 12px;
+  background-color: @card_bg_color;
+  border-radius: 12px;
+  border: 1px solid @borders;
+}
+
+.mobile-device-row entry {
+  min-height: 44px;
+}

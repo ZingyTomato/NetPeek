@@ -173,6 +173,198 @@ class DeviceCard(ToastMixin, Adw.Bin):
             root.set_focus(None)
         self.name_row.set_position(-1)
 
+class DeviceMobileRow(ToastMixin, Adw.ExpanderRow):
+    """Device row for the list view; recycled by the factory."""
+    __gtype_name__ = 'DeviceMobileRow'
+
+    def __init__(self, toast_overlay=None):
+        super().__init__()
+        self.toast_overlay = toast_overlay
+        self._device = None
+        self._name_binding = None
+        self._notify_handler = None
+        self._copy_handler = None
+        self._name_activate_handler = None
+        self._name_apply_handler = None
+        self._focus_controller = None
+        try:
+            self.clipboard = Gdk.Display.get_default().get_clipboard()
+        except Exception:
+            self.clipboard = None
+
+        self.set_title_lines(1)
+        self.set_subtitle_lines(1)
+        self.add_css_class("mobile-device-row")
+
+        self._status_icon = Gtk.Image()
+        self._status_icon.set_valign(Gtk.Align.CENTER)
+        self.add_prefix(self._status_icon)
+
+        self._new_badge = Gtk.Label(label=_("New"))
+        self._new_badge.set_valign(Gtk.Align.CENTER)
+        self._new_badge.add_css_class("accent")
+        self._new_badge.add_css_class("caption-heading")
+        self.add_suffix(self._new_badge)
+
+        self._copy_button = Gtk.Button()
+        self._copy_button.set_icon_name("edit-copy-symbolic")
+        self._copy_button.set_valign(Gtk.Align.CENTER)
+        self._copy_button.set_tooltip_text(_("Click to copy IP"))
+        self.add_suffix(self._copy_button)
+
+        self._name_row = Adw.EntryRow(title=_("Name"))
+        self._name_apply_button = Gtk.Button()
+        self._name_apply_button.set_icon_name("object-select-symbolic")
+        self._name_apply_button.set_valign(Gtk.Align.CENTER)
+        self._name_apply_button.add_css_class("flat")
+        self._name_apply_button.set_tooltip_text(_("Apply name"))
+        self._name_row.add_suffix(self._name_apply_button)
+        self.add_row(self._name_row)
+
+        self._hostname_row = Adw.ActionRow(title=_("Hostname"))
+        self._hostname_row.set_subtitle_selectable(True)
+        hostname_icon = Gtk.Image.new_from_icon_name("computer-symbolic")
+        self._hostname_row.add_prefix(hostname_icon)
+        self.add_row(self._hostname_row)
+
+        self._ports_row = Adw.ActionRow(title=_("Ports Open"))
+        self._ports_row.set_subtitle_selectable(True)
+        ports_icon = Gtk.Image.new_from_icon_name(
+            "network-transmit-receive-symbolic")
+        self._ports_row.add_prefix(ports_icon)
+        self.add_row(self._ports_row)
+
+        self._services_row = Adw.ActionRow(title=_("Services"))
+        self._services_row.set_subtitle_selectable(True)
+        services_icon = Gtk.Image.new_from_icon_name("folder-remote-symbolic")
+        self._services_row.add_prefix(services_icon)
+        self.add_row(self._services_row)
+
+        self._os_row = Adw.ActionRow(title=_("System Information"))
+        self._os_row.set_subtitle_selectable(True)
+        os_icon = Gtk.Image.new_from_icon_name("computer-symbolic")
+        self._os_row.add_prefix(os_icon)
+        self.add_row(self._os_row)
+
+        self._focus_controller = Gtk.EventControllerFocus()
+        self._focus_controller.connect(
+            "enter", lambda c: self._name_apply_button.set_visible(True))
+        self._focus_controller.connect(
+            "leave", lambda c: self._name_apply_button.set_visible(False))
+        self._name_row.add_controller(self._focus_controller)
+        self._name_apply_button.set_visible(False)
+
+    def bind_device(self, device):
+        self.unbind_device()
+        self._device = device
+        # Reset recycled state.
+        self.set_expanded(False)
+
+        self._name_binding = device.bind_property(
+            "custom-name", self._name_row, "text",
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
+        self._notify_handler = device.connect(
+            "notify::custom-name", lambda *_: self._refresh_header())
+        self._copy_handler = self._copy_button.connect(
+            "clicked", lambda _b: self._on_copy_clicked())
+        self._name_activate_handler = self._name_row.connect(
+            "entry-activated", lambda _r: self._on_name_apply())
+        self._name_apply_handler = self._name_apply_button.connect(
+            "clicked", lambda _b: self._on_name_apply())
+
+        self._refresh_header()
+        self._hostname_row.set_subtitle(
+            device.hostname if device.hostname != device.ip else _("Unknown"))
+        self._ports_row.set_subtitle(device.ports_display)
+        self._services_row.set_subtitle(device.services_display)
+        self._services_row.set_visible(bool(device.services_display))
+        self._os_row.set_subtitle(device.os_display)
+        self._os_row.set_visible(device.deep_scanned)
+
+    def unbind_device(self):
+        if self._device is not None and self._notify_handler is not None:
+            try:
+                self._device.disconnect(self._notify_handler)
+            except Exception:
+                pass
+        self._notify_handler = None
+        if self._name_binding is not None:
+            try:
+                self._name_binding.unbind()
+            except Exception:
+                pass
+        self._name_binding = None
+        if self._copy_handler is not None:
+            try:
+                self._copy_button.disconnect(self._copy_handler)
+            except Exception:
+                pass
+        self._copy_handler = None
+        if self._name_activate_handler is not None:
+            try:
+                self._name_row.disconnect(self._name_activate_handler)
+            except Exception:
+                pass
+        self._name_activate_handler = None
+        if self._name_apply_handler is not None:
+            try:
+                self._name_apply_button.disconnect(self._name_apply_handler)
+            except Exception:
+                pass
+        self._name_apply_handler = None
+        self._device = None
+
+    def _refresh_header(self):
+        device = self._device
+        if device is None:
+            return
+        hostname_known = device.hostname and device.hostname != device.ip
+        title = device.ip
+        if device.custom_name:
+            subtitle = device.custom_name
+            if hostname_known and device.hostname != device.custom_name:
+                subtitle += " · " + device.hostname
+        elif hostname_known:
+            subtitle = device.hostname
+        else:
+            subtitle = device.ports_display or _("Unknown device")
+        self.set_title(title)
+        self.set_subtitle(subtitle)
+
+        if not device.known:
+            self._status_icon.set_from_icon_name("starred-symbolic")
+            self._status_icon.set_tooltip_text(_("New device"))
+            self._status_icon.add_css_class("accent")
+            self._new_badge.set_visible(True)
+        else:
+            self._status_icon.set_from_icon_name("network-wired-symbolic")
+            self._status_icon.set_tooltip_text(_("Known device"))
+            self._status_icon.remove_css_class("accent")
+            self._new_badge.set_visible(False)
+
+    def _on_copy_clicked(self):
+        if self._device is None or self.clipboard is None:
+            return
+        ip_text = self._device.ip
+        self.clipboard.set(ip_text)
+        if self.toast_overlay is not None:
+            self.show_toast(_("Copied {ip} to the clipboard").format(ip=ip_text))
+
+    def _on_name_apply(self):
+        if self._device is None:
+            return
+        storage.set_custom_name(
+            self._device.registry_key, self._device.custom_name)
+        self._refresh_header()
+        root = self.get_root()
+        if root:
+            root.set_focus(None)
+        try:
+            self._name_row.set_position(-1)
+        except Exception:
+            pass
+
+
 @Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/theme_selector.ui')
 class ThemeSelector(Gtk.Box):
     """Light/dark/system swatch selector shown in the primary menu."""
@@ -203,4 +395,3 @@ class ThemeSelector(Gtk.Box):
         if button.get_active():
             self.activate_action(
                 "app.color-scheme", GLib.Variant("s", self.schemes[button]))
-

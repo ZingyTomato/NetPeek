@@ -25,9 +25,9 @@ from pathlib import Path
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Adw, Gio, GLib, Gdk, GObject
+from gi.repository import Gtk, Adw, Gio, GLib, Gdk
 
-from .widgets import DeviceCard, ThemeSelector, ToastMixin
+from .widgets import DeviceCard, DeviceMobileRow, ThemeSelector, ToastMixin
 from .scanner import NetworkScanner
 from .models import Device
 from . import storage
@@ -207,9 +207,8 @@ class HomePage(ToastMixin, Adw.NavigationPage):
         self.preset_menu_model.remove_all()
 
         for i, preset in enumerate(self._PRESETS):
-            if preset is self._active_preset:
-                continue
-            item = Gio.MenuItem.new(preset["label"], None)
+            label = ("✓ " if preset is self._active_preset else "") + preset["label"]
+            item = Gio.MenuItem.new(label, None)
             item.set_action_and_target_value(
                 "win.preset-select",
                 GLib.Variant.new_string(str(i)),
@@ -327,7 +326,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.scanner = scanner
         self.settings = settings
         self.home_page = None
-        self.clipboard = Gdk.Display.get_default().get_clipboard()
 
         self.current_ip_range = ""
         self.current_scan = None
@@ -345,14 +343,14 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self._hovering = False
         self._blur_check_id = None
         self._typing_grace = 1.0
-        self._narrow_view_active = False
-        self._preferred_view_mode = 'cards'
         self._focus_before_window_deactivate = None
-        self._setup_column_view()
+        self._sort_key = 'ip'
+        self._sort_ascending = True
+        self._setup_device_models()
+        self._setup_device_list()
         self.flow_box.bind_model(self.filter_model, self._create_card)
         self._setup_search_behavior()
         self._setup_responsive_header()
-        self._setup_responsive_view()
 
         self._window_active_id = None
         self.connect("map", self._on_results_page_map)
@@ -360,14 +358,15 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self._sort_rows = {
             self.sort_row_known: "known",
             self.sort_row_ip: "ip",
-            self.sort_row_hostname: "hostname",
             self.sort_row_custom_name: "custom_name",
+            self.sort_row_hostname: "hostname",
             self.sort_row_ports: "ports",
             self.sort_row_services: "services",
             self.sort_row_os: "os",
         }
 
-        self.column_view.sort_by_column(self.columns["ip"], Gtk.SortType.ASCENDING)
+        self._apply_sorter()
+        self._update_sort_indicator()
 
         view_mode = self.settings.get_string('view-mode')
         is_list = view_mode == 'list'
@@ -413,203 +412,61 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
             else:
                 self.devices_content_stack.set_visible_child_name("results")
 
-    def _setup_column_view(self):
+    _SORT_GETTERS = {
+        "known": lambda d: d.known_int,
+        "ip": lambda d: d.ip_sort_key,
+        "custom_name": lambda d: (d.custom_name or "").casefold(),
+        "hostname": lambda d: (d.hostname or "").casefold(),
+        "ports": lambda d: (d.ports_display or "").casefold(),
+        "services": lambda d: (d.services_display or "").casefold(),
+        "os": lambda d: (d.os_display or "").casefold(),
+    }
+
+    def _setup_device_models(self):
         self.sort_model = Gtk.SortListModel(model=self.list_store)
         self._filter = Gtk.CustomFilter.new(self._filter_func)
         self.filter_model = Gtk.FilterListModel(model=self.sort_model, filter=self._filter)
 
-        self.column_view = Gtk.ColumnView()
-        self.column_view.set_model(Gtk.NoSelection(model=self.filter_model))
-        self.column_view.set_show_row_separators(True)
-        self.column_view.set_show_column_separators(True)
-        self.list_view.set_child(self.column_view)
+    def _compare_devices(self, a, b, *_args):
+        getter = self._SORT_GETTERS[self._sort_key]
+        va, vb = getter(a), getter(b)
+        result = (va > vb) - (va < vb)
+        return -result if not self._sort_ascending else result
 
-        self.columns = {
-            "known": self._add_status_column(),
-            "ip": self._add_ip_column(),
-            "hostname": self._add_hostname_column(),
-            "custom_name": self._add_custom_name_column(),
-            "ports": self._add_simple_column(_("Ports"), "ports-display", lambda d: d.ports_display, wrap=True, width=180),
-            "services": self._add_simple_column(_("Services"), "services-display", lambda d: d.services_display, wrap=True, width=160),
-            "os": self._add_simple_column(_("System Information"), "os-display", lambda d: d.os_display, wrap=True, width=180),
-        }
+    def _apply_sorter(self):
+        self.sort_model.set_sorter(Gtk.CustomSorter.new(self._compare_devices))
 
-        self.sort_model.set_sorter(self.column_view.get_sorter())
-        self.column_view.get_sorter().connect("changed", lambda *_: self._update_sort_indicator())
-
-    def _add_status_column(self):
+    def _setup_device_list(self):
         factory = Gtk.SignalListItemFactory()
-        factory.connect("setup", self.on_status_setup)
-        factory.connect("bind", self.on_status_bind)
-        column = Gtk.ColumnViewColumn(title="", factory=factory)
-        column.set_fixed_width(50)
-        column.set_sorter(Gtk.NumericSorter.new(Gtk.PropertyExpression.new(Device, None, "known-int")))
-        self.column_view.append_column(column)
-        return column
+        factory.connect("setup", self._on_device_row_setup)
+        factory.connect("bind", self._on_device_row_bind)
+        factory.connect("unbind", self._on_device_row_unbind)
+        self.device_list_view = Gtk.ListView(
+            model=Gtk.NoSelection(model=self.filter_model),
+            factory=factory,
+        )
+        self.device_list_view.set_show_separators(False)
+        self.device_list_view.add_css_class("mobile-device-list")
+        clamp = Adw.Clamp()
+        clamp.set_maximum_size(700)
+        clamp.set_child(self.device_list_view)
+        self.list_view.set_child(clamp)
+        self.list_view.set_policy(
+            Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
 
-    def on_status_setup(self, factory, list_item):
-        icon = Gtk.Image()
-        icon.set_margin_start(8)
-        icon.set_margin_end(8)
-        list_item.set_child(icon)
+    def _on_device_row_setup(self, factory, list_item):
+        list_item.set_child(DeviceMobileRow(toast_overlay=self.toast_overlay))
 
-    def on_status_bind(self, factory, list_item):
-        icon = list_item.get_child()
-        item = list_item.get_item()
+    def _on_device_row_bind(self, factory, list_item):
+        row = list_item.get_child()
+        device = list_item.get_item()
+        if row is not None and device is not None:
+            row.bind_device(device)
 
-        if not item.known:
-            icon.set_from_icon_name("starred-symbolic")
-            icon.set_tooltip_text(_("New device"))
-            icon.add_css_class("accent")
-        else:
-            icon.set_from_icon_name("network-wireless-signal-excellent-symbolic")
-            icon.set_tooltip_text(_("Known device"))
-            icon.remove_css_class("accent")
-
-    def _add_ip_column(self):
-        factory = Gtk.SignalListItemFactory()
-        factory.connect("setup", self.on_ip_setup)
-        factory.connect("bind", self.on_ip_bind)
-        column = Gtk.ColumnViewColumn(title=_("IP Address"), factory=factory)
-        column.set_fixed_width(170)
-        column.set_resizable(True)
-        column.set_sorter(Gtk.NumericSorter.new(Gtk.PropertyExpression.new(Device, None, "ip-sort-key")))
-        self.column_view.append_column(column)
-        return column
-
-    def on_ip_setup(self, factory, list_item):
-        box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-        label = Gtk.Label()
-        label.set_xalign(0)
-        label.set_margin_start(8)
-        label.set_margin_end(8)
-
-        copy_btn = Gtk.Button()
-        copy_btn.set_icon_name("edit-copy-symbolic")
-        copy_btn.add_css_class("flat")
-        copy_btn.set_tooltip_text(_("Copy IP"))
-
-        box.append(label)
-        box.append(copy_btn)
-        list_item.set_child(box)
-
-    def on_ip_bind(self, factory, list_item):
-        box = list_item.get_child()
-        label = box.get_first_child()
-        copy_btn = label.get_next_sibling()
-        item = list_item.get_item()
-
-        label.set_text(item.ip)
-
-        if hasattr(copy_btn, '_click_handler'):
-            copy_btn.disconnect(copy_btn._click_handler)
-        copy_btn._click_handler = copy_btn.connect(
-            "clicked", lambda btn: self.copy_to_clipboard(item.ip))
-
-    def _add_hostname_column(self):
-        factory = Gtk.SignalListItemFactory()
-        factory.connect("setup", self.on_hostname_setup)
-        factory.connect("bind", self.on_hostname_bind)
-        column = Gtk.ColumnViewColumn(title=_("Hostname"), factory=factory)
-        column.set_expand(True)
-        column.set_sorter(Gtk.StringSorter.new(Gtk.PropertyExpression.new(Device, None, "hostname")))
-        self.column_view.append_column(column)
-        return column
-
-    def on_hostname_setup(self, factory, list_item):
-        label = Gtk.Label()
-        label.set_xalign(0)
-        label.set_margin_start(8)
-        label.set_margin_end(8)
-        label.set_ellipsize(3)
-        list_item.set_child(label)
-
-    def on_hostname_bind(self, factory, list_item):
-        label = list_item.get_child()
-        item = list_item.get_item()
-
-        hostname = item.hostname if item.hostname != item.ip else _("Unknown")
-        label.set_text(hostname)
-
-    def _add_custom_name_column(self):
-        factory = Gtk.SignalListItemFactory()
-        factory.connect("setup", self.on_custom_name_setup)
-        factory.connect("bind", self.on_custom_name_bind)
-        column = Gtk.ColumnViewColumn(title=_("Custom Name"), factory=factory)
-        column.set_fixed_width(170)
-        column.set_resizable(True)
-        column.set_sorter(Gtk.StringSorter.new(Gtk.PropertyExpression.new(Device, None, "custom-name")))
-        self.column_view.append_column(column)
-        return column
-
-    def on_custom_name_setup(self, factory, list_item):
-        entry = Gtk.Entry()
-        entry.set_margin_start(8)
-        entry.set_margin_end(8)
-        entry.set_placeholder_text(_("Click to set name..."))
-        entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, "object-select-symbolic")
-        entry.set_icon_tooltip_text(Gtk.EntryIconPosition.SECONDARY, _("Apply"))
-        list_item.set_child(entry)
-
-    def on_custom_name_bind(self, factory, list_item):
-        """Bind custom name, keeping the entry synced live with the Device
-        model
-
-        so edits here and edits made via the card view's name row stay in
-        sync without either widget knowing about the other.
-        """
-        entry = list_item.get_child()
-        item = list_item.get_item()
-
-        if getattr(entry, '_custom_name_binding', None):
-            entry._custom_name_binding.unbind()
-        entry._custom_name_binding = item.bind_property(
-            "custom-name", entry, "text",
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
-
-        if hasattr(entry, '_custom_name_handler'):
-            entry.disconnect(entry._custom_name_handler)
-        entry._custom_name_handler = entry.connect(
-            "activate", lambda e: self._on_custom_name_committed(item, e))
-
-        if hasattr(entry, '_custom_name_icon_handler'):
-            entry.disconnect(entry._custom_name_icon_handler)
-        entry._custom_name_icon_handler = entry.connect(
-            "icon-press", lambda e, pos: self._on_custom_name_committed(item, e))
-
-    def _on_custom_name_committed(self, item, entry):
-        """Persist a custom name once the user commits (Enter or apply button)"""
-        storage.set_custom_name(item.registry_key, item.custom_name)
-        root = entry.get_root()
-        if root:
-            root.set_focus(None)
-        entry.set_position(-1)
-
-    def _add_simple_column(self, title, prop_name, display_func, wrap=False, width=None):
-        factory = Gtk.SignalListItemFactory()
-
-        def setup(_factory, list_item):
-            label = Gtk.Label(xalign=0, margin_start=8, margin_end=8)
-            if wrap:
-                label.set_wrap(True)
-                label.set_wrap_mode(2)
-            list_item.set_child(label)
-
-        def bind(_factory, list_item):
-            list_item.get_child().set_text(display_func(list_item.get_item()))
-
-        factory.connect("setup", setup)
-        factory.connect("bind", bind)
-
-        column = Gtk.ColumnViewColumn(title=title, factory=factory)
-        if width is not None:
-            column.set_fixed_width(width)
-            column.set_resizable(True)
-        else:
-            column.set_expand(True)
-        column.set_sorter(Gtk.StringSorter.new(Gtk.PropertyExpression.new(Device, None, prop_name)))
-        self.column_view.append_column(column)
-        return column
+    def _on_device_row_unbind(self, factory, list_item):
+        row = list_item.get_child()
+        if row is not None:
+            row.unbind_device()
 
     def _setup_responsive_header(self):
         """Move the header action buttons to a bottom bar on narrow windows.
@@ -621,37 +478,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         breakpoint.connect("apply", self._move_actions_to_bottom)
         breakpoint.connect("unapply", self._move_actions_to_header)
         self.page_breakpoint_bin.add_breakpoint(breakpoint)
-
-    def _setup_responsive_view(self):
-        """Force card view on narrow windows and restore the user's choice on wide."""
-        breakpoint = Adw.Breakpoint.new(
-            Adw.BreakpointCondition.parse("max-width: 500sp")
-        )
-        breakpoint.connect("apply", self._on_narrow_view_apply)
-        breakpoint.connect("unapply", self._on_narrow_view_unapply)
-        self.devices_breakpoint_bin.add_breakpoint(breakpoint)
-
-    def _on_narrow_view_apply(self, _breakpoint):
-        self._narrow_view_active = True
-        self._preferred_view_mode = self.settings.get_string('view-mode')
-        self.view_stack.set_visible_child_name('cards')
-        self.view_toggle_button.set_active(False)
-        self.view_toggle_button.set_icon_name('view-list-symbolic')
-        self.view_toggle_button.set_tooltip_text(_("Show as list"))
-        self._schedule_search_focus_cleanup()
-
-    def _on_narrow_view_unapply(self, _breakpoint):
-        self._narrow_view_active = False
-        is_list = self._preferred_view_mode == 'list'
-        self.view_stack.set_visible_child_name('list' if is_list else 'cards')
-        self.view_toggle_button.set_active(is_list)
-        self.view_toggle_button.set_icon_name(
-            'view-grid-symbolic' if is_list else 'view-list-symbolic'
-        )
-        self.view_toggle_button.set_tooltip_text(
-            _("Show as grid") if is_list else _("Show as list")
-        )
-        self._schedule_search_focus_cleanup()
 
     def _action_buttons(self):
         child = self.action_box.get_first_child()
@@ -679,7 +505,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
             button.set_halign(Gtk.Align.FILL)
         self.bottom_bar.set_child(self.action_box)
         self.bottom_bar.set_visible(True)
-        self.view_toggle_button.set_visible(False)
         self.stop_button_content.set_label("")
         self._schedule_search_focus_cleanup()
 
@@ -706,44 +531,38 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.results_header.pack_end(self.action_box)
         self._schedule_search_focus_cleanup()
 
-    def _apply_sort(self, column):
-        sorter = self.column_view.get_sorter()
-        if sorter.get_primary_sort_column() == column:
-            order = (Gtk.SortType.DESCENDING
-                     if sorter.get_primary_sort_order() == Gtk.SortType.ASCENDING
-                     else Gtk.SortType.ASCENDING)
+    def _apply_sort(self, key):
+        if key == self._sort_key:
+            self._sort_ascending = not self._sort_ascending
         else:
-            order = Gtk.SortType.DESCENDING
-        self.column_view.sort_by_column(column, order)
+            self._sort_key = key
+            self._sort_ascending = False
+        self._apply_sorter()
+        self._update_sort_indicator()
         self.sort_menu_button.popdown()
 
     def _update_sort_indicator(self):
         """Highlight the active sort row and show the direction on the button."""
-        sorter = self.column_view.get_sorter()
-        active_column = sorter.get_primary_sort_column()
-        active_key = next((k for k, c in self.columns.items() if c == active_column), None)
-        active_row = next((r for r, k in self._sort_rows.items() if k == active_key), None)
+        active_row = next((r for r, k in self._sort_rows.items() if k == self._sort_key), None)
         self.sort_list.select_row(active_row)
-
-        ascending = sorter.get_primary_sort_order() == Gtk.SortType.ASCENDING
 
         for row in self._sort_rows:
             box = row.get_child()
             icon = box.get_last_child()
             if row == active_row:
                 icon.set_from_icon_name(
-                    "view-sort-ascending-symbolic" if ascending else "view-sort-descending-symbolic")
+                    "view-sort-ascending-symbolic" if self._sort_ascending else "view-sort-descending-symbolic")
                 icon.set_visible(True)
             else:
                 icon.set_visible(False)
         self.sort_menu_button.set_icon_name(
-            "view-sort-ascending-symbolic" if ascending else "view-sort-descending-symbolic")
+            "view-sort-ascending-symbolic" if self._sort_ascending else "view-sort-descending-symbolic")
 
     @Gtk.Template.Callback()
     def on_sort_row_activated(self, listbox, row):
         key = self._sort_rows.get(row)
         if key:
-            self._apply_sort(self.columns[key])
+            self._apply_sort(key)
 
     @Gtk.Template.Callback()
     def on_view_toggle(self, button):
@@ -882,10 +701,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         root = self.get_root()
         if root:
             root.set_focus(None)
-
-    def copy_to_clipboard(self, text):
-        self.clipboard.set(text)
-        self.show_toast(_("Copied {ip} to the clipboard").format(ip=text), 2)
 
     @Gtk.Template.Callback()
     def on_export_clicked(self, button):
@@ -1095,14 +910,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         for data in devices_data:
             self.list_store.append(Device(data))
 
-        has_services = any(device.services_display for device in self.list_store)
-        self.columns["services"].set_visible(has_services)
-        self.sort_row_services.set_visible(has_services)
-
-        has_os = any(device.deep_scanned for device in self.list_store)
-        self.columns["os"].set_visible(has_os)
-        self.sort_row_os.set_visible(has_os)
-
         self._update_device_view()
         self._schedule_search_focus_cleanup()
 
@@ -1243,9 +1050,8 @@ class HistoryDialog(Adw.Dialog, ToastMixin):
     def _build_filter_menu(self):
         self.filter_menu_model.remove_all()
         for i, preset in enumerate(self._PRESETS):
-            if preset["mode"] == self._mode:
-                continue
-            item = Gio.MenuItem.new(_(preset["label"]), None)
+            label = ("✓ " if preset["mode"] == self._mode else "") + _(preset["label"])
+            item = Gio.MenuItem.new(label, None)
             item.set_action_and_target_value(
                 "filter.select",
                 GLib.Variant.new_string(str(i)),
