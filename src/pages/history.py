@@ -201,7 +201,10 @@ class HistoryDialog(Adw.Dialog, ToastMixin):
                 self.filter_button.set_label(preset['label'])
                 break
         else:
-            self.filter_button.set_label(_("All"))
+            if self._mode == 'custom' and self._custom_start and self._custom_end:
+                self.filter_button.set_label(_("Custom"))
+            else:
+                self.filter_button.set_label(_("All"))
 
         if self._mode == 'custom' and self._custom_start and self._custom_end:
             self.custom_toggle.set_label(_("{start} – {end}").format(

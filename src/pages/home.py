@@ -41,11 +41,14 @@ class HomePage(ToastMixin, Adw.NavigationPage):
         self.settings.bind('deep-scan', self.deep_scan_row, 'active',
                            Gio.SettingsBindFlags.DEFAULT)
 
-        # Entry text restores from GSettings; only validated ranges are
-        # written back, at the existing save points below.
-        self.settings.bind('last-ip-range', self.ip_entry_row, 'text',
-                           Gio.SettingsBindFlags.GET)
-        if not self.ip_entry_row.get_text():
+        # Entry text restores once from GSettings; only validated ranges are
+        # written back, at the existing save points below. One-time set_text,
+        # not bind(GET): a live binding echoes set_string() back into the row
+        # while focused and re-reveals the apply button right after apply.
+        saved_range = self.settings.get_string('last-ip-range')
+        if saved_range:
+            self.ip_entry_row.set_text(saved_range)
+        if not self.ip_entry_row.get_text() or not saved_range:
             if self._active_preset["range"] is None:
                 self.auto_detect_network()
             else:
@@ -65,6 +68,7 @@ class HomePage(ToastMixin, Adw.NavigationPage):
 
     def _clear_focus(self):
         clear_focus(self)
+        self.ip_entry_row.set_position(-1)
         return GLib.SOURCE_REMOVE
 
     def connect_results_page(self, results_page):
@@ -186,8 +190,10 @@ class HomePage(ToastMixin, Adw.NavigationPage):
         if not self.validate_ip_range():
             return
         self.settings.set_string('last-ip-range', self.ip_entry_row.get_text().strip())
-        self._clear_focus()
-        self.ip_entry_row.set_position(-1)
+        # Defer focus clear so AdwEntryRow finishes its apply/button
+        # handling first; clearing synchronously leaves the apply
+        # button visible until a second click.
+        GLib.idle_add(self._clear_focus)
 
     def on_preset_button_clicked(self, button):
         if self._active_preset["range"] is None:

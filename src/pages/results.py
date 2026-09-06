@@ -82,6 +82,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
             self.rescan_button: self.rescan_button.get_tooltip_text(),
             self.export_button: self.export_button.get_tooltip_text(),
             self.sort_menu_button: self.sort_menu_button.get_tooltip_text(),
+            self.scan_info_button: self.scan_info_button.get_tooltip_text(),
         }
 
     def connect_home_page(self, home_page):
