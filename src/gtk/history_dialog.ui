@@ -4,7 +4,7 @@
   <requires lib="libadwaita" version="1.0"/>
 
   <template class="HistoryDialog" parent="AdwDialog">
-    <property name="title" translatable="yes">Previous Scans</property>
+    <property name="title" translatable="yes">Previous scans</property>
     <property name="width-request">340</property>
     <property name="height-request">400</property>
     <property name="content-width">480</property>
@@ -14,7 +14,13 @@
         <child>
           <object class="AdwToolbarView">
         <child type="top">
-          <object class="AdwHeaderBar"/>
+          <object class="AdwHeaderBar">
+            <child type="title">
+              <object class="AdwWindowTitle">
+                <property name="title" translatable="yes">Previous scans</property>
+              </object>
+            </child>
+          </object>
         </child>
         <child type="top">
           <object class="GtkBox">
@@ -45,7 +51,7 @@
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="custom_toggle">
-                    <property name="label" translatable="yes">Custom Range…</property>
+                    <property name="label" translatable="yes">Custom range</property>
                     <property name="tooltip-text" translatable="yes">Pick a custom date range</property>
                     <style>
                       <class name="flat"/>
@@ -66,92 +72,56 @@
                     <property name="margin-end">12</property>
                     <property name="margin-bottom">6</property>
                     <child>
-                      <object class="GtkSeparator">
-                        <property name="orientation">horizontal</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkBox">
-                        <property name="spacing">8</property>
+                      <object class="AdwPreferencesGroup">
+                        <property name="title" translatable="yes">Custom range</property>
                         <child>
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">From</property>
-                            <property name="width-request">40</property>
-                            <property name="halign">start</property>
-                            <style>
-                              <class name="caption"/>
-                              <class name="dim-label"/>
-                            </style>
+                          <object class="AdwActionRow">
+                            <property name="title" translatable="yes">From</property>
+                            <child type="suffix">
+                              <object class="GtkMenuButton" id="start_button">
+                                <property name="valign">center</property>
+                                <property name="label" translatable="yes">Select date</property>
+                                <property name="tooltip-text" translatable="yes">Choose start date</property>
+                                <property name="popover">
+                                  <object class="GtkPopover">
+                                    <property name="child">
+                                      <object class="GtkCalendar" id="start_calendar"/>
+                                    </property>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
                           </object>
                         </child>
                         <child>
-                          <object class="GtkDropDown" id="start_day">
-                            <property name="valign">center</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkDropDown" id="start_month">
-                            <property name="valign">center</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkDropDown" id="start_year">
-                            <property name="valign">center</property>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkBox">
-                        <property name="spacing">8</property>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">To</property>
-                            <property name="width-request">40</property>
-                            <property name="halign">start</property>
-                            <style>
-                              <class name="caption"/>
-                              <class name="dim-label"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkDropDown" id="end_day">
-                            <property name="valign">center</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkDropDown" id="end_month">
-                            <property name="valign">center</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkDropDown" id="end_year">
-                            <property name="valign">center</property>
+                          <object class="AdwActionRow">
+                            <property name="title" translatable="yes">To</property>
+                            <child type="suffix">
+                              <object class="GtkMenuButton" id="end_button">
+                                <property name="valign">center</property>
+                                <property name="label" translatable="yes">Select date</property>
+                                <property name="tooltip-text" translatable="yes">Choose end date</property>
+                                <property name="popover">
+                                  <object class="GtkPopover">
+                                    <property name="child">
+                                      <object class="GtkCalendar" id="end_calendar"/>
+                                    </property>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
                           </object>
                         </child>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkBox">
-                        <property name="spacing">8</property>
-                        <property name="homogeneous">true</property>
-                        <child>
-                          <object class="GtkButton" id="custom_clear_button">
-                            <property name="label" translatable="yes">Clear</property>
-                            <style>
-                              <class name="flat"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="custom_apply_button">
-                            <property name="label" translatable="yes">Apply</property>
-                            <style>
-                              <class name="suggested-action"/>
-                            </style>
-                          </object>
-                        </child>
+                      <object class="GtkLabel" id="custom_error_label">
+                        <property name="visible">False</property>
+                        <property name="label" translatable="yes">End date must be after start date</property>
+                        <style>
+                          <class name="error"/>
+                          <class name="caption"/>
+                        </style>
                       </object>
                     </child>
                   </object>
@@ -200,6 +170,9 @@
                           <class name="osd"/>
                           <class name="circular"/>
                         </style>
+                        <accessibility>
+                          <property name="label" translatable="yes">Scroll to top</property>
+                        </accessibility>
                       </object>
                     </child>
                   </object>
@@ -211,11 +184,41 @@
                 <property name="name">empty</property>
                 <property name="child">
                   <object class="AdwStatusPage" id="empty_status_page">
-                    <property name="title" translatable="yes">No Previous Scans</property>
+                    <property name="title" translatable="yes">No previous scans</property>
                     <property name="description" translatable="yes">Your scan history will appear here.</property>
                     <property name="icon-name">document-open-recent-symbolic</property>
                   </object>
                 </property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="bottom">
+          <object class="GtkBox" id="custom_bottom_bar">
+            <property name="visible">False</property>
+            <property name="spacing">8</property>
+            <property name="homogeneous">true</property>
+            <property name="margin-start">12</property>
+            <property name="margin-end">12</property>
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">6</property>
+            <child>
+              <object class="GtkButton" id="custom_clear_button">
+                <property name="label" translatable="yes">_Clear dates</property>
+                <property name="use-underline">True</property>
+                <style>
+                  <class name="flat"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="custom_apply_button">
+                <property name="label" translatable="yes">_Show results</property>
+                <property name="use-underline">True</property>
+                <property name="receives-default">True</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
               </object>
             </child>
           </object>

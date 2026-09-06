@@ -34,6 +34,10 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 locale.bindtextdomain('netpeek', localedir)
 locale.textdomain('netpeek')
 gettext.install('netpeek', localedir)
+# ngettext with the app domain for plural forms (install() only provides _).
+import builtins
+builtins.ngettext = gettext.translation(
+    'netpeek', localedir, fallback=True).ngettext
 
 if __name__ == '__main__':
     import gi

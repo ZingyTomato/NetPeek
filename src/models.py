@@ -80,7 +80,8 @@ class Device(GObject.Object):
         self.ip = data.get("ip", "")
         self.hostname = data.get("hostname") or self.ip
         self.custom_name = data.get("custom_name", "") or ""
-        self.ports_display = data.get("ports_display", "")
+        # Empty (or legacy untranslated) means no common ports open.
+        self.ports_display = data.get("ports_display", "") or _("No common ports open")
         self.services = data.get("services") or []
         self.services_display = ", ".join(SERVICE_LABELS.get(s, s) for s in self.services)
         self.known = bool(data.get("known", False))
@@ -113,7 +114,8 @@ class Device(GObject.Object):
     def header_subtitle(self):
         if self.custom_name:
             if self.hostname and self.hostname != self.ip and self.hostname != self.custom_name:
-                return f"{self.custom_name} · {self.hostname}"
+                # User data, not UI copy: isolate for bidi rather than translate.
+                return f"\u2068{self.custom_name}\u2069 · \u2068{self.hostname}\u2069"
             return self.custom_name
         if self.hostname and self.hostname != self.ip:
             return self.hostname

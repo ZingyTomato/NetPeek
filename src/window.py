@@ -25,6 +25,7 @@ from gi.repository import Gtk, Adw, Gio
 
 from .scanner import NetworkScanner
 from .pages import HomePage, ResultsPage, HistoryDialog
+from .pages.preferences import PreferencesDialog
 
 @Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/main_window.ui')
 class NetworkScannerWindow(Adw.ApplicationWindow):
@@ -39,8 +40,16 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
 
         self.settings = settings
         self.scanner = NetworkScanner()
+        # Window geometry persists across sessions via GSettings.
+        self.settings.bind('window-width', self, 'default-width',
+                           Gio.SettingsBindFlags.DEFAULT)
+        self.settings.bind('window-height', self, 'default-height',
+                           Gio.SettingsBindFlags.DEFAULT)
+        self.settings.bind('window-maximized', self, 'maximized',
+                           Gio.SettingsBindFlags.DEFAULT)
         self._came_from_history = False
         self._history_scan_ts = None
+        self._preferences_dialog = None
         self.setup_pages()
         self.create_actions()
 
@@ -48,6 +57,7 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         # Window actions here; accelerators live in app.py.
         win_actions = {
             "previous-scans": self.on_previous_scans_action,
+            "preferences": self.on_preferences_action,
             "find": self.on_find_action,
             "rescan": self.on_rescan_action,
             "start-scan": self.on_start_scan_action,
@@ -88,12 +98,7 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         self._on_home_page(lambda p: p.focus_ip_entry())
 
     def on_stop_scan_action(self, action, param):
-        def stop(page):
-            # Skip stop if search is using Ctrl+. for emoji.
-            if page.search_entry.is_focus():
-                return
-            page.stop_if_scanning()
-        self._on_results_page(stop)
+        self._on_results_page(lambda p: p.stop_if_scanning())
 
     def on_export_action(self, action, param):
         self._on_results_page(lambda p: p.export_results())
@@ -115,6 +120,15 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
     def on_previous_scans_action(self, action, param):
         """Show the previous scans dialog"""
         self._show_history()
+
+    def on_preferences_action(self, action, param):
+        """Show the app preferences dialog (thread count, etc.)"""
+        if self._preferences_dialog is None:
+            self._preferences_dialog = PreferencesDialog(
+                settings=self.settings,
+                scanner=self.scanner,
+            )
+        self._preferences_dialog.present(self)
 
     def on_history_scan_selected(self, scan):
         """Load a scan chosen from history into the results page"""

@@ -7,7 +7,7 @@ from gi.repository import Gtk, Adw, Gio, GLib
 
 from ..widgets import ToastMixin
 from .. import storage
-from .helpers import build_checkmark_menu, setup_popover_breakpoints, parse_scan_dt
+from .helpers import build_radio_menu, parse_scan_dt
 
 
 @Gtk.Template(resource_path='/io/github/zingytomato/netpeek/gtk/history_dialog.ui')
@@ -24,27 +24,22 @@ class HistoryDialog(Adw.Dialog, ToastMixin):
     filter_popover = Gtk.Template.Child()
     custom_toggle = Gtk.Template.Child()
     custom_revealer = Gtk.Template.Child()
-    start_day = Gtk.Template.Child()
-    start_month = Gtk.Template.Child()
-    start_year = Gtk.Template.Child()
-    end_day = Gtk.Template.Child()
-    end_month = Gtk.Template.Child()
-    end_year = Gtk.Template.Child()
+    custom_error_label = Gtk.Template.Child()
+    custom_bottom_bar = Gtk.Template.Child()
+    start_button = Gtk.Template.Child()
+    start_calendar = Gtk.Template.Child()
+    end_button = Gtk.Template.Child()
+    end_calendar = Gtk.Template.Child()
     custom_apply_button = Gtk.Template.Child()
     custom_clear_button = Gtk.Template.Child()
     empty_status_page = Gtk.Template.Child()
 
     _FILTER_PRESETS = [
-        {"label": "All", "mode": "all"},
-        {"label": "Today", "mode": "today"},
-        {"label": "Yesterday", "mode": "yesterday"},
-        {"label": "Last 7 Days", "mode": "7d"},
-        {"label": "Last 30 Days", "mode": "30d"},
-    ]
-
-    _MONTHS = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December",
+        {"label": _("All"), "mode": "all"},
+        {"label": _("Today"), "mode": "today"},
+        {"label": _("Yesterday"), "mode": "yesterday"},
+        {"label": _("Last 7 days"), "mode": "7d"},
+        {"label": _("Last 30 days"), "mode": "30d"},
     ]
 
     _scroll_positions = {}
@@ -63,43 +58,48 @@ class HistoryDialog(Adw.Dialog, ToastMixin):
         self.filter_popover.add_css_class("filter-popover")
         self.filter_menu_model = Gio.Menu()
         self.filter_popover.set_menu_model(self.filter_menu_model)
-        self.install_action("filter.select", "s", self._on_filter_menu_select)
+        self._filter_action_group = Gio.SimpleActionGroup()
+        # Settings-backed action: the menu tick tracks the key directly.
+        self._filter_action_group.add_action(
+            self._settings.create_action('history-filter-mode'))
+        self.insert_action_group("filter", self._filter_action_group)
+        self._settings.connect(
+            'changed::history-filter-mode', self._on_filter_mode_setting)
         self._build_filter_menu()
 
-        setup_popover_breakpoints(self, self.filter_popover)
-
-        self._build_date_dropdowns()
         self._connect_signals()
         self._update_button_labels()
         self._rebuild_list()
         self._connect_scroll()
 
-    def _build_filter_menu(self):
-        try:
-            active = next(i for i, p in enumerate(self._FILTER_PRESETS) if p["mode"] == self._mode)
-        except StopIteration:
-            active = -1
-        build_checkmark_menu(
-            self.filter_menu_model,
-            [_(p["label"]) for p in self._FILTER_PRESETS],
-            active, "filter.select")
+    @staticmethod
+    def _format_calendar_date(d):
+        return GLib.DateTime.new_local(d.year, d.month, d.day, 0, 0, 0).format('%x')
 
-    def _build_date_dropdowns(self):
-        days = Gtk.StringList.new([str(d) for d in range(1, 32)])
-        months = Gtk.StringList.new(self._MONTHS)
-        now = self._today_local()
-        years = Gtk.StringList.new([str(y) for y in range(now.year - 5, now.year + 2)])
-        for dropdown in (self.start_day, self.end_day):
-            dropdown.set_model(days)
-        for dropdown in (self.start_month, self.end_month):
-            dropdown.set_model(months)
-        for dropdown in (self.start_year, self.end_year):
-            dropdown.set_model(years)
+    @staticmethod
+    def _calendar_to_date(calendar):
+        gdt = calendar.get_date()
+        return date(gdt.get_year(), gdt.get_month(), gdt.get_day_of_month())
+
+    @staticmethod
+    def _date_to_calendar(calendar, d):
+        calendar.set_date(GLib.DateTime.new_local(d.year, d.month, d.day, 0, 0, 0))
+
+    def _build_filter_menu(self):
+        # Built once; targets are mode strings, so the tick follows the
+        # 'history-filter-mode' key — 'custom' matches nothing, unticked.
+        build_radio_menu(
+            self.filter_menu_model,
+            [p["label"] for p in self._FILTER_PRESETS],
+            "filter.history-filter-mode",
+            targets=[p["mode"] for p in self._FILTER_PRESETS])
 
     def _connect_signals(self):
         self.custom_toggle.connect('toggled', self._on_custom_toggled)
         self.custom_apply_button.connect('clicked', self._on_custom_apply)
         self.custom_clear_button.connect('clicked', self._on_custom_clear)
+        self.start_calendar.connect('day-selected', self._on_start_day_selected)
+        self.end_calendar.connect('day-selected', self._on_end_day_selected)
 
     def _connect_scroll(self):
         vadj = self.history_scrolled.get_vadjustment()
@@ -114,11 +114,6 @@ class HistoryDialog(Adw.Dialog, ToastMixin):
         if vadj:
             key = (self._mode, self._custom_start, self._custom_end)
             HistoryDialog._scroll_positions[key] = int(vadj.get_value())
-        self._settings.set_string('history-filter-mode', self._mode)
-        self._settings.set_string('history-custom-start',
-                                   self._custom_start.isoformat() if self._custom_start else '')
-        self._settings.set_string('history-custom-end',
-                                   self._custom_end.isoformat() if self._custom_end else '')
 
     def _reset_scroll(self):
         vadj = self.history_scrolled.get_vadjustment()
@@ -136,16 +131,10 @@ class HistoryDialog(Adw.Dialog, ToastMixin):
 
     # ---- Preset handling ----
 
-    def _on_filter_menu_select(self, _widget, _action, param):
-        try:
-            index = int(param.get_string())
-        except (ValueError, AttributeError):
-            return
-        if not 0 <= index < len(self._FILTER_PRESETS):
-            return
-        self._mode = self._FILTER_PRESETS[index]["mode"]
+    def _on_filter_mode_setting(self, settings, _key):
+        """Re-filter when the mode key changes (menu, custom range, dconf)."""
+        self._mode = settings.get_string('history-filter-mode')
         self.custom_toggle.set_active(False)
-        self.filter_popover.popdown()
         self._apply_filter_change()
 
     # ---- Custom range ----
@@ -153,75 +142,73 @@ class HistoryDialog(Adw.Dialog, ToastMixin):
     def _on_custom_toggled(self, toggle):
         reveal = toggle.get_active()
         self.custom_revealer.set_reveal_child(reveal)
+        self.custom_bottom_bar.set_visible(reveal)
+        # Enter confirms the range only while the custom UI is open.
+        self.set_default_widget(self.custom_apply_button if reveal else None)
         if reveal:
-            self._seed_date_dropdowns(self._custom_start or self._today_local(),
-                                      self._custom_end or self._today_local())
+            self.custom_error_label.set_visible(False)
+            self._seed_calendars(self._custom_start or self._today_local(),
+                                 self._custom_end or self._today_local())
 
-    def _seed_date_dropdowns(self, start, end):
-        self._set_dropdown_date(self.start_day, self.start_month, self.start_year, start)
-        self._set_dropdown_date(self.end_day, self.end_month, self.end_year, end)
+    def _seed_calendars(self, start, end):
+        self._date_to_calendar(self.start_calendar, start)
+        self._date_to_calendar(self.end_calendar, end)
+        self.start_button.set_label(self._format_calendar_date(start))
+        self.end_button.set_label(self._format_calendar_date(end))
 
-    @staticmethod
-    def _set_dropdown_date(day_dd, month_dd, year_dd, d):
-        year_list = [int(year_dd.get_model().get_string(i)) for i in range(year_dd.get_model().get_n_items())]
-        day_dd.set_selected(d.day - 1)
-        month_dd.set_selected(d.month - 1)
-        if d.year in year_list:
-            year_dd.set_selected(year_list.index(d.year))
+    def _on_start_day_selected(self, calendar):
+        start = self._calendar_to_date(calendar)
+        self.start_button.set_label(self._format_calendar_date(start))
+        self.custom_error_label.set_visible(False)
+        self.start_button.popdown()
 
-    def _get_dropdown_date(self, day_dd, month_dd, year_dd):
-        day = day_dd.get_selected() + 1
-        month = month_dd.get_selected() + 1
-        year_str = year_dd.get_model().get_string(year_dd.get_selected())
-        if not year_str:
-            return None
-        try:
-            return date(int(year_str), month, day)
-        except ValueError:
-            return None
+    def _on_end_day_selected(self, calendar):
+        end = self._calendar_to_date(calendar)
+        self.end_button.set_label(self._format_calendar_date(end))
+        self.custom_error_label.set_visible(False)
+        self.end_button.popdown()
 
     def _on_custom_apply(self, _button):
-        start = self._get_dropdown_date(self.start_day, self.start_month, self.start_year)
-        end = self._get_dropdown_date(self.end_day, self.end_month, self.end_year)
-        if start is None or end is None:
-            self.show_toast(_("Invalid date selected."))
-            return
+        # Calendars only yield valid dates, so only ordering needs checking.
+        start = self._calendar_to_date(self.start_calendar)
+        end = self._calendar_to_date(self.end_calendar)
         if start > end:
-            self.show_toast(_("End date must be after start date."))
+            self.custom_error_label.set_visible(True)
             return
+        self.custom_error_label.set_visible(False)
         self._custom_start = start
         self._custom_end = end
-        self._mode = 'custom'
-        self.custom_toggle.set_active(False)
-        self._apply_filter_change()
+        self._settings.set_string('history-custom-start', start.isoformat())
+        self._settings.set_string('history-custom-end', end.isoformat())
+        self._settings.set_string('history-filter-mode', 'custom')
 
     def _on_custom_clear(self, _button):
         self._custom_start = None
         self._custom_end = None
-        self._mode = 'all'
-        self.custom_toggle.set_active(False)
-        self._apply_filter_change()
+        self.custom_error_label.set_visible(False)
+        self._settings.set_string('history-custom-start', '')
+        self._settings.set_string('history-custom-end', '')
+        self._settings.set_string('history-filter-mode', 'all')
 
     def _apply_filter_change(self):
         self._update_button_labels()
-        self._build_filter_menu()
         self._reset_scroll()
         self._rebuild_list()
 
     def _update_button_labels(self):
         for preset in self._FILTER_PRESETS:
             if preset['mode'] == self._mode:
-                self.filter_button.set_label(_(preset['label']))
+                self.filter_button.set_label(preset['label'])
                 break
         else:
             self.filter_button.set_label(_("All"))
 
         if self._mode == 'custom' and self._custom_start and self._custom_end:
-            self.custom_toggle.set_label('%s \u2013 %s' % (
-                self._custom_start.strftime('%b %d'),
-                self._custom_end.strftime('%b %d')))
+            self.custom_toggle.set_label(_("{start} – {end}").format(
+                start=self._custom_start.strftime('%b %d'),
+                end=self._custom_end.strftime('%b %d')))
         else:
-            self.custom_toggle.set_label(_("Custom Range…"))
+            self.custom_toggle.set_label(_("Custom range"))
 
     # ---- Date range helpers ----
 
@@ -273,6 +260,7 @@ class HistoryDialog(Adw.Dialog, ToastMixin):
         row.set_selectable(False)
         row.set_activatable(False)
         row.set_can_focus(False)
+        row.set_property('accessible-role', Gtk.AccessibleRole.HEADING)
         row.set_child(label)
         return row
 
@@ -307,13 +295,13 @@ class HistoryDialog(Adw.Dialog, ToastMixin):
         filtered = self._get_filtered_scans()
 
         if total_scans == 0:
-            self.empty_status_page.set_title(_("No Previous Scans"))
+            self.empty_status_page.set_title(_("No previous scans"))
             self.empty_status_page.set_description(_("Your scan history will appear here."))
             self.history_stack.set_visible_child_name('empty')
             return
 
         if not filtered:
-            self.empty_status_page.set_title(_("No Scans Found"))
+            self.empty_status_page.set_title(_("No scans found"))
             self.empty_status_page.set_description(_("No scans match the selected time range."))
             self.history_stack.set_visible_child_name('empty')
             return
@@ -343,21 +331,31 @@ class HistoryDialog(Adw.Dialog, ToastMixin):
         device_count = len(scan.get('devices', []))
         dt = parse_scan_dt(scan.get('timestamp', ''))
         time_str = dt.astimezone().strftime('%H:%M') if dt else ""
-        deep_suffix = " · " + _("Deep") if scan.get("deep_scan", False) else ""
-        row.set_subtitle(_("{time} · {count} devices{deep}").format(
-            time=time_str, count=device_count, deep=deep_suffix))
+        count_str = ngettext(
+            "{count} device", "{count} devices", device_count,
+        ).format(count=device_count)
+        if scan.get("deep_scan", False):
+            row.set_subtitle(_("{time} · {count} · Deep").format(
+                time=time_str, count=count_str))
+        else:
+            row.set_subtitle(_("{time} · {count}").format(
+                time=time_str, count=count_str))
         row.set_activatable(True)
         row.scan_data = scan
 
         delete_button = Gtk.Button()
         delete_button.set_icon_name('user-trash-symbolic')
         delete_button.set_tooltip_text(_("Delete this scan"))
+        delete_button.update_property(
+            [Gtk.AccessibleProperty.LABEL], [_("Delete this scan")])
         delete_button.set_valign(Gtk.Align.CENTER)
         delete_button.add_css_class('flat')
         delete_button.connect('clicked', self._on_delete_clicked, row)
         row.add_suffix(delete_button)
 
-        row.add_suffix(Gtk.Image.new_from_icon_name('go-next-symbolic'))
+        chevron = Gtk.Image.new_from_icon_name('go-next-symbolic')
+        chevron.set_property('accessible-role', Gtk.AccessibleRole.PRESENTATION)
+        row.add_suffix(chevron)
         return row
 
     def _on_delete_clicked(self, button, row):
@@ -365,12 +363,14 @@ class HistoryDialog(Adw.Dialog, ToastMixin):
         if not scan_data:
             return
 
+        scan_label = scan_data.get('ip_range', '')
         confirmation = Adw.AlertDialog.new(
-            _("Delete Scan?"),
-            _("This scan will be permanently removed from your history."),
+            _("Delete scan?"),
+            _("“{scan}” will be permanently removed from your history. "
+              "This cannot be undone.").format(scan=scan_label),
         )
         confirmation.add_response("cancel", _("Cancel"))
-        confirmation.add_response("delete", _("Delete"))
+        confirmation.add_response("delete", _("Delete Scan"))
         confirmation.set_response_appearance(
             "delete", Adw.ResponseAppearance.DESTRUCTIVE)
         confirmation.set_default_response("cancel")
@@ -384,9 +384,17 @@ class HistoryDialog(Adw.Dialog, ToastMixin):
     def _delete_confirmed(self, response, scan_data):
         if response != "delete":
             return
+        deleted = dict(scan_data)
         storage.delete_scan(scan_data.get('timestamp', ''))
         self._rebuild_list()
-        self.show_toast(_("Scan deleted"))
+        toast = Adw.Toast(title=_("Scan deleted"))
+        toast.set_button_label(_("Undo"))
+        toast.connect("button-clicked", self._on_delete_undone, deleted)
+        self.toast_overlay.add_toast(toast)
+
+    def _on_delete_undone(self, _toast, scan):
+        storage.restore_scan(scan)
+        self._rebuild_list()
 
     @Gtk.Template.Callback()
     def on_scan_row_activated(self, listbox, row):

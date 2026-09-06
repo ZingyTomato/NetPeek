@@ -145,3 +145,16 @@ def delete_scan(timestamp):
     scans = load_scans()
     scans = [scan for scan in scans if scan.get("timestamp") != timestamp]
     save_scans(scans)
+
+
+def restore_scan(scan):
+    """Re-insert a previously deleted scan, keeping newest-first order.
+
+    Used by the delete-undo toast. The device registry is cumulative and
+    intentionally left untouched.
+    """
+    scans = [s for s in load_scans()
+             if s.get("timestamp") != scan.get("timestamp")]
+    scans.append(dict(scan))
+    scans.sort(key=lambda s: s.get("timestamp", ""), reverse=True)
+    save_scans(scans[:MAX_SCAN_HISTORY])

@@ -23,15 +23,16 @@
         </child>
         <child>
           <object class="AdwShortcutsItem">
-            <property name="title" translatable="yes" context="shortcut window">Go Back</property>
-            <property name="action-name">win.go-back</property>
-            <property name="accelerator">&lt;Alt&gt;Left</property>
+            <property name="title" translatable="yes" context="shortcut window">Preferences</property>
+            <property name="action-name">win.preferences</property>
+            <property name="accelerator">&lt;Primary&gt;comma</property>
           </object>
         </child>
         <child>
           <object class="AdwShortcutsItem">
-            <property name="title" translatable="yes" context="shortcut window">Close Dialog</property>
-            <property name="accelerator">Escape</property>
+            <property name="title" translatable="yes" context="shortcut window">Go Back</property>
+            <property name="action-name">win.go-back</property>
+            <property name="accelerator">&lt;Alt&gt;Left</property>
           </object>
         </child>
         <child>
@@ -81,14 +82,21 @@
         </child>
         <child>
           <object class="AdwShortcutsItem">
-            <property name="title" translatable="yes" context="shortcut window">Stop Scan</property>
-            <property name="action-name">win.stop-scan</property>
-            <property name="accelerator">&lt;Primary&gt;period</property>
+            <property name="title" translatable="yes" context="shortcut window">Rescan</property>
+            <property name="action-name">win.rescan</property>
+            <property name="accelerator">F5</property>
           </object>
         </child>
         <child>
           <object class="AdwShortcutsItem">
-            <property name="title" translatable="yes" context="shortcut window">Export Results</property>
+            <property name="title" translatable="yes" context="shortcut window">Stop Scan</property>
+            <property name="action-name">win.stop-scan</property>
+            <property name="accelerator">&lt;Primary&gt;s</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwShortcutsItem">
+            <property name="title" translatable="yes" context="shortcut window">Export to CSV</property>
             <property name="action-name">win.export</property>
             <property name="accelerator">&lt;Primary&gt;e</property>
           </object>

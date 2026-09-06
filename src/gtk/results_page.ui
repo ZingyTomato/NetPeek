@@ -4,7 +4,7 @@
   <requires lib="libadwaita" version="1.0"/>
 
   <template class="ResultsPage" parent="AdwNavigationPage">
-    <property name="title" translatable="yes">Scanning in progress...</property>
+    <property name="title" translatable="yes">Scan results</property>
 
     <child>
       <object class="AdwBreakpointBin" id="page_breakpoint_bin">
@@ -17,8 +17,7 @@
           <object class="AdwHeaderBar" id="results_header">
             <child type="title">
               <object class="AdwWindowTitle" id="results_title">
-                <property name="title" translatable="yes">Scan Results</property>
-                <property name="subtitle" translatable="yes">Devices found on your network:</property>
+                <property name="title" translatable="yes">Scan results</property>
               </object>
             </child>
 
@@ -41,7 +40,11 @@
               <object class="GtkButton" id="scan_info_button">
                 <property name="icon-name">dialog-information-symbolic</property>
                 <property name="tooltip-text" translatable="yes">Scan information</property>
+                <property name="sensitive">False</property>
                 <signal name="clicked" handler="on_scan_info_clicked"/>
+                <accessibility>
+                  <property name="label" translatable="yes">Scan information</property>
+                </accessibility>
               </object>
             </child>
 
@@ -53,6 +56,9 @@
                     <property name="icon-name">document-save-symbolic</property>
                     <property name="tooltip-text" translatable="yes">Export to CSV</property>
                     <signal name="clicked" handler="on_export_clicked"/>
+                    <accessibility>
+                      <property name="label" translatable="yes">Export to CSV</property>
+                    </accessibility>
                   </object>
                 </child>
 
@@ -67,174 +73,15 @@
                 <child>
                   <object class="GtkMenuButton" id="sort_menu_button">
                     <property name="icon-name">view-sort-ascending-symbolic</property>
-                    <property name="tooltip-text" translatable="yes">Sort devices</property>
+                    <property name="tooltip-text" translatable="yes">Sort options</property>
                     <property name="popover">
-                      <object class="GtkPopover">
-                        <style>
-                          <class name="menu"/>
-                        </style>
-                        <property name="child">
-                          <object class="GtkListBox" id="sort_list">
-                            <property name="selection-mode">single</property>
-                            <signal name="row-activated" handler="on_sort_row_activated"/>
-                            <child>
-                              <object class="GtkListBoxRow" id="sort_row_known">
-                                <property name="child">
-                                  <object class="GtkBox">
-                                    <property name="hexpand">True</property>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <property name="label" translatable="yes">Known</property>
-                                        <property name="halign">start</property>
-                                        <property name="hexpand">True</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkImage">
-                                        <property name="icon-name">object-select-symbolic</property>
-                                        <property name="visible">False</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkListBoxRow" id="sort_row_ip">
-                                <property name="child">
-                                  <object class="GtkBox">
-                                    <property name="hexpand">True</property>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <property name="label" translatable="yes">IP Address</property>
-                                        <property name="halign">start</property>
-                                        <property name="hexpand">True</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkImage">
-                                        <property name="icon-name">object-select-symbolic</property>
-                                        <property name="visible">False</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkListBoxRow" id="sort_row_hostname">
-                                <property name="child">
-                                  <object class="GtkBox">
-                                    <property name="hexpand">True</property>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <property name="label" translatable="yes">Hostname</property>
-                                        <property name="halign">start</property>
-                                        <property name="hexpand">True</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkImage">
-                                        <property name="icon-name">object-select-symbolic</property>
-                                        <property name="visible">False</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkListBoxRow" id="sort_row_custom_name">
-                                <property name="child">
-                                  <object class="GtkBox">
-                                    <property name="hexpand">True</property>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <property name="label" translatable="yes">Custom Name</property>
-                                        <property name="halign">start</property>
-                                        <property name="hexpand">True</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkImage">
-                                        <property name="icon-name">object-select-symbolic</property>
-                                        <property name="visible">False</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkListBoxRow" id="sort_row_ports">
-                                <property name="child">
-                                  <object class="GtkBox">
-                                    <property name="hexpand">True</property>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <property name="label" translatable="yes">Ports</property>
-                                        <property name="halign">start</property>
-                                        <property name="hexpand">True</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkImage">
-                                        <property name="icon-name">object-select-symbolic</property>
-                                        <property name="visible">False</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkListBoxRow" id="sort_row_services">
-                                <property name="child">
-                                  <object class="GtkBox">
-                                    <property name="hexpand">True</property>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <property name="label" translatable="yes">Services</property>
-                                        <property name="halign">start</property>
-                                        <property name="hexpand">True</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkImage">
-                                        <property name="icon-name">object-select-symbolic</property>
-                                        <property name="visible">False</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </property>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkListBoxRow" id="sort_row_os">
-                                <property name="child">
-                                  <object class="GtkBox">
-                                    <property name="hexpand">True</property>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <property name="label" translatable="yes">System Information</property>
-                                        <property name="halign">start</property>
-                                        <property name="hexpand">True</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkImage">
-                                        <property name="icon-name">object-select-symbolic</property>
-                                        <property name="visible">False</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </property>
-                              </object>
-                            </child>
-                          </object>
-                        </property>
+                      <object class="GtkPopoverMenu">
+                        <property name="menu-model">results_view_menu</property>
                       </object>
                     </property>
+                    <accessibility>
+                      <property name="label" translatable="yes">Sort options</property>
+                    </accessibility>
                   </object>
                 </child>
 
@@ -269,8 +116,8 @@
                 <property name="name">loading</property>
                 <property name="child">
                   <object class="AdwStatusPage">
-                    <property name="title" translatable="yes">Scanning Network</property>
-                    <property name="description" translatable="yes">Discovering devices on your network... (this may take a while!)</property>
+                    <property name="title" translatable="yes">Scanning network</property>
+                    <property name="description" translatable="yes">Discovering devices on your network…</property>
                     <property name="icon-name">network-wireless-acquiring-symbolic</property>
 
                     <child>
@@ -290,21 +137,24 @@
                         </child>
 
                         <child>
-                          <object class="GtkLabel" id="progress_label">
-                            <property name="label" translatable="yes">Preparing scan...</property>
-                            <style>
-                              <class name="dim-label"/>
-                            </style>
-                          </object>
+                           <object class="GtkLabel" id="progress_label">
+                             <property name="label" translatable="yes">Preparing scan…</property>
+                             <property name="ellipsize">end</property>
+                             <property name="max-width-chars">48</property>
+                             <style>
+                               <class name="dim-label"/>
+                             </style>
+                           </object>
                         </child>
 
                         <child>
-                          <object class="GtkLabel" id="timer_label">
-                            <property name="label" translatable="yes">Time Elapsed: 00:00</property>
-                            <style>
-                              <class name="dim-label"/>
-                            </style>
-                          </object>
+                           <object class="GtkLabel" id="timer_label">
+                             <property name="label" translatable="yes">Time elapsed: 00:00</property>
+                             <property name="ellipsize">end</property>
+                             <style>
+                               <class name="dim-label"/>
+                             </style>
+                           </object>
                         </child>
                       </object>
                     </child>
@@ -332,7 +182,7 @@
                         <child>
                           <object class="GtkSearchEntry" id="search_entry">
                             <property name="hexpand">True</property>
-                            <property name="placeholder-text" translatable="yes">Search IP addresses, services, ports…</property>
+                            <property name="placeholder-text" translatable="yes">Search devices</property>
                             <signal name="search-changed" handler="on_search_changed"/>
                             <signal name="stop-search" handler="on_search_stopped"/>
                           </object>
@@ -415,7 +265,7 @@
                             <property name="name">no_results</property>
                             <property name="child">
                               <object class="AdwStatusPage" id="no_results_page">
-                                <property name="title" translatable="yes">No Results Found</property>
+                                <property name="title" translatable="yes">No results found</property>
                                 <property name="description" translatable="yes">No devices match your search query.</property>
                                 <property name="icon-name">edit-find-symbolic</property>
                               </object>
@@ -434,7 +284,7 @@
                 <property name="name">empty</property>
                 <property name="child">
                   <object class="AdwStatusPage" id="empty_page">
-                    <property name="title" translatable="yes">No Devices Found</property>
+                    <property name="title" translatable="yes">No devices found</property>
                     <property name="description" translatable="yes">No devices were found in the specified range.</property>
                     <property name="icon-name">network-wireless-offline-symbolic</property>
                   </object>
@@ -447,12 +297,13 @@
                 <property name="name">error</property>
                 <property name="child">
                   <object class="AdwStatusPage" id="error_page">
-                    <property name="title" translatable="yes">Scan Error</property>
+                    <property name="title" translatable="yes">Scan error</property>
                     <property name="description" translatable="yes">An error occurred while scanning the network.</property>
                     <property name="icon-name">dialog-error-symbolic</property>
                     <child>
                       <object class="GtkButton" id="error_rescan_button">
-                        <property name="label" translatable="yes">Try Again</property>
+                        <property name="label" translatable="yes">_Try again</property>
+                        <property name="use-underline">True</property>
                         <signal name="clicked" handler="on_rescan_clicked"/>
                         <style><class name="suggested-action"/><class name="pill"/></style>
                       </object>
@@ -474,4 +325,51 @@
       </object>
     </child>
   </template>
+
+  <menu id="results_view_menu">
+    <section>
+      <attribute name="label" translatable="yes">Sort by</attribute>
+      <item>
+        <attribute name="label" translatable="yes">Known</attribute>
+        <attribute name="action">view.sort-by</attribute>
+        <attribute name="target">known</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">IP address</attribute>
+        <attribute name="action">view.sort-by</attribute>
+        <attribute name="target">ip</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Hostname</attribute>
+        <attribute name="action">view.sort-by</attribute>
+        <attribute name="target">hostname</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Custom name</attribute>
+        <attribute name="action">view.sort-by</attribute>
+        <attribute name="target">custom_name</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Ports</attribute>
+        <attribute name="action">view.sort-by</attribute>
+        <attribute name="target">ports</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Services</attribute>
+        <attribute name="action">view.sort-by</attribute>
+        <attribute name="target">services</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">System information</attribute>
+        <attribute name="action">view.sort-by</attribute>
+        <attribute name="target">os</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Ascending</attribute>
+        <attribute name="action">view.ascending</attribute>
+      </item>
+    </section>
+  </menu>
 </interface>

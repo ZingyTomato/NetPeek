@@ -135,7 +135,9 @@ class NetworkScanner:
                     "hostname": hostname or str(host),
                     "ip": str(host),
                     "ports": open_ports,
-                    "ports_display": ", ".join(map(str, open_ports)) if open_ports else _("No common ports open"),
+                    # Empty means none; translated at display so history
+                    # never persists a localized string.
+                    "ports_display": ", ".join(map(str, open_ports)) if open_ports else "",
                     "services": services,
                     "os_display": "",
                 }

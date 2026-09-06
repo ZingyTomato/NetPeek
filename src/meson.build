@@ -45,6 +45,7 @@ pages_sources = [
   'pages/history.py',
   'pages/scan_info.py',
   'pages/helpers.py',
+  'pages/preferences.py',
 ]
 
 install_data(netpeek_sources, install_dir: moduledir)

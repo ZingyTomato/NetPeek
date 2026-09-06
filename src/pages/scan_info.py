@@ -44,7 +44,14 @@ class ScanMetadataDialog(Adw.Dialog):
         minutes, secs = divmod(seconds, 60)
         if minutes < 60:
             if minutes:
-                return _("{minutes} min {seconds} s").format(minutes=minutes, seconds=secs)
-            return _("{seconds} s").format(seconds=secs)
+                return _("{minutes} {seconds}").format(
+                    minutes=ngettext(
+                        "{n} minute", "{n} minutes", minutes).format(n=minutes),
+                    seconds=ngettext(
+                        "{n} second", "{n} seconds", secs).format(n=secs))
+            return ngettext("{n} second", "{n} seconds", secs).format(n=secs)
         hours, minutes = divmod(minutes, 60)
-        return _("{hours} h {minutes} min").format(hours=hours, minutes=minutes)
+        return _("{hours} {minutes}").format(
+            hours=ngettext("{n} hour", "{n} hours", hours).format(n=hours),
+            minutes=ngettext("{n} minute", "{n} minutes", minutes).format(
+                n=minutes))

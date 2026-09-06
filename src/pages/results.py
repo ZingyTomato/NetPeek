@@ -5,9 +5,8 @@ from pathlib import Path
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Adw, Gio, GLib, Gdk
-
-from ..widgets import DeviceCard, DeviceMobileRow, ToastMixin, clear_focus
+from gi.repository import Gtk, Adw, Gio, GLib
+from ..widgets import DeviceCard, DeviceMobileRow, ToastMixin
 from ..models import Device
 from .. import storage
 
@@ -29,14 +28,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
     export_button = Gtk.Template.Child()
     view_toggle_button = Gtk.Template.Child()
     sort_menu_button = Gtk.Template.Child()
-    sort_list = Gtk.Template.Child()
-    sort_row_known = Gtk.Template.Child()
-    sort_row_ip = Gtk.Template.Child()
-    sort_row_hostname = Gtk.Template.Child()
-    sort_row_custom_name = Gtk.Template.Child()
-    sort_row_ports = Gtk.Template.Child()
-    sort_row_services = Gtk.Template.Child()
-    sort_row_os = Gtk.Template.Child()
     search_entry = Gtk.Template.Child()
     devices_content_stack = Gtk.Template.Child()
     results_stack = Gtk.Template.Child()
@@ -70,37 +61,28 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
 
         self.list_store = Gio.ListStore(item_type=Device)
         self._search_text = ""
-        self._skip_blur_on_clear = False
-        self._last_typed = 0.0
-        self._last_pointer_press = 0.0
-        self._hovering = False
-        self._blur_check_id = None
-        self._typing_grace = 1.0
-        self._focus_before_window_deactivate = None
         self._sort_key = 'ip'
         self._sort_ascending = True
+        self._setup_view_actions()
         self._setup_device_models()
         self._setup_device_list()
         self.flow_box.bind_model(self.filter_model, self._create_card)
-        self._setup_search_behavior()
         self._setup_responsive_header()
 
-        self._window_active_id = None
-        self.connect("map", self._on_results_page_map)
-
-        self._sort_rows = {
-            self.sort_row_known: "known",
-            self.sort_row_ip: "ip",
-            self.sort_row_custom_name: "custom_name",
-            self.sort_row_hostname: "hostname",
-            self.sort_row_ports: "ports",
-            self.sort_row_services: "services",
-            self.sort_row_os: "os",
-        }
-
         self._apply_sorter()
-        self._update_sort_indicator()
-        self._apply_view_mode(self.settings.get_string('view-mode') == 'list', save=False)
+        # String key <-> bool toggle needs a custom mapping, which
+        # PyGObject cannot express (get_mapping has no write-back
+        # channel), so the key is synced via changed:: + one write path.
+        self.settings.connect(
+            'changed::view-mode', self._on_view_mode_setting)
+        self._apply_view_mode(self.settings.get_string('view-mode') == 'list')
+        self._sync_sort_button_icon()
+        # Default tips, restored when controls re-enable after a scan.
+        self._control_tips = {
+            self.rescan_button: self.rescan_button.get_tooltip_text(),
+            self.export_button: self.export_button.get_tooltip_text(),
+            self.sort_menu_button: self.sort_menu_button.get_tooltip_text(),
+        }
 
     def connect_home_page(self, home_page):
         self.home_page = home_page
@@ -116,13 +98,17 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         return False
 
     def export_results(self):
-        if self.export_button.get_sensitive():
-            self.on_export_clicked(None)
+        if self.scanner.is_scanning or self.list_store.get_n_items() == 0:
+            return
+        self.on_export_clicked(None)
 
     def toggle_view(self):
-        if self.view_toggle_button.get_sensitive():
-            self.view_toggle_button.set_active(
-                not self.view_toggle_button.get_active())
+        self._view_list_action.activate(None)
+
+    def _sync_sort_button_icon(self):
+        self.sort_menu_button.set_icon_name(
+            "view-sort-ascending-symbolic" if self._sort_ascending
+            else "view-sort-descending-symbolic")
 
     def show_scan_info(self):
         if self.current_scan:
@@ -269,59 +255,100 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self._reparent_scan_info(to_bottom=True)
         self.bottom_bar.set_child(self.action_box)
         self.bottom_bar.set_visible(True)
-        self.stop_button_content.set_label("")
-        self._schedule_search_focus_cleanup()
 
     def _move_actions_to_header(self, breakpoint):
         self.bottom_bar.set_child(None)
         self.bottom_bar.set_visible(False)
         self._style_action_box(bottom=False)
-        self.view_toggle_button.set_visible(True)
-        self.stop_button_content.set_label(_("Stop"))
         self._reparent_scan_info(to_bottom=False)
         self.results_header.pack_end(self.action_box)
-        self._schedule_search_focus_cleanup()
 
-    def _apply_sort(self, key):
-        if key == self._sort_key:
-            self._sort_ascending = not self._sort_ascending
-        else:
-            self._sort_key = key
-            self._sort_ascending = False
+    def _setup_view_actions(self):
+        """Stateful actions backing the secondary view menu.
+
+        ``view.sort-by`` (string) renders as radio items, ``view.ascending``
+        and ``view.list-view`` (booleans) as check items. GTK draws the
+        indicators from action state — no manual icon swapping.
+        """
+        self._view_action_group = Gio.SimpleActionGroup()
+
+        self._sort_by_action = Gio.SimpleAction.new_stateful(
+            "sort-by", GLib.VariantType.new("s"),
+            GLib.Variant.new_string(self._sort_key))
+        self._sort_by_action.connect("activate", self._on_sort_by_activate)
+        self._sort_by_action.connect("change-state", self._on_sort_by_change_state)
+        self._view_action_group.add_action(self._sort_by_action)
+
+        self._ascending_action = Gio.SimpleAction.new_stateful(
+            "ascending", None,
+            GLib.Variant.new_boolean(self._sort_ascending))
+        self._ascending_action.connect("activate", self._on_ascending_activate)
+        self._view_action_group.add_action(self._ascending_action)
+
+        self._view_list_action = Gio.SimpleAction.new_stateful(
+            "list-view", None,
+            GLib.Variant.new_boolean(
+                self.settings.get_string('view-mode') == 'list'))
+        self._view_list_action.connect("activate", self._on_list_view_activate)
+        self._view_action_group.add_action(self._view_list_action)
+
+        self.insert_action_group("view", self._view_action_group)
+
+    def _sync_view_actions(self):
+        by_state = GLib.Variant.new_string(self._sort_key)
+        if self._sort_by_action.get_state() != by_state:
+            self._sort_by_action.set_state(by_state)
+        asc_state = GLib.Variant.new_boolean(self._sort_ascending)
+        if self._ascending_action.get_state() != asc_state:
+            self._ascending_action.set_state(asc_state)
+        self._sync_sort_button_icon()
+
+    def _on_sort_by_activate(self, action, parameter):
+        action.change_state(parameter)
+
+    def _on_sort_by_change_state(self, action, state):
+        key = state.get_string()
+        if key not in self._SORT_GETTERS:
+            return
+        action.set_state(state)
+        # Direction is owned by the Ascending check item; picking a key
+        # never toggles it implicitly.
+        self._sort_key = key
         self._apply_sorter()
-        self._update_sort_indicator()
+        self._sync_view_actions()
         self.sort_menu_button.popdown()
 
-    def _update_sort_indicator(self):
-        """Highlight the active sort row and show direction on the button."""
-        active_row = next((r for r, k in self._sort_rows.items() if k == self._sort_key), None)
-        self.sort_list.select_row(active_row)
+    def _on_ascending_activate(self, action, _param):
+        new_value = not action.get_state().get_boolean()
+        action.set_state(GLib.Variant.new_boolean(new_value))
+        self._sort_ascending = new_value
+        self._apply_sorter()
+        self._sync_view_actions()
 
-        for row in self._sort_rows:
-            box = row.get_child()
-            icon = box.get_last_child()
-            if row == active_row:
-                icon.set_from_icon_name(
-                    "view-sort-ascending-symbolic" if self._sort_ascending else "view-sort-descending-symbolic")
-                icon.set_visible(True)
-            else:
-                icon.set_visible(False)
-        self.sort_menu_button.set_icon_name(
-            "view-sort-ascending-symbolic" if self._sort_ascending else "view-sort-descending-symbolic")
+    def _on_list_view_activate(self, action, _param):
+        new_value = not action.get_state().get_boolean()
+        action.set_state(GLib.Variant.new_boolean(new_value))
+        self._apply_view_mode(new_value)
 
-    @Gtk.Template.Callback()
-    def on_sort_row_activated(self, listbox, row):
-        key = self._sort_rows.get(row)
-        if key:
-            self._apply_sort(key)
+    def _on_view_mode_setting(self, settings, _key):
+        self._apply_view_mode(settings.get_string('view-mode') == 'list')
 
-    def _apply_view_mode(self, is_list, save=True):
-        self.view_toggle_button.set_active(is_list)
-        self.view_toggle_button.set_icon_name('view-grid-symbolic' if is_list else 'view-list-symbolic')
-        self.view_toggle_button.set_tooltip_text(_("Show as grid") if is_list else _("Show as list"))
+    def _apply_view_mode(self, is_list):
+        list_state = GLib.Variant.new_boolean(is_list)
+        if self._view_list_action.get_state() != list_state:
+            self._view_list_action.set_state(list_state)
+        if self.view_toggle_button.get_active() != is_list:
+            self.view_toggle_button.set_active(is_list)
+        self.view_toggle_button.set_icon_name(
+            'view-grid-symbolic' if is_list else 'view-list-symbolic')
+        view_tip = _("Show as grid") if is_list else _("Show as list")
+        self.view_toggle_button.set_tooltip_text(view_tip)
+        self.view_toggle_button.update_property(
+            [Gtk.AccessibleProperty.LABEL], [view_tip])
         self.view_stack.set_visible_child_name('list' if is_list else 'cards')
-        if save:
-            self.settings.set_string('view-mode', 'list' if is_list else 'cards')
+        mode = 'list' if is_list else 'cards'
+        if self.settings.get_string('view-mode') != mode:
+            self.settings.set_string('view-mode', mode)
 
     @Gtk.Template.Callback()
     def on_view_toggle(self, button):
@@ -333,117 +360,16 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self._search_text = entry.get_text().strip()
         self._filter.changed(Gtk.FilterChange.DIFFERENT)
         self._update_device_view()
-        if not self._search_text and not self._skip_blur_on_clear:
-            now = time.monotonic()
-            if now - self._last_typed > self._typing_grace or \
-               now - self._last_pointer_press < 0.5:
-                self._clear_search_focus()
-        self._skip_blur_on_clear = False
 
     @Gtk.Template.Callback()
     def on_search_stopped(self, entry):
-        """Clear the query on Escape (focus follows the hover rules)."""
-        self._skip_blur_on_clear = True
-        entry.set_text("")
-
-    def _setup_search_behavior(self):
-        """Auto-release search focus when not hovering or typing."""
-        motion = Gtk.EventControllerMotion()
-        motion.connect("enter", self._on_search_hover_enter)
-        motion.connect("leave", self._on_search_hover_leave)
-        self.search_entry.add_controller(motion)
-
-        keys = Gtk.EventControllerKey()
-        keys.connect("key-pressed", self._on_search_key_pressed)
-        self.search_entry.add_controller(keys)
-
-        click = Gtk.GestureClick()
-        click.connect("pressed", self._on_search_pointer_pressed)
-        self.search_entry.add_controller(click)
-
-    def _on_results_page_map(self, *args):
-        root = self.get_root()
-        if root is not None and self._window_active_id is None:
-            self._window_active_id = root.connect("notify::is-active", self._on_window_active_changed)
-
-    def _on_window_active_changed(self, window, pspec):
-        if not window.is_active():
-            focus_widget = window.get_focus()
-            if focus_widget is self.search_entry:
-                now = time.monotonic()
-                last_search_interaction = max(self._last_pointer_press,
-                                              self._last_typed)
-                if now - last_search_interaction <= self._typing_grace:
-                    self._focus_before_window_deactivate = focus_widget
-                else:
-                    self._focus_before_window_deactivate = None
-            else:
-                self._focus_before_window_deactivate = focus_widget
+        """Clear the query on Escape; a second Escape leaves the entry."""
+        if entry.get_text():
+            entry.set_text("")
             return
-
-        GLib.timeout_add(250, self._restore_focus_after_window_activation)
-
-    def _restore_focus_after_window_activation(self):
-        focus_widget = self._focus_before_window_deactivate
-        self._focus_before_window_deactivate = None
-
-        root = self.get_root()
-        if focus_widget is not None and root is not None and \
-           focus_widget.get_root() is root and focus_widget.get_visible() and \
-           focus_widget.get_sensitive():
-            focus_widget.grab_focus()
-        else:
-            self._clear_search_focus_if_focused()
-        return GLib.SOURCE_REMOVE
-
-    def _schedule_search_focus_cleanup(self):
-        GLib.timeout_add(250, self._clear_search_focus_if_focused)
-
-    def _clear_search_focus_if_focused(self):
-        now = time.monotonic()
-        last_search_interaction = max(self._last_pointer_press, self._last_typed)
-        if self.search_entry.is_focus() and \
-           now - last_search_interaction > self._typing_grace:
-            self._clear_search_focus()
-
-    def _on_search_hover_enter(self, controller, x, y):
-        self._hovering = True
-
-    def _on_search_hover_leave(self, controller):
-        self._hovering = False
-        if self.search_entry.has_focus():
-            if time.monotonic() - self._last_typed > self._typing_grace:
-                self._clear_search_focus()
-            else:
-                self._schedule_blur_check()
-
-    def _on_search_key_pressed(self, controller, keyval, keycode, state):
-        if keyval == Gdk.KEY_Escape:
-            return False
-        self._last_typed = time.monotonic()
-        # Ignore focus clicks; only fresh presses can clear search.
-        self._last_pointer_press = 0.0
-        self._schedule_blur_check()
-        return False
-
-    def _on_search_pointer_pressed(self, gesture, n_press, x, y):
-        self._last_pointer_press = time.monotonic()
-
-    def _schedule_blur_check(self):
-        """Blur search shortly after typing stops off-hover."""
-        if self._blur_check_id is not None:
-            GLib.source_remove(self._blur_check_id)
-        self._blur_check_id = GLib.timeout_add(
-            int(self._typing_grace * 1000), self._maybe_blur)
-
-    def _maybe_blur(self):
-        self._blur_check_id = None
-        if not self._hovering and self.search_entry.has_focus():
-            self._clear_search_focus()
-        return GLib.SOURCE_REMOVE
-
-    def _clear_search_focus(self):
-        clear_focus(self)
+        visible = self.view_stack.get_visible_child_name()
+        target = self.list_view if visible == "list" else self.flow_box
+        target.grab_focus()
 
     @Gtk.Template.Callback()
     def on_export_clicked(self, button):
@@ -453,11 +379,11 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
             return
 
         dialog = Gtk.FileDialog()
-        dialog.set_title(_("Export Scan Results"))
+        dialog.set_title(_("Export scan results"))
         dialog.set_initial_name("network_scan_results.csv")
 
         csv_filter = Gtk.FileFilter()
-        csv_filter.set_name(_("CSV Files"))
+        csv_filter.set_name(_("CSV files"))
         csv_filter.add_pattern("*.csv")
 
         filter_list = Gio.ListStore.new(Gtk.FileFilter)
@@ -473,13 +399,17 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
                 file_path = file.get_path()
                 self.export_to_csv(file_path)
         except Exception as e:
-            if "dismissed" not in str(e).lower():
-                self.show_toast(_("Export cancelled or failed"), 3)
+            if "dismissed" in str(e).lower():
+                return  # Cancelling the dialog is silent.
+            print(f"Export failed: {e}")
+            self.show_toast(_("Export failed. Please try again."), 5)
 
     def export_to_csv(self, file_path):
         """Export devices to CSV file"""
         try:
             with open(file_path, 'w', newline='') as csvfile:
+                # Headers stay English on purpose: the CSV is an interchange
+                # format opened by spreadsheet tools, not UI copy.
                 fieldnames = ['IP Address', 'Hostname', 'Custom Name',
                               'Open Ports', 'Services', 'System Information', 'Status']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -498,13 +428,15 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
                     })
 
             filename = Path(file_path).name
-            toast = Adw.Toast(title=_("Successfully exported to ") + filename)
+            toast = Adw.Toast(title=_("Successfully exported to {name}").format(
+                name=filename))
             toast.set_timeout(5)
             toast.set_button_label(_("Open Folder"))
             toast.connect("button-clicked", self._on_open_export_folder, file_path)
             self.toast_overlay.add_toast(toast)
         except Exception as e:
-            self.show_toast(_("Export failed: ") + str(e), 5)
+            print(f"Export failed: {e}")
+            self.show_toast(_("Export failed. Please try again."), 5)
 
     def _on_open_export_folder(self, toast, file_path):
         """Open the system file manager at the exported CSV"""
@@ -534,7 +466,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
             elapsed = self._elapsed()
             minutes = int(elapsed // 60)
             seconds = int(elapsed % 60)
-            timer_text = _("Time Elapsed: {minutes:02d}:{seconds:02d}").format(
+            timer_text = _("Time elapsed: {minutes:02d}:{seconds:02d}").format(
                 minutes=minutes,
                 seconds=seconds
             )
@@ -542,7 +474,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         return True
 
     def on_progress_update(self, hosts_scanned, total_hosts):
-        progress_text = _("Hosts Scanned: {scanned}/{total}").format(
+        progress_text = _("Hosts scanned: {scanned}/{total}").format(
             scanned=hosts_scanned,
             total=total_hosts
         )
@@ -557,6 +489,19 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.sort_menu_button.set_sensitive(has_results and not scanning)
         if scanning:
             self.scan_info_button.set_sensitive(False)
+        # Explain the disabled state to assistive tech; sighted users get
+        # the "Scanning · …" subtitle plus the loading page.
+        busy_tip = _("Unavailable while scanning")
+        for button, tip in self._control_tips.items():
+            button.set_tooltip_text(busy_tip if scanning else tip)
+        # The toggle keeps its state-derived name; only the sighted
+        # tooltip carries the busy explanation.
+        state_tip = (_("Show as grid") if self.view_toggle_button.get_active()
+                     else _("Show as list"))
+        self.view_toggle_button.set_tooltip_text(
+            busy_tip if scanning else state_tip)
+        self.view_toggle_button.update_property(
+            [Gtk.AccessibleProperty.LABEL], [state_tip])
 
     def _scan_mode_prefix(self):
         return _("Deep") + " · " if self._deep_scan else ""
@@ -579,13 +524,14 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.results_stack.set_transition_type(Gtk.StackTransitionType.NONE)
         self.results_stack.set_visible_child_name("loading")
         self.results_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
-        self.progress_label.set_text(_("Preparing scan..."))
-        self.timer_label.set_text(_("Time Elapsed: 00:00"))
+        self.progress_label.set_text(_("Preparing scan…"))
+        self.timer_label.set_text(_("Time elapsed: 00:00"))
 
         self.start_timer()
 
         scan_mode = _("Deep scanning") if deep_scan else _("Scanning")
-        self.results_title.set_subtitle(f"{scan_mode}: {ip_range}")
+        self.results_title.set_subtitle(
+            _("{mode} · {range}").format(mode=scan_mode, range=ip_range))
 
         self.scanner.scan_network(
             ip_range,
@@ -630,7 +576,9 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         devices_data = scan.get('devices', [])
         self.current_ip_range = ip_range
         self._deep_scan = deep_scan
-        self.results_title.set_subtitle(self._scan_mode_prefix() + _("Loaded from history: ") + ip_range)
+        self.results_title.set_subtitle(
+            _("{deep}Loaded from history · {range}").format(
+                deep=self._scan_mode_prefix(), range=ip_range))
         devices_data = storage.apply_custom_names(devices_data)
         self._display_devices(devices_data)
         has_results = bool(devices_data)
@@ -652,7 +600,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
             self.list_store.append(Device(data))
 
         self._update_device_view()
-        self._schedule_search_focus_cleanup()
 
     def _finish_with_devices(self, devices, stopped=False):
         annotated, scan = storage.record_scan(
@@ -661,12 +608,19 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.current_scan = scan
         self.scan_info_button.set_sensitive(True)
         self._display_devices(annotated)
+        found = ngettext(
+            "Found {count} device",
+            "Found {count} devices",
+            len(annotated),
+        ).format(count=len(annotated))
         if stopped:
             self.results_title.set_subtitle(
-                self._scan_mode_prefix() + _("Scan stopped - Found {count} devices").format(count=len(annotated)))
+                _("{deep}Scan stopped · {found}").format(
+                    deep=self._scan_mode_prefix(), found=found))
         else:
             self.results_title.set_subtitle(
-                self._scan_mode_prefix() + _("Found {count} devices").format(count=len(annotated)))
+                _("{deep}{found}").format(
+                    deep=self._scan_mode_prefix(), found=found))
         self._set_controls(False, True)
 
     def _finish_empty(self, stopped=False):
@@ -674,7 +628,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.scan_info_button.set_sensitive(False)
         self._display_devices([])
         if stopped:
-            self.results_title.set_subtitle(_("Scan stopped - No devices found"))
+            self.results_title.set_subtitle(_("Scan stopped · No devices found"))
         else:
             self.results_title.set_subtitle(_("No devices found"))
         self._set_controls(False, False)
@@ -693,6 +647,5 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.scan_info_button.set_sensitive(False)
 
         self.results_stack.set_visible_child_name("error")
-        self.error_page.set_description(_("Error: ") + error_message)
-        self.results_title.set_subtitle(_("An error occurred!"))
-        self.show_toast(_("Error: ") + error_message, 5)
+        self.error_page.set_description(error_message)
+        self.results_title.set_subtitle(_("Scan failed"))
