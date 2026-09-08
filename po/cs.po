@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-23 10:04+0000\n"
+"POT-Creation-Date: 2026-09-08 13:52+0000\n"
 "PO-Revision-Date: 2026-08-07 21:51+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/netpeek/netpeek/cs/"
@@ -20,8 +20,8 @@ msgstr ""
 "X-Generator: Weblate 2026.9.dev0\n"
 
 #: data/io.github.zingytomato.netpeek.desktop.in:2
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/gtk/home_page.ui:7
-#: src/gtk/home_page.ui:15 src/gtk/main_window.ui:7 src/window.py:62
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/app.py:94
+#: src/gtk/home_page.ui:7 src/gtk/home_page.ui:15 src/gtk/main_window.ui:7
 msgid "NetPeek"
 msgstr "NetPeek"
 
@@ -90,9 +90,13 @@ msgid "Enable deep scan mode"
 msgstr "Zapnout režim hloubkového skenování"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:42
+#, fuzzy
+#| msgid ""
+#| "When enabled, retrieves more detailed system information like OS name, "
+#| "HTTP server etc."
 msgid ""
-"When enabled, retrieves more detailed system information like OS name, HTTP "
-"server etc."
+"When enabled, retrieves detailed system information, such as the OS name and "
+"HTTP server details."
 msgstr ""
 "Pokud zapnuto, obdrží podrobnější informace o systémech, jako např. název "
 "operačního systému, HTTP serveru, atd."
@@ -151,7 +155,6 @@ msgid "Scan in Progress"
 msgstr "Probíhající sken"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:57
-#: src/gtk/results_page.ui:20
 msgid "Scan Results"
 msgstr "Výsledky skenu"
 
@@ -164,492 +167,1009 @@ msgid "Deep Scan Results"
 msgstr ""
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:69
-#: src/gtk/history_dialog.ui:7 src/gtk/home_page.ui:181
 msgid "Previous Scans"
 msgstr "Předchozí skeny"
 
-#: src/gtk/device_card.ui:22
+#: src/app.py:98 src/gtk/home_page.ui:79
+msgid "Discover devices on your local network."
+msgstr "Objevujte zařízení na své místní síti."
+
+#: src/app.py:101
+msgid "Translate"
+msgstr ""
+
+#: src/app.py:103
+msgid "Contributors"
+msgstr "Podíleli se"
+
+#: src/app.py:105
+msgid "Added keyboard shortcuts for common actions, with a shortcuts window."
+msgstr ""
+
+#: src/app.py:106
+msgid "Added a Preferences dialog with display theme and scan thread count."
+msgstr ""
+
+#: src/app.py:107
+msgid ""
+"History entries now have their own scan information button, and scan "
+"information shows the scanned IP range with a copy button."
+msgstr ""
+
+#: src/app.py:108
+msgid "Previous scans list is now paginated for easier browsing."
+msgstr ""
+
+#: src/app.py:109
+msgid "Window size and maximized state are remembered between sessions."
+msgstr ""
+
+#: src/app.py:110
+msgid ""
+"Reworked results views for narrow screens, with dedicated mobile rows and "
+"header actions moving to the bottom bar."
+msgstr ""
+
+#: src/gtk/device_card.ui:22 src/widgets.py:241
 msgid "Name"
 msgstr "Název"
 
-#: src/gtk/device_card.ui:29
-msgid "Apply name"
-msgstr "Uplatnit název"
-
-#: src/gtk/device_card.ui:38 src/pages.py:912
+#: src/gtk/device_card.ui:28 src/pages/results.py:414 src/widgets.py:226
 msgid "New"
 msgstr "Nové"
 
-#: src/gtk/device_card.ui:65
-msgid "Click to copy IP"
-msgstr "IP adresu zkopírujete kliknutím"
+#: src/gtk/device_card.ui:42 src/gtk/results_page.ui:338 src/widgets.py:111
+#, fuzzy
+#| msgid "IP Address"
+msgid "IP address"
+msgstr "IP adresa"
 
-#: src/gtk/device_card.ui:74 src/gtk/results_page.ui:134 src/pages.py:487
+#: src/gtk/device_card.ui:55 src/gtk/device_card.ui:61 src/widgets.py:236
+#: src/widgets.py:238
+msgid "Copy IP"
+msgstr "Zkopírovat IP adresu"
+
+#: src/gtk/device_card.ui:70 src/gtk/results_page.ui:343 src/widgets.py:245
 msgid "Hostname"
 msgstr "Název stroje"
 
-#: src/gtk/device_card.ui:86
-msgid "Ports Open"
+#: src/gtk/device_card.ui:82 src/widgets.py:251
+#, fuzzy
+#| msgid "Ports Open"
+msgid "Ports open"
 msgstr "Otevřené porty"
 
-#: src/gtk/device_card.ui:98 src/gtk/results_page.ui:200 src/pages.py:407
+#: src/gtk/device_card.ui:94 src/gtk/results_page.ui:358 src/widgets.py:258
 msgid "Services"
 msgstr "Služby"
 
-#: src/gtk/device_card.ui:112 src/widgets.py:157
+#: src/gtk/device_card.ui:108 src/gtk/device_card.ui:114 src/widgets.py:187
 msgid "Show full service list"
 msgstr ""
 
-#: src/gtk/device_card.ui:124 src/gtk/results_page.ui:222 src/pages.py:408
-msgid "System Information"
+#: src/gtk/device_card.ui:123 src/gtk/results_page.ui:363 src/widgets.py:264
+#, fuzzy
+#| msgid "System Information"
+msgid "System information"
 msgstr "Informace o systému"
 
-#: src/gtk/device_card.ui:138 src/widgets.py:154
+#: src/gtk/device_card.ui:137 src/gtk/device_card.ui:143 src/widgets.py:184
 msgid "Show full system information"
 msgstr ""
 
-#: src/gtk/history_dialog.ui:31 src/pages.py:1323
+#: src/gtk/history_dialog.ui:7 src/gtk/history_dialog.ui:20
+#: src/gtk/home_page.ui:170
+#, fuzzy
+#| msgid "Previous Scans"
+msgid "Previous scans"
+msgstr "Předchozí skeny"
+
+#: src/gtk/history_dialog.ui:37 src/pages/history.py:42
+#: src/pages/history.py:218
 msgid "All"
 msgstr ""
 
-#: src/gtk/history_dialog.ui:32
+#: src/gtk/history_dialog.ui:38
 msgid "Filter scans by date"
 msgstr ""
 
-#: src/gtk/history_dialog.ui:57 src/pages.py:1330
+#: src/gtk/history_dialog.ui:54 src/pages/history.py:225
 #, fuzzy
 #| msgid "Custom Name"
-msgid "Custom Range…"
+msgid "Custom range"
 msgstr "Uživatelsky určený název"
 
-#: src/gtk/history_dialog.ui:58
+#: src/gtk/history_dialog.ui:55
 msgid "Pick a custom date range"
 msgstr ""
 
-#: src/gtk/history_dialog.ui:87
+#: src/gtk/history_dialog.ui:84
 msgid "From"
 msgstr ""
 
-#: src/gtk/history_dialog.ui:118
+#: src/gtk/history_dialog.ui:115
 msgid "To"
 msgstr ""
 
-#: src/gtk/history_dialog.ui:150
+#: src/gtk/history_dialog.ui:147
 msgid "Clear"
 msgstr ""
 
-#: src/gtk/history_dialog.ui:158 src/pages.py:525
+#: src/gtk/history_dialog.ui:155
 msgid "Apply"
 msgstr "Uplatnit"
 
-#: src/gtk/history_dialog.ui:201
+#: src/gtk/history_dialog.ui:198 src/gtk/history_dialog.ui:210
 msgid "Scroll to top"
 msgstr "Odrolovat nahoru"
 
-#: src/gtk/history_dialog.ui:223 src/pages.py:1421
-msgid "No Previous Scans"
+#: src/gtk/history_dialog.ui:223 src/pages/history.py:310
+#, fuzzy
+#| msgid "No Previous Scans"
+msgid "No previous scans"
 msgstr "Žádné předchozí skeny"
 
-#: src/gtk/history_dialog.ui:224 src/pages.py:1422
+#: src/gtk/history_dialog.ui:224 src/pages/history.py:311
 msgid "Your scan history will appear here."
 msgstr "Historie vámi provedených skenů se objeví zde."
+
+#: src/gtk/history_dialog.ui:244 src/gtk/history_dialog.ui:251
+#, fuzzy
+#| msgid "Previous Scans"
+msgid "Previous page"
+msgstr "Předchozí skeny"
+
+#: src/gtk/history_dialog.ui:264 src/gtk/history_dialog.ui:271
+msgid "Next page"
+msgstr ""
 
 #: src/gtk/home_page.ui:21
 msgid "Main Menu"
 msgstr "Hlavní nabídka"
 
-#: src/gtk/home_page.ui:79 src/window.py:66
-msgid "Discover devices on your local network."
-msgstr "Objevujte zařízení na své místní síti."
-
 #: src/gtk/home_page.ui:102
-msgid "IP Range Configuration"
+#, fuzzy
+#| msgid "IP Range Configuration"
+msgid "IP range configuration"
 msgstr "Nastavení rozsahu IP adres"
 
 #: src/gtk/home_page.ui:103
-msgid "Enter the IP range you want to scan:"
+#, fuzzy
+#| msgid "Enter the IP range you want to scan:"
+msgid "Enter the IP range you want to scan"
 msgstr "Zadejte rozsah IP adres, který chcete skenovat:"
 
-#: src/gtk/home_page.ui:107
-msgid "IP Range"
+#: src/gtk/home_page.ui:107 src/gtk/scan_metadata_dialog.ui:36
+#, fuzzy
+#| msgid "IP Range"
+msgid "IP range"
 msgstr "Rozsah IP adres"
 
-#: src/gtk/home_page.ui:115
-msgid "Apply IP range"
-msgstr "Uplatnit rozsah IP adres"
-
-#: src/gtk/home_page.ui:127
-msgid "Deep Scan"
+#: src/gtk/home_page.ui:117
+#, fuzzy
+#| msgid "Deep Scan"
+msgid "Deep scan"
 msgstr "Hloubkový sken"
 
-#: src/gtk/home_page.ui:128
+#: src/gtk/home_page.ui:118
+#, fuzzy
+#| msgid ""
+#| "Retrieves more detailed system information like OS name, HTTP server etc."
 msgid ""
-"Retrieves more detailed system information like OS name, HTTP server etc."
+"Retrieves detailed system information, such as the OS name and HTTP server "
+"details."
 msgstr ""
 "Obdrží podrobnější informace o systému, jako je název operačního systému, "
 "HTTP server, atd."
 
-#: src/gtk/home_page.ui:147
-msgid "Scan my Network"
+#: src/gtk/home_page.ui:137
+#, fuzzy
+#| msgid "Scan my Network"
+msgid "Scan network"
 msgstr "Skenovat mou síť"
 
-#: src/gtk/home_page.ui:187
-msgid "About"
-msgstr "O aplikaci"
+#: src/gtk/home_page.ui:166
+msgid "Preferences"
+msgstr ""
 
-#: src/gtk/home_page.ui:191
-msgid "Quit"
-msgstr "Ukončit"
+#: src/gtk/home_page.ui:174
+msgid "Keyboard shortcuts"
+msgstr ""
 
-#: src/gtk/results_page.ui:7
-msgid "Scanning in progress..."
-msgstr "Probíhá skenování…"
+#: src/gtk/home_page.ui:180
+#, fuzzy
+#| msgid "NetPeek"
+msgid "About NetPeek"
+msgstr "NetPeek"
 
-#: src/gtk/results_page.ui:21
-msgid "Devices found on your network:"
-msgstr "Zařízení nalezená na vaší síti:"
+#: src/gtk/results_page.ui:7 src/gtk/results_page.ui:20
+#, fuzzy
+#| msgid "Scan Results"
+msgid "Scan results"
+msgstr "Výsledky skenu"
 
-#: src/gtk/results_page.ui:27
+#: src/gtk/results_page.ui:26
 msgid "Stop the current network scan"
 msgstr "Zastavit stávající sken sítě"
 
-#: src/gtk/results_page.ui:32 src/pages.py:674
+#: src/gtk/results_page.ui:31
 msgid "Stop"
 msgstr "Zastavit"
 
-#: src/gtk/results_page.ui:46
+#: src/gtk/results_page.ui:42 src/gtk/results_page.ui:46
+#: src/gtk/scan_metadata_dialog.ui:7 src/gtk/scan_metadata_dialog.ui:16
+#: src/pages/history.py:422 src/pages/history.py:424
 #, fuzzy
 #| msgid "System Information"
 msgid "Scan information"
 msgstr "Informace o systému"
 
-#: src/gtk/results_page.ui:57
+#: src/gtk/results_page.ui:57 src/gtk/results_page.ui:60
 msgid "Export to CSV"
 msgstr "Exportovat do CSV"
 
-#: src/gtk/results_page.ui:65
+#: src/gtk/results_page.ui:68
 msgid "Toggle list view"
 msgstr "Vyp/zap. zobrazení v seznamu"
 
-#: src/gtk/results_page.ui:73
-msgid "Sort devices"
-msgstr "Seřadit zařízení"
+#: src/gtk/results_page.ui:76 src/gtk/results_page.ui:83
+msgid "Sort options"
+msgstr ""
 
-#: src/gtk/results_page.ui:90 src/pages.py:912
-msgid "Known"
-msgstr "Známé"
-
-#: src/gtk/results_page.ui:112 src/pages.py:447
-msgid "IP Address"
-msgstr "IP adresa"
-
-#: src/gtk/results_page.ui:156 src/pages.py:512
-msgid "Custom Name"
-msgstr "Uživatelsky určený název"
-
-#: src/gtk/results_page.ui:178 src/pages.py:406
-msgid "Ports"
-msgstr "Porty"
-
-#: src/gtk/results_page.ui:250 src/pages.py:1005 src/pages.py:1085
-#: src/pages.py:1111
+#: src/gtk/results_page.ui:94 src/pages/results.py:472
 msgid "Rescan"
 msgstr "Znovu naskenovat"
 
-#: src/gtk/results_page.ui:275
-msgid "Scanning Network"
+#: src/gtk/results_page.ui:119
+#, fuzzy
+#| msgid "Scanning Network"
+msgid "Scanning network"
 msgstr "Skenování sítě"
 
-#: src/gtk/results_page.ui:276
-msgid "Discovering devices on your network... (this may take a while!)"
-msgstr "Objevování zařízení na vaší síti… (může chvíli trvat!)"
+#: src/gtk/results_page.ui:120
+#, fuzzy
+#| msgid "Discover devices on your local network"
+msgid "Discovering devices on your network…"
+msgstr "Objevte zařízení na své místní síti"
 
-#: src/gtk/results_page.ui:297 src/pages.py:984
-msgid "Preparing scan..."
+#: src/gtk/results_page.ui:141 src/pages/results.py:504
+#, fuzzy
+#| msgid "Preparing scan..."
+msgid "Preparing scan…"
 msgstr "Příprava skenu…"
 
-#: src/gtk/results_page.ui:306 src/pages.py:985
-msgid "Time Elapsed: 00:00"
+#: src/gtk/results_page.ui:152 src/pages/results.py:505
+#, fuzzy
+#| msgid "Time Elapsed: 00:00"
+msgid "Time elapsed: 00:00"
 msgstr "Uplynulý čas: 00:00"
 
-#: src/gtk/results_page.ui:338
-msgid "Search IP addresses, services, ports…"
-msgstr ""
+#: src/gtk/results_page.ui:185
+#, fuzzy
+#| msgid "Sort devices"
+msgid "Search devices"
+msgstr "Seřadit zařízení"
 
-#: src/gtk/results_page.ui:421
+#: src/gtk/results_page.ui:268
 #, fuzzy
 #| msgid "No Devices Found"
-msgid "No Results Found"
+msgid "No results found"
 msgstr "Nenalezena žádná zařízení"
 
-#: src/gtk/results_page.ui:422
+#: src/gtk/results_page.ui:269
 msgid "No devices match your search query."
 msgstr ""
 
-#: src/gtk/results_page.ui:440
-msgid "No Devices Found"
+#: src/gtk/results_page.ui:287 src/pages/results.py:609
+msgid "No devices found"
 msgstr "Nenalezena žádná zařízení"
 
-#: src/gtk/results_page.ui:441
-msgid "No devices were found in the specified range!"
+#: src/gtk/results_page.ui:288
+#, fuzzy
+#| msgid "No devices were found in the specified range!"
+msgid "No devices were found in the specified range."
 msgstr "V určeném rozsahu nenalezena žádná zařízení!"
 
-#: src/gtk/results_page.ui:453
-msgid "Scan Error"
+#: src/gtk/results_page.ui:300
+#, fuzzy
+#| msgid "Scan Error"
+msgid "Scan error"
 msgstr "Chyba skenu"
 
-#: src/gtk/results_page.ui:454
-msgid "An error occurred while scanning the network!"
+#: src/gtk/results_page.ui:301
+#, fuzzy
+#| msgid "An error occurred while scanning the network!"
+msgid "An error occurred while scanning the network."
 msgstr "Při skenování sítě došlo k chybě!"
 
-#: src/gtk/scan_metadata_dialog.ui:7 src/gtk/scan_metadata_dialog.ui:16
+#: src/gtk/results_page.ui:305
+msgid "_Try again"
+msgstr ""
+
+#: src/gtk/results_page.ui:331
+msgid "Sort by"
+msgstr ""
+
+#: src/gtk/results_page.ui:333 src/pages/results.py:414
+msgid "Known"
+msgstr "Známé"
+
+#: src/gtk/results_page.ui:348
+#, fuzzy
+#| msgid "Custom Name"
+msgid "Custom name"
+msgstr "Uživatelsky určený název"
+
+#: src/gtk/results_page.ui:353
+msgid "Ports"
+msgstr "Porty"
+
+#: src/gtk/results_page.ui:370
+msgid "Ascending"
+msgstr ""
+
+#: src/gtk/scan_metadata_dialog.ui:47 src/gtk/scan_metadata_dialog.ui:53
+#, fuzzy
+#| msgid "Apply IP range"
+msgid "Copy IP range"
+msgstr "Uplatnit rozsah IP adres"
+
+#: src/gtk/scan_metadata_dialog.ui:61
+msgid "Date taken"
+msgstr ""
+
+#: src/gtk/scan_metadata_dialog.ui:71
+msgid "Scan type"
+msgstr ""
+
+#: src/gtk/scan_metadata_dialog.ui:81
+#, fuzzy
+#| msgid "Scan Error"
+msgid "Scan duration"
+msgstr "Chyba skenu"
+
+#: src/gtk/scan_metadata_dialog.ui:92
+#, fuzzy
+#| msgid "New device"
+msgid "New devices"
+msgstr "Nové zařízení"
+
+#: src/gtk/scan_metadata_dialog.ui:102
+#, fuzzy
+#| msgid "Known device"
+msgid "Known devices"
+msgstr "Už známé zařízení"
+
+#: src/gtk/shortcuts-dialog.ui:9
+msgctxt "shortcut window"
+msgid "General"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:12
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:19
+#, fuzzy
+#| msgid "Previous Scans"
+msgctxt "shortcut window"
+msgid "Previous Scans"
+msgstr "Předchozí skeny"
+
+#: src/gtk/shortcuts-dialog.ui:26
+msgctxt "shortcut window"
+msgid "Preferences"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:33
+msgctxt "shortcut window"
+msgid "Go Back"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:40
+#, fuzzy
+#| msgid "Quit"
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Ukončit"
+
+#: src/gtk/shortcuts-dialog.ui:49
+#, fuzzy
+#| msgid "Scanning..."
+msgctxt "shortcut window"
+msgid "Scanning"
+msgstr "Skenování…"
+
+#: src/gtk/shortcuts-dialog.ui:52
+msgctxt "shortcut window"
+msgid "Start Scan"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:59
+msgctxt "shortcut window"
+msgid "Focus IP Range Entry"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:68
+#, fuzzy
+#| msgid "Scan Results"
+msgctxt "shortcut window"
+msgid "Results"
+msgstr "Výsledky skenu"
+
+#: src/gtk/shortcuts-dialog.ui:71
+#, fuzzy
+#| msgid "Services"
+msgctxt "shortcut window"
+msgid "Search Devices"
+msgstr "Služby"
+
+#: src/gtk/shortcuts-dialog.ui:78 src/gtk/shortcuts-dialog.ui:85
+#, fuzzy
+#| msgid "Rescan"
+msgctxt "shortcut window"
+msgid "Rescan"
+msgstr "Znovu naskenovat"
+
+#: src/gtk/shortcuts-dialog.ui:92
+#, fuzzy
+#| msgid "Deep Scan"
+msgctxt "shortcut window"
+msgid "Stop Scan"
+msgstr "Hloubkový sken"
+
+#: src/gtk/shortcuts-dialog.ui:99
+#, fuzzy
+#| msgid "Export to CSV"
+msgctxt "shortcut window"
+msgid "Export to CSV"
+msgstr "Exportovat do CSV"
+
+#: src/gtk/shortcuts-dialog.ui:106
+#, fuzzy
+#| msgid "Toggle list view"
+msgctxt "shortcut window"
+msgid "Toggle Grid/List View"
+msgstr "Vyp/zap. zobrazení v seznamu"
+
+#: src/gtk/shortcuts-dialog.ui:113
 #, fuzzy
 #| msgid "System Information"
+msgctxt "shortcut window"
 msgid "Scan Information"
 msgstr "Informace o systému"
 
-#: src/gtk/scan_metadata_dialog.ui:36
-msgid "Date Taken"
-msgstr ""
-
-#: src/gtk/scan_metadata_dialog.ui:46
-msgid "Scan Type"
-msgstr ""
-
-#: src/gtk/scan_metadata_dialog.ui:56
-#, fuzzy
-#| msgid "Scan Error"
-msgid "Scan Duration"
-msgstr "Chyba skenu"
-
-#: src/gtk/scan_metadata_dialog.ui:67
-#, fuzzy
-#| msgid "New device"
-msgid "New Devices"
-msgstr "Nové zařízení"
-
-#: src/gtk/scan_metadata_dialog.ui:77
-#, fuzzy
-#| msgid "Known device"
-msgid "Known Devices"
-msgstr "Už známé zařízení"
-
-#: src/gtk/theme_selector.ui:15 src/gtk/theme_selector.ui:21
+#: src/gtk/theme_selector.ui:17 src/gtk/theme_selector.ui:23
 msgid "Follow System"
 msgstr "Podle systému"
 
-#: src/gtk/theme_selector.ui:30 src/gtk/theme_selector.ui:36
+#: src/gtk/theme_selector.ui:34 src/gtk/theme_selector.ui:40
 msgid "Light"
 msgstr "Světlé"
 
-#: src/gtk/theme_selector.ui:45 src/gtk/theme_selector.ui:51
+#: src/gtk/theme_selector.ui:51 src/gtk/theme_selector.ui:57
 msgid "Dark"
 msgstr "Tmavé"
 
-#: src/pages.py:67
-msgid "Threads"
+#: src/models.py:40
+msgid "SMB shares"
 msgstr ""
 
-#: src/pages.py:172
-msgid "Auto-detect"
-msgstr "Automaticky zjišťovat"
-
-#: src/pages.py:173
-msgid "Automatically detect your local network"
-msgstr "Automaticky zjistit vaši místní síť"
-
-#: src/pages.py:350 src/pages.py:626 src/pages.py:726
-msgid "Show as grid"
+#: src/models.py:41
+msgid "Cockpit"
 msgstr ""
 
-#: src/pages.py:350 src/pages.py:614 src/pages.py:626 src/pages.py:726
-msgid "Show as list"
+#: src/models.py:42
+msgid "MySQL"
 msgstr ""
 
-#: src/pages.py:436
-msgid "New device"
-msgstr "Nové zařízení"
+#: src/models.py:43
+msgid "PostgreSQL"
+msgstr ""
 
-#: src/pages.py:440
-msgid "Known device"
-msgstr "Už známé zařízení"
+#: src/models.py:44
+msgid "Redis"
+msgstr ""
 
-#: src/pages.py:464
-msgid "Copy IP"
-msgstr "Zkopírovat IP adresu"
+#: src/models.py:45
+msgid "Home Assistant"
+msgstr ""
 
-#: src/pages.py:505 src/widgets.py:85
+#: src/models.py:46
+msgid "Plex"
+msgstr ""
+
+#: src/models.py:47
+msgid "CUPS"
+msgstr ""
+
+#: src/models.py:48
+msgid "MongoDB"
+msgstr ""
+
+#: src/models.py:49
+msgid "Proxmox"
+msgstr ""
+
+#: src/models.py:50
+msgid "Synology DSM"
+msgstr ""
+
+#: src/models.py:81
+msgid "No common ports open"
+msgstr ""
+
+#: src/models.py:109
 msgid "Unknown"
 msgstr "Neznámé"
 
-#: src/pages.py:523
-msgid "Click to set name..."
-msgstr "Název nastavíte kliknutím…"
+#: src/models.py:118
+#, fuzzy
+#| msgid "Known device"
+msgid "Unknown device"
+msgstr "Už známé zařízení"
 
-#: src/pages.py:862 src/widgets.py:163
+#: src/pages/history.py:43 src/pages/history.py:288
+msgid "Today"
+msgstr "Dnes"
+
+#: src/pages/history.py:44 src/pages/history.py:290
+msgid "Yesterday"
+msgstr "Včera"
+
+#: src/pages/history.py:45
+msgid "Last 7 days"
+msgstr ""
+
+#: src/pages/history.py:46
+msgid "Last 30 days"
+msgstr ""
+
+#: src/pages/history.py:50
+msgid "Jan"
+msgstr ""
+
+#: src/pages/history.py:50
+msgid "Feb"
+msgstr ""
+
+#: src/pages/history.py:50
+msgid "Mar"
+msgstr ""
+
+#: src/pages/history.py:50
+msgid "Apr"
+msgstr ""
+
+#: src/pages/history.py:50
+msgid "May"
+msgstr ""
+
+#: src/pages/history.py:50
+msgid "Jun"
+msgstr ""
+
+#: src/pages/history.py:51
+msgid "Jul"
+msgstr ""
+
+#: src/pages/history.py:51
+msgid "Aug"
+msgstr ""
+
+#: src/pages/history.py:51
+msgid "Sep"
+msgstr ""
+
+#: src/pages/history.py:51
+msgid "Oct"
+msgstr ""
+
+#: src/pages/history.py:51
+msgid "Nov"
+msgstr ""
+
+#: src/pages/history.py:51
+msgid "Dec"
+msgstr ""
+
+#: src/pages/history.py:185
+msgid "Invalid date selected."
+msgstr ""
+
+#: src/pages/history.py:188
+msgid "End date must be after start date."
+msgstr ""
+
+#: src/pages/history.py:216
+#, fuzzy
+#| msgid "Custom Name"
+msgid "Custom"
+msgstr "Uživatelsky určený název"
+
+#: src/pages/history.py:316
+#, fuzzy
+#| msgid "No Devices Found"
+msgid "No scans found"
+msgstr "Nenalezena žádná zařízení"
+
+#: src/pages/history.py:317
+msgid "No scans match the selected time range."
+msgstr ""
+
+#: src/pages/history.py:360 src/pages/history.py:363
+#, python-brace-format
+msgid "Go to page {n}"
+msgstr ""
+
+#: src/pages/history.py:409
+#, fuzzy, python-brace-format
+#| msgid "Found {count} devices"
+msgid "{count} device"
+msgid_plural "{count} devices"
+msgstr[0] "Nalezeno {count} zařízení"
+msgstr[1] "Nalezeno {count} zařízení"
+msgstr[2] "Nalezeno {count} zařízení"
+
+#: src/pages/history.py:412
+#, fuzzy, python-brace-format
+#| msgid "{time} · {count} devices{deep}"
+msgid "{time} · {count} · Deep"
+msgstr "{time} · {count} zařízení{deep}"
+
+#: src/pages/history.py:415
+#, fuzzy, python-brace-format
+#| msgid "{time} · {count} devices{deep}"
+msgid "{time} · {count}"
+msgstr "{time} · {count} zařízení{deep}"
+
+#: src/pages/history.py:432 src/pages/history.py:434
+msgid "Delete this scan"
+msgstr "Smazat tento sken"
+
+#: src/pages/history.py:459
+#, fuzzy
+#| msgid "Delete this scan"
+msgid "Delete scan?"
+msgstr "Smazat tento sken"
+
+#: src/pages/history.py:460
+#, python-brace-format
+msgid ""
+"“{scan}” will be permanently removed from your history. This cannot be "
+"undone."
+msgstr ""
+
+#: src/pages/history.py:463
+msgid "Cancel"
+msgstr ""
+
+#: src/pages/history.py:464
+#, fuzzy
+#| msgid "Deep Scan"
+msgid "Delete Scan"
+msgstr "Hloubkový sken"
+
+#: src/pages/history.py:481
+#, fuzzy
+#| msgid "Scan Results"
+msgid "Scan deleted"
+msgstr "Výsledky skenu"
+
+#: src/pages/history.py:482
+msgid "Undo"
+msgstr ""
+
+#: src/pages/home.py:82 src/pages/home.py:98
+msgid "Auto-detect"
+msgstr "Automaticky zjišťovat"
+
+#: src/pages/home.py:82 src/pages/home.py:99
+msgid "Automatically detect your local network"
+msgstr "Automaticky zjistit vaši místní síť"
+
+#: src/pages/home.py:83
+#, fuzzy
+#| msgid "Home Network (192.168.1.x)"
+msgid "Home network (192.168.1.x)"
+msgstr "Domácí síť (192.168.1.x)"
+
+#: src/pages/home.py:84
+#, fuzzy
+#| msgid "Home Network (192.168.0.x)"
+msgid "Home network (192.168.0.x)"
+msgstr "Domácí síť (192.168.0.x)"
+
+#: src/pages/home.py:85
+msgid "Corporate (10.0.0.x)"
+msgstr "Firemní (10.0.0.x)"
+
+#: src/pages/home.py:86
+msgid "Private (172.16.0.x)"
+msgstr "Ze soukromého roszahu (172.16.0.x)"
+
+#: src/pages/home.py:100
+msgid "Choose a different preset range"
+msgstr ""
+
+#: src/pages/home.py:168 src/pages/results.py:489
+#, fuzzy
+#| msgid "Scan in Progress"
+msgid "Scan already in progress"
+msgstr "Probíhající sken"
+
+#: src/pages/preferences.py:48
+msgid "General"
+msgstr ""
+
+#: src/pages/preferences.py:53 src/pages/results.py:509
+msgid "Scanning"
+msgstr ""
+
+#: src/pages/preferences.py:55
+msgid "Tune how aggressively NetPeek scans your network."
+msgstr ""
+
+#: src/pages/preferences.py:61
+msgid "Threads"
+msgstr ""
+
+#: src/pages/preferences.py:63
+msgid "Concurrent workers. Higher is faster but uses more resources."
+msgstr ""
+
+#: src/pages/results.py:333 src/pages/results.py:479
+msgid "Show as grid"
+msgstr ""
+
+#: src/pages/results.py:333 src/pages/results.py:480
+msgid "Show as list"
+msgstr ""
+
+#: src/pages/results.py:367
+msgid "No devices to export"
+msgstr "Žádná zařízení k exportu"
+
+#: src/pages/results.py:371
+#, fuzzy
+#| msgid "Export Scan Results"
+msgid "Export scan results"
+msgstr "Export výsledků skenů"
+
+#: src/pages/results.py:375
+#, fuzzy
+#| msgid "CSV Files"
+msgid "CSV files"
+msgstr "CSV soubory"
+
+#: src/pages/results.py:394 src/pages/results.py:426
+msgid "Export failed. Please try again."
+msgstr ""
+
+#: src/pages/results.py:418
+#, fuzzy, python-brace-format
+#| msgid "Successfully exported to "
+msgid "Successfully exported to {name}"
+msgstr "Úspěšně exportováno do "
+
+#: src/pages/results.py:421
+msgid "Open Folder"
+msgstr "Otevřít složku"
+
+#: src/pages/results.py:456
+#, fuzzy, python-brace-format
+#| msgid "Time Elapsed: {minutes:02d}:{seconds:02d}"
+msgid "Time elapsed: {minutes:02d}:{seconds:02d}"
+msgstr "Uplynulý čas: {minutes:02d}:{seconds:02d}"
+
+#: src/pages/results.py:464
+#, fuzzy, python-brace-format
+#| msgid "Hosts Scanned: {scanned}/{total}"
+msgid "Hosts scanned: {scanned}/{total}"
+msgstr "Naskenováno hostitelů: {scanned}/{total}"
+
+#: src/pages/results.py:472
+msgid "Scanning..."
+msgstr "Skenování…"
+
+#: src/pages/results.py:485 src/pages/scan_info.py:40
+msgid "Deep"
+msgstr "Hloubkový"
+
+#: src/pages/results.py:509
+msgid "Deep scanning"
+msgstr ""
+
+#: src/pages/results.py:511
+#, python-brace-format
+msgid "{mode} · {range}"
+msgstr ""
+
+#: src/pages/results.py:557
+#, fuzzy, python-brace-format
+#| msgid "Loaded from history: "
+msgid "{deep}Loaded from history · {range}"
+msgstr "Načteno z historie: "
+
+#: src/pages/results.py:588
+#, fuzzy, python-brace-format
+#| msgid "Found {count} devices"
+msgid "Found {count} device"
+msgid_plural "Found {count} devices"
+msgstr[0] "Nalezeno {count} zařízení"
+msgstr[1] "Nalezeno {count} zařízení"
+msgstr[2] "Nalezeno {count} zařízení"
+
+#: src/pages/results.py:594
+#, fuzzy, python-brace-format
+#| msgid "Scan stopped - No devices found"
+msgid "{deep}Scan stopped · {found}"
+msgstr "Skenování zastaveno – nenalezena žádná zařízení"
+
+#: src/pages/results.py:598
+#, python-brace-format
+msgid "{deep}{found}"
+msgstr ""
+
+#: src/pages/results.py:607
+#, fuzzy
+#| msgid "Scan stopped - No devices found"
+msgid "Scan stopped · No devices found"
+msgstr "Skenování zastaveno – nenalezena žádná zařízení"
+
+#: src/pages/results.py:627
+msgid "Scan failed"
+msgstr ""
+
+#: src/pages/scan_info.py:40
+msgid "Standard"
+msgstr ""
+
+#: src/pages/scan_info.py:64
+#, fuzzy, python-brace-format
+#| msgid "Time Elapsed: {minutes:02d}:{seconds:02d}"
+msgid "{minutes} {seconds}"
+msgstr "Uplynulý čas: {minutes:02d}:{seconds:02d}"
+
+#: src/pages/scan_info.py:66 src/pages/scan_info.py:73
+#, python-brace-format
+msgid "{n} minute"
+msgid_plural "{n} minutes"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/pages/scan_info.py:68 src/pages/scan_info.py:69
+#, python-brace-format
+msgid "{n} second"
+msgid_plural "{n} seconds"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/pages/scan_info.py:71
+#, python-brace-format
+msgid "{hours} {minutes}"
+msgstr ""
+
+#: src/pages/scan_info.py:72
+#, python-brace-format
+msgid "{n} hour"
+msgid_plural "{n} hours"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/scanner.py:52
+msgid "Thread count must be between 1 and 500"
+msgstr ""
+
+#: src/scanner.py:56
+#, fuzzy
+#| msgid "Last used IP range"
+msgid "Please enter an IP range"
+msgstr "Naposledy použitý rozsah IP adres"
+
+#: src/scanner.py:63
+#, fuzzy
+#| msgid "Apply IP range"
+msgid "Valid IP range"
+msgstr "Uplatnit rozsah IP adres"
+
+#: src/scanner.py:65
+#, python-brace-format
+msgid "Invalid IP range: {e}"
+msgstr ""
+
+#: src/scanner.py:86
+msgid "Invalid range format!"
+msgstr ""
+
+#: src/scanner.py:93
+#, python-brace-format
+msgid "Error parsing IP range: {e}"
+msgstr ""
+
+#: src/scanner.py:111
+#, python-brace-format
+msgid "Nmap error on host {host}: {e}"
+msgstr ""
+
+#: src/scanner.py:189
+#, fuzzy, python-brace-format
+#| msgid "An error occurred while scanning the network!"
+msgid "An error occurred in a thread: {e}"
+msgstr "Při skenování sítě došlo k chybě!"
+
+#: src/scanner.py:198
+#, python-brace-format
+msgid "Scan failed: {e}"
+msgstr ""
+
+#: src/widgets.py:49
 #, python-brace-format
 msgid "Copied {ip} to the clipboard"
 msgstr "{ip} zkopírováno do schránky"
 
-#: src/pages.py:868
-msgid "No devices to export"
-msgstr "Žádná zařízení k exportu"
-
-#: src/pages.py:872
-msgid "Export Scan Results"
-msgstr "Export výsledků skenů"
-
-#: src/pages.py:876
-msgid "CSV Files"
-msgstr "CSV soubory"
-
-#: src/pages.py:893
-msgid "Export cancelled or failed"
-msgstr "Export zrušen nebo se nezdařil"
-
-#: src/pages.py:916
-msgid "Successfully exported to "
-msgstr "Úspěšně exportováno do "
-
-#: src/pages.py:918
-msgid "Open Folder"
-msgstr "Otevřít složku"
-
-#: src/pages.py:922
-msgid "Export failed: "
-msgstr "Export se nezdařil: "
-
-#: src/pages.py:949
-#, python-brace-format
-msgid "Time Elapsed: {minutes:02d}:{seconds:02d}"
-msgstr "Uplynulý čas: {minutes:02d}:{seconds:02d}"
-
-#: src/pages.py:957
-#, python-brace-format
-msgid "Hosts Scanned: {scanned}/{total}"
-msgstr "Naskenováno hostitelů: {scanned}/{total}"
-
-#: src/pages.py:970
-msgid "Scanning..."
-msgstr "Skenování…"
-
-#: src/pages.py:989
-msgid "Deep scanning"
-msgstr ""
-
-#: src/pages.py:989
-msgid "Scanning"
-msgstr ""
-
-#: src/pages.py:1017 src/pages.py:1049 src/pages.py:1098 src/pages.py:1464
-#: src/pages.py:1525
-msgid "Deep"
-msgstr "Hloubkový"
-
-#: src/pages.py:1018
-#, python-brace-format
-msgid "Scan stopped - Found {count} devices"
-msgstr "Skenování zastaveno – nalezeno {count} zařízení"
-
-#: src/pages.py:1024
-msgid "Scan stopped - No devices found"
-msgstr "Skenování zastaveno – nenalezena žádná zařízení"
-
-#: src/pages.py:1050
-msgid "Loaded from history: "
-msgstr "Načteno z historie: "
-
-#: src/pages.py:1099
-#, python-brace-format
-msgid "Found {count} devices"
-msgstr "Nalezeno {count} zařízení"
-
-#: src/pages.py:1104
-msgid "No devices found"
-msgstr "Nenalezena žádná zařízení"
-
-#: src/pages.py:1122 src/pages.py:1124
-msgid "Error: "
-msgstr "Chyba: "
-
-#: src/pages.py:1123
-msgid "An error occurred!"
-msgstr "Došlo k chybě!"
-
-#: src/pages.py:1295
-msgid "Invalid date selected."
-msgstr ""
-
-#: src/pages.py:1298
-msgid "End date must be after start date."
-msgstr ""
-
-#: src/pages.py:1397
-msgid "Today"
-msgstr "Dnes"
-
-#: src/pages.py:1399
-msgid "Yesterday"
-msgstr "Včera"
-
-#: src/pages.py:1427
-#, fuzzy
-#| msgid "No Devices Found"
-msgid "No Scans Found"
-msgstr "Nenalezena žádná zařízení"
-
-#: src/pages.py:1428
-msgid "No scans match the selected time range."
-msgstr ""
-
-#: src/pages.py:1465
-#, python-brace-format
-msgid "{time} · {count} devices{deep}"
-msgstr "{time} · {count} zařízení{deep}"
-
-#: src/pages.py:1472
-msgid "Delete this scan"
-msgstr "Smazat tento sken"
-
-#: src/pages.py:1525
-msgid "Standard"
-msgstr ""
-
-#: src/pages.py:1540
-#, python-brace-format
-msgid "{minutes} min {seconds} s"
-msgstr ""
-
-#: src/pages.py:1541
-#, python-brace-format
-msgid "{seconds} s"
-msgstr ""
-
-#: src/pages.py:1543
-#, python-brace-format
-msgid "{hours} h {minutes} min"
-msgstr ""
-
-#: src/widgets.py:146
+#: src/widgets.py:174
 msgid "Show less"
 msgstr ""
 
-#: src/window.py:69
-msgid "Translate"
-msgstr ""
+#: src/widgets.py:319
+msgid "New device"
+msgstr "Nové zařízení"
 
-#: src/window.py:71
-msgid "Contributors"
-msgstr "Podíleli se"
+#: src/widgets.py:324
+msgid "Known device"
+msgstr "Už známé zařízení"
 
-#~ msgid "Home Network (192.168.1.x)"
-#~ msgstr "Domácí síť (192.168.1.x)"
+#~ msgid "Apply name"
+#~ msgstr "Uplatnit název"
 
-#~ msgid "Home Network (192.168.0.x)"
-#~ msgstr "Domácí síť (192.168.0.x)"
+#~ msgid "Click to copy IP"
+#~ msgstr "IP adresu zkopírujete kliknutím"
 
-#~ msgid "Corporate (10.0.0.x)"
-#~ msgstr "Firemní (10.0.0.x)"
+#~ msgid "About"
+#~ msgstr "O aplikaci"
 
-#~ msgid "Private (172.16.0.x)"
-#~ msgstr "Ze soukromého roszahu (172.16.0.x)"
+#~ msgid "Scanning in progress..."
+#~ msgstr "Probíhá skenování…"
+
+#~ msgid "Devices found on your network:"
+#~ msgstr "Zařízení nalezená na vaší síti:"
+
+#~ msgid "Discovering devices on your network... (this may take a while!)"
+#~ msgstr "Objevování zařízení na vaší síti… (může chvíli trvat!)"
+
+#~ msgid "No Devices Found"
+#~ msgstr "Nenalezena žádná zařízení"
+
+#, fuzzy
+#~| msgid "New device"
+#~ msgid "New Devices"
+#~ msgstr "Nové zařízení"
+
+#, fuzzy
+#~| msgid "Known device"
+#~ msgid "Known Devices"
+#~ msgstr "Už známé zařízení"
+
+#~ msgid "Click to set name..."
+#~ msgstr "Název nastavíte kliknutím…"
+
+#~ msgid "Export cancelled or failed"
+#~ msgstr "Export zrušen nebo se nezdařil"
+
+#~ msgid "Export failed: "
+#~ msgstr "Export se nezdařil: "
+
+#, python-brace-format
+#~ msgid "Scan stopped - Found {count} devices"
+#~ msgstr "Skenování zastaveno – nalezeno {count} zařízení"
+
+#~ msgid "Error: "
+#~ msgstr "Chyba: "
+
+#~ msgid "An error occurred!"
+#~ msgstr "Došlo k chybě!"
