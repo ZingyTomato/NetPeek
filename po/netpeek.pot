@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the netpeek package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: netpeek\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-23 10:04+0000\n"
+"POT-Creation-Date: 2026-08-25 21:27+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: data/io.github.zingytomato.netpeek.desktop.in:2
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/gtk/home_page.ui:7
-#: src/gtk/home_page.ui:15 src/gtk/main_window.ui:7 src/window.py:62
+#: src/gtk/home_page.ui:15 src/gtk/main_window.ui:7 src/window.py:75
 msgid "NetPeek"
 msgstr ""
 
@@ -29,6 +29,245 @@ msgstr ""
 
 #: data/io.github.zingytomato.netpeek.desktop.in:10
 msgid "Gnome;GTK;Networking;Scanner;Internet;"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
+msgid "See what's on your network"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:9
+msgid ""
+"NetPeek is a simple network scanner that helps you discover active devices "
+"on your local network."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:15
+msgid "ZingyTomato"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:27
+msgid "Gnome"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:28
+msgid "GTK"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:29
+msgid "Networking"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:30
+msgid "Internet"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:31
+msgid "Scanner"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:49
+msgid "Home screen"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:53
+msgid "Scan in Progress"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:57
+#: src/gtk/results_page.ui:20
+msgid "Scan Results"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:61
+msgid "Scan Results (List View)"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:65
+msgid "Deep Scan Results"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:69
+#: src/gtk/history_dialog.ui:7 src/gtk/home_page.ui:181
+msgid "Previous Scans"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:76
+msgid "Version 0.3.3"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:78
+msgid "Grouped all IP presets into a single button."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:79
+msgid "Added date filters and custom date ranges to scan history."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:86
+msgid "Version 0.3.2"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:88
+msgid "Added search functionality to all scan pages."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:89
+msgid "Added a scan info dialog for current and previous scans."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:90
+msgid "Results view format is now preserved when resizing the window."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:91
+msgid "Updated nmap to version 7.991."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:98
+msgid "Version 0.3.1"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:100
+msgid ""
+"Device cards now cap System Information and Services at one line, with "
+"expand/collapse buttons to reveal the full text."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:101
+msgid "Moved the thread count picker into the main menu."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:102
+msgid ""
+"Added better indication throughout the UI that a deep scan is taking place."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:103
+msgid "Added a Translate link to the About dialog."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:110
+msgid "Version 0.3.0"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:112
+msgid ""
+"New Deep Scan mode for additional information like OS identification, "
+"software versions and more."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:113
+msgid ""
+"Expanded service detection for common self-hosted and DevOps services "
+"(MySQL, PostgreSQL, Redis, Home Assistant, Plex, etc.)."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:114
+msgid "Improved UI adaptability for smaller screens."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:121
+msgid "Version 0.2.9"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:123
+msgid "Refreshed the app icon with a contemporary, flat style."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:124
+msgid ""
+"Redesigned the light, dark and system style switcher with visual swatches."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:125
+msgid ""
+"Cockpit instances are now detected and shown alongside SMB shares in a "
+"combined Services row."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:126
+msgid "Header actions move into a bottom bar when the window is narrow."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:127
+msgid "Custom device names now apply retroactively to previous scans."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:128
+msgid "Added an Open Folder shortcut to the CSV export notification."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:129
+msgid ""
+"Streamlined notifications, keeping only copy, export and error messages."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:130
+msgid "The active sort option is now highlighted and shows its direction."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:131
+msgid "Sorting is disabled while scanning and when no devices are found."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:132
+msgid ""
+"Added a Services column to the list view and made narrow lists scroll "
+"horizontally."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:133
+msgid ""
+"Centered the network preset buttons and set a minimum window size for a "
+"consistent layout."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:134
+msgid ""
+"Fixed manually entered thread counts not being applied, and added a confirm "
+"button to the IP and thread fields."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:135
+msgid ""
+"Input fields no longer keep focus after use, and the IP entry no longer "
+"shows a focus ring or apply button on launch."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:136
+msgid "Device cards no longer highlight on hover."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:143
+msgid "Version 0.2.8"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:145
+msgid "Fixed unreliable network auto-detection."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:146
+msgid "Added scan history with a Previous Scans dialog."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:147
+msgid "Added dark mode support."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:148
+msgid "Unified sorting between card and list views."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:149
+msgid "Improved responsive layout on narrow windows."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:156
+msgid "Version 0.2.7"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:158
+msgid "Updated to GNOME 50 runtime."
 msgstr ""
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:6
@@ -126,42 +365,6 @@ msgstr ""
 msgid "ISO date string for custom filter end, e.g. \"2026-01-31\"."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
-msgid "See what's on your network"
-msgstr ""
-
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:9
-msgid ""
-"NetPeek is a simple network scanner that helps you discover active devices "
-"on your local network."
-msgstr ""
-
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:49
-msgid "Home screen"
-msgstr ""
-
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:53
-msgid "Scan in Progress"
-msgstr ""
-
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:57
-#: src/gtk/results_page.ui:20
-msgid "Scan Results"
-msgstr ""
-
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:61
-msgid "Scan Results (List View)"
-msgstr ""
-
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:65
-msgid "Deep Scan Results"
-msgstr ""
-
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:69
-#: src/gtk/history_dialog.ui:7 src/gtk/home_page.ui:181
-msgid "Previous Scans"
-msgstr ""
-
 #: src/gtk/device_card.ui:22
 msgid "Name"
 msgstr ""
@@ -178,7 +381,7 @@ msgstr ""
 msgid "Click to copy IP"
 msgstr ""
 
-#: src/gtk/device_card.ui:74 src/gtk/results_page.ui:134 src/pages.py:487
+#: src/gtk/device_card.ui:74 src/gtk/results_page.ui:131 src/pages.py:487
 msgid "Hostname"
 msgstr ""
 
@@ -186,7 +389,7 @@ msgstr ""
 msgid "Ports Open"
 msgstr ""
 
-#: src/gtk/device_card.ui:98 src/gtk/results_page.ui:200 src/pages.py:407
+#: src/gtk/device_card.ui:98 src/gtk/results_page.ui:197 src/pages.py:407
 msgid "Services"
 msgstr ""
 
@@ -194,7 +397,7 @@ msgstr ""
 msgid "Show full service list"
 msgstr ""
 
-#: src/gtk/device_card.ui:124 src/gtk/results_page.ui:222 src/pages.py:408
+#: src/gtk/device_card.ui:124 src/gtk/results_page.ui:219 src/pages.py:408
 msgid "System Information"
 msgstr ""
 
@@ -250,7 +453,7 @@ msgstr ""
 msgid "Main Menu"
 msgstr ""
 
-#: src/gtk/home_page.ui:79 src/window.py:66
+#: src/gtk/home_page.ui:79 src/window.py:79
 msgid "Discover devices on your local network."
 msgstr ""
 
@@ -280,15 +483,11 @@ msgid ""
 msgstr ""
 
 #: src/gtk/home_page.ui:147
-msgid "Scan my Network"
+msgid "Scan Network"
 msgstr ""
 
 #: src/gtk/home_page.ui:187
-msgid "About"
-msgstr ""
-
-#: src/gtk/home_page.ui:191
-msgid "Quit"
+msgid "About NetPeek"
 msgstr ""
 
 #: src/gtk/results_page.ui:7
@@ -307,85 +506,93 @@ msgstr ""
 msgid "Stop"
 msgstr ""
 
-#: src/gtk/results_page.ui:46
+#: src/gtk/results_page.ui:43
 msgid "Scan information"
 msgstr ""
 
-#: src/gtk/results_page.ui:57
+#: src/gtk/results_page.ui:54
 msgid "Export to CSV"
 msgstr ""
 
-#: src/gtk/results_page.ui:65
+#: src/gtk/results_page.ui:62
 msgid "Toggle list view"
 msgstr ""
 
-#: src/gtk/results_page.ui:73
+#: src/gtk/results_page.ui:70
 msgid "Sort devices"
 msgstr ""
 
-#: src/gtk/results_page.ui:90 src/pages.py:912
+#: src/gtk/results_page.ui:87 src/pages.py:912
 msgid "Known"
 msgstr ""
 
-#: src/gtk/results_page.ui:112 src/pages.py:447
+#: src/gtk/results_page.ui:109 src/pages.py:447
 msgid "IP Address"
 msgstr ""
 
-#: src/gtk/results_page.ui:156 src/pages.py:512
+#: src/gtk/results_page.ui:153 src/pages.py:512
 msgid "Custom Name"
 msgstr ""
 
-#: src/gtk/results_page.ui:178 src/pages.py:406
+#: src/gtk/results_page.ui:175 src/pages.py:406
 msgid "Ports"
 msgstr ""
 
-#: src/gtk/results_page.ui:250 src/pages.py:1005 src/pages.py:1085
+#: src/gtk/results_page.ui:247 src/pages.py:1005 src/pages.py:1085
 #: src/pages.py:1111
 msgid "Rescan"
 msgstr ""
 
-#: src/gtk/results_page.ui:275
+#: src/gtk/results_page.ui:272
 msgid "Scanning Network"
 msgstr ""
 
-#: src/gtk/results_page.ui:276
+#: src/gtk/results_page.ui:273
 msgid "Discovering devices on your network... (this may take a while!)"
 msgstr ""
 
-#: src/gtk/results_page.ui:297 src/pages.py:984
+#: src/gtk/results_page.ui:294 src/pages.py:984
 msgid "Preparing scan..."
 msgstr ""
 
-#: src/gtk/results_page.ui:306 src/pages.py:985
+#: src/gtk/results_page.ui:303 src/pages.py:985
 msgid "Time Elapsed: 00:00"
 msgstr ""
 
-#: src/gtk/results_page.ui:338
+#: src/gtk/results_page.ui:335
 msgid "Search IP addresses, services, ports…"
 msgstr ""
 
-#: src/gtk/results_page.ui:421
+#: src/gtk/results_page.ui:418
 msgid "No Results Found"
 msgstr ""
 
-#: src/gtk/results_page.ui:422
+#: src/gtk/results_page.ui:419
 msgid "No devices match your search query."
 msgstr ""
 
-#: src/gtk/results_page.ui:440
+#: src/gtk/results_page.ui:437
 msgid "No Devices Found"
 msgstr ""
 
-#: src/gtk/results_page.ui:441
-msgid "No devices were found in the specified range!"
+#: src/gtk/results_page.ui:438
+msgid "No devices were found in the specified range."
 msgstr ""
 
-#: src/gtk/results_page.ui:453
+#: src/gtk/results_page.ui:442
+msgid "Scan Again"
+msgstr ""
+
+#: src/gtk/results_page.ui:457
 msgid "Scan Error"
 msgstr ""
 
-#: src/gtk/results_page.ui:454
-msgid "An error occurred while scanning the network!"
+#: src/gtk/results_page.ui:458
+msgid "An error occurred while scanning the network."
+msgstr ""
+
+#: src/gtk/results_page.ui:462
+msgid "Try Again"
 msgstr ""
 
 #: src/gtk/scan_metadata_dialog.ui:7 src/gtk/scan_metadata_dialog.ui:16
@@ -422,6 +629,14 @@ msgstr ""
 
 #: src/gtk/theme_selector.ui:45 src/gtk/theme_selector.ui:51
 msgid "Dark"
+msgstr ""
+
+#: src/window.py:82
+msgid "Translate"
+msgstr ""
+
+#: src/window.py:84
+msgid "Contributors"
 msgstr ""
 
 #: src/pages.py:67
@@ -520,7 +735,7 @@ msgid "Scanning"
 msgstr ""
 
 #: src/pages.py:1017 src/pages.py:1049 src/pages.py:1098 src/pages.py:1464
-#: src/pages.py:1525
+#: src/pages.py:1546
 msgid "Deep"
 msgstr ""
 
@@ -587,33 +802,45 @@ msgstr ""
 msgid "Delete this scan"
 msgstr ""
 
-#: src/pages.py:1525
+#: src/pages.py:1487
+msgid "Delete Scan?"
+msgstr ""
+
+#: src/pages.py:1488
+msgid "This scan will be permanently removed from your history."
+msgstr ""
+
+#: src/pages.py:1490
+msgid "Cancel"
+msgstr ""
+
+#: src/pages.py:1491
+msgid "Delete"
+msgstr ""
+
+#: src/pages.py:1507
+msgid "Scan deleted"
+msgstr ""
+
+#: src/pages.py:1546
 msgid "Standard"
 msgstr ""
 
-#: src/pages.py:1540
+#: src/pages.py:1561
 #, python-brace-format
 msgid "{minutes} min {seconds} s"
 msgstr ""
 
-#: src/pages.py:1541
+#: src/pages.py:1562
 #, python-brace-format
 msgid "{seconds} s"
 msgstr ""
 
-#: src/pages.py:1543
+#: src/pages.py:1564
 #, python-brace-format
 msgid "{hours} h {minutes} min"
 msgstr ""
 
 #: src/widgets.py:146
 msgid "Show less"
-msgstr ""
-
-#: src/window.py:69
-msgid "Translate"
-msgstr ""
-
-#: src/window.py:71
-msgid "Contributors"
 msgstr ""

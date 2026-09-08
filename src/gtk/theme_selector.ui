@@ -12,6 +12,8 @@
     <child>
       <object class="GtkCheckButton" id="auto_button">
         <property name="focus-on-click">False</property>
+        <property name="action-name">app.color-scheme</property>
+        <property name="action-target">'default'</property>
         <property name="tooltip-text" translatable="yes">Follow System</property>
         <style>
           <class name="theme-selector"/>
@@ -27,6 +29,8 @@
       <object class="GtkCheckButton" id="light_button">
         <property name="group">auto_button</property>
         <property name="focus-on-click">False</property>
+        <property name="action-name">app.color-scheme</property>
+        <property name="action-target">'light'</property>
         <property name="tooltip-text" translatable="yes">Light</property>
         <style>
           <class name="theme-selector"/>
@@ -42,6 +46,8 @@
       <object class="GtkCheckButton" id="dark_button">
         <property name="group">auto_button</property>
         <property name="focus-on-click">False</property>
+        <property name="action-name">app.color-scheme</property>
+        <property name="action-target">'dark'</property>
         <property name="tooltip-text" translatable="yes">Dark</property>
         <style>
           <class name="theme-selector"/>

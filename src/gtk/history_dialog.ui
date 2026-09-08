@@ -4,17 +4,23 @@
   <requires lib="libadwaita" version="1.0"/>
 
   <template class="HistoryDialog" parent="AdwDialog">
-    <property name="title" translatable="yes">Previous Scans</property>
-    <property name="width-request">340</property>
+    <property name="title" translatable="yes">Previous scans</property>
+    <property name="width-request">360</property>
     <property name="height-request">400</property>
-    <property name="content-width">480</property>
+    <property name="content-width">560</property>
     <property name="content-height">640</property>
     <child>
       <object class="AdwToastOverlay" id="toast_overlay">
         <child>
           <object class="AdwToolbarView">
         <child type="top">
-          <object class="AdwHeaderBar"/>
+          <object class="AdwHeaderBar">
+            <child type="title">
+              <object class="AdwWindowTitle">
+                <property name="title" translatable="yes">Previous scans</property>
+              </object>
+            </child>
+          </object>
         </child>
         <child type="top">
           <object class="GtkBox">
@@ -31,16 +37,7 @@
                     <property name="label" translatable="yes">All</property>
                     <property name="tooltip-text" translatable="yes">Filter scans by date</property>
                     <property name="popover">
-                      <object class="GtkPopover" id="filter_popover">
-                        <child>
-                          <object class="GtkListBox" id="preset_list">
-                            <property name="selection-mode">none</property>
-                            <style>
-                              <class name="menu"/>
-                            </style>
-                          </object>
-                        </child>
-                      </object>
+                      <object class="GtkPopoverMenu" id="filter_popover"/>
                     </property>
                     <style>
                       <class name="flat"/>
@@ -54,7 +51,7 @@
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="custom_toggle">
-                    <property name="label" translatable="yes">Custom Range…</property>
+                    <property name="label" translatable="yes">Custom range</property>
                     <property name="tooltip-text" translatable="yes">Pick a custom date range</property>
                     <style>
                       <class name="flat"/>
@@ -209,6 +206,9 @@
                           <class name="osd"/>
                           <class name="circular"/>
                         </style>
+                        <accessibility>
+                          <property name="label" translatable="yes">Scroll to top</property>
+                        </accessibility>
                       </object>
                     </child>
                   </object>
@@ -220,11 +220,56 @@
                 <property name="name">empty</property>
                 <property name="child">
                   <object class="AdwStatusPage" id="empty_status_page">
-                    <property name="title" translatable="yes">No Previous Scans</property>
+                    <property name="title" translatable="yes">No previous scans</property>
                     <property name="description" translatable="yes">Your scan history will appear here.</property>
                     <property name="icon-name">document-open-recent-symbolic</property>
                   </object>
                 </property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="bottom">
+          <object class="GtkBox" id="pager_bar">
+            <property name="visible">False</property>
+            <property name="spacing">6</property>
+            <property name="halign">center</property>
+            <property name="margin-start">12</property>
+            <property name="margin-end">12</property>
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">6</property>
+            <child>
+              <object class="GtkButton" id="prev_button">
+                <property name="icon-name">go-previous-symbolic</property>
+                <property name="tooltip-text" translatable="yes">Previous page</property>
+                <property name="valign">center</property>
+                <style>
+                  <class name="flat"/>
+                  <class name="circular"/>
+                </style>
+                <accessibility>
+                  <property name="label" translatable="yes">Previous page</property>
+                </accessibility>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox" id="page_buttons_box">
+                <property name="spacing">4</property>
+                <property name="valign">center</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="next_button">
+                <property name="icon-name">go-next-symbolic</property>
+                <property name="tooltip-text" translatable="yes">Next page</property>
+                <property name="valign">center</property>
+                <style>
+                  <class name="flat"/>
+                  <class name="circular"/>
+                </style>
+                <accessibility>
+                  <property name="label" translatable="yes">Next page</property>
+                </accessibility>
               </object>
             </child>
           </object>

@@ -2,12 +2,12 @@
 <schemalist gettext-domain="netpeek">
 	<schema id="io.github.zingytomato.netpeek" path="/io/github/zingytomato/netpeek/">
     <key name="window-width" type="i">
-      <default>700</default>
+      <default>1100</default>
       <summary>Default window width</summary>
       <description>Default window width</description>
     </key>
     <key name="window-height" type="i">
-      <default>1000</default>
+      <default>700</default>
       <summary>Default window height</summary>
       <description>Default window height</description>
     </key>
@@ -39,7 +39,7 @@
     <key name="deep-scan" type="b">
       <default>false</default>
       <summary>Enable deep scan mode</summary>
-      <description>When enabled, retrieves more detailed system information like OS name, HTTP server etc.</description>
+      <description>When enabled, retrieves detailed system information, such as the OS name and HTTP server details.</description>
     </key>
     <key name="thread-count" type="i">
       <default>100</default>

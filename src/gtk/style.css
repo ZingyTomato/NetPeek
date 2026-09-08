@@ -1,4 +1,3 @@
-/* The device cards are not clickable, so suppress the flow box hover tint. */
 flowbox.device-grid > flowboxchild:hover,
 flowbox.device-grid > flowboxchild:active {
   background: none;
@@ -19,15 +18,15 @@ flowbox.device-grid > flowboxchild:active {
 }
 
 .theme-selector.auto {
-  background-image: linear-gradient(to bottom right, #fff 49.99%, #202020 50.01%);
+  background-image: linear-gradient(to bottom right, white 50%, black 50%);
 }
 
 .theme-selector.light {
-  background-color: #fff;
+  background-color: white;
 }
 
 .theme-selector.dark {
-  background-color: #202020;
+  background-color: black;
 }
 
 .theme-selector.auto:checked,
@@ -43,8 +42,8 @@ flowbox.device-grid > flowboxchild:active {
   box-shadow: none;
   min-width: 12px;
   min-height: 12px;
+  margin: 24px 0 0 24px;
   padding: 2px;
-  transform: translate(27px, 14px);
 }
 
 .theme-selector radio:checked {
@@ -54,16 +53,20 @@ flowbox.device-grid > flowboxchild:active {
   border-radius: 9999px;
 }
 
+.theme-selector radio:dir(rtl) {
+  margin: 24px 24px 0 0;
+}
+
 .preset-split {
-  min-height: 40px;
-  min-width: 160px;
+  min-height: 44px;
+  min-width: 140px;
 }
 
 .preset-split > button {
-  min-height: 40px;
+  min-height: 44px;
   border-radius: 9999px 0 0 9999px;
-  padding-left: 16px;
-  padding-right: 12px;
+  padding-left: 20px;
+  padding-right: 14px;
 }
 
 .preset-split > menubutton {
@@ -71,14 +74,35 @@ flowbox.device-grid > flowboxchild:active {
 }
 
 .preset-split > menubutton > button {
-  min-height: 40px;
+  min-height: 44px;
   border-radius: 0 9999px 9999px 0;
-  padding-left: 8px;
-  padding-right: 12px;
+  padding-left: 10px;
+  padding-right: 14px;
 }
 
-.mobile-layout .preset-menu-item {
-  min-height: 48px;
-  padding-left: 16px;
-  padding-right: 16px;
+
+listview.mobile-device-list {
+  background: transparent;
+}
+
+listview.mobile-device-list row {
+  background: transparent;
+  padding: 0;
+}
+
+.mobile-device-row {
+  margin: 6px 12px;
+  background-color: @card_bg_color;
+  border-radius: 12px;
+  border: 1px solid @borders;
+}
+
+.mobile-device-row entry {
+  min-height: 44px;
+}
+
+.pager-button {
+  min-width: 28px;
+  padding-left: 8px;
+  padding-right: 8px;
 }

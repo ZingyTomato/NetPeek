@@ -4,16 +4,16 @@
   <requires lib="libadwaita" version="1.0"/>
 
   <template class="ScanMetadataDialog" parent="AdwDialog">
-    <property name="title" translatable="yes">Scan Information</property>
+                <property name="title" translatable="yes">Scan information</property>
     <property name="content-width">380</property>
-    <property name="content-height">400</property>
+    <property name="content-height">470</property>
     <child>
       <object class="AdwToolbarView">
         <child type="top">
           <object class="AdwHeaderBar">
             <child type="title">
               <object class="AdwWindowTitle">
-                <property name="title" translatable="yes">Scan Information</property>
+    <property name="title" translatable="yes">Scan information</property>
               </object>
             </child>
           </object>
@@ -32,8 +32,33 @@
                 <child>
                   <object class="AdwPreferencesGroup">
                     <child>
+                      <object class="AdwActionRow" id="ip_range_row">
+                        <property name="title" translatable="yes">IP range</property>
+                        <child type="prefix">
+                          <object class="GtkImage">
+                            <property name="icon-name">network-wired-symbolic</property>
+                          </object>
+                        </child>
+                        <child type="suffix">
+                          <object class="GtkButton" id="ip_copy_button">
+                            <property name="halign">end</property>
+                            <property name="valign">center</property>
+                            <property name="icon-name">edit-copy-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Copy IP range</property>
+                            <style>
+                              <class name="flat"/>
+                            </style>
+                            <signal name="clicked" handler="on_ip_range_copy_clicked"/>
+                            <accessibility>
+                              <property name="label" translatable="yes">Copy IP range</property>
+                            </accessibility>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
                       <object class="AdwActionRow" id="timestamp_row">
-                        <property name="title" translatable="yes">Date Taken</property>
+                        <property name="title" translatable="yes">Date taken</property>
                         <child type="prefix">
                           <object class="GtkImage">
                             <property name="icon-name">alarm-symbolic</property>
@@ -43,7 +68,7 @@
                     </child>
                     <child>
                       <object class="AdwActionRow" id="scan_type_row">
-                        <property name="title" translatable="yes">Scan Type</property>
+                        <property name="title" translatable="yes">Scan type</property>
                         <child type="prefix">
                           <object class="GtkImage">
                             <property name="icon-name">system-search-symbolic</property>
@@ -53,7 +78,7 @@
                     </child>
                     <child>
                       <object class="AdwActionRow" id="duration_row">
-                        <property name="title" translatable="yes">Scan Duration</property>
+                        <property name="title" translatable="yes">Scan duration</property>
                         <property name="visible">false</property>
                         <child type="prefix">
                           <object class="GtkImage">
@@ -64,7 +89,7 @@
                     </child>
                     <child>
                       <object class="AdwActionRow" id="new_count_row">
-                        <property name="title" translatable="yes">New Devices</property>
+                        <property name="title" translatable="yes">New devices</property>
                         <child type="prefix">
                           <object class="GtkImage">
                             <property name="icon-name">starred-symbolic</property>
@@ -74,7 +99,7 @@
                     </child>
                     <child>
                       <object class="AdwActionRow" id="known_count_row">
-                        <property name="title" translatable="yes">Known Devices</property>
+                        <property name="title" translatable="yes">Known devices</property>
                         <child type="prefix">
                           <object class="GtkImage">
                             <property name="icon-name">network-wireless-signal-excellent-symbolic</property>

@@ -32,12 +32,16 @@ def _data_dir():
     return path
 
 
+def _path_for(name):
+    return os.path.join(_data_dir(), name)
+
+
 def _devices_path():
-    return os.path.join(_data_dir(), "devices.json")
+    return _path_for("devices.json")
 
 
 def _scans_path():
-    return os.path.join(_data_dir(), "scans.json")
+    return _path_for("scans.json")
 
 
 def _load_json(path, default):
@@ -85,8 +89,7 @@ def set_custom_name(key, name):
 
 
 def apply_custom_names(devices):
-    """Return copies of the given device dicts with custom_name refreshed
-    from the live registry, so renames show up in older scans too."""
+    """Return devices with custom names refreshed from the registry."""
     registry = load_devices()
     refreshed = []
     for device in devices:
@@ -99,12 +102,7 @@ def apply_custom_names(devices):
 
 
 def record_scan(ip_range, devices, deep_scan=False, duration_seconds=0.0):
-    """Persist a completed scan and update the device registry.
-
-    Annotates the given device list with `custom_name` and `known`
-    (whether this device was already in the registry before now) and
-    returns it along with the saved scan record.
-    """
+    """Save a scan and tag devices with names and known status."""
     registry = load_devices()
     now = _now()
     annotated = []
@@ -147,3 +145,16 @@ def delete_scan(timestamp):
     scans = load_scans()
     scans = [scan for scan in scans if scan.get("timestamp") != timestamp]
     save_scans(scans)
+
+
+def restore_scan(scan):
+    """Re-insert a previously deleted scan, keeping newest-first order.
+
+    Used by the delete-undo toast. The device registry is cumulative and
+    intentionally left untouched.
+    """
+    scans = [s for s in load_scans()
+             if s.get("timestamp") != scan.get("timestamp")]
+    scans.append(dict(scan))
+    scans.sort(key=lambda s: s.get("timestamp", ""), reverse=True)
+    save_scans(scans[:MAX_SCAN_HISTORY])

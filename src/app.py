@@ -21,7 +21,7 @@ import gi
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Adw, Gdk, Gio, GLib
+from gi.repository import Gtk, Adw, Gdk, Gio
 
 from .window import NetworkScannerWindow
 
@@ -36,18 +36,18 @@ class NetworkScannerApp(Adw.Application):
 
     def __init__(self):
         super().__init__(application_id='io.github.zingytomato.netpeek')
+        self.set_resource_base_path('/io/github/zingytomato/netpeek')
         self.settings = Gio.Settings.new('io.github.zingytomato.netpeek')
 
-        self._create_color_scheme_action()
+        self.add_action(self.settings.create_action("color-scheme"))
+        self.settings.connect("changed::color-scheme", self._on_color_scheme_changed)
         self._apply_color_scheme()
 
     def do_startup(self):
         Adw.Application.do_startup(self)
-        # Make the bundled app icons resolvable without an installed icon
-        # cache, so they also show up in development runs (e.g. Builder).
-        Gtk.IconTheme.get_for_display(Gdk.Display.get_default()).add_resource_path(
-            '/io/github/zingytomato/netpeek/icons')
         self._load_css()
+        self._create_app_actions()
+        self._setup_accels()
 
     def _load_css(self):
         provider = Gtk.CssProvider()
@@ -56,18 +56,67 @@ class NetworkScannerApp(Adw.Application):
             Gdk.Display.get_default(), provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
-    def _create_color_scheme_action(self):
-        action = Gio.SimpleAction.new_stateful(
-            "color-scheme",
-            GLib.VariantType.new("s"),
-            GLib.Variant.new_string(self.settings.get_string("color-scheme")),
-        )
-        action.connect("activate", self.on_color_scheme_change)
+    def _add_action(self, name, handler):
+        action = Gio.SimpleAction.new(name, None)
+        action.connect("activate", handler)
         self.add_action(action)
 
-    def on_color_scheme_change(self, action, value):
-        action.set_state(value)
-        self.settings.set_string("color-scheme", value.get_string())
+    def _create_app_actions(self):
+        self._add_action("about", self.on_about_action)
+        self._add_action("quit", self.on_quit_action)
+        self._add_action("shortcuts", self.on_shortcuts_action)
+
+    def on_shortcuts_action(self, action, param):
+        builder = Gtk.Builder.new_from_resource(
+            '/io/github/zingytomato/netpeek/shortcuts-dialog.ui')
+        dialog = builder.get_object('shortcuts_dialog')
+        dialog.present(self.get_active_window())
+
+    def _setup_accels(self):
+        self.set_accels_for_action("app.quit", ["<Primary>q"])
+        self.set_accels_for_action("app.shortcuts", ["<Primary>question"])
+        self.set_accels_for_action("win.previous-scans", ["<Primary>h"])
+        self.set_accels_for_action("win.go-back", ["<Alt>Left", "<Alt>Right"])
+        self.set_accels_for_action("win.start-scan", ["<Primary>Return"])
+        self.set_accels_for_action("win.focus-ip", ["<Primary>l"])
+        self.set_accels_for_action("win.find", ["<Primary>f"])
+        self.set_accels_for_action("win.rescan", ["<Primary>r", "F5"])
+        self.set_accels_for_action("win.stop-scan", ["<Primary>s"])
+        self.set_accels_for_action("win.export", ["<Primary>e"])
+        self.set_accels_for_action("win.toggle-view", ["<Primary>t"])
+        self.set_accels_for_action("win.show-scan-info", ["<Primary>i"])
+        self.set_accels_for_action("win.preferences", ["<Primary>comma"])
+
+    def on_about_action(self, action, param):
+        window = self.get_active_window()
+        version = self.get_version()
+        about = Adw.AboutDialog()
+        about.set_application_name(_("NetPeek"))
+        about.set_version(version)
+        about.set_developer_name("ZingyTomato")
+        about.set_license_type(Gtk.License.GPL_3_0)
+        about.set_comments(_("Discover devices on your local network."))
+        about.set_website("https://github.com/zingytomato/netpeek")
+        about.set_issue_url("https://github.com/zingytomato/netpeek/issues")
+        about.add_link(_("Translate"), "https://hosted.weblate.org/engage/netpeek/")
+        about.set_application_icon("io.github.zingytomato.netpeek")
+        about.add_credit_section(_("Contributors"), ["ZingyTomato", "Gert-Dev", "Cameo007", "vmkspv", "oscfdezdz", "albanobattistella", "sjulien", "dawkagaming", "prescott66"])
+        release_notes = "<ul><li>{shortcuts}</li><li>{prefs}</li><li>{history}</li><li>{pages}</li><li>{geometry}</li><li>{mobile}</li></ul>".format(
+            shortcuts=_("Added keyboard shortcuts for common actions, with a shortcuts window."),
+            prefs=_("Added a Preferences dialog with display theme and scan thread count."),
+            history=_("History entries now have their own scan information button, and scan information shows the scanned IP range with a copy button."),
+            pages=_("Previous scans list is now paginated for easier browsing."),
+            geometry=_("Window size and maximized state are remembered between sessions."),
+            mobile=_("Reworked results views for narrow screens, with dedicated mobile rows and header actions moving to the bottom bar."),
+        )
+        about.set_release_notes(release_notes)
+        about.set_release_notes_version(version)
+        about.present(window)
+
+    def on_quit_action(self, action, param):
+        self.quit()
+
+    def _on_color_scheme_changed(self, settings, _key):
         self._apply_color_scheme()
 
     def _apply_color_scheme(self):
@@ -77,5 +126,6 @@ class NetworkScannerApp(Adw.Application):
 
     def do_activate(self):
         """Called when the application is activated"""
-        self.window = NetworkScannerWindow(application=self, settings=self.settings)
+        if not hasattr(self, "window") or self.window is None:
+            self.window = NetworkScannerWindow(application=self, settings=self.settings)
         self.window.present()

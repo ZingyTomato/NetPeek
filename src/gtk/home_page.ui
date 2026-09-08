@@ -34,7 +34,7 @@
             <property name="width-request">360</property>
             <property name="height-request">200</property>
             <child>
-              <object class="AdwBreakpoint" id="mobile_breakpoint">
+              <object class="AdwBreakpoint">
                 <condition>max-width: 400sp</condition>
                 <setter object="main_box" property="margin-top">24</setter>
                 <setter object="main_box" property="margin-bottom">24</setter>
@@ -99,33 +99,23 @@
 
                             <child>
                               <object class="AdwPreferencesGroup" id="ip_group">
-                                <property name="title" translatable="yes">IP Range Configuration</property>
-                                <property name="description" translatable="yes">Enter the IP range you want to scan:</property>
+                                <property name="title" translatable="yes">IP range configuration</property>
+                                <property name="description" translatable="yes">Enter the IP range you want to scan</property>
 
                                 <child>
                                   <object class="AdwEntryRow" id="ip_entry_row">
-                                    <property name="title" translatable="yes">IP Range</property>
+                                    <property name="title" translatable="yes">IP range</property>
                                     <property name="text">192.168.1.0/24</property>
+                                    <property name="show-apply-button">true</property>
                                     <signal name="entry-activated" handler="on_ip_range_apply"/>
-                                    <child type="suffix">
-                                      <object class="GtkButton" id="ip_apply_button">
-                                        <property name="icon-name">object-select-symbolic</property>
-                                        <property name="visible">false</property>
-                                        <property name="valign">center</property>
-                                        <property name="tooltip-text" translatable="yes">Apply IP range</property>
-                                        <style>
-                                          <class name="flat"/>
-                                        </style>
-                                        <signal name="clicked" handler="on_ip_range_apply"/>
-                                      </object>
-                                    </child>
+                                    <signal name="apply" handler="on_ip_range_apply"/>
                                   </object>
                                 </child>
 
                                 <child>
                                   <object class="AdwSwitchRow" id="deep_scan_row">
-                                    <property name="title" translatable="yes">Deep Scan</property>
-                                    <property name="subtitle" translatable="yes">Retrieves more detailed system information like OS name, HTTP server etc.</property>
+                                    <property name="title" translatable="yes">Deep scan</property>
+                                    <property name="subtitle" translatable="yes">Retrieves detailed system information, such as the OS name and HTTP server details.</property>
                                   </object>
                                 </child>
                               </object>
@@ -144,7 +134,7 @@
 
                     <child>
                       <object class="GtkButton" id="scan_button">
-                        <property name="label" translatable="yes">Scan my Network</property>
+                        <property name="label" translatable="yes">Scan network</property>
                         <property name="width-request">200</property>
                         <property name="height-request">48</property>
                         <property name="halign">center</property>
@@ -173,23 +163,22 @@
     </section>
     <section>
       <item>
-        <attribute name="custom">thread_count</attribute>
+        <attribute name="label" translatable="yes">Preferences</attribute>
+        <attribute name="action">win.preferences</attribute>
       </item>
-    </section>
-    <section>
       <item>
-        <attribute name="label" translatable="yes">Previous Scans</attribute>
+        <attribute name="label" translatable="yes">Previous scans</attribute>
         <attribute name="action">win.previous-scans</attribute>
       </item>
+      <item>
+        <attribute name="label" translatable="yes">Keyboard shortcuts</attribute>
+        <attribute name="action">app.shortcuts</attribute>
+      </item>
     </section>
     <section>
       <item>
-        <attribute name="label" translatable="yes">About</attribute>
+        <attribute name="label" translatable="yes">About NetPeek</attribute>
         <attribute name="action">app.about</attribute>
-      </item>
-      <item>
-        <attribute name="label" translatable="yes">Quit</attribute>
-        <attribute name="action">app.quit</attribute>
       </item>
     </section>
   </menu>
