@@ -33,61 +33,46 @@
 ## 📷 Screenshots
 
 <p align="center">
-  <img src="https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/1.png?raw=true" alt="Home Page" width="700"/>
+  <img src="https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/1.png?raw=true" alt="Home page" width="700"/>
 </p>
 
 <p align="center">
-  <img src="https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/2.png?raw=true" alt="Scanning in Progress" width="700"/>
+  <img src="https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/2.png?raw=true" alt="Scanning in progress" width="700"/>
 </p>
 
 <p align="center">
-  <img src="https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/3.png?raw=true" alt="Results Page" width="700"/>
+  <img src="https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/3.png?raw=true" alt="Results page" width="700"/>
 </p>
 
 <p align="center">
-  <img src="https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/4.png?raw=true" alt="List View" width="700"/>
+  <img src="https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/4.png?raw=true" alt="List view" width="700"/>
 </p>
 
 <p align="center">
-  <img src="https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/5.png?raw=true" alt="Deep Scan" width="700"/>
+  <img src="https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/5.png?raw=true" alt="Deep scan" width="700"/>
 </p>
 
 <p align="center">
-  <img src="https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/6.png?raw=true" alt="Previous Scans" width="700"/>
+  <img src="https://github.com/ZingyTomato/NetPeek/blob/master/data/screenshots/6.png?raw=true" alt="Previous scans" width="700"/>
 </p>
 
 ## ⭐ Features
 
-- **Fast Network Scanning** -- Discover active devices on your network
-- **Port Scanning** -- Shows open ports on discovered devices
-- **Service Detection** -- Automatically identifies common services (SMB, Cockpit, MySQL, PostgreSQL, Plex, Home Assistant, and more)
-- **Deep Scan Mode** -- Attempts OS detection and service version identification
-- **Custom Names and History** -- Rename devices, browse and reload previous scans
-- **Scan Info Dialog** -- View detailed scan metadata for current and previous scans
-- **Dark Mode** -- Follow system theme, or force light/dark
-- **Sortable Results** -- Sort by known status, IP, hostname, custom name, ports, services, or OS
-- **Searchable Results** -- Search and filter devices on scan pages
-- **Modern UI** -- Built with GTK4 and libadwaita
-- **Batched Scanning** -- Nmap manages concurrent probes with a configurable number of hosts per batch
-- **Flexible Input** -- Supports CIDR notation (`192.168.1.0/24`), IP ranges (`192.168.1.1-254`), and single IPs
-- **Automatic IP Detection** -- Instantly finds your local IP range
-- **CSV Export** -- Export scan results for use elsewhere
-
-Standard scans check NetPeek's curated TCP ports and show port-based service hints.
-Discovery probes cover that same port list, so devices are not skipped just because
-ports 80 and 443 are filtered. Nmap uses ARP discovery on local Ethernet when
-available and retains its adaptive timing and retry defaults.
-
-Deep scans use Nmap's default version intensity (7) and SMB OS discovery. Service
-labels come from detected protocols/products, including services on unexpected
-ports, rather than assuming an application from its port number. OS details are
-best-effort SMB/service information; raw-packet OS fingerprinting is not enabled.
-Deep scans can take longer, and devices that do not answer any discovery probes
-may still be missed. Neither mode scans every TCP port or performs a UDP scan.
-
-Scan progress shows Nmap's current phase and percentage while each batch runs.
-Completed hosts are collected as Nmap reports them. Stopping terminates the active
-Nmap process, preserves completed results, and discards subsequent callbacks.
+- **Fast Network Scanning**: Discover active devices on your network
+- **Port Scanning**: Shows open ports on discovered devices
+- **Service Detection**: Automatically identifies common services (SMB, Cockpit, MySQL, PostgreSQL, Plex, Home Assistant, and more)
+- **Deep Scan Mode**: Attempts OS detection and service version identification
+- **Custom Names and History**: Rename devices, browse and reload previous scans, with date filters and paged browsing
+- **Scan Info Dialog**: View detailed scan metadata for current and previous scans
+- **Appearance & Preferences**: Follow system theme or force light/dark, and tune scan threads
+- **Sortable Results**: Sort by known status, IP, hostname, custom name, ports, services, or OS
+- **Searchable Results**: Search and filter devices on scan pages
+- **Keyboard Shortcuts**: Full keyboard control with a built-in shortcuts window
+- **Modern UI**: Built with GTK4 and libadwaita
+- **Multi-threaded**: Fast concurrent scanning with a configurable thread count
+- **Flexible Input**: Supports CIDR notation (`192.168.1.0/24`), IP ranges (`192.168.1.1-254`), and single IPs
+- **Automatic IP Detection**: Instantly finds your local IP range
+- **CSV Export**: Export scan results for use elsewhere
 
 ## 🔧 Installation
 
@@ -109,13 +94,13 @@ flatpak install flathub io.github.zingytomato.netpeek
 
 **Fedora COPR:** https://copr.fedorainfracloud.org/coprs/infiniti151/flatpak-apps/package/netpeek/
 
-### 🔨 Building from Source
+### Building from Source
 
 **Dependencies:**
 
 - **Python 3** with **PyGObject** (GTK4 bindings)
-- **[python-nmap](https://pypi.org/project/python-nmap/)** -- nmap library for network scanning
-- **GTK4** and **libadwaita** (>= 1.6)
+- **[python-nmap](https://pypi.org/project/python-nmap/)**: nmap library for network scanning
+- **GTK4** and **libadwaita** (>= 1.8)
 - **[nmap](https://nmap.org/)**
 
 ## 🔨 Local Development

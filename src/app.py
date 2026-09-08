@@ -101,9 +101,13 @@ class NetworkScannerApp(Adw.Application):
         about.add_link(_("Translate"), "https://hosted.weblate.org/engage/netpeek/")
         about.set_application_icon("io.github.zingytomato.netpeek")
         about.add_credit_section(_("Contributors"), ["ZingyTomato", "Gert-Dev", "Cameo007", "vmkspv", "oscfdezdz", "albanobattistella", "sjulien", "dawkagaming", "prescott66"])
-        release_notes = "<ul><li>{grouped}</li><li>{filters}</li></ul>".format(
-            grouped=_("Grouped all IP presets into a single button."),
-            filters=_("Added date filters and custom date ranges to scan history."),
+        release_notes = "<ul><li>{shortcuts}</li><li>{prefs}</li><li>{history}</li><li>{pages}</li><li>{geometry}</li><li>{mobile}</li></ul>".format(
+            shortcuts=_("Added keyboard shortcuts for common actions, with a shortcuts window."),
+            prefs=_("Added a Preferences dialog with display theme and scan thread count."),
+            history=_("History entries now have their own scan information button, and scan information shows the scanned IP range with a copy button."),
+            pages=_("Previous scans list is now paginated for easier browsing."),
+            geometry=_("Window size and maximized state are remembered between sessions."),
+            mobile=_("Reworked results views for narrow screens, with dedicated mobile rows and header actions moving to the bottom bar."),
         )
         about.set_release_notes(release_notes)
         about.set_release_notes_version(version)

@@ -70,6 +70,20 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="0.3.4" date="2026-09-08">
+      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.3.4</url>
+      <description>
+        <p>Version 0.3.4</p>
+        <ul>
+          <li>Added keyboard shortcuts for common actions, with a shortcuts window.</li>
+          <li>Added a Preferences dialog with display theme and scan thread count.</li>
+          <li>History entries now have their own scan information button, and scan information shows the scanned IP range with a copy button.</li>
+          <li>Previous scans list is now paginated for easier browsing.</li>
+          <li>Window size and maximized state are remembered between sessions.</li>
+          <li>Reworked results views for narrow screens, with dedicated mobile rows and header actions moving to the bottom bar.</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.3.3" date="2026-08-23">
       <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.3.3</url>
       <description>
