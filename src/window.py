@@ -40,7 +40,6 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
 
         self.settings = settings
         self.scanner = NetworkScanner()
-        # Window geometry persists across sessions via GSettings.
         self.settings.bind('window-width', self, 'default-width',
                            Gio.SettingsBindFlags.DEFAULT)
         self.settings.bind('window-height', self, 'default-height',
@@ -54,7 +53,6 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
         self.create_actions()
 
     def create_actions(self):
-        # Window actions here; accelerators live in app.py.
         win_actions = {
             "previous-scans": self.on_previous_scans_action,
             "preferences": self.on_preferences_action,

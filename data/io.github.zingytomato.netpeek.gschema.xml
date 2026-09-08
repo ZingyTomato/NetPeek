@@ -43,8 +43,8 @@
     </key>
     <key name="thread-count" type="i">
       <default>100</default>
-      <summary>Thread count for scanning</summary>
-      <description>Number of concurrent worker threads to use while scanning (1–500).</description>
+      <summary>Hosts per Nmap batch</summary>
+      <description>Maximum targets per Nmap batch (1–500). Nmap adapts probe concurrency to network conditions.</description>
       <range min="1" max="500"/>
     </key>
     <key name="history-filter-mode" type="s">

@@ -103,7 +103,6 @@ class NetworkScanner:
         scan_arguments = f"-sT -p {ports_str}"
 
         if deep_scan:
-            # Version + SMB discovery, no root needed.
             scan_arguments += " -sV --version-intensity 2 --script smb-os-discovery.nse"
 
         try:
@@ -135,8 +134,6 @@ class NetworkScanner:
                     "hostname": hostname or str(host),
                     "ip": str(host),
                     "ports": open_ports,
-                    # Empty means none; translated at display so history
-                    # never persists a localized string.
                     "ports_display": ", ".join(map(str, open_ports)) if open_ports else "",
                     "services": services,
                     "os_display": "",
@@ -217,7 +214,6 @@ class NetworkScanner:
         hostscript = host_info.get('hostscript', [])
         os_parts = []
 
-        # SMB discovery is the most accurate for Windows hosts.
         for script in hostscript:
             if script.get('id') == 'smb-os-discovery':
                 output = script.get('output', '')
@@ -230,7 +226,6 @@ class NetworkScanner:
                         if clean.startswith('OS:'):
                             os_parts.append(clean[3:].strip())
 
-        # Service versions gathered by the scanner.
         version_strings = []
         if 'tcp' in host_info:
             for port in open_ports:

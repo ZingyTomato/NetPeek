@@ -96,7 +96,6 @@ class DeviceCard(ToastMixin, Adw.Bin):
         self.os_row.connect("map", self._on_row_map)
         self.services_row.connect("map", self._on_row_map)
 
-        # Keep card and list custom names in sync.
         device.bind_property(
             "custom-name", self.name_row, "text",
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
@@ -124,7 +123,6 @@ class DeviceCard(ToastMixin, Adw.Bin):
         self.os_row.set_subtitle(device.os_display)
         self.os_row.set_tooltip_text(device.os_display if device.os_display else None)
         self.os_row.set_visible(device.deep_scanned)
-        # Only show expand when text is ellipsized after layout.
         self.os_expand_button.set_visible(False)
         self.os_expand_button.set_active(False)
         self.os_row.set_subtitle_lines(1)
@@ -154,7 +152,6 @@ class DeviceCard(ToastMixin, Adw.Bin):
         if not getattr(self, checked_flag):
             GLib.idle_add(self._check_ellipsized, row, 0)
 
-    # Idle-frame budget before giving up on a never-laid-out row.
     _MAX_ELLIPSIZE_CHECKS = 120
 
     def _check_ellipsized(self, row, attempts):
@@ -196,7 +193,6 @@ class DeviceCard(ToastMixin, Adw.Bin):
     @Gtk.Template.Callback()
     def on_name_apply(self, _widget):
         """Persist a custom name when the apply button is clicked or Enter is pressed"""
-        # Name already synced via property binding.
         persist_custom_name(self.device)
         clear_focus(self)
         self.name_row.set_position(-1)

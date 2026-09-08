@@ -68,10 +68,26 @@
 - **Sortable Results** -- Sort by known status, IP, hostname, custom name, ports, services, or OS
 - **Searchable Results** -- Search and filter devices on scan pages
 - **Modern UI** -- Built with GTK4 and libadwaita
-- **Multi-threaded** -- Fast concurrent scanning with a configurable thread count
+- **Batched Scanning** -- Nmap manages concurrent probes with a configurable number of hosts per batch
 - **Flexible Input** -- Supports CIDR notation (`192.168.1.0/24`), IP ranges (`192.168.1.1-254`), and single IPs
 - **Automatic IP Detection** -- Instantly finds your local IP range
 - **CSV Export** -- Export scan results for use elsewhere
+
+Standard scans check NetPeek's curated TCP ports and show port-based service hints.
+Discovery probes cover that same port list, so devices are not skipped just because
+ports 80 and 443 are filtered. Nmap uses ARP discovery on local Ethernet when
+available and retains its adaptive timing and retry defaults.
+
+Deep scans use Nmap's default version intensity (7) and SMB OS discovery. Service
+labels come from detected protocols/products, including services on unexpected
+ports, rather than assuming an application from its port number. OS details are
+best-effort SMB/service information; raw-packet OS fingerprinting is not enabled.
+Deep scans can take longer, and devices that do not answer any discovery probes
+may still be missed. Neither mode scans every TCP port or performs a UDP scan.
+
+Scan progress shows Nmap's current phase and percentage while each batch runs.
+Completed hosts are collected as Nmap reports them. Stopping terminates the active
+Nmap process, preserves completed results, and discards subsequent callbacks.
 
 ## 🔧 Installation
 

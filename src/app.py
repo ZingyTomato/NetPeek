@@ -36,11 +36,9 @@ class NetworkScannerApp(Adw.Application):
 
     def __init__(self):
         super().__init__(application_id='io.github.zingytomato.netpeek')
-        # Base path for app resources like the shortcuts dialog.
         self.set_resource_base_path('/io/github/zingytomato/netpeek')
         self.settings = Gio.Settings.new('io.github.zingytomato.netpeek')
 
-        # Settings-backed action: state tracks the key, activation writes it.
         self.add_action(self.settings.create_action("color-scheme"))
         self.settings.connect("changed::color-scheme", self._on_color_scheme_changed)
         self._apply_color_scheme()
@@ -75,7 +73,6 @@ class NetworkScannerApp(Adw.Application):
         dialog.present(self.get_active_window())
 
     def _setup_accels(self):
-        # App-wide shortcuts; window actions are defined in window.py.
         self.set_accels_for_action("app.quit", ["<Primary>q"])
         self.set_accels_for_action("app.shortcuts", ["<Primary>question"])
         self.set_accels_for_action("win.previous-scans", ["<Primary>h"])

@@ -42,7 +42,6 @@ class PreferencesDialog(Adw.PreferencesDialog):
         self._settings = settings
         self._scanner = scanner
 
-        # Single group — no search needed yet.
         self.set_search_enabled(False)
 
         page = Adw.PreferencesPage()
@@ -63,14 +62,9 @@ class PreferencesDialog(Adw.PreferencesDialog):
         self.thread_row.set_subtitle(_(
             "Concurrent workers. Higher is faster but uses more resources."
         ))
-        # Preserve previous SpinButton increments (10 step / 50 page).
         adjustment = self.thread_row.get_adjustment()
         if adjustment is not None:
             adjustment.set_page_increment(self.PAGE_INCREMENT)
-        # Int key <-> double SpinRow value is bridged by the default
-        # GIO mapping (a custom get_mapping cannot return a converted
-        # value through PyGObject). The scanner side-effect rides on the
-        # key so external changes (e.g. dconf) apply too.
         self._settings.bind('thread-count', self.thread_row, 'value',
                             Gio.SettingsBindFlags.DEFAULT)
         self._settings.connect(

@@ -31,20 +31,14 @@ class HomePage(ToastMixin, Adw.NavigationPage):
         self.results_page = None
 
         self.primary_popover.add_child(ThemeSelector(), "theme")
-        # Apply the saved thread count at startup; edited via PreferencesDialog.
         self.scanner.set_max_workers(self.settings.get_int('thread-count'))
 
         self.setup_presets()
         self._restore_preset()
 
-        # Deep scan switch follows GSettings both ways.
         self.settings.bind('deep-scan', self.deep_scan_row, 'active',
                            Gio.SettingsBindFlags.DEFAULT)
 
-        # Entry text restores once from GSettings; only validated ranges are
-        # written back, at the existing save points below. One-time set_text,
-        # not bind(GET): a live binding echoes set_string() back into the row
-        # while focused and re-reveals the apply button right after apply.
         saved_range = self.settings.get_string('last-ip-range')
         if saved_range:
             self.ip_entry_row.set_text(saved_range)
@@ -54,7 +48,6 @@ class HomePage(ToastMixin, Adw.NavigationPage):
             else:
                 self.ip_entry_row.set_text(self._active_preset["range"])
 
-        # Clear initial focus so the IP entry isn't pre-selected.
         GLib.idle_add(self._reset_launch_highlight)
         self.ip_entry_row.connect("changed", self._on_ip_entry_changed)
 
@@ -121,7 +114,6 @@ class HomePage(ToastMixin, Adw.NavigationPage):
 
         self.preset_box.append(self.preset_button)
         self._build_preset_menu()
-        # Preferred side; GTK flips automatically when space runs out.
         self.preset_popover.set_position(Gtk.PositionType.TOP)
 
     def _restore_preset(self):
@@ -155,7 +147,6 @@ class HomePage(ToastMixin, Adw.NavigationPage):
         self.settings.set_string('last-ip-range', self.ip_entry_row.get_text().strip())
 
     def _build_preset_menu(self):
-        # Built once; the tick follows the stateful action's state.
         build_radio_menu(
             self.preset_menu_model,
             [p["label"] for p in self._RANGE_PRESETS],
@@ -190,9 +181,6 @@ class HomePage(ToastMixin, Adw.NavigationPage):
         if not self.validate_ip_range():
             return
         self.settings.set_string('last-ip-range', self.ip_entry_row.get_text().strip())
-        # Defer focus clear so AdwEntryRow finishes its apply/button
-        # handling first; clearing synchronously leaves the apply
-        # button visible until a second click.
         GLib.idle_add(self._clear_focus)
 
     def on_preset_button_clicked(self, button):
@@ -219,8 +207,6 @@ class HomePage(ToastMixin, Adw.NavigationPage):
         ip_range = self.ip_entry_row.get_text().strip()
         is_valid, message = self.scanner.validate_ip_range(ip_range)
         if not is_valid:
-            # Persistent error state on the row; the message toasts once
-            # and the ring clears on the next edit.
             self.ip_entry_row.add_css_class("error")
             self.show_toast(message)
         else:

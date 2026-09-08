@@ -21,7 +21,6 @@ import ipaddress
 
 from gi.repository import GObject
 
-# Distinctive ports mapped to service names.
 SERVICE_PORTS = {
     139: "smb",
     445: "smb",
@@ -51,7 +50,6 @@ SERVICE_LABELS = {
     "synology": _("Synology DSM"),
 }
 
-# Scanned even when they don't map to a known service.
 BASE_PORTS = [22, 80, 443, 3389, 53, 21, 23, 8080, 8443, 5000, 3000, 9000]
 
 
@@ -80,7 +78,6 @@ class Device(GObject.Object):
         self.ip = data.get("ip", "")
         self.hostname = data.get("hostname") or self.ip
         self.custom_name = data.get("custom_name", "") or ""
-        # Empty (or legacy untranslated) means no common ports open.
         self.ports_display = data.get("ports_display", "") or _("No common ports open")
         self.services = data.get("services") or []
         self.services_display = ", ".join(SERVICE_LABELS.get(s, s) for s in self.services)
@@ -114,7 +111,6 @@ class Device(GObject.Object):
     def header_subtitle(self):
         if self.custom_name:
             if self.hostname and self.hostname != self.ip and self.hostname != self.custom_name:
-                # User data, not UI copy: isolate for bidi rather than translate.
                 return f"\u2068{self.custom_name}\u2069 · \u2068{self.hostname}\u2069"
             return self.custom_name
         if self.hostname and self.hostname != self.ip:

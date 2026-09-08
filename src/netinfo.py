@@ -60,7 +60,6 @@ def _build_dns_query(qname_encoded, qtype, qclass):
 
 
 def _udp_exchange(packet, addr, timeout=0.4, expect_from=None):
-    # Send one datagram and collect replies until timeout.
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.settimeout(timeout)
     try:
@@ -80,7 +79,6 @@ def _udp_exchange(packet, addr, timeout=0.4, expect_from=None):
 def resolve_mdns_hostname(ip, timeout=0.4):
     """Query mDNS for the reverse (PTR) name of an IP. Returns hostname or None."""
     reversed_name = ".".join(reversed(ip.split("."))) + ".in-addr.arpa"
-    # QU bit asks for a direct unicast reply.
     packet = _build_dns_query(_encode_dns_name(reversed_name), 12, 0x8001)
 
     try:
@@ -93,13 +91,13 @@ def resolve_mdns_hostname(ip, timeout=0.4):
 
                 offset = 12
                 _, offset = _decode_dns_name(data, offset)
-                offset += 4  # qtype + qclass
+                offset += 4
 
                 for _ in range(ancount):
                     _, offset = _decode_dns_name(data, offset)
                     rtype, _, _, rdlength = struct.unpack_from(">HHIH", data, offset)
                     offset += 10
-                    if rtype == 12:  # PTR
+                    if rtype == 12:
                         name, _ = _decode_dns_name(data, offset)
                         return name.rstrip(".") or None
                     offset += rdlength
@@ -126,7 +124,7 @@ def resolve_netbios_name(ip, timeout=0.4):
             for data in replies:
                 offset = 12
                 _, offset = _decode_dns_name(data, offset)
-                offset += 10  # type + class + ttl + rdlength
+                offset += 10
                 num_names = data[offset]
                 offset += 1
 

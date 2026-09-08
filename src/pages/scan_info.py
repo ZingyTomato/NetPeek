@@ -2,7 +2,7 @@ import gi
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Adw, GLib
+from gi.repository import Gtk, Adw, Gdk, GLib
 
 from .helpers import parse_scan_dt
 
@@ -12,6 +12,8 @@ class ScanMetadataDialog(Adw.Dialog):
     __gtype_name__ = 'ScanMetadataDialog'
 
     timestamp_row = Gtk.Template.Child()
+    ip_range_row = Gtk.Template.Child()
+    ip_copy_button = Gtk.Template.Child()
     scan_type_row = Gtk.Template.Child()
     duration_row = Gtk.Template.Child()
     new_count_row = Gtk.Template.Child()
@@ -19,6 +21,12 @@ class ScanMetadataDialog(Adw.Dialog):
 
     def __init__(self, scan, **kwargs):
         super().__init__(**kwargs)
+        ip_range = scan.get('ip_range', '')
+        self._ip_range = ip_range
+        if ip_range:
+            self.ip_range_row.set_subtitle(ip_range)
+        else:
+            self.ip_range_row.set_visible(False)
         ts = scan.get('timestamp', '')
         dt = parse_scan_dt(ts)
         if dt:
@@ -37,6 +45,15 @@ class ScanMetadataDialog(Adw.Dialog):
         devices = scan.get('devices', [])
         self.new_count_row.set_subtitle(str(sum(1 for d in devices if not d.get('known', False))))
         self.known_count_row.set_subtitle(str(sum(1 for d in devices if d.get('known', False))))
+
+    @Gtk.Template.Callback()
+    def on_ip_range_copy_clicked(self, button):
+        if not self._ip_range:
+            return
+        display = Gdk.Display.get_default()
+        if display is None:
+            return
+        display.get_clipboard().set(self._ip_range)
 
     @staticmethod
     def _format_duration(seconds):

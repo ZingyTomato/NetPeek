@@ -1,4 +1,3 @@
-/* The device cards are not clickable, so suppress the flow box hover tint. */
 flowbox.device-grid > flowboxchild:hover,
 flowbox.device-grid > flowboxchild:active {
   background: none;
@@ -19,7 +18,6 @@ flowbox.device-grid > flowboxchild:active {
 }
 
 .theme-selector.auto {
-  /* Hard stop on purpose: depicts light vs. dark, razor offsets fringe. */
   background-image: linear-gradient(to bottom right, white 50%, black 50%);
 }
 
@@ -37,10 +35,6 @@ flowbox.device-grid > flowboxchild:active {
   box-shadow: inset 0 0 0 2px @accent_bg_color;
 }
 
-/* Selected swatch carries a check badge in its corner (GNOME Text Editor
-   pattern): glyph + ring, so selection never relies on color alone.
-   Positioned with layout margin — no transform, so it stays crisp at
-   fractional scales. */
 .theme-selector radio {
   -gtk-icon-source: none;
   border: none;
@@ -105,4 +99,10 @@ listview.mobile-device-list row {
 
 .mobile-device-row entry {
   min-height: 44px;
+}
+
+.pager-button {
+  min-width: 28px;
+  padding-left: 8px;
+  padding-right: 8px;
 }

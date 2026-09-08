@@ -70,20 +70,10 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self._setup_responsive_header()
 
         self._apply_sorter()
-        # String key <-> bool toggle needs a custom mapping, which
-        # PyGObject cannot express (get_mapping has no write-back
-        # channel), so the key is synced via changed:: + one write path.
         self.settings.connect(
             'changed::view-mode', self._on_view_mode_setting)
         self._apply_view_mode(self.settings.get_string('view-mode') == 'list')
         self._sync_sort_button_icon()
-        # Default tips, restored when controls re-enable after a scan.
-        self._control_tips = {
-            self.rescan_button: self.rescan_button.get_tooltip_text(),
-            self.export_button: self.export_button.get_tooltip_text(),
-            self.sort_menu_button: self.sort_menu_button.get_tooltip_text(),
-            self.scan_info_button: self.scan_info_button.get_tooltip_text(),
-        }
 
     def connect_home_page(self, home_page):
         self.home_page = home_page
@@ -312,8 +302,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         if key not in self._SORT_GETTERS:
             return
         action.set_state(state)
-        # Direction is owned by the Ascending check item; picking a key
-        # never toggles it implicitly.
         self._sort_key = key
         self._apply_sorter()
         self._sync_view_actions()
@@ -401,7 +389,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
                 self.export_to_csv(file_path)
         except Exception as e:
             if "dismissed" in str(e).lower():
-                return  # Cancelling the dialog is silent.
+                return
             print(f"Export failed: {e}")
             self.show_toast(_("Export failed. Please try again."), 5)
 
@@ -409,8 +397,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         """Export devices to CSV file"""
         try:
             with open(file_path, 'w', newline='') as csvfile:
-                # Headers stay English on purpose: the CSV is an interchange
-                # format opened by spreadsheet tools, not UI copy.
                 fieldnames = ['IP Address', 'Hostname', 'Custom Name',
                               'Open Ports', 'Services', 'System Information', 'Status']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -490,17 +476,8 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.sort_menu_button.set_sensitive(has_results and not scanning)
         if scanning:
             self.scan_info_button.set_sensitive(False)
-        # Explain the disabled state to assistive tech; sighted users get
-        # the "Scanning · …" subtitle plus the loading page.
-        busy_tip = _("Unavailable while scanning")
-        for button, tip in self._control_tips.items():
-            button.set_tooltip_text(busy_tip if scanning else tip)
-        # The toggle keeps its state-derived name; only the sighted
-        # tooltip carries the busy explanation.
         state_tip = (_("Show as grid") if self.view_toggle_button.get_active()
                      else _("Show as list"))
-        self.view_toggle_button.set_tooltip_text(
-            busy_tip if scanning else state_tip)
         self.view_toggle_button.update_property(
             [Gtk.AccessibleProperty.LABEL], [state_tip])
 
@@ -521,7 +498,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self._search_text = ""
         self.list_store.remove_all()
 
-        # Show loading instantly to avoid flashing old results.
         self.results_stack.set_transition_type(Gtk.StackTransitionType.NONE)
         self.results_stack.set_visible_child_name("loading")
         self.results_stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
@@ -594,7 +570,6 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
 
     def _display_devices(self, devices_data):
         """Populate the shared list store and switch to the right stack page"""
-        # Reset search so queries don't carry between scans.
         self.search_entry.set_text("")
         self.list_store.remove_all()
         for data in devices_data:
