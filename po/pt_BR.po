@@ -1,0 +1,988 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-08 13:52+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+
+#: data/io.github.zingytomato.netpeek.desktop.in:2
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/app.py:94
+#: src/gtk/home_page.ui:7 src/gtk/home_page.ui:15 src/gtk/main_window.ui:7
+msgid "NetPeek"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.desktop.in:3
+msgid "Discover devices on your local network"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.desktop.in:10
+msgid "Gnome;GTK;Networking;Scanner;Internet;"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:6
+#: data/io.github.zingytomato.netpeek.gschema.xml:7
+msgid "Default window width"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:11
+#: data/io.github.zingytomato.netpeek.gschema.xml:12
+msgid "Default window height"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:16
+msgid "Default window maximized behaviour"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:17
+msgid "Not maximised by default"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:21
+msgid "Preferred color scheme"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:22
+msgid "One of \"default\" (follow system), \"light\", or \"dark\"."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:26
+msgid "Results view mode"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:27
+msgid "One of \"cards\" or \"list\"."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:31
+msgid "Last used IP range"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:32
+msgid "The IP range entered in the last scan, restored on startup."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:36
+msgid "Last selected preset"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:37
+msgid ""
+"The preset selected in the split button, restored on startup. \"auto\" for "
+"auto-detect, or an IP range like \"192.168.1.0/24\"."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:41
+msgid "Enable deep scan mode"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:42
+msgid ""
+"When enabled, retrieves detailed system information, such as the OS name and "
+"HTTP server details."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:46
+msgid "Thread count for scanning"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:47
+msgid "Number of concurrent worker threads to use while scanning (1–500)."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:52
+msgid "Last selected history filter"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:53
+msgid ""
+"One of \"all\", \"today\", \"yesterday\", \"7d\", \"30d\", or \"custom\"."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:57
+msgid "Custom filter start date"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:58
+msgid "ISO date string for custom filter start, e.g. \"2026-01-15\"."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:62
+msgid "Custom filter end date"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:63
+msgid "ISO date string for custom filter end, e.g. \"2026-01-31\"."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
+msgid "See what's on your network"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:9
+msgid ""
+"NetPeek is a simple network scanner that helps you discover active devices "
+"on your local network."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:49
+msgid "Home screen"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:53
+msgid "Scan in Progress"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:57
+msgid "Scan Results"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:61
+msgid "Scan Results (List View)"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:65
+msgid "Deep Scan Results"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:69
+msgid "Previous Scans"
+msgstr ""
+
+#: src/app.py:98 src/gtk/home_page.ui:79
+msgid "Discover devices on your local network."
+msgstr ""
+
+#: src/app.py:101
+msgid "Translate"
+msgstr ""
+
+#: src/app.py:103
+msgid "Contributors"
+msgstr ""
+
+#: src/app.py:105
+msgid "Added keyboard shortcuts for common actions, with a shortcuts window."
+msgstr ""
+
+#: src/app.py:106
+msgid "Added a Preferences dialog with display theme and scan thread count."
+msgstr ""
+
+#: src/app.py:107
+msgid ""
+"History entries now have their own scan information button, and scan "
+"information shows the scanned IP range with a copy button."
+msgstr ""
+
+#: src/app.py:108
+msgid "Previous scans list is now paginated for easier browsing."
+msgstr ""
+
+#: src/app.py:109
+msgid "Window size and maximized state are remembered between sessions."
+msgstr ""
+
+#: src/app.py:110
+msgid ""
+"Reworked results views for narrow screens, with dedicated mobile rows and "
+"header actions moving to the bottom bar."
+msgstr ""
+
+#: src/gtk/device_card.ui:22 src/widgets.py:241
+msgid "Name"
+msgstr ""
+
+#: src/gtk/device_card.ui:28 src/pages/results.py:414 src/widgets.py:226
+msgid "New"
+msgstr ""
+
+#: src/gtk/device_card.ui:42 src/gtk/results_page.ui:338 src/widgets.py:111
+msgid "IP address"
+msgstr ""
+
+#: src/gtk/device_card.ui:55 src/gtk/device_card.ui:61 src/widgets.py:236
+#: src/widgets.py:238
+msgid "Copy IP"
+msgstr ""
+
+#: src/gtk/device_card.ui:70 src/gtk/results_page.ui:343 src/widgets.py:245
+msgid "Hostname"
+msgstr ""
+
+#: src/gtk/device_card.ui:82 src/widgets.py:251
+msgid "Ports open"
+msgstr ""
+
+#: src/gtk/device_card.ui:94 src/gtk/results_page.ui:358 src/widgets.py:258
+msgid "Services"
+msgstr ""
+
+#: src/gtk/device_card.ui:108 src/gtk/device_card.ui:114 src/widgets.py:187
+msgid "Show full service list"
+msgstr ""
+
+#: src/gtk/device_card.ui:123 src/gtk/results_page.ui:363 src/widgets.py:264
+msgid "System information"
+msgstr ""
+
+#: src/gtk/device_card.ui:137 src/gtk/device_card.ui:143 src/widgets.py:184
+msgid "Show full system information"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:7 src/gtk/history_dialog.ui:20
+#: src/gtk/home_page.ui:170
+msgid "Previous scans"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:37 src/pages/history.py:42
+#: src/pages/history.py:218
+msgid "All"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:38
+msgid "Filter scans by date"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:54 src/pages/history.py:225
+msgid "Custom range"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:55
+msgid "Pick a custom date range"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:84
+msgid "From"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:115
+msgid "To"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:147
+msgid "Clear"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:155
+msgid "Apply"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:198 src/gtk/history_dialog.ui:210
+msgid "Scroll to top"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:223 src/pages/history.py:310
+msgid "No previous scans"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:224 src/pages/history.py:311
+msgid "Your scan history will appear here."
+msgstr ""
+
+#: src/gtk/history_dialog.ui:244 src/gtk/history_dialog.ui:251
+msgid "Previous page"
+msgstr ""
+
+#: src/gtk/history_dialog.ui:264 src/gtk/history_dialog.ui:271
+msgid "Next page"
+msgstr ""
+
+#: src/gtk/home_page.ui:21
+msgid "Main Menu"
+msgstr ""
+
+#: src/gtk/home_page.ui:102
+msgid "IP range configuration"
+msgstr ""
+
+#: src/gtk/home_page.ui:103
+msgid "Enter the IP range you want to scan"
+msgstr ""
+
+#: src/gtk/home_page.ui:107 src/gtk/scan_metadata_dialog.ui:36
+msgid "IP range"
+msgstr ""
+
+#: src/gtk/home_page.ui:117
+msgid "Deep scan"
+msgstr ""
+
+#: src/gtk/home_page.ui:118
+msgid ""
+"Retrieves detailed system information, such as the OS name and HTTP server "
+"details."
+msgstr ""
+
+#: src/gtk/home_page.ui:137
+msgid "Scan network"
+msgstr ""
+
+#: src/gtk/home_page.ui:166
+msgid "Preferences"
+msgstr ""
+
+#: src/gtk/home_page.ui:174
+msgid "Keyboard shortcuts"
+msgstr ""
+
+#: src/gtk/home_page.ui:180
+msgid "About NetPeek"
+msgstr ""
+
+#: src/gtk/results_page.ui:7 src/gtk/results_page.ui:20
+msgid "Scan results"
+msgstr ""
+
+#: src/gtk/results_page.ui:26
+msgid "Stop the current network scan"
+msgstr ""
+
+#: src/gtk/results_page.ui:31
+msgid "Stop"
+msgstr ""
+
+#: src/gtk/results_page.ui:42 src/gtk/results_page.ui:46
+#: src/gtk/scan_metadata_dialog.ui:7 src/gtk/scan_metadata_dialog.ui:16
+#: src/pages/history.py:422 src/pages/history.py:424
+msgid "Scan information"
+msgstr ""
+
+#: src/gtk/results_page.ui:57 src/gtk/results_page.ui:60
+msgid "Export to CSV"
+msgstr ""
+
+#: src/gtk/results_page.ui:68
+msgid "Toggle list view"
+msgstr ""
+
+#: src/gtk/results_page.ui:76 src/gtk/results_page.ui:83
+msgid "Sort options"
+msgstr ""
+
+#: src/gtk/results_page.ui:94 src/pages/results.py:472
+msgid "Rescan"
+msgstr ""
+
+#: src/gtk/results_page.ui:119
+msgid "Scanning network"
+msgstr ""
+
+#: src/gtk/results_page.ui:120
+msgid "Discovering devices on your network…"
+msgstr ""
+
+#: src/gtk/results_page.ui:141 src/pages/results.py:504
+msgid "Preparing scan…"
+msgstr ""
+
+#: src/gtk/results_page.ui:152 src/pages/results.py:505
+msgid "Time elapsed: 00:00"
+msgstr ""
+
+#: src/gtk/results_page.ui:185
+msgid "Search devices"
+msgstr ""
+
+#: src/gtk/results_page.ui:268
+msgid "No results found"
+msgstr ""
+
+#: src/gtk/results_page.ui:269
+msgid "No devices match your search query."
+msgstr ""
+
+#: src/gtk/results_page.ui:287 src/pages/results.py:609
+msgid "No devices found"
+msgstr ""
+
+#: src/gtk/results_page.ui:288
+msgid "No devices were found in the specified range."
+msgstr ""
+
+#: src/gtk/results_page.ui:300
+msgid "Scan error"
+msgstr ""
+
+#: src/gtk/results_page.ui:301
+msgid "An error occurred while scanning the network."
+msgstr ""
+
+#: src/gtk/results_page.ui:305
+msgid "_Try again"
+msgstr ""
+
+#: src/gtk/results_page.ui:331
+msgid "Sort by"
+msgstr ""
+
+#: src/gtk/results_page.ui:333 src/pages/results.py:414
+msgid "Known"
+msgstr ""
+
+#: src/gtk/results_page.ui:348
+msgid "Custom name"
+msgstr ""
+
+#: src/gtk/results_page.ui:353
+msgid "Ports"
+msgstr ""
+
+#: src/gtk/results_page.ui:370
+msgid "Ascending"
+msgstr ""
+
+#: src/gtk/scan_metadata_dialog.ui:47 src/gtk/scan_metadata_dialog.ui:53
+msgid "Copy IP range"
+msgstr ""
+
+#: src/gtk/scan_metadata_dialog.ui:61
+msgid "Date taken"
+msgstr ""
+
+#: src/gtk/scan_metadata_dialog.ui:71
+msgid "Scan type"
+msgstr ""
+
+#: src/gtk/scan_metadata_dialog.ui:81
+msgid "Scan duration"
+msgstr ""
+
+#: src/gtk/scan_metadata_dialog.ui:92
+msgid "New devices"
+msgstr ""
+
+#: src/gtk/scan_metadata_dialog.ui:102
+msgid "Known devices"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:9
+msgctxt "shortcut window"
+msgid "General"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:12
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:19
+msgctxt "shortcut window"
+msgid "Previous Scans"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:26
+msgctxt "shortcut window"
+msgid "Preferences"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:33
+msgctxt "shortcut window"
+msgid "Go Back"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:40
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:49
+msgctxt "shortcut window"
+msgid "Scanning"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:52
+msgctxt "shortcut window"
+msgid "Start Scan"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:59
+msgctxt "shortcut window"
+msgid "Focus IP Range Entry"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:68
+msgctxt "shortcut window"
+msgid "Results"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:71
+msgctxt "shortcut window"
+msgid "Search Devices"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:78 src/gtk/shortcuts-dialog.ui:85
+msgctxt "shortcut window"
+msgid "Rescan"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:92
+msgctxt "shortcut window"
+msgid "Stop Scan"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:99
+msgctxt "shortcut window"
+msgid "Export to CSV"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:106
+msgctxt "shortcut window"
+msgid "Toggle Grid/List View"
+msgstr ""
+
+#: src/gtk/shortcuts-dialog.ui:113
+msgctxt "shortcut window"
+msgid "Scan Information"
+msgstr ""
+
+#: src/gtk/theme_selector.ui:17 src/gtk/theme_selector.ui:23
+msgid "Follow System"
+msgstr ""
+
+#: src/gtk/theme_selector.ui:34 src/gtk/theme_selector.ui:40
+msgid "Light"
+msgstr ""
+
+#: src/gtk/theme_selector.ui:51 src/gtk/theme_selector.ui:57
+msgid "Dark"
+msgstr ""
+
+#: src/models.py:40
+msgid "SMB shares"
+msgstr ""
+
+#: src/models.py:41
+msgid "Cockpit"
+msgstr ""
+
+#: src/models.py:42
+msgid "MySQL"
+msgstr ""
+
+#: src/models.py:43
+msgid "PostgreSQL"
+msgstr ""
+
+#: src/models.py:44
+msgid "Redis"
+msgstr ""
+
+#: src/models.py:45
+msgid "Home Assistant"
+msgstr ""
+
+#: src/models.py:46
+msgid "Plex"
+msgstr ""
+
+#: src/models.py:47
+msgid "CUPS"
+msgstr ""
+
+#: src/models.py:48
+msgid "MongoDB"
+msgstr ""
+
+#: src/models.py:49
+msgid "Proxmox"
+msgstr ""
+
+#: src/models.py:50
+msgid "Synology DSM"
+msgstr ""
+
+#: src/models.py:81
+msgid "No common ports open"
+msgstr ""
+
+#: src/models.py:109
+msgid "Unknown"
+msgstr ""
+
+#: src/models.py:118
+msgid "Unknown device"
+msgstr ""
+
+#: src/pages/history.py:43 src/pages/history.py:288
+msgid "Today"
+msgstr ""
+
+#: src/pages/history.py:44 src/pages/history.py:290
+msgid "Yesterday"
+msgstr ""
+
+#: src/pages/history.py:45
+msgid "Last 7 days"
+msgstr ""
+
+#: src/pages/history.py:46
+msgid "Last 30 days"
+msgstr ""
+
+#: src/pages/history.py:50
+msgid "Jan"
+msgstr ""
+
+#: src/pages/history.py:50
+msgid "Feb"
+msgstr ""
+
+#: src/pages/history.py:50
+msgid "Mar"
+msgstr ""
+
+#: src/pages/history.py:50
+msgid "Apr"
+msgstr ""
+
+#: src/pages/history.py:50
+msgid "May"
+msgstr ""
+
+#: src/pages/history.py:50
+msgid "Jun"
+msgstr ""
+
+#: src/pages/history.py:51
+msgid "Jul"
+msgstr ""
+
+#: src/pages/history.py:51
+msgid "Aug"
+msgstr ""
+
+#: src/pages/history.py:51
+msgid "Sep"
+msgstr ""
+
+#: src/pages/history.py:51
+msgid "Oct"
+msgstr ""
+
+#: src/pages/history.py:51
+msgid "Nov"
+msgstr ""
+
+#: src/pages/history.py:51
+msgid "Dec"
+msgstr ""
+
+#: src/pages/history.py:185
+msgid "Invalid date selected."
+msgstr ""
+
+#: src/pages/history.py:188
+msgid "End date must be after start date."
+msgstr ""
+
+#: src/pages/history.py:216
+msgid "Custom"
+msgstr ""
+
+#: src/pages/history.py:316
+msgid "No scans found"
+msgstr ""
+
+#: src/pages/history.py:317
+msgid "No scans match the selected time range."
+msgstr ""
+
+#: src/pages/history.py:360 src/pages/history.py:363
+#, python-brace-format
+msgid "Go to page {n}"
+msgstr ""
+
+#: src/pages/history.py:409
+#, python-brace-format
+msgid "{count} device"
+msgid_plural "{count} devices"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/pages/history.py:412
+#, python-brace-format
+msgid "{time} · {count} · Deep"
+msgstr ""
+
+#: src/pages/history.py:415
+#, python-brace-format
+msgid "{time} · {count}"
+msgstr ""
+
+#: src/pages/history.py:432 src/pages/history.py:434
+msgid "Delete this scan"
+msgstr ""
+
+#: src/pages/history.py:459
+msgid "Delete scan?"
+msgstr ""
+
+#: src/pages/history.py:460
+#, python-brace-format
+msgid ""
+"“{scan}” will be permanently removed from your history. This cannot be "
+"undone."
+msgstr ""
+
+#: src/pages/history.py:463
+msgid "Cancel"
+msgstr ""
+
+#: src/pages/history.py:464
+msgid "Delete Scan"
+msgstr ""
+
+#: src/pages/history.py:481
+msgid "Scan deleted"
+msgstr ""
+
+#: src/pages/history.py:482
+msgid "Undo"
+msgstr ""
+
+#: src/pages/home.py:82 src/pages/home.py:98
+msgid "Auto-detect"
+msgstr ""
+
+#: src/pages/home.py:82 src/pages/home.py:99
+msgid "Automatically detect your local network"
+msgstr ""
+
+#: src/pages/home.py:83
+msgid "Home network (192.168.1.x)"
+msgstr ""
+
+#: src/pages/home.py:84
+msgid "Home network (192.168.0.x)"
+msgstr ""
+
+#: src/pages/home.py:85
+msgid "Corporate (10.0.0.x)"
+msgstr ""
+
+#: src/pages/home.py:86
+msgid "Private (172.16.0.x)"
+msgstr ""
+
+#: src/pages/home.py:100
+msgid "Choose a different preset range"
+msgstr ""
+
+#: src/pages/home.py:168 src/pages/results.py:489
+msgid "Scan already in progress"
+msgstr ""
+
+#: src/pages/preferences.py:48
+msgid "General"
+msgstr ""
+
+#: src/pages/preferences.py:53 src/pages/results.py:509
+msgid "Scanning"
+msgstr ""
+
+#: src/pages/preferences.py:55
+msgid "Tune how aggressively NetPeek scans your network."
+msgstr ""
+
+#: src/pages/preferences.py:61
+msgid "Threads"
+msgstr ""
+
+#: src/pages/preferences.py:63
+msgid "Concurrent workers. Higher is faster but uses more resources."
+msgstr ""
+
+#: src/pages/results.py:333 src/pages/results.py:479
+msgid "Show as grid"
+msgstr ""
+
+#: src/pages/results.py:333 src/pages/results.py:480
+msgid "Show as list"
+msgstr ""
+
+#: src/pages/results.py:367
+msgid "No devices to export"
+msgstr ""
+
+#: src/pages/results.py:371
+msgid "Export scan results"
+msgstr ""
+
+#: src/pages/results.py:375
+msgid "CSV files"
+msgstr ""
+
+#: src/pages/results.py:394 src/pages/results.py:426
+msgid "Export failed. Please try again."
+msgstr ""
+
+#: src/pages/results.py:418
+#, python-brace-format
+msgid "Successfully exported to {name}"
+msgstr ""
+
+#: src/pages/results.py:421
+msgid "Open Folder"
+msgstr ""
+
+#: src/pages/results.py:456
+#, python-brace-format
+msgid "Time elapsed: {minutes:02d}:{seconds:02d}"
+msgstr ""
+
+#: src/pages/results.py:464
+#, python-brace-format
+msgid "Hosts scanned: {scanned}/{total}"
+msgstr ""
+
+#: src/pages/results.py:472
+msgid "Scanning..."
+msgstr ""
+
+#: src/pages/results.py:485 src/pages/scan_info.py:40
+msgid "Deep"
+msgstr ""
+
+#: src/pages/results.py:509
+msgid "Deep scanning"
+msgstr ""
+
+#: src/pages/results.py:511
+#, python-brace-format
+msgid "{mode} · {range}"
+msgstr ""
+
+#: src/pages/results.py:557
+#, python-brace-format
+msgid "{deep}Loaded from history · {range}"
+msgstr ""
+
+#: src/pages/results.py:588
+#, python-brace-format
+msgid "Found {count} device"
+msgid_plural "Found {count} devices"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/pages/results.py:594
+#, python-brace-format
+msgid "{deep}Scan stopped · {found}"
+msgstr ""
+
+#: src/pages/results.py:598
+#, python-brace-format
+msgid "{deep}{found}"
+msgstr ""
+
+#: src/pages/results.py:607
+msgid "Scan stopped · No devices found"
+msgstr ""
+
+#: src/pages/results.py:627
+msgid "Scan failed"
+msgstr ""
+
+#: src/pages/scan_info.py:40
+msgid "Standard"
+msgstr ""
+
+#: src/pages/scan_info.py:64
+#, python-brace-format
+msgid "{minutes} {seconds}"
+msgstr ""
+
+#: src/pages/scan_info.py:66 src/pages/scan_info.py:73
+#, python-brace-format
+msgid "{n} minute"
+msgid_plural "{n} minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/pages/scan_info.py:68 src/pages/scan_info.py:69
+#, python-brace-format
+msgid "{n} second"
+msgid_plural "{n} seconds"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/pages/scan_info.py:71
+#, python-brace-format
+msgid "{hours} {minutes}"
+msgstr ""
+
+#: src/pages/scan_info.py:72
+#, python-brace-format
+msgid "{n} hour"
+msgid_plural "{n} hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/scanner.py:52
+msgid "Thread count must be between 1 and 500"
+msgstr ""
+
+#: src/scanner.py:56
+msgid "Please enter an IP range"
+msgstr ""
+
+#: src/scanner.py:63
+msgid "Valid IP range"
+msgstr ""
+
+#: src/scanner.py:65
+#, python-brace-format
+msgid "Invalid IP range: {e}"
+msgstr ""
+
+#: src/scanner.py:86
+msgid "Invalid range format!"
+msgstr ""
+
+#: src/scanner.py:93
+#, python-brace-format
+msgid "Error parsing IP range: {e}"
+msgstr ""
+
+#: src/scanner.py:111
+#, python-brace-format
+msgid "Nmap error on host {host}: {e}"
+msgstr ""
+
+#: src/scanner.py:189
+#, python-brace-format
+msgid "An error occurred in a thread: {e}"
+msgstr ""
+
+#: src/scanner.py:198
+#, python-brace-format
+msgid "Scan failed: {e}"
+msgstr ""
+
+#: src/widgets.py:49
+#, python-brace-format
+msgid "Copied {ip} to the clipboard"
+msgstr ""
+
+#: src/widgets.py:174
+msgid "Show less"
+msgstr ""
+
+#: src/widgets.py:319
+msgid "New device"
+msgstr ""
+
+#: src/widgets.py:324
+msgid "Known device"
+msgstr ""
