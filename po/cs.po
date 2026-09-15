@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-08 13:52+0000\n"
+"POT-Creation-Date: 2026-09-15 10:10+0200\n"
 "PO-Revision-Date: 2026-08-07 21:51+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/netpeek/netpeek/cs/"
@@ -146,6 +146,32 @@ msgstr ""
 "NetPeek je jednoduchý skener sítě, který pomáhá objevit aktivní zařízení na "
 "vaší místní síti."
 
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:15
+msgid "ZingyTomato"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:27
+msgid "Gnome"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:28
+msgid "GTK"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:29
+msgid "Networking"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:30
+msgid "Internet"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:31
+#, fuzzy
+#| msgid "Scan my Network"
+msgid "Scanner"
+msgstr "Skenovat mou síť"
+
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:49
 msgid "Home screen"
 msgstr "Domovská obrazovka"
@@ -170,6 +196,217 @@ msgstr ""
 msgid "Previous Scans"
 msgstr "Předchozí skeny"
 
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:76
+msgid "Version 0.3.4"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:78 src/app.py:105
+msgid "Added keyboard shortcuts for common actions, with a shortcuts window."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:79 src/app.py:106
+msgid "Added a Preferences dialog with display theme and scan thread count."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:80 src/app.py:107
+msgid ""
+"History entries now have their own scan information button, and scan "
+"information shows the scanned IP range with a copy button."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:81 src/app.py:108
+msgid "Previous scans list is now paginated for easier browsing."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:82 src/app.py:109
+msgid "Window size and maximized state are remembered between sessions."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:83 src/app.py:110
+msgid ""
+"Reworked results views for narrow screens, with dedicated mobile rows and "
+"header actions moving to the bottom bar."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:90
+msgid "Version 0.3.3"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:92
+msgid "Grouped all IP presets into a single button."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:93
+msgid "Added date filters and custom date ranges to scan history."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:100
+msgid "Version 0.3.2"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:102
+msgid "Added search functionality to all scan pages."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:103
+msgid "Added a scan info dialog for current and previous scans."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:104
+msgid "Results view format is now preserved when resizing the window."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:105
+msgid "Updated nmap to version 7.991."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:112
+msgid "Version 0.3.1"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:114
+msgid ""
+"Device cards now cap System Information and Services at one line, with "
+"expand/collapse buttons to reveal the full text."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:115
+msgid "Moved the thread count picker into the main menu."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:116
+msgid ""
+"Added better indication throughout the UI that a deep scan is taking place."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:117
+msgid "Added a Translate link to the About dialog."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:124
+msgid "Version 0.3.0"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:126
+msgid ""
+"New Deep Scan mode for additional information like OS identification, "
+"software versions and more."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:127
+msgid ""
+"Expanded service detection for common self-hosted and DevOps services "
+"(MySQL, PostgreSQL, Redis, Home Assistant, Plex, etc.)."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:128
+msgid "Improved UI adaptability for smaller screens."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:135
+msgid "Version 0.2.9"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:137
+msgid "Refreshed the app icon with a contemporary, flat style."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:138
+msgid ""
+"Redesigned the light, dark and system style switcher with visual swatches."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:139
+msgid ""
+"Cockpit instances are now detected and shown alongside SMB shares in a "
+"combined Services row."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:140
+msgid "Header actions move into a bottom bar when the window is narrow."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:141
+msgid "Custom device names now apply retroactively to previous scans."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:142
+msgid "Added an Open Folder shortcut to the CSV export notification."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:143
+msgid ""
+"Streamlined notifications, keeping only copy, export and error messages."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:144
+msgid "The active sort option is now highlighted and shows its direction."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:145
+msgid "Sorting is disabled while scanning and when no devices are found."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:146
+msgid ""
+"Added a Services column to the list view and made narrow lists scroll "
+"horizontally."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:147
+msgid ""
+"Centered the network preset buttons and set a minimum window size for a "
+"consistent layout."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:148
+msgid ""
+"Fixed manually entered thread counts not being applied, and added a confirm "
+"button to the IP and thread fields."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:149
+msgid ""
+"Input fields no longer keep focus after use, and the IP entry no longer "
+"shows a focus ring or apply button on launch."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:150
+msgid "Device cards no longer highlight on hover."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:157
+msgid "Version 0.2.8"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:159
+msgid "Fixed unreliable network auto-detection."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:160
+msgid "Added scan history with a Previous Scans dialog."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:161
+msgid "Added dark mode support."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:162
+msgid "Unified sorting between card and list views."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:163
+msgid "Improved responsive layout on narrow windows."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:170
+msgid "Version 0.2.7"
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:172
+msgid "Updated to GNOME 50 runtime."
+msgstr ""
+
 #: src/app.py:98 src/gtk/home_page.ui:79
 msgid "Discover devices on your local network."
 msgstr "Objevujte zařízení na své místní síti."
@@ -181,34 +418,6 @@ msgstr ""
 #: src/app.py:103
 msgid "Contributors"
 msgstr "Podíleli se"
-
-#: src/app.py:105
-msgid "Added keyboard shortcuts for common actions, with a shortcuts window."
-msgstr ""
-
-#: src/app.py:106
-msgid "Added a Preferences dialog with display theme and scan thread count."
-msgstr ""
-
-#: src/app.py:107
-msgid ""
-"History entries now have their own scan information button, and scan "
-"information shows the scanned IP range with a copy button."
-msgstr ""
-
-#: src/app.py:108
-msgid "Previous scans list is now paginated for easier browsing."
-msgstr ""
-
-#: src/app.py:109
-msgid "Window size and maximized state are remembered between sessions."
-msgstr ""
-
-#: src/app.py:110
-msgid ""
-"Reworked results views for narrow screens, with dedicated mobile rows and "
-"header actions moving to the bottom bar."
-msgstr ""
 
 #: src/gtk/device_card.ui:22 src/widgets.py:241
 msgid "Name"
