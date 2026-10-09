@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-15 10:10+0200\n"
-"PO-Revision-Date: 2026-08-07 21:51+0000\n"
+"PO-Revision-Date: 2026-10-09 07:51+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
-"Language-Team: Czech <https://hosted.weblate.org/projects/netpeek/netpeek/cs/"
-">\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/netpeek/netpeek/"
+"cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 2026.9.dev0\n"
+"X-Generator: Weblate 2026.10.1.dev0\n"
 
 #: data/io.github.zingytomato.netpeek.desktop.in:2
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/app.py:94
@@ -77,62 +77,66 @@ msgstr "Rozsah IP adres zadaný v minulém skenu – obnovený při spouštění
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:36
 msgid "Last selected preset"
-msgstr ""
+msgstr "Naposledy vybrané přednastavení"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:37
 msgid ""
 "The preset selected in the split button, restored on startup. \"auto\" for "
 "auto-detect, or an IP range like \"192.168.1.0/24\"."
 msgstr ""
+"Přednastavení vybrané v rozděleném tlačítku, obnovené při spuštění. „"
+"automaticky“ pro automatické zjištění, nebo rozsah IP adres jako je „"
+"192.168.1.0/24“."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:41
 msgid "Enable deep scan mode"
 msgstr "Zapnout režim hloubkového skenování"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:42
-#, fuzzy
-#| msgid ""
-#| "When enabled, retrieves more detailed system information like OS name, "
-#| "HTTP server etc."
 msgid ""
 "When enabled, retrieves detailed system information, such as the OS name and "
 "HTTP server details."
 msgstr ""
 "Pokud zapnuto, obdrží podrobnější informace o systémech, jako např. název "
-"operačního systému, HTTP serveru, atd."
+"operačního systému a podrobnosti o HTTP serveru."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:46
 msgid "Thread count for scanning"
-msgstr ""
+msgstr "Počet vláken pro skenování"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:47
 msgid "Number of concurrent worker threads to use while scanning (1–500)."
 msgstr ""
+"Počet souběžných zpracovávajících vláken které použít při skenování (1-500)."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:52
 msgid "Last selected history filter"
-msgstr ""
+msgstr "Naposledy vybraný filtr historie"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:53
 msgid ""
 "One of \"all\", \"today\", \"yesterday\", \"7d\", \"30d\", or \"custom\"."
-msgstr ""
+msgstr "Jedno z „all“, „today“, „yesterday“, „7d“, „30d“, nebo „custom“."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:57
 msgid "Custom filter start date"
-msgstr ""
+msgstr "Uživatelsky určené počáteční datum filtru"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:58
 msgid "ISO date string for custom filter start, e.g. \"2026-01-15\"."
 msgstr ""
+"Řetězec data v ISO formátu pro uživatelsky určený začátek filtru, např. „"
+"2026-01-15“."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:62
 msgid "Custom filter end date"
-msgstr ""
+msgstr "Uživatelsky určené koncové datum filtru"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:63
 msgid "ISO date string for custom filter end, e.g. \"2026-01-31\"."
 msgstr ""
+"Řetězec data v ISO formátu pro uživatelsky určený konec filtru, např. „2026-"
+"01-15“."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
 msgid "See what's on your network"
@@ -148,29 +152,27 @@ msgstr ""
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:15
 msgid "ZingyTomato"
-msgstr ""
+msgstr "ZingyTomato"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:27
 msgid "Gnome"
-msgstr ""
+msgstr "Gnome"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:28
 msgid "GTK"
-msgstr ""
+msgstr "GTK"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:29
 msgid "Networking"
-msgstr ""
+msgstr "Síťování"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:30
 msgid "Internet"
-msgstr ""
+msgstr "Internet"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:31
-#, fuzzy
-#| msgid "Scan my Network"
 msgid "Scanner"
-msgstr "Skenovat mou síť"
+msgstr "Skener"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:49
 msgid "Home screen"
@@ -186,11 +188,11 @@ msgstr "Výsledky skenu"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:61
 msgid "Scan Results (List View)"
-msgstr ""
+msgstr "Výsledky skenování (zobrazení seznamu)"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:65
 msgid "Deep Scan Results"
-msgstr ""
+msgstr "Výsledky důkladného skenu"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:69
 msgid "Previous Scans"
@@ -198,15 +200,17 @@ msgstr "Předchozí skeny"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:76
 msgid "Version 0.3.4"
-msgstr ""
+msgstr "Verze 0.3.4"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:78 src/app.py:105
 msgid "Added keyboard shortcuts for common actions, with a shortcuts window."
-msgstr ""
+msgstr "Přidány klávesové zkratky pro běžné akce a okno zkratek."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:79 src/app.py:106
 msgid "Added a Preferences dialog with display theme and scan thread count."
 msgstr ""
+"Přidán dialog předvoleb s motivem vzhledu zobrazení a počtem vláken "
+"skenování."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:80 src/app.py:107
 msgid ""
