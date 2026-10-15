@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-15 10:10+0200\n"
-"PO-Revision-Date: 2026-10-09 07:51+0000\n"
-"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
+"PO-Revision-Date: 2026-10-13 19:51+0000\n"
+"Last-Translator: Pavel Borecki <pavelbo@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/netpeek/netpeek/"
 "cs/>\n"
 "Language: cs\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 2026.10.1.dev0\n"
+"X-Generator: Weblate 2026.11.dev0\n"
 
 #: data/io.github.zingytomato.netpeek.desktop.in:2
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/app.py:94
@@ -217,14 +217,16 @@ msgid ""
 "History entries now have their own scan information button, and scan "
 "information shows the scanned IP range with a copy button."
 msgstr ""
+"Historické položky nyní mají své vlastní tlačítko informací o skenu a ty "
+"zobrazují skenovaný rozsah IP adres, s tlačítkem pro jeho zkopírování."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:81 src/app.py:108
 msgid "Previous scans list is now paginated for easier browsing."
-msgstr ""
+msgstr "Pro snazší procházení jsou seznamy skenů nyní opatřeny stránkováním."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:82 src/app.py:109
 msgid "Window size and maximized state are remembered between sessions."
-msgstr ""
+msgstr "Velikost okna a stav maximalizace jsou nyní zapamatovány mezi relacemi."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:83 src/app.py:110
 msgid ""
@@ -547,10 +549,8 @@ msgid "IP range configuration"
 msgstr "Nastavení rozsahu IP adres"
 
 #: src/gtk/home_page.ui:103
-#, fuzzy
-#| msgid "Enter the IP range you want to scan:"
 msgid "Enter the IP range you want to scan"
-msgstr "Zadejte rozsah IP adres, který chcete skenovat:"
+msgstr "Zadejte rozsah IP adres, který chcete skenovat"
 
 #: src/gtk/home_page.ui:107 src/gtk/scan_metadata_dialog.ui:36
 #, fuzzy
@@ -640,10 +640,8 @@ msgid "Scanning network"
 msgstr "Skenování sítě"
 
 #: src/gtk/results_page.ui:120
-#, fuzzy
-#| msgid "Discover devices on your local network"
 msgid "Discovering devices on your network…"
-msgstr "Objevte zařízení na své místní síti"
+msgstr "Objevování zařízení na vaší síti…"
 
 #: src/gtk/results_page.ui:141 src/pages/results.py:504
 #, fuzzy
@@ -678,10 +676,8 @@ msgid "No devices found"
 msgstr "Nenalezena žádná zařízení"
 
 #: src/gtk/results_page.ui:288
-#, fuzzy
-#| msgid "No devices were found in the specified range!"
 msgid "No devices were found in the specified range."
-msgstr "V určeném rozsahu nenalezena žádná zařízení!"
+msgstr "V určeném rozsahu nenalezena žádná zařízení."
 
 #: src/gtk/results_page.ui:300
 #, fuzzy
@@ -690,10 +686,8 @@ msgid "Scan error"
 msgstr "Chyba skenu"
 
 #: src/gtk/results_page.ui:301
-#, fuzzy
-#| msgid "An error occurred while scanning the network!"
 msgid "An error occurred while scanning the network."
-msgstr "Při skenování sítě došlo k chybě!"
+msgstr "Při skenování sítě došlo k chybě."
 
 #: src/gtk/results_page.ui:305
 msgid "_Try again"
@@ -788,11 +782,9 @@ msgid "Quit"
 msgstr "Ukončit"
 
 #: src/gtk/shortcuts-dialog.ui:49
-#, fuzzy
-#| msgid "Scanning..."
 msgctxt "shortcut window"
 msgid "Scanning"
-msgstr "Skenování…"
+msgstr "Skenování"
 
 #: src/gtk/shortcuts-dialog.ui:52
 msgctxt "shortcut window"
@@ -1017,35 +1009,30 @@ msgid "Go to page {n}"
 msgstr ""
 
 #: src/pages/history.py:409
-#, fuzzy, python-brace-format
-#| msgid "Found {count} devices"
+#, python-brace-format
 msgid "{count} device"
 msgid_plural "{count} devices"
 msgstr[0] "Nalezeno {count} zařízení"
-msgstr[1] "Nalezeno {count} zařízení"
+msgstr[1] "Nalezena {count} zařízení"
 msgstr[2] "Nalezeno {count} zařízení"
 
 #: src/pages/history.py:412
-#, fuzzy, python-brace-format
-#| msgid "{time} · {count} devices{deep}"
+#, python-brace-format
 msgid "{time} · {count} · Deep"
-msgstr "{time} · {count} zařízení{deep}"
+msgstr "{time} · {count} · Podrobný"
 
 #: src/pages/history.py:415
-#, fuzzy, python-brace-format
-#| msgid "{time} · {count} devices{deep}"
+#, python-brace-format
 msgid "{time} · {count}"
-msgstr "{time} · {count} zařízení{deep}"
+msgstr "{time} · {count}"
 
 #: src/pages/history.py:432 src/pages/history.py:434
 msgid "Delete this scan"
 msgstr "Smazat tento sken"
 
 #: src/pages/history.py:459
-#, fuzzy
-#| msgid "Delete this scan"
 msgid "Delete scan?"
-msgstr "Smazat tento sken"
+msgstr "Smazat tento sken?"
 
 #: src/pages/history.py:460
 #, python-brace-format
@@ -1161,10 +1148,9 @@ msgid "Export failed. Please try again."
 msgstr ""
 
 #: src/pages/results.py:418
-#, fuzzy, python-brace-format
-#| msgid "Successfully exported to "
+#, python-brace-format
 msgid "Successfully exported to {name}"
-msgstr "Úspěšně exportováno do "
+msgstr "Úspěšně exportováno do {name}"
 
 #: src/pages/results.py:421
 msgid "Open Folder"
@@ -1200,25 +1186,22 @@ msgid "{mode} · {range}"
 msgstr ""
 
 #: src/pages/results.py:557
-#, fuzzy, python-brace-format
-#| msgid "Loaded from history: "
+#, python-brace-format
 msgid "{deep}Loaded from history · {range}"
-msgstr "Načteno z historie: "
+msgstr "{deep}Načteno z historie: {range}"
 
 #: src/pages/results.py:588
-#, fuzzy, python-brace-format
-#| msgid "Found {count} devices"
+#, python-brace-format
 msgid "Found {count} device"
 msgid_plural "Found {count} devices"
 msgstr[0] "Nalezeno {count} zařízení"
-msgstr[1] "Nalezeno {count} zařízení"
+msgstr[1] "Nalezena {count} zařízení"
 msgstr[2] "Nalezeno {count} zařízení"
 
 #: src/pages/results.py:594
-#, fuzzy, python-brace-format
-#| msgid "Scan stopped - No devices found"
+#, python-brace-format
 msgid "{deep}Scan stopped · {found}"
-msgstr "Skenování zastaveno – nenalezena žádná zařízení"
+msgstr "{deep}Skenování zastaveno · {found}"
 
 #: src/pages/results.py:598
 #, python-brace-format
@@ -1240,10 +1223,9 @@ msgid "Standard"
 msgstr ""
 
 #: src/pages/scan_info.py:64
-#, fuzzy, python-brace-format
-#| msgid "Time Elapsed: {minutes:02d}:{seconds:02d}"
+#, python-brace-format
 msgid "{minutes} {seconds}"
-msgstr "Uplynulý čas: {minutes:02d}:{seconds:02d}"
+msgstr "{minutes} {seconds}"
 
 #: src/pages/scan_info.py:66 src/pages/scan_info.py:73
 #, python-brace-format
@@ -1310,10 +1292,9 @@ msgid "Nmap error on host {host}: {e}"
 msgstr ""
 
 #: src/scanner.py:189
-#, fuzzy, python-brace-format
-#| msgid "An error occurred while scanning the network!"
+#, python-brace-format
 msgid "An error occurred in a thread: {e}"
-msgstr "Při skenování sítě došlo k chybě!"
+msgstr "Došlo k chybě ve vláknu: {e}"
 
 #: src/scanner.py:198
 #, python-brace-format
