@@ -1,0 +1,1275 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-15 10:10+0200\n"
+"PO-Revision-Date: 2026-10-26 06:51+0000\n"
+"Last-Translator: \"shuck.\" <shuck-hh@users.noreply.hosted.weblate.org>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/netpeek/netpeek/"
+"de/>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2026.11.dev0\n"
+
+#: data/io.github.zingytomato.netpeek.desktop.in:2
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/app.py:94
+#: src/gtk/home_page.ui:7 src/gtk/home_page.ui:15 src/gtk/main_window.ui:7
+msgid "NetPeek"
+msgstr "NetPeek"
+
+#: data/io.github.zingytomato.netpeek.desktop.in:3
+msgid "Discover devices on your local network"
+msgstr "Entdecke Geräte in deinem lokalen Netzwerk"
+
+#: data/io.github.zingytomato.netpeek.desktop.in:10
+msgid "Gnome;GTK;Networking;Scanner;Internet;"
+msgstr "Gnome;GTK;Networking;Scanner;Internet;"
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:6
+#: data/io.github.zingytomato.netpeek.gschema.xml:7
+msgid "Default window width"
+msgstr "Standard-Fensterbreite"
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:11
+#: data/io.github.zingytomato.netpeek.gschema.xml:12
+msgid "Default window height"
+msgstr "Standard-Fensterhöhe"
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:16
+msgid "Default window maximized behaviour"
+msgstr "Standardverhalten bei maximiertem Fenster"
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:17
+msgid "Not maximised by default"
+msgstr "Standardmäßig nicht maximiert"
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:21
+msgid "Preferred color scheme"
+msgstr "Bevorzugtes Farbschema"
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:22
+msgid "One of \"default\" (follow system), \"light\", or \"dark\"."
+msgstr ""
+"Entweder \"Standard\" (Systemeinstellung verwenden), \"hell\" oder "
+"\"dunkel\"."
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:26
+msgid "Results view mode"
+msgstr "Modus zur Anzeige von Ergebnissen"
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:27
+msgid "One of \"cards\" or \"list\"."
+msgstr "Entweder \"Karten\" oder \"Listen\"."
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:31
+msgid "Last used IP range"
+msgstr "Zuletzt verwendeter IP-Bereich"
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:32
+msgid "The IP range entered in the last scan, restored on startup."
+msgstr ""
+"Der im letzten Scan eingegebene IP-Bereich wird beim Start wiederhergestellt."
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:36
+msgid "Last selected preset"
+msgstr "Zuletzt ausgewählte Voreinstellung"
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:37
+msgid ""
+"The preset selected in the split button, restored on startup. \"auto\" for "
+"auto-detect, or an IP range like \"192.168.1.0/24\"."
+msgstr ""
+"Die über den Button „Split“ ausgewählte Voreinstellung wird beim Start "
+"wiederhergestellt. „Auto“ für die automatische Erkennung oder ein IP-Bereich "
+"wie „192.168.1.0/24“."
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:41
+msgid "Enable deep scan mode"
+msgstr "Deep-Scan-Modus aktivieren"
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:42
+msgid ""
+"When enabled, retrieves detailed system information, such as the OS name and "
+"HTTP server details."
+msgstr ""
+"Wenn aktiviert, werden detaillierte Systeminformationen, wie der Name des "
+"Betriebssystems und die HTTP-Server-Details abgerufen."
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:46
+msgid "Thread count for scanning"
+msgstr "Threadzähler für das Scannen"
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:47
+msgid "Number of concurrent worker threads to use while scanning (1–500)."
+msgstr ""
+"Anzahl der gleichzeitig verwendeten Worker-Threads während dem Scannen (1-"
+"500)."
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:52
+msgid "Last selected history filter"
+msgstr "Zuletzt ausgewählter Verlaufsfilter"
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:53
+msgid ""
+"One of \"all\", \"today\", \"yesterday\", \"7d\", \"30d\", or \"custom\"."
+msgstr ""
+"Entweder \"Alle\", \"Heute\", \"Gestern\", \"eine Woche\", \"30 Tage\" oder "
+"\"benutzerdefiniert\"."
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:57
+msgid "Custom filter start date"
+msgstr "Startdatum des benutzerdefinierten Filters"
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:58
+msgid "ISO date string for custom filter start, e.g. \"2026-01-15\"."
+msgstr ""
+"ISO-Date-String für das Startdatum des benutzerdefinierten Filters, z.B. "
+"\"2026-01-15\"."
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:62
+msgid "Custom filter end date"
+msgstr "Enddatum des benutzerdefinierten Filters"
+
+#: data/io.github.zingytomato.netpeek.gschema.xml:63
+msgid "ISO date string for custom filter end, e.g. \"2026-01-31\"."
+msgstr ""
+"ISO-Date-String für das Enddatum des benutzerdefinierten Filters, z.B. "
+"\"2026-01-31\"."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
+msgid "See what's on your network"
+msgstr "Sieh, was in deinem Netzwerk läuft"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:9
+msgid ""
+"NetPeek is a simple network scanner that helps you discover active devices "
+"on your local network."
+msgstr ""
+"NetPeek ist ein einfacher Netzwerkscanner, mit dem Sie aktive Geräte in "
+"Ihrem lokalen Netzwerk finden können."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:15
+msgid "ZingyTomato"
+msgstr "ZingyTomato"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:27
+msgid "Gnome"
+msgstr "Gnome"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:28
+msgid "GTK"
+msgstr "GTK"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:29
+msgid "Networking"
+msgstr "Networking"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:30
+msgid "Internet"
+msgstr "Internet"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:31
+msgid "Scanner"
+msgstr "Scanner"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:49
+msgid "Home screen"
+msgstr "Startbildschirm"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:53
+msgid "Scan in Progress"
+msgstr "Wird gescannt"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:57
+msgid "Scan Results"
+msgstr "Scan-Ergebnisse"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:61
+msgid "Scan Results (List View)"
+msgstr "Scan-Ergebnisse in Listenansicht"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:65
+msgid "Deep Scan Results"
+msgstr "Deep-Scan-Ergebnisse"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:69
+msgid "Previous Scans"
+msgstr "Vorherige Scans"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:76
+msgid "Version 0.3.4"
+msgstr "Version 0.3.4"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:78 src/app.py:105
+msgid "Added keyboard shortcuts for common actions, with a shortcuts window."
+msgstr ""
+"Es wurden Tastenkombinationen für häufig verwendete Aktionen hinzugefügt, "
+"einschließlich eines Fensters mit den Tastenkombinationen."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:79 src/app.py:106
+msgid "Added a Preferences dialog with display theme and scan thread count."
+msgstr ""
+"Es wurde ein Einstellungsdialog mit Optionen für das Anzeigedesign und die "
+"Anzahl der Scan-Threads hinzugefügt."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:80 src/app.py:107
+msgid ""
+"History entries now have their own scan information button, and scan "
+"information shows the scanned IP range with a copy button."
+msgstr ""
+"Die Einträge im Verlauf verfügen nun über eine eigene Schaltfläche für Scan-"
+"Informationen. Dort wird der gescannte IP-Bereich mit einer Schaltfläche zum "
+"Kopieren angezeigt."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:81 src/app.py:108
+msgid "Previous scans list is now paginated for easier browsing."
+msgstr ""
+"Die Liste der bisherigen Scans ist nun paginiert, um das Durchstöbern zu "
+"erleichtern."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:82 src/app.py:109
+msgid "Window size and maximized state are remembered between sessions."
+msgstr ""
+"Fenstergröße und maximierte Größe werden zwischen den Sessions gespeichert."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:83 src/app.py:110
+msgid ""
+"Reworked results views for narrow screens, with dedicated mobile rows and "
+"header actions moving to the bottom bar."
+msgstr ""
+"Die Ergebnisansichten wurden für schmale Bildschirme überarbeitet: spezielle "
+"Zeilen für Mobilgeräte, und die Kopfzeilenfunktionen wurden in die untere "
+"Leiste verschoben."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:90
+msgid "Version 0.3.3"
+msgstr "Version 0.3.3"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:92
+msgid "Grouped all IP presets into a single button."
+msgstr "Alle IP-Voreinstellungen wurden in einen einzigen Button gruppiert."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:93
+msgid "Added date filters and custom date ranges to scan history."
+msgstr ""
+"Ein Datumsfilter und benutzerdefinierte Datumsbereiche wurden zum Scan-"
+"Verlauf hinzugefügt."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:100
+msgid "Version 0.3.2"
+msgstr "Version 0.3.2"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:102
+msgid "Added search functionality to all scan pages."
+msgstr "Suchfunktion wurde zu allen Scan-Seiten hinzugefügt."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:103
+msgid "Added a scan info dialog for current and previous scans."
+msgstr "Scan-Dialog für den aktuellen und vergangene Scans hinzugefügt."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:104
+msgid "Results view format is now preserved when resizing the window."
+msgstr ""
+"Das Format der Ergebnisansicht bleibt nun beim Ändern der Fenstergröße "
+"erhalten."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:105
+msgid "Updated nmap to version 7.991."
+msgstr "Nmap wurde auf die Version 7.991 aktualisiert."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:112
+msgid "Version 0.3.1"
+msgstr "Version 0.3.1"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:114
+msgid ""
+"Device cards now cap System Information and Services at one line, with "
+"expand/collapse buttons to reveal the full text."
+msgstr ""
+"Gerätekarten beschränken die Angaben zu „Systeminformationen“ und „Dienste“ "
+"nun auf eine Zeile und verfügen über Schaltflächen zum Ein- und Ausblenden, "
+"um den vollständigen Text anzuzeigen."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:115
+msgid "Moved the thread count picker into the main menu."
+msgstr "Der Thread-Counter wurde ins Hauptmenü verschoben."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:116
+msgid ""
+"Added better indication throughout the UI that a deep scan is taking place."
+msgstr ""
+"In der gesamten Benutzeroberfläche wurden deutlichere Hinweise darauf "
+"hinzugefügt, dass gerade ein umfassender Scan durchgeführt wird."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:117
+msgid "Added a Translate link to the About dialog."
+msgstr "Zur „Über“-Seite wurde ein Übersetzungslink hinzugefügt."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:124
+msgid "Version 0.3.0"
+msgstr "Version 0.3.0"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:126
+msgid ""
+"New Deep Scan mode for additional information like OS identification, "
+"software versions and more."
+msgstr ""
+"Der neue Deep-Scan-Modus zeigt zusätzliche Informationen wie die OS-"
+"Identifikation, die Software-Version und mehr an."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:127
+msgid ""
+"Expanded service detection for common self-hosted and DevOps services "
+"(MySQL, PostgreSQL, Redis, Home Assistant, Plex, etc.)."
+msgstr ""
+"Erweiterte Diensterkennung für gängige selbst gehostete Dienste und DevOps-"
+"Dienste (MySQL, PostgreSQL, Redis, Home Assistant, Plex usw.)."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:128
+msgid "Improved UI adaptability for smaller screens."
+msgstr ""
+"Verbesserte Anpassungsfähigkeit der Benutzeroberfläche an kleinere "
+"Bildschirme."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:135
+msgid "Version 0.2.9"
+msgstr "Version 0.2.9"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:137
+msgid "Refreshed the app icon with a contemporary, flat style."
+msgstr "Das App-Symbol wurde im modernen, flachen Stil überarbeitet."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:138
+msgid ""
+"Redesigned the light, dark and system style switcher with visual swatches."
+msgstr ""
+"Der Umschalter für die hellen, dunklen und System-Designs wurde mit "
+"visuellen Farbmusterfeldern neu gestaltet."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:139
+msgid ""
+"Cockpit instances are now detected and shown alongside SMB shares in a "
+"combined Services row."
+msgstr ""
+"Cockpit-Instanzen werden nun erkannt und zusammen mit SMB-Freigaben in einer "
+"gemeinsamen Zeile „Dienste“ angezeigt."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:140
+msgid "Header actions move into a bottom bar when the window is narrow."
+msgstr ""
+"Die Funktionen in der Kopfzeile werden in eine Leiste am unteren Rand "
+"verschoben, wenn das Fenster schmal ist."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:141
+msgid "Custom device names now apply retroactively to previous scans."
+msgstr ""
+"Benutzerdefinierte Gerätenamen werden jetzt auch auf vorherige Scans "
+"rückwirkend angewandt."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:142
+msgid "Added an Open Folder shortcut to the CSV export notification."
+msgstr ""
+"Zur CSV-Export-Benachrichtigung wurde ein „Ordner öffnen“-Shortcut "
+"hinzugefügt."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:143
+msgid ""
+"Streamlined notifications, keeping only copy, export and error messages."
+msgstr ""
+"Optimierte Benachrichtigungen, wobei nur Kopier-, Export- und "
+"Fehlermeldungen beibehalten werden."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:144
+msgid "The active sort option is now highlighted and shows its direction."
+msgstr ""
+"Die aktive Sortieroption ist jetzt hervorgehoben und zeigt die "
+"Sortierrichtung an."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:145
+msgid "Sorting is disabled while scanning and when no devices are found."
+msgstr ""
+"Die Sortierrung ist während dem Scan und wenn keine Geräte gefunden werden "
+"deaktiviert."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:146
+msgid ""
+"Added a Services column to the list view and made narrow lists scroll "
+"horizontally."
+msgstr ""
+"In der Listenansicht wurde eine Spalte „Dienste“ hinzugefügt, und schmale "
+"Listen lassen sich nun horizontal scrollen."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:147
+msgid ""
+"Centered the network preset buttons and set a minimum window size for a "
+"consistent layout."
+msgstr ""
+"Die Schaltflächen für die Netzwerkvoreinstellungen wurden zentriert und eine "
+"Mindestfenstergröße festgelegt, um ein einheitliches Layout zu gewährleisten."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:148
+msgid ""
+"Fixed manually entered thread counts not being applied, and added a confirm "
+"button to the IP and thread fields."
+msgstr ""
+"Es wurde behoben, dass manuell eingegebene Thread-Zahlen nicht übernommen "
+"wurden, und den Feldern „IP“ und „Thread“ wurde eine "
+"Bestätigungsschaltfläche hinzugefügt."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:149
+msgid ""
+"Input fields no longer keep focus after use, and the IP entry no longer "
+"shows a focus ring or apply button on launch."
+msgstr ""
+"Eingabefelder behalten nach der Verwendung nicht mehr den Fokus, und die IP-"
+"Eingabe zeigt beim Start keinen Fokusring und keine Schaltfläche „Übernehmen"
+"“ mehr an."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:150
+msgid "Device cards no longer highlight on hover."
+msgstr "Gerätekarten werden ab sofort nicht mehr hervorgehoben."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:157
+msgid "Version 0.2.8"
+msgstr "Version 0.2.8"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:159
+msgid "Fixed unreliable network auto-detection."
+msgstr "Probleme mit der unzuverlässigen Auto-Erkennung behoben."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:160
+msgid "Added scan history with a Previous Scans dialog."
+msgstr "Scan Historie mit \"Vorherige Scans\"-Dialog hinzugefügt."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:161
+msgid "Added dark mode support."
+msgstr "Dark-Mode hinzugefügt."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:162
+msgid "Unified sorting between card and list views."
+msgstr "Einheitliche Sortierung in der Karten- und Listenansicht."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:163
+msgid "Improved responsive layout on narrow windows."
+msgstr "Verbessertes responsives Layout bei schmalen Fenstern."
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:170
+msgid "Version 0.2.7"
+msgstr "Version 0.2.7"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:172
+msgid "Updated to GNOME 50 runtime."
+msgstr "Auf GNOME 50-Runtime aktualisiert."
+
+#: src/app.py:98 src/gtk/home_page.ui:79
+msgid "Discover devices on your local network."
+msgstr "Entdecke Geräte in deinem lokalen Netzwerk."
+
+#: src/app.py:101
+msgid "Translate"
+msgstr "Übersetzen"
+
+#: src/app.py:103
+msgid "Contributors"
+msgstr "Mitwirkende"
+
+#: src/gtk/device_card.ui:22 src/widgets.py:241
+msgid "Name"
+msgstr "Name"
+
+#: src/gtk/device_card.ui:28 src/pages/results.py:414 src/widgets.py:226
+msgid "New"
+msgstr "Neu"
+
+#: src/gtk/device_card.ui:42 src/gtk/results_page.ui:338 src/widgets.py:111
+msgid "IP address"
+msgstr "IP-Adresse"
+
+#: src/gtk/device_card.ui:55 src/gtk/device_card.ui:61 src/widgets.py:236
+#: src/widgets.py:238
+msgid "Copy IP"
+msgstr "IP-Adresse kopieren"
+
+#: src/gtk/device_card.ui:70 src/gtk/results_page.ui:343 src/widgets.py:245
+msgid "Hostname"
+msgstr "Hostname"
+
+#: src/gtk/device_card.ui:82 src/widgets.py:251
+msgid "Ports open"
+msgstr "Offene Ports"
+
+#: src/gtk/device_card.ui:94 src/gtk/results_page.ui:358 src/widgets.py:258
+msgid "Services"
+msgstr "Dienste"
+
+#: src/gtk/device_card.ui:108 src/gtk/device_card.ui:114 src/widgets.py:187
+msgid "Show full service list"
+msgstr "Zeige volle Diensteliste"
+
+#: src/gtk/device_card.ui:123 src/gtk/results_page.ui:363 src/widgets.py:264
+msgid "System information"
+msgstr "Systeminformationen"
+
+#: src/gtk/device_card.ui:137 src/gtk/device_card.ui:143 src/widgets.py:184
+msgid "Show full system information"
+msgstr "Zeige alle Systeminformationen"
+
+#: src/gtk/history_dialog.ui:7 src/gtk/history_dialog.ui:20
+#: src/gtk/home_page.ui:170
+msgid "Previous scans"
+msgstr "Vorherige Scans"
+
+#: src/gtk/history_dialog.ui:37 src/pages/history.py:42
+#: src/pages/history.py:218
+msgid "All"
+msgstr "Alle"
+
+#: src/gtk/history_dialog.ui:38
+msgid "Filter scans by date"
+msgstr "Nach Datum sortieren"
+
+#: src/gtk/history_dialog.ui:54 src/pages/history.py:225
+msgid "Custom range"
+msgstr "Benutzerdefinierter Bereich"
+
+#: src/gtk/history_dialog.ui:55
+msgid "Pick a custom date range"
+msgstr "Wählen Sie einen benutzerdefinierten Bereich aus"
+
+#: src/gtk/history_dialog.ui:84
+msgid "From"
+msgstr "Von"
+
+#: src/gtk/history_dialog.ui:115
+msgid "To"
+msgstr "Bis"
+
+#: src/gtk/history_dialog.ui:147
+msgid "Clear"
+msgstr "Leeren"
+
+#: src/gtk/history_dialog.ui:155
+msgid "Apply"
+msgstr "Anwenden"
+
+#: src/gtk/history_dialog.ui:198 src/gtk/history_dialog.ui:210
+msgid "Scroll to top"
+msgstr "Zum Anfang"
+
+#: src/gtk/history_dialog.ui:223 src/pages/history.py:310
+msgid "No previous scans"
+msgstr "Keine vorherigen Scans"
+
+#: src/gtk/history_dialog.ui:224 src/pages/history.py:311
+msgid "Your scan history will appear here."
+msgstr "Hier wird Ihr Scan-Verlauf angezeigt."
+
+#: src/gtk/history_dialog.ui:244 src/gtk/history_dialog.ui:251
+msgid "Previous page"
+msgstr "Vorherige Seite"
+
+#: src/gtk/history_dialog.ui:264 src/gtk/history_dialog.ui:271
+msgid "Next page"
+msgstr "Nächste Seite"
+
+#: src/gtk/home_page.ui:21
+msgid "Main Menu"
+msgstr "Hauptmenü"
+
+#: src/gtk/home_page.ui:102
+msgid "IP range configuration"
+msgstr "IP-Bereich-Konfiguration"
+
+#: src/gtk/home_page.ui:103
+msgid "Enter the IP range you want to scan"
+msgstr "Geben Sie den IP-Bereich ein, der gescannt werden soll"
+
+#: src/gtk/home_page.ui:107 src/gtk/scan_metadata_dialog.ui:36
+msgid "IP range"
+msgstr "IP-Bereich"
+
+#: src/gtk/home_page.ui:117
+msgid "Deep scan"
+msgstr "Deep-Scan"
+
+#: src/gtk/home_page.ui:118
+msgid ""
+"Retrieves detailed system information, such as the OS name and HTTP server "
+"details."
+msgstr ""
+"Ruft detaillierte Systeminformationen ab, wie beispielsweise den Namen des "
+"Betriebssystems und HTTP-Server-Details."
+
+#: src/gtk/home_page.ui:137
+msgid "Scan network"
+msgstr "Netzwerk Scannen"
+
+#: src/gtk/home_page.ui:166
+msgid "Preferences"
+msgstr "Einstellungen"
+
+#: src/gtk/home_page.ui:174
+msgid "Keyboard shortcuts"
+msgstr "Tastaturkürzel"
+
+#: src/gtk/home_page.ui:180
+msgid "About NetPeek"
+msgstr "Über NetPeek"
+
+#: src/gtk/results_page.ui:7 src/gtk/results_page.ui:20
+msgid "Scan results"
+msgstr "Scan-Ergebnisse"
+
+#: src/gtk/results_page.ui:26
+msgid "Stop the current network scan"
+msgstr "Aktuellen Scan anhalten"
+
+#: src/gtk/results_page.ui:31
+msgid "Stop"
+msgstr "Stopp"
+
+#: src/gtk/results_page.ui:42 src/gtk/results_page.ui:46
+#: src/gtk/scan_metadata_dialog.ui:7 src/gtk/scan_metadata_dialog.ui:16
+#: src/pages/history.py:422 src/pages/history.py:424
+msgid "Scan information"
+msgstr "Scan Informationen"
+
+#: src/gtk/results_page.ui:57 src/gtk/results_page.ui:60
+msgid "Export to CSV"
+msgstr "In eine CSV Datei exportieren"
+
+#: src/gtk/results_page.ui:68
+msgid "Toggle list view"
+msgstr "Auf Listenansicht umschalten"
+
+#: src/gtk/results_page.ui:76 src/gtk/results_page.ui:83
+msgid "Sort options"
+msgstr "Sortierungsoptionen"
+
+#: src/gtk/results_page.ui:94 src/pages/results.py:472
+msgid "Rescan"
+msgstr "Neu scannen"
+
+#: src/gtk/results_page.ui:119
+msgid "Scanning network"
+msgstr "Netzwerk wird gescannt"
+
+#: src/gtk/results_page.ui:120
+msgid "Discovering devices on your network…"
+msgstr "Geräte in Ihrem Netzwerk werden gesucht…"
+
+#: src/gtk/results_page.ui:141 src/pages/results.py:504
+msgid "Preparing scan…"
+msgstr "Scan vorbereiten…"
+
+#: src/gtk/results_page.ui:152 src/pages/results.py:505
+msgid "Time elapsed: 00:00"
+msgstr "Vergangene Zeit: 00:00"
+
+#: src/gtk/results_page.ui:185
+msgid "Search devices"
+msgstr "Geräte suchen"
+
+#: src/gtk/results_page.ui:268
+msgid "No results found"
+msgstr "Es wurden keine Ergebnisse gefunden"
+
+#: src/gtk/results_page.ui:269
+msgid "No devices match your search query."
+msgstr "Es wurden keine Geräte gefunden, die Ihrer Suchanfrage entsprechen."
+
+#: src/gtk/results_page.ui:287 src/pages/results.py:609
+msgid "No devices found"
+msgstr "Keine Geräte gefunden"
+
+#: src/gtk/results_page.ui:288
+msgid "No devices were found in the specified range."
+msgstr "Keine Geräte im ausgewählten Bereich gefunden."
+
+#: src/gtk/results_page.ui:300
+msgid "Scan error"
+msgstr "Scanfehler"
+
+#: src/gtk/results_page.ui:301
+msgid "An error occurred while scanning the network."
+msgstr "Während des Netzwerkscans ist ein Fehler aufgetreten."
+
+#: src/gtk/results_page.ui:305
+msgid "_Try again"
+msgstr "_Erneut versuchen"
+
+#: src/gtk/results_page.ui:331
+msgid "Sort by"
+msgstr "Sortieren nach"
+
+#: src/gtk/results_page.ui:333 src/pages/results.py:414
+msgid "Known"
+msgstr "Bekannt"
+
+#: src/gtk/results_page.ui:348
+msgid "Custom name"
+msgstr "benutzerdefinierter Name"
+
+#: src/gtk/results_page.ui:353
+msgid "Ports"
+msgstr "Ports"
+
+#: src/gtk/results_page.ui:370
+msgid "Ascending"
+msgstr "Aufsteigend"
+
+#: src/gtk/scan_metadata_dialog.ui:47 src/gtk/scan_metadata_dialog.ui:53
+msgid "Copy IP range"
+msgstr "IP-Bereich kopieren"
+
+#: src/gtk/scan_metadata_dialog.ui:61
+msgid "Date taken"
+msgstr "Aufnahmedatum"
+
+#: src/gtk/scan_metadata_dialog.ui:71
+msgid "Scan type"
+msgstr "Scan-Typ"
+
+#: src/gtk/scan_metadata_dialog.ui:81
+msgid "Scan duration"
+msgstr "Dauer des Scans"
+
+#: src/gtk/scan_metadata_dialog.ui:92
+msgid "New devices"
+msgstr "Neue Geräte"
+
+#: src/gtk/scan_metadata_dialog.ui:102
+msgid "Known devices"
+msgstr "Bekannte Geräte"
+
+#: src/gtk/shortcuts-dialog.ui:9
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Allgemein"
+
+#: src/gtk/shortcuts-dialog.ui:12
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Shortcuts anzeigen"
+
+#: src/gtk/shortcuts-dialog.ui:19
+msgctxt "shortcut window"
+msgid "Previous Scans"
+msgstr "Vorherige Scans"
+
+#: src/gtk/shortcuts-dialog.ui:26
+msgctxt "shortcut window"
+msgid "Preferences"
+msgstr "Einstellungen"
+
+#: src/gtk/shortcuts-dialog.ui:33
+msgctxt "shortcut window"
+msgid "Go Back"
+msgstr "Zurück"
+
+#: src/gtk/shortcuts-dialog.ui:40
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Beenden"
+
+#: src/gtk/shortcuts-dialog.ui:49
+msgctxt "shortcut window"
+msgid "Scanning"
+msgstr "Wird gescannt"
+
+#: src/gtk/shortcuts-dialog.ui:52
+msgctxt "shortcut window"
+msgid "Start Scan"
+msgstr "Scan starten"
+
+#: src/gtk/shortcuts-dialog.ui:59
+msgctxt "shortcut window"
+msgid "Focus IP Range Entry"
+msgstr "IP-Bereich-Eintrag fokussieren"
+
+#: src/gtk/shortcuts-dialog.ui:68
+msgctxt "shortcut window"
+msgid "Results"
+msgstr "Ergebnisse"
+
+#: src/gtk/shortcuts-dialog.ui:71
+msgctxt "shortcut window"
+msgid "Search Devices"
+msgstr "Geräte suchen"
+
+#: src/gtk/shortcuts-dialog.ui:78 src/gtk/shortcuts-dialog.ui:85
+msgctxt "shortcut window"
+msgid "Rescan"
+msgstr "Erneut scannen"
+
+#: src/gtk/shortcuts-dialog.ui:92
+msgctxt "shortcut window"
+msgid "Stop Scan"
+msgstr "Scan stoppen"
+
+#: src/gtk/shortcuts-dialog.ui:99
+msgctxt "shortcut window"
+msgid "Export to CSV"
+msgstr "Als CSV exportieren"
+
+#: src/gtk/shortcuts-dialog.ui:106
+msgctxt "shortcut window"
+msgid "Toggle Grid/List View"
+msgstr "Raster/Listenansicht umschalten"
+
+#: src/gtk/shortcuts-dialog.ui:113
+msgctxt "shortcut window"
+msgid "Scan Information"
+msgstr "Informationen zum Scan"
+
+#: src/gtk/theme_selector.ui:17 src/gtk/theme_selector.ui:23
+msgid "Follow System"
+msgstr "System befolgen"
+
+#: src/gtk/theme_selector.ui:34 src/gtk/theme_selector.ui:40
+msgid "Light"
+msgstr "Hell"
+
+#: src/gtk/theme_selector.ui:51 src/gtk/theme_selector.ui:57
+msgid "Dark"
+msgstr "Dunkel"
+
+#: src/models.py:40
+msgid "SMB shares"
+msgstr "SMB-Shares"
+
+#: src/models.py:41
+msgid "Cockpit"
+msgstr "Cockpit"
+
+#: src/models.py:42
+msgid "MySQL"
+msgstr "MySQL"
+
+#: src/models.py:43
+msgid "PostgreSQL"
+msgstr "PostgreSQL"
+
+#: src/models.py:44
+msgid "Redis"
+msgstr "Redis"
+
+#: src/models.py:45
+msgid "Home Assistant"
+msgstr "Home Assistant"
+
+#: src/models.py:46
+msgid "Plex"
+msgstr "Plex"
+
+#: src/models.py:47
+msgid "CUPS"
+msgstr "CUPS"
+
+#: src/models.py:48
+msgid "MongoDB"
+msgstr "MongoDB"
+
+#: src/models.py:49
+msgid "Proxmox"
+msgstr "Proxmox"
+
+#: src/models.py:50
+msgid "Synology DSM"
+msgstr "Synology DSM"
+
+#: src/models.py:81
+msgid "No common ports open"
+msgstr "Es sind keine gängigen Ports offen"
+
+#: src/models.py:109
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#: src/models.py:118
+msgid "Unknown device"
+msgstr "unbekanntes Gerät"
+
+#: src/pages/history.py:43 src/pages/history.py:288
+msgid "Today"
+msgstr "Heute"
+
+#: src/pages/history.py:44 src/pages/history.py:290
+msgid "Yesterday"
+msgstr "Gestern"
+
+#: src/pages/history.py:45
+msgid "Last 7 days"
+msgstr "In den letzten 7 Tagen"
+
+#: src/pages/history.py:46
+msgid "Last 30 days"
+msgstr "In den letzten 30 Tagen"
+
+#: src/pages/history.py:50
+msgid "Jan"
+msgstr "Jan"
+
+#: src/pages/history.py:50
+msgid "Feb"
+msgstr "Feb"
+
+#: src/pages/history.py:50
+msgid "Mar"
+msgstr "Mär"
+
+#: src/pages/history.py:50
+msgid "Apr"
+msgstr "Apr"
+
+#: src/pages/history.py:50
+msgid "May"
+msgstr "Mai"
+
+#: src/pages/history.py:50
+msgid "Jun"
+msgstr "Jun"
+
+#: src/pages/history.py:51
+msgid "Jul"
+msgstr "Jul"
+
+#: src/pages/history.py:51
+msgid "Aug"
+msgstr "Aug"
+
+#: src/pages/history.py:51
+msgid "Sep"
+msgstr "Sept"
+
+#: src/pages/history.py:51
+msgid "Oct"
+msgstr "Okt"
+
+#: src/pages/history.py:51
+msgid "Nov"
+msgstr "Nov"
+
+#: src/pages/history.py:51
+msgid "Dec"
+msgstr "Dez"
+
+#: src/pages/history.py:185
+msgid "Invalid date selected."
+msgstr "Ungültiges Datum ausgewählt."
+
+#: src/pages/history.py:188
+msgid "End date must be after start date."
+msgstr "Enddatum muss nach dem Startdatum liegen."
+
+#: src/pages/history.py:216
+msgid "Custom"
+msgstr "Benutzerdefiniert"
+
+#: src/pages/history.py:316
+msgid "No scans found"
+msgstr "Keine Scans gefunden"
+
+#: src/pages/history.py:317
+msgid "No scans match the selected time range."
+msgstr ""
+"Es wurden keine Scans gefunden, die dem ausgewählten Zeitraum entsprechen."
+
+#: src/pages/history.py:360 src/pages/history.py:363
+#, python-brace-format
+msgid "Go to page {n}"
+msgstr "Gehe zur Seite {n}"
+
+#: src/pages/history.py:409
+#, python-brace-format
+msgid "{count} device"
+msgid_plural "{count} devices"
+msgstr[0] "{count} Gerät"
+msgstr[1] "{count} Geräte"
+
+#: src/pages/history.py:412
+#, python-brace-format
+msgid "{time} · {count} · Deep"
+msgstr "{time} · {count} · Deep-Scan"
+
+#: src/pages/history.py:415
+#, python-brace-format
+msgid "{time} · {count}"
+msgstr "{time} · {count}"
+
+#: src/pages/history.py:432 src/pages/history.py:434
+msgid "Delete this scan"
+msgstr "Diesen Scan löschen"
+
+#: src/pages/history.py:459
+msgid "Delete scan?"
+msgstr "Scan löschen?"
+
+#: src/pages/history.py:460
+#, python-brace-format
+msgid ""
+"“{scan}” will be permanently removed from your history. This cannot be "
+"undone."
+msgstr ""
+"\"{scan}\" wird damit permanent aus Ihrem Verlauf gelöscht. Dies lässt sich "
+"nicht rückgängig machen."
+
+#: src/pages/history.py:463
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: src/pages/history.py:464
+msgid "Delete Scan"
+msgstr "Scan löschen"
+
+#: src/pages/history.py:481
+msgid "Scan deleted"
+msgstr "Scan gelöscht"
+
+#: src/pages/history.py:482
+msgid "Undo"
+msgstr "Rückgängig"
+
+#: src/pages/home.py:82 src/pages/home.py:98
+msgid "Auto-detect"
+msgstr "Automatische Erkennung"
+
+#: src/pages/home.py:82 src/pages/home.py:99
+msgid "Automatically detect your local network"
+msgstr "Lokales Netzwerk automatisch erkennen"
+
+#: src/pages/home.py:83
+msgid "Home network (192.168.1.x)"
+msgstr "Heimnetzwerk (192.168.1.x)"
+
+#: src/pages/home.py:84
+msgid "Home network (192.168.0.x)"
+msgstr "Heimnetzwerk (192.168.0.x)"
+
+#: src/pages/home.py:85
+msgid "Corporate (10.0.0.x)"
+msgstr "Unternehmen (10.0.0.x)"
+
+#: src/pages/home.py:86
+msgid "Private (172.16.0.x)"
+msgstr "Privat (172.16.0.x)"
+
+#: src/pages/home.py:100
+msgid "Choose a different preset range"
+msgstr "Einen anderen Bereich auswählen"
+
+#: src/pages/home.py:168 src/pages/results.py:489
+msgid "Scan already in progress"
+msgstr "Scan bereits in Arbeit"
+
+#: src/pages/preferences.py:48
+msgid "General"
+msgstr "Allgemein"
+
+#: src/pages/preferences.py:53 src/pages/results.py:509
+msgid "Scanning"
+msgstr "Wird gescannt"
+
+#: src/pages/preferences.py:55
+msgid "Tune how aggressively NetPeek scans your network."
+msgstr "Passen Sie an, wie aggressiv NetPeek Ihr Netzwerk scannt."
+
+#: src/pages/preferences.py:61
+msgid "Threads"
+msgstr "Threads"
+
+#: src/pages/preferences.py:63
+msgid "Concurrent workers. Higher is faster but uses more resources."
+msgstr ""
+"Gleichzeitige Scanner. Höher ist schneller, aber verwendet mehr Ressourcen."
+
+#: src/pages/results.py:333 src/pages/results.py:479
+msgid "Show as grid"
+msgstr "Als Raster anzeigen"
+
+#: src/pages/results.py:333 src/pages/results.py:480
+msgid "Show as list"
+msgstr "Als Liste anzeigen"
+
+#: src/pages/results.py:367
+msgid "No devices to export"
+msgstr "Keine Geräte zu exportieren"
+
+#: src/pages/results.py:371
+msgid "Export scan results"
+msgstr "Scan-Ergebnisse exportieren"
+
+#: src/pages/results.py:375
+msgid "CSV files"
+msgstr "CSV-Dateien"
+
+#: src/pages/results.py:394 src/pages/results.py:426
+msgid "Export failed. Please try again."
+msgstr "Export fehlgeschlagen. Bitte erneut versuchen."
+
+#: src/pages/results.py:418
+#, python-brace-format
+msgid "Successfully exported to {name}"
+msgstr "Erfolgreich nach {name} exportiert"
+
+#: src/pages/results.py:421
+msgid "Open Folder"
+msgstr "Ordner öffnen"
+
+#: src/pages/results.py:456
+#, python-brace-format
+msgid "Time elapsed: {minutes:02d}:{seconds:02d}"
+msgstr "Vergangene Zeit: {minutes:02d}:{seconds:02d}"
+
+#: src/pages/results.py:464
+#, python-brace-format
+msgid "Hosts scanned: {scanned}/{total}"
+msgstr "Gescannte Hosts: {scanned}/{total}"
+
+#: src/pages/results.py:472
+msgid "Scanning..."
+msgstr "Wird gescannt..."
+
+#: src/pages/results.py:485 src/pages/scan_info.py:40
+msgid "Deep"
+msgstr "Deep-Scan"
+
+#: src/pages/results.py:509
+msgid "Deep scanning"
+msgstr "Deep-Scanning"
+
+#: src/pages/results.py:511
+#, python-brace-format
+msgid "{mode} · {range}"
+msgstr "{mode} · {range}"
+
+#: src/pages/results.py:557
+#, python-brace-format
+msgid "{deep}Loaded from history · {range}"
+msgstr "{deep} Aus Verlauf geladen · {range}"
+
+#: src/pages/results.py:588
+#, python-brace-format
+msgid "Found {count} device"
+msgid_plural "Found {count} devices"
+msgstr[0] "{count} Gerät gefunden"
+msgstr[1] "{count} Geräte gefunden"
+
+#: src/pages/results.py:594
+#, python-brace-format
+msgid "{deep}Scan stopped · {found}"
+msgstr "{deep}Scan gestoppt · {found}"
+
+#: src/pages/results.py:598
+#, python-brace-format
+msgid "{deep}{found}"
+msgstr "{deep}{found}"
+
+#: src/pages/results.py:607
+msgid "Scan stopped · No devices found"
+msgstr "Scan gestoppt · Keine Geräte gefunden"
+
+#: src/pages/results.py:627
+msgid "Scan failed"
+msgstr "Scan fehlgeschlagen"
+
+#: src/pages/scan_info.py:40
+msgid "Standard"
+msgstr "Standard"
+
+#: src/pages/scan_info.py:64
+#, python-brace-format
+msgid "{minutes} {seconds}"
+msgstr "{minutes} .{seconds}"
+
+#: src/pages/scan_info.py:66 src/pages/scan_info.py:73
+#, python-brace-format
+msgid "{n} minute"
+msgid_plural "{n} minutes"
+msgstr[0] "eine Minute"
+msgstr[1] "{n} Minuten"
+
+#: src/pages/scan_info.py:68 src/pages/scan_info.py:69
+#, python-brace-format
+msgid "{n} second"
+msgid_plural "{n} seconds"
+msgstr[0] "eine Sekunde"
+msgstr[1] "{n} Sekunden"
+
+#: src/pages/scan_info.py:71
+#, python-brace-format
+msgid "{hours} {minutes}"
+msgstr "{hours}: {minutes}"
+
+#: src/pages/scan_info.py:72
+#, python-brace-format
+msgid "{n} hour"
+msgid_plural "{n} hours"
+msgstr[0] "eine Stunde"
+msgstr[1] "{n} Stunden"
+
+#: src/scanner.py:52
+msgid "Thread count must be between 1 and 500"
+msgstr "Thread-Count muss zwischen 1 und 500 liegen"
+
+#: src/scanner.py:56
+msgid "Please enter an IP range"
+msgstr "Bitte IP-Bereich eingeben"
+
+#: src/scanner.py:63
+msgid "Valid IP range"
+msgstr "Gültiger IP-Bereich"
+
+#: src/scanner.py:65
+#, python-brace-format
+msgid "Invalid IP range: {e}"
+msgstr "Ungültiger IP-Bereich: {e}"
+
+#: src/scanner.py:86
+msgid "Invalid range format!"
+msgstr "Ungültiges Bereichsformat!"
+
+#: src/scanner.py:93
+#, python-brace-format
+msgid "Error parsing IP range: {e}"
+msgstr "Fehler beim parsen des IP-Bereichs: {e}"
+
+#: src/scanner.py:111
+#, python-brace-format
+msgid "Nmap error on host {host}: {e}"
+msgstr "Nmap-Fehler bei Host {host}: {e}"
+
+#: src/scanner.py:189
+#, python-brace-format
+msgid "An error occurred in a thread: {e}"
+msgstr "Ein Fehler ist im Thread aufgetreten: {e}"
+
+#: src/scanner.py:198
+#, python-brace-format
+msgid "Scan failed: {e}"
+msgstr "Scan fehlgeschlagen: {e}"
+
+#: src/widgets.py:49
+#, python-brace-format
+msgid "Copied {ip} to the clipboard"
+msgstr "{ip} wurde in die Zwischenablage kopiert"
+
+#: src/widgets.py:174
+msgid "Show less"
+msgstr "Weniger anzeigen"
+
+#: src/widgets.py:319
+msgid "New device"
+msgstr "Neues Gerät"
+
+#: src/widgets.py:324
+msgid "Known device"
+msgstr "bekanntes Gerät"
