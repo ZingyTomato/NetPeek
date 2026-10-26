@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-15 10:10+0200\n"
-"PO-Revision-Date: 2026-10-26 06:51+0000\n"
+"PO-Revision-Date: 2026-10-26 15:25+0000\n"
 "Last-Translator: Priit Jõerüüt <jrthwlate@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Estonian <https://hosted.weblate.org/projects/netpeek/netpeek/"
 "et/>\n"
@@ -301,95 +301,121 @@ msgstr "Rakenduse teabe vaatesse lisandus tõlkimiseteemaline link."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:124
 msgid "Version 0.3.0"
-msgstr ""
+msgstr "Versioon 0.3.0"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:126
 msgid ""
 "New Deep Scan mode for additional information like OS identification, "
 "software versions and more."
 msgstr ""
+"Uus põhjaliku skaneerimise (süvaotsingu) režiim, mis pakub lisateavet, nagu "
+"operatsioonisüsteemi tuvastamine, tarkvaraversioonid ja muud andmed."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:127
 msgid ""
 "Expanded service detection for common self-hosted and DevOps services "
 "(MySQL, PostgreSQL, Redis, Home Assistant, Plex, etc.)."
 msgstr ""
+"Laiendasime teenuste tuvastamist levinud isehallatavate ja DevOps-teenuste "
+"jaoks (MySQL, PostgreSQL, Redis, Home Assistant, Plex jne)."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:128
 msgid "Improved UI adaptability for smaller screens."
-msgstr ""
+msgstr "Parem kasutajaliidese kohendumine väikese ekraanidega."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:135
 msgid "Version 0.2.9"
-msgstr ""
+msgstr "Versioon 0.2.9"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:137
 msgid "Refreshed the app icon with a contemporary, flat style."
-msgstr ""
+msgstr "Uuendasime rakenduse ikooni kasutades kaasaegset, lamedamat stiiliga."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:138
 msgid ""
 "Redesigned the light, dark and system style switcher with visual swatches."
 msgstr ""
+"Uuendasime heleda, tumeda ja süsteemikujunduse valiku nuppu, lisades sellele "
+"visuaalsed näidised."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:139
 msgid ""
 "Cockpit instances are now detected and shown alongside SMB shares in a "
 "combined Services row."
 msgstr ""
+"Tuvastame nüüd Cockpiti serverid ja SMB võrgukettaid ja kuvame neid "
+"kombineeritud teenuste real."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:140
 msgid "Header actions move into a bottom bar when the window is narrow."
 msgstr ""
+"Kitsas aknavaates nihkuvad nüüd päises kuvatud tegevused alumisele "
+"tööriistaribale."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:141
 msgid "Custom device names now apply retroactively to previous scans."
 msgstr ""
+"Sinu lisatud seadmete nimed kehtivad nüüd tagasiulatuvalt ka varasemate "
+"skaneerimiste puhul."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:142
 msgid "Added an Open Folder shortcut to the CSV export notification."
-msgstr ""
+msgstr "CSV-eksportimise teavitusse lisasime valiku „Ava kaust“."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:143
 msgid ""
 "Streamlined notifications, keeping only copy, export and error messages."
 msgstr ""
+"Lihtsustasime teavitusi, jättes alles vaid kopeerimis-, ekspordi- ja "
+"veateated."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:144
 msgid "The active sort option is now highlighted and shows its direction."
 msgstr ""
+"Aktiivne järjestusvalik on nüüd esile tõstetud ja selle suund on näidatud."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:145
 msgid "Sorting is disabled while scanning and when no devices are found."
 msgstr ""
+"Järjestamine on nüüd lülitatud välja skaneerimise ajaks ja kui uusi seadmeid "
+"ei leidu."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:146
 msgid ""
 "Added a Services column to the list view and made narrow lists scroll "
 "horizontally."
 msgstr ""
+"Lisasime loendivaatesse teenuste veeru ja muutsime kitsad loendid rõhtselt "
+"keritavaks."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:147
 msgid ""
 "Centered the network preset buttons and set a minimum window size for a "
 "consistent layout."
 msgstr ""
+"Ühtse kujunduse tagamiseks paigutasime võrgu eelseadistuste nupud keskele ja "
+"määrasime akna miinimumsuuruse."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:148
 msgid ""
 "Fixed manually entered thread counts not being applied, and added a confirm "
 "button to the IP and thread fields."
 msgstr ""
+"Parandasime vea, mille tõttu käsitsi sisestatud lõimede arvu ei rakendatud, "
+"ning lisasime IP-aadressi ja lõimede väljadele kinnitusnupu."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:149
 msgid ""
 "Input fields no longer keep focus after use, and the IP entry no longer "
 "shows a focus ring or apply button on launch."
 msgstr ""
+"Sisestusväljad ei säilita pärast kasutamist enam fookust ning IP-aadressi "
+"sisestusväljal ei kuvata käivitamisel enam fookusringi ega kinnitusnuppu."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:150
 msgid "Device cards no longer highlight on hover."
 msgstr ""
+"Seadmete vahekaardid ei muutu enam hiirega ülelibisemisel esiletõstetuks."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:157
 msgid "Version 0.2.8"
