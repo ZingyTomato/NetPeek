@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-27 10:27+0100\n"
-"PO-Revision-Date: 2026-10-26 20:19+0000\n"
+"PO-Revision-Date: 2026-10-28 14:51+0000\n"
 "Last-Translator: \"shuck.\" <shuck-hh@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Bavarian <https://hosted.weblate.org/projects/netpeek/netpeek/"
 "bar/>\n"
@@ -48,9 +48,8 @@ msgid "Default window maximized behaviour"
 msgstr "Standardvahoidn vom Fenster, wann's maximiert is"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:17
-#, fuzzy
 msgid "Not maximised by default"
-msgstr "Ned maximiert normalaweis"
+msgstr "Ned maximiert standartmäßig"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:21
 msgid "Preferred color scheme"
@@ -113,104 +112,114 @@ msgstr ""
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:52
 msgid "Last selected history filter"
-msgstr ""
+msgstr "Ois letzts ausgwöiter Verlaufssfilta"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:53
 msgid ""
 "One of \"all\", \"today\", \"yesterday\", \"7d\", \"30d\", or \"custom\"."
 msgstr ""
+"Entweda \"Ois\", \"heind\", \"gestan\", \"a Wocha\", \"30 Dog\" oda "
+"\"Benutzerdefiniert\"."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:57
 msgid "Custom filter start date"
-msgstr ""
+msgstr "Benutzerdefinierta Filter Startdatum"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:58
 msgid "ISO date string for custom filter start, e.g. \"2026-01-15\"."
 msgstr ""
+"ISO-Datumsstring fia benutzerdefiniertn Filter Startdatum, zum Beispiel "
+"\"2026-01-15\"."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:62
 msgid "Custom filter end date"
-msgstr ""
+msgstr "Benutzerdefinierta Filter Enddatum"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:63
 msgid "ISO date string for custom filter end, e.g. \"2026-01-31\"."
 msgstr ""
+"ISO-Datumsstring fia benutzerdefiniertn Filter Enddatum, zum Beispiel \"2026-"
+"01-31\"."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
 msgid "See what's on your network"
-msgstr ""
+msgstr "Sig, wos in deim Netzwerk los is"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:9
 msgid ""
 "NetPeek is a simple network scanner that helps you discover active devices "
 "on your local network."
 msgstr ""
+"NetPeek is a einfacher Netzwerk-Scanna, der da hilft aktive Geräte in deim "
+"lokalm Netzwerk zu finna."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:15
 msgid "ZingyTomato"
-msgstr ""
+msgstr "ZingyTomato"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:27
 msgid "Gnome"
-msgstr ""
+msgstr "Gnome"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:28
 msgid "GTK"
-msgstr ""
+msgstr "GTK"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:29
 msgid "Networking"
-msgstr ""
+msgstr "Networking"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:30
 msgid "Internet"
-msgstr ""
+msgstr "Internet"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:31
 msgid "Scanner"
-msgstr ""
+msgstr "Scanner"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:49
 msgid "Home screen"
-msgstr ""
+msgstr "Startbuidschirm"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:53
 msgid "Scan in Progress"
-msgstr ""
+msgstr "Werd gscannt"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:57
 msgid "Scan Results"
-msgstr ""
+msgstr "Scan-Ergebnis'"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:61
 msgid "Scan Results (List View)"
-msgstr ""
+msgstr "Scan-Ergebnis' in da Listn-Ansicht"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:65
 msgid "Deep Scan Results"
-msgstr ""
+msgstr "Deep-Scan-Ergebnis'"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:69
 msgid "Previous Scans"
-msgstr ""
+msgstr "Vorherige Scans"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:76
 msgid "Version 0.3.5"
-msgstr ""
+msgstr "Version 0.3.5"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:78 src/app.py:105
 msgid "Updated to GNOME 51 runtime and nmap 7.992."
-msgstr ""
+msgstr "GNOME auf 51 und nmap auf 7.992 aktualisiert."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:79 src/app.py:106
 msgid ""
 "Added Bavarian, German, and Brazilian Portuguese translations. Updated "
 "Czech, Estonian, and German translations."
 msgstr ""
+"Boarische, Deitsche und brasilisch-Portugiesische Übasetzunga hinzugfügt. "
+"Tschechische, Estonische und Deitsche Übasetzunga aktualisiert."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:86
 msgid "Version 0.3.4"
-msgstr ""
+msgstr "Version 0.3.4"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:88
 msgid "Added keyboard shortcuts for common actions, with a shortcuts window."
@@ -421,74 +430,74 @@ msgstr ""
 
 #: src/app.py:98 src/gtk/home_page.ui:79
 msgid "Discover devices on your local network."
-msgstr ""
+msgstr "Entdeck Geräte in deim lokoin Netzwerk."
 
 #: src/app.py:101
 msgid "Translate"
-msgstr ""
+msgstr "Übersetzn"
 
 #: src/app.py:103
 msgid "Contributors"
-msgstr ""
+msgstr "Leid, de wos dazu beigetragn hom"
 
 #: src/gtk/device_card.ui:22 src/widgets.py:241
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: src/gtk/device_card.ui:28 src/pages/results.py:401 src/widgets.py:226
 msgid "New"
-msgstr ""
+msgstr "Nei"
 
 #: src/gtk/device_card.ui:42 src/gtk/results_page.ui:338 src/widgets.py:111
 msgid "IP address"
-msgstr ""
+msgstr "IP-Addressn"
 
 #: src/gtk/device_card.ui:55 src/gtk/device_card.ui:61 src/widgets.py:236
 #: src/widgets.py:238
 msgid "Copy IP"
-msgstr ""
+msgstr "IP-Addressn kopiern"
 
 #: src/gtk/device_card.ui:70 src/gtk/results_page.ui:343 src/widgets.py:245
 msgid "Hostname"
-msgstr ""
+msgstr "Hostname"
 
 #: src/gtk/device_card.ui:82 src/widgets.py:251
 msgid "Ports open"
-msgstr ""
+msgstr "Offane Ports"
 
 #: src/gtk/device_card.ui:94 src/gtk/results_page.ui:358 src/widgets.py:258
 msgid "Services"
-msgstr ""
+msgstr "Dienste"
 
 #: src/gtk/device_card.ui:108 src/gtk/device_card.ui:114 src/widgets.py:187
 msgid "Show full service list"
-msgstr ""
+msgstr "Zeig de volle Dienste-Listn"
 
 #: src/gtk/device_card.ui:123 src/gtk/results_page.ui:363 src/widgets.py:264
 msgid "System information"
-msgstr ""
+msgstr "Systeminformationen"
 
 #: src/gtk/device_card.ui:137 src/gtk/device_card.ui:143 src/widgets.py:184
 msgid "Show full system information"
-msgstr ""
+msgstr "Zeig olle Systeminformationen"
 
 #: src/gtk/history_dialog.ui:7 src/gtk/history_dialog.ui:20
 #: src/gtk/home_page.ui:170
 msgid "Previous scans"
-msgstr ""
+msgstr "Vorherige Scans"
 
 #: src/gtk/history_dialog.ui:37 src/pages/history.py:42
 #: src/pages/history.py:218
 msgid "All"
-msgstr ""
+msgstr "Olle"
 
 #: src/gtk/history_dialog.ui:38
 msgid "Filter scans by date"
-msgstr ""
+msgstr "Scans nach Datum sortiern"
 
 #: src/gtk/history_dialog.ui:54 src/pages/history.py:225
 msgid "Custom range"
-msgstr ""
+msgstr "Benutzadefinierta Bereich"
 
 #: src/gtk/history_dialog.ui:55
 msgid "Pick a custom date range"
@@ -496,43 +505,43 @@ msgstr ""
 
 #: src/gtk/history_dialog.ui:84
 msgid "From"
-msgstr ""
+msgstr "Vo"
 
 #: src/gtk/history_dialog.ui:115
 msgid "To"
-msgstr ""
+msgstr "Bis"
 
 #: src/gtk/history_dialog.ui:147
 msgid "Clear"
-msgstr ""
+msgstr "Leean"
 
 #: src/gtk/history_dialog.ui:155
 msgid "Apply"
-msgstr ""
+msgstr "Anwend'n"
 
 #: src/gtk/history_dialog.ui:198 src/gtk/history_dialog.ui:210
 msgid "Scroll to top"
-msgstr ""
+msgstr "Nach oben"
 
 #: src/gtk/history_dialog.ui:223 src/pages/history.py:310
 msgid "No previous scans"
-msgstr ""
+msgstr "Keine vorherigen Scans"
 
 #: src/gtk/history_dialog.ui:224 src/pages/history.py:311
 msgid "Your scan history will appear here."
-msgstr ""
+msgstr "Dei Scan-Verlauf wiad do ozoagt wean."
 
 #: src/gtk/history_dialog.ui:244 src/gtk/history_dialog.ui:251
 msgid "Previous page"
-msgstr ""
+msgstr "Vorherige Seitn"
 
 #: src/gtk/history_dialog.ui:264 src/gtk/history_dialog.ui:271
 msgid "Next page"
-msgstr ""
+msgstr "Nächste Seitn"
 
 #: src/gtk/home_page.ui:21
 msgid "Main Menu"
-msgstr ""
+msgstr "Hauptmenü"
 
 #: src/gtk/home_page.ui:102
 msgid "IP range configuration"
