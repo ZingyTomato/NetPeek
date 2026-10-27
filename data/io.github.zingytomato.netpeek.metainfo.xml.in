@@ -70,6 +70,16 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="0.3.5" date="2026-10-27">
+      <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.3.5</url>
+      <description>
+        <p>Version 0.3.5</p>
+        <ul>
+          <li>Updated to GNOME 51 runtime and nmap 7.992.</li>
+          <li>Added Bavarian, German, and Brazilian Portuguese translations. Updated Czech, Estonian, and German translations.</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.3.4" date="2026-09-08">
       <url type="details">https://github.com/zingytomato/NetPeek/releases/tag/v0.3.4</url>
       <description>

@@ -160,36 +160,23 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
         self.sort_model.set_sorter(Gtk.CustomSorter.new(self._compare_devices))
 
     def _setup_device_list(self):
-        factory = Gtk.SignalListItemFactory()
-        factory.connect("setup", self._on_device_row_setup)
-        factory.connect("bind", self._on_device_row_bind)
-        factory.connect("unbind", self._on_device_row_unbind)
-        self.device_list_view = Gtk.ListView(
-            model=Gtk.NoSelection(model=self.filter_model),
-            factory=factory,
-        )
-        self.device_list_view.set_show_separators(False)
-        self.device_list_view.add_css_class("mobile-device-list")
+        self.device_list_box = Gtk.ListBox()
+        self.device_list_box.set_selection_mode(Gtk.SelectionMode.NONE)
+        self.device_list_box.set_show_separators(False)
+        self.device_list_box.add_css_class("mobile-device-list")
+        self.device_list_box.bind_model(self.filter_model, self._create_list_row)
         clamp = Adw.Clamp()
         clamp.set_maximum_size(700)
-        clamp.set_child(self.device_list_view)
+        clamp.set_child(self.device_list_box)
         self.list_view.set_child(clamp)
         self.list_view.set_policy(
             Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
 
-    def _on_device_row_setup(self, factory, list_item):
-        list_item.set_child(DeviceMobileRow(toast_overlay=self.toast_overlay))
-
-    def _on_device_row_bind(self, factory, list_item):
-        row = list_item.get_child()
-        device = list_item.get_item()
-        if row is not None and device is not None:
-            row.bind_device(device)
-
-    def _on_device_row_unbind(self, factory, list_item):
-        row = list_item.get_child()
-        if row is not None:
-            row.unbind_device()
+    def _create_list_row(self, device, _user_data=None):
+        row = DeviceMobileRow(toast_overlay=self.toast_overlay)
+        row.bind_device(device)
+        row.connect("destroy", lambda r, *_args: r.unbind_device())
+        return row
 
     def _setup_responsive_header(self):
         """Move header actions to the bottom bar on narrow windows."""
@@ -357,7 +344,7 @@ class ResultsPage(ToastMixin, Adw.NavigationPage):
             entry.set_text("")
             return
         visible = self.view_stack.get_visible_child_name()
-        target = self.list_view if visible == "list" else self.flow_box
+        target = self.device_list_box if visible == "list" else self.flow_box
         target.grab_focus()
 
     @Gtk.Template.Callback()

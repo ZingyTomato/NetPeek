@@ -81,13 +81,15 @@ flowbox.device-grid > flowboxchild:active {
 }
 
 
-listview.mobile-device-list {
+listbox.mobile-device-list {
   background: transparent;
 }
 
-listview.mobile-device-list row {
+listbox.mobile-device-list > row {
   background: transparent;
   padding: 0;
+  border: none;
+  box-shadow: none;
 }
 
 .mobile-device-row {

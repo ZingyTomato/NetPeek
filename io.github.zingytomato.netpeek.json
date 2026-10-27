@@ -1,7 +1,7 @@
 {
     "id": "io.github.zingytomato.netpeek",
     "runtime": "org.gnome.Platform",
-    "runtime-version": "50",
+    "runtime-version": "51",
     "sdk": "org.gnome.Sdk",
     "command": "netpeek",
     "finish-args": [
@@ -29,8 +29,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://nmap.org/dist/nmap-7.991.tar.bz2",
-                    "sha256": "a5d507f29437bef3bedd4771ff9aaa8fc1c2a109ddba1f5b1cf12027456929be",
+                    "url": "https://nmap.org/dist/nmap-7.992.tar.bz2",
+                    "sha256": "0c12660eddbf7eabeff6996cb0c044a4eadf2bb0c6fbcb340d6cf72b1caee402",
                     "x-checker-data": {
                         "type": "anitya",
                         "project-id": 2096,
