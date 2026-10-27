@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: netpeek\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-27 10:27+0100\n"
-"PO-Revision-Date: 2026-07-30 09:05+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2026-10-28 14:51+0000\n"
+"Last-Translator: \"shuck.\" <shuck-hh@users.noreply.hosted.weblate.org>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/netpeek/netpeek/"
 "fr/>\n"
 "Language: fr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2026.8.dev0\n"
+"X-Generator: Weblate 2026.11.dev0\n"
 
 #: data/io.github.zingytomato.netpeek.desktop.in:2
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:6 src/app.py:94
@@ -31,17 +31,17 @@ msgstr "Découvrir les dispositifs sur votre réseau local"
 
 #: data/io.github.zingytomato.netpeek.desktop.in:10
 msgid "Gnome;GTK;Networking;Scanner;Internet;"
-msgstr ""
+msgstr "Gnome;GTK;Networking;Scanner;Internet;"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:6
 #: data/io.github.zingytomato.netpeek.gschema.xml:7
 msgid "Default window width"
-msgstr ""
+msgstr "Largeur par défaut de la fenêtre"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:11
 #: data/io.github.zingytomato.netpeek.gschema.xml:12
 msgid "Default window height"
-msgstr ""
+msgstr "Hauteur par défaut de la fenêtre"
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:16
 msgid "Default window maximized behaviour"
