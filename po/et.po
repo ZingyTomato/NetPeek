@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-27 10:27+0100\n"
 "PO-Revision-Date: 2026-10-28 14:51+0000\n"
-"Last-Translator: \"shuck.\" <shuck-hh@users.noreply.hosted.weblate.org>\n"
+"Last-Translator: Priit Jõerüüt <jrthwlate@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Estonian <https://hosted.weblate.org/projects/netpeek/netpeek/"
 "et/>\n"
 "Language: et\n"
@@ -203,16 +203,16 @@ msgid "Version 0.3.5"
 msgstr "Versioon 0.3.5"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:78 src/app.py:105
-#, fuzzy
-#| msgid "Updated to GNOME 50 runtime."
 msgid "Updated to GNOME 51 runtime and nmap 7.992."
-msgstr "GNOME'i käitusteek on uuendatud versioonini 50."
+msgstr "GNOME'i käitusteek on uuendatud versioonini 51 ja nmap versiooni 7.992."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:79 src/app.py:106
 msgid ""
 "Added Bavarian, German, and Brazilian Portuguese translations. Updated "
 "Czech, Estonian, and German translations."
 msgstr ""
+"Lisandusid baieri, saksa, Brasiilia portugali keelte tõlked. Täienesid "
+"tšehhi, eesti ja saksa keele tõlked."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:86
 msgid "Version 0.3.4"
