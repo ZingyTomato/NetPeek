@@ -7,11 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-15 10:10+0200\n"
+"POT-Creation-Date: 2026-10-27 10:27+0100\n"
 "PO-Revision-Date: 2026-10-13 19:51+0000\n"
 "Last-Translator: Pavel Borecki <pavelbo@users.noreply.hosted.weblate.org>\n"
-"Language-Team: Czech <https://hosted.weblate.org/projects/netpeek/netpeek/"
-"cs/>\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/netpeek/netpeek/cs/"
+">\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -84,9 +84,9 @@ msgid ""
 "The preset selected in the split button, restored on startup. \"auto\" for "
 "auto-detect, or an IP range like \"192.168.1.0/24\"."
 msgstr ""
-"Přednastavení vybrané v rozděleném tlačítku, obnovené při spuštění. „"
-"automaticky“ pro automatické zjištění, nebo rozsah IP adres jako je „"
-"192.168.1.0/24“."
+"Přednastavení vybrané v rozděleném tlačítku, obnovené při spuštění. "
+"„automaticky“ pro automatické zjištění, nebo rozsah IP adres jako je "
+"„192.168.1.0/24“."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:41
 msgid "Enable deep scan mode"
@@ -125,8 +125,8 @@ msgstr "Uživatelsky určené počáteční datum filtru"
 #: data/io.github.zingytomato.netpeek.gschema.xml:58
 msgid "ISO date string for custom filter start, e.g. \"2026-01-15\"."
 msgstr ""
-"Řetězec data v ISO formátu pro uživatelsky určený začátek filtru, např. „"
-"2026-01-15“."
+"Řetězec data v ISO formátu pro uživatelsky určený začátek filtru, např. "
+"„2026-01-15“."
 
 #: data/io.github.zingytomato.netpeek.gschema.xml:62
 msgid "Custom filter end date"
@@ -135,8 +135,8 @@ msgstr "Uživatelsky určené koncové datum filtru"
 #: data/io.github.zingytomato.netpeek.gschema.xml:63
 msgid "ISO date string for custom filter end, e.g. \"2026-01-31\"."
 msgstr ""
-"Řetězec data v ISO formátu pro uživatelsky určený konec filtru, např. „2026-"
-"01-15“."
+"Řetězec data v ISO formátu pro uživatelsky určený konec filtru, např. "
+"„2026-01-15“."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:7
 msgid "See what's on your network"
@@ -199,20 +199,36 @@ msgid "Previous Scans"
 msgstr "Předchozí skeny"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:76
-msgid "Version 0.3.4"
+#, fuzzy
+#| msgid "Version 0.3.4"
+msgid "Version 0.3.5"
 msgstr "Verze 0.3.4"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:78 src/app.py:105
+msgid "Updated to GNOME 51 runtime and nmap 7.992."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:79 src/app.py:106
+msgid ""
+"Added Bavarian, German, and Brazilian Portuguese translations. Updated "
+"Czech, Estonian, and German translations."
+msgstr ""
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:86
+msgid "Version 0.3.4"
+msgstr "Verze 0.3.4"
+
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:88
 msgid "Added keyboard shortcuts for common actions, with a shortcuts window."
 msgstr "Přidány klávesové zkratky pro běžné akce a okno zkratek."
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:79 src/app.py:106
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:89
 msgid "Added a Preferences dialog with display theme and scan thread count."
 msgstr ""
 "Přidán dialog předvoleb s motivem vzhledu zobrazení a počtem vláken "
 "skenování."
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:80 src/app.py:107
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:90
 msgid ""
 "History entries now have their own scan information button, and scan "
 "information shows the scanned IP range with a copy button."
@@ -220,196 +236,197 @@ msgstr ""
 "Historické položky nyní mají své vlastní tlačítko informací o skenu a ty "
 "zobrazují skenovaný rozsah IP adres, s tlačítkem pro jeho zkopírování."
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:81 src/app.py:108
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:91
 msgid "Previous scans list is now paginated for easier browsing."
 msgstr "Pro snazší procházení jsou seznamy skenů nyní opatřeny stránkováním."
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:82 src/app.py:109
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:92
 msgid "Window size and maximized state are remembered between sessions."
-msgstr "Velikost okna a stav maximalizace jsou nyní zapamatovány mezi relacemi."
+msgstr ""
+"Velikost okna a stav maximalizace jsou nyní zapamatovány mezi relacemi."
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:83 src/app.py:110
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:93
 msgid ""
 "Reworked results views for narrow screens, with dedicated mobile rows and "
 "header actions moving to the bottom bar."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:90
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:100
 msgid "Version 0.3.3"
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:92
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:102
 msgid "Grouped all IP presets into a single button."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:93
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:103
 msgid "Added date filters and custom date ranges to scan history."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:100
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:110
 msgid "Version 0.3.2"
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:102
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:112
 msgid "Added search functionality to all scan pages."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:103
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:113
 msgid "Added a scan info dialog for current and previous scans."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:104
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:114
 msgid "Results view format is now preserved when resizing the window."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:105
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:115
 msgid "Updated nmap to version 7.991."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:112
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:122
 msgid "Version 0.3.1"
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:114
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:124
 msgid ""
 "Device cards now cap System Information and Services at one line, with "
 "expand/collapse buttons to reveal the full text."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:115
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:125
 msgid "Moved the thread count picker into the main menu."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:116
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:126
 msgid ""
 "Added better indication throughout the UI that a deep scan is taking place."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:117
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:127
 msgid "Added a Translate link to the About dialog."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:124
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:134
 msgid "Version 0.3.0"
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:126
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:136
 msgid ""
 "New Deep Scan mode for additional information like OS identification, "
 "software versions and more."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:127
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:137
 msgid ""
 "Expanded service detection for common self-hosted and DevOps services "
 "(MySQL, PostgreSQL, Redis, Home Assistant, Plex, etc.)."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:128
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:138
 msgid "Improved UI adaptability for smaller screens."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:135
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:145
 msgid "Version 0.2.9"
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:137
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:147
 msgid "Refreshed the app icon with a contemporary, flat style."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:138
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:148
 msgid ""
 "Redesigned the light, dark and system style switcher with visual swatches."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:139
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:149
 msgid ""
 "Cockpit instances are now detected and shown alongside SMB shares in a "
 "combined Services row."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:140
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:150
 msgid "Header actions move into a bottom bar when the window is narrow."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:141
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:151
 msgid "Custom device names now apply retroactively to previous scans."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:142
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:152
 msgid "Added an Open Folder shortcut to the CSV export notification."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:143
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:153
 msgid ""
 "Streamlined notifications, keeping only copy, export and error messages."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:144
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:154
 msgid "The active sort option is now highlighted and shows its direction."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:145
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:155
 msgid "Sorting is disabled while scanning and when no devices are found."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:146
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:156
 msgid ""
 "Added a Services column to the list view and made narrow lists scroll "
 "horizontally."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:147
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:157
 msgid ""
 "Centered the network preset buttons and set a minimum window size for a "
 "consistent layout."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:148
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:158
 msgid ""
 "Fixed manually entered thread counts not being applied, and added a confirm "
 "button to the IP and thread fields."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:149
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:159
 msgid ""
 "Input fields no longer keep focus after use, and the IP entry no longer "
 "shows a focus ring or apply button on launch."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:150
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:160
 msgid "Device cards no longer highlight on hover."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:157
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:167
 msgid "Version 0.2.8"
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:159
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:169
 msgid "Fixed unreliable network auto-detection."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:160
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:170
 msgid "Added scan history with a Previous Scans dialog."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:161
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:171
 msgid "Added dark mode support."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:162
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:172
 msgid "Unified sorting between card and list views."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:163
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:173
 msgid "Improved responsive layout on narrow windows."
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:170
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:180
 msgid "Version 0.2.7"
 msgstr ""
 
-#: data/io.github.zingytomato.netpeek.metainfo.xml.in:172
+#: data/io.github.zingytomato.netpeek.metainfo.xml.in:182
 msgid "Updated to GNOME 50 runtime."
 msgstr ""
 
@@ -429,7 +446,7 @@ msgstr "Podíleli se"
 msgid "Name"
 msgstr "Název"
 
-#: src/gtk/device_card.ui:28 src/pages/results.py:414 src/widgets.py:226
+#: src/gtk/device_card.ui:28 src/pages/results.py:401 src/widgets.py:226
 msgid "New"
 msgstr "Nové"
 
@@ -629,7 +646,7 @@ msgstr "Vyp/zap. zobrazení v seznamu"
 msgid "Sort options"
 msgstr ""
 
-#: src/gtk/results_page.ui:94 src/pages/results.py:472
+#: src/gtk/results_page.ui:94 src/pages/results.py:459
 msgid "Rescan"
 msgstr "Znovu naskenovat"
 
@@ -643,13 +660,13 @@ msgstr "Skenování sítě"
 msgid "Discovering devices on your network…"
 msgstr "Objevování zařízení na vaší síti…"
 
-#: src/gtk/results_page.ui:141 src/pages/results.py:504
+#: src/gtk/results_page.ui:141 src/pages/results.py:491
 #, fuzzy
 #| msgid "Preparing scan..."
 msgid "Preparing scan…"
 msgstr "Příprava skenu…"
 
-#: src/gtk/results_page.ui:152 src/pages/results.py:505
+#: src/gtk/results_page.ui:152 src/pages/results.py:492
 #, fuzzy
 #| msgid "Time Elapsed: 00:00"
 msgid "Time elapsed: 00:00"
@@ -671,7 +688,7 @@ msgstr "Nenalezena žádná zařízení"
 msgid "No devices match your search query."
 msgstr ""
 
-#: src/gtk/results_page.ui:287 src/pages/results.py:609
+#: src/gtk/results_page.ui:287 src/pages/results.py:596
 msgid "No devices found"
 msgstr "Nenalezena žádná zařízení"
 
@@ -697,7 +714,7 @@ msgstr ""
 msgid "Sort by"
 msgstr ""
 
-#: src/gtk/results_page.ui:333 src/pages/results.py:414
+#: src/gtk/results_page.ui:333 src/pages/results.py:401
 msgid "Known"
 msgstr "Známé"
 
@@ -1093,7 +1110,7 @@ msgstr "Ze soukromého roszahu (172.16.0.x)"
 msgid "Choose a different preset range"
 msgstr ""
 
-#: src/pages/home.py:168 src/pages/results.py:489
+#: src/pages/home.py:168 src/pages/results.py:476
 #, fuzzy
 #| msgid "Scan in Progress"
 msgid "Scan already in progress"
@@ -1103,7 +1120,7 @@ msgstr "Probíhající sken"
 msgid "General"
 msgstr ""
 
-#: src/pages/preferences.py:53 src/pages/results.py:509
+#: src/pages/preferences.py:53 src/pages/results.py:496
 msgid "Scanning"
 msgstr ""
 
@@ -1119,78 +1136,78 @@ msgstr ""
 msgid "Concurrent workers. Higher is faster but uses more resources."
 msgstr ""
 
-#: src/pages/results.py:333 src/pages/results.py:479
+#: src/pages/results.py:320 src/pages/results.py:466
 msgid "Show as grid"
 msgstr ""
 
-#: src/pages/results.py:333 src/pages/results.py:480
+#: src/pages/results.py:320 src/pages/results.py:467
 msgid "Show as list"
 msgstr ""
 
-#: src/pages/results.py:367
+#: src/pages/results.py:354
 msgid "No devices to export"
 msgstr "Žádná zařízení k exportu"
 
-#: src/pages/results.py:371
+#: src/pages/results.py:358
 #, fuzzy
 #| msgid "Export Scan Results"
 msgid "Export scan results"
 msgstr "Export výsledků skenů"
 
-#: src/pages/results.py:375
+#: src/pages/results.py:362
 #, fuzzy
 #| msgid "CSV Files"
 msgid "CSV files"
 msgstr "CSV soubory"
 
-#: src/pages/results.py:394 src/pages/results.py:426
+#: src/pages/results.py:381 src/pages/results.py:413
 msgid "Export failed. Please try again."
 msgstr ""
 
-#: src/pages/results.py:418
+#: src/pages/results.py:405
 #, python-brace-format
 msgid "Successfully exported to {name}"
 msgstr "Úspěšně exportováno do {name}"
 
-#: src/pages/results.py:421
+#: src/pages/results.py:408
 msgid "Open Folder"
 msgstr "Otevřít složku"
 
-#: src/pages/results.py:456
+#: src/pages/results.py:443
 #, fuzzy, python-brace-format
 #| msgid "Time Elapsed: {minutes:02d}:{seconds:02d}"
 msgid "Time elapsed: {minutes:02d}:{seconds:02d}"
 msgstr "Uplynulý čas: {minutes:02d}:{seconds:02d}"
 
-#: src/pages/results.py:464
+#: src/pages/results.py:451
 #, fuzzy, python-brace-format
 #| msgid "Hosts Scanned: {scanned}/{total}"
 msgid "Hosts scanned: {scanned}/{total}"
 msgstr "Naskenováno hostitelů: {scanned}/{total}"
 
-#: src/pages/results.py:472
+#: src/pages/results.py:459
 msgid "Scanning..."
 msgstr "Skenování…"
 
-#: src/pages/results.py:485 src/pages/scan_info.py:40
+#: src/pages/results.py:472 src/pages/scan_info.py:40
 msgid "Deep"
 msgstr "Hloubkový"
 
-#: src/pages/results.py:509
+#: src/pages/results.py:496
 msgid "Deep scanning"
 msgstr ""
 
-#: src/pages/results.py:511
+#: src/pages/results.py:498
 #, python-brace-format
 msgid "{mode} · {range}"
 msgstr ""
 
-#: src/pages/results.py:557
+#: src/pages/results.py:544
 #, python-brace-format
 msgid "{deep}Loaded from history · {range}"
 msgstr "{deep}Načteno z historie: {range}"
 
-#: src/pages/results.py:588
+#: src/pages/results.py:575
 #, python-brace-format
 msgid "Found {count} device"
 msgid_plural "Found {count} devices"
@@ -1198,23 +1215,23 @@ msgstr[0] "Nalezeno {count} zařízení"
 msgstr[1] "Nalezena {count} zařízení"
 msgstr[2] "Nalezeno {count} zařízení"
 
-#: src/pages/results.py:594
+#: src/pages/results.py:581
 #, python-brace-format
 msgid "{deep}Scan stopped · {found}"
 msgstr "{deep}Skenování zastaveno · {found}"
 
-#: src/pages/results.py:598
+#: src/pages/results.py:585
 #, python-brace-format
 msgid "{deep}{found}"
 msgstr ""
 
-#: src/pages/results.py:607
+#: src/pages/results.py:594
 #, fuzzy
 #| msgid "Scan stopped - No devices found"
 msgid "Scan stopped · No devices found"
 msgstr "Skenování zastaveno – nenalezena žádná zařízení"
 
-#: src/pages/results.py:627
+#: src/pages/results.py:614
 msgid "Scan failed"
 msgstr ""
 
