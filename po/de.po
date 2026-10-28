@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-27 10:27+0100\n"
-"PO-Revision-Date: 2026-10-26 06:51+0000\n"
+"PO-Revision-Date: 2026-10-28 14:51+0000\n"
 "Last-Translator: \"shuck.\" <shuck-hh@users.noreply.hosted.weblate.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/netpeek/netpeek/"
 "de/>\n"
@@ -205,22 +205,21 @@ msgid "Previous Scans"
 msgstr "Vorherige Scans"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:76
-#, fuzzy
-#| msgid "Version 0.3.4"
 msgid "Version 0.3.5"
-msgstr "Version 0.3.4"
+msgstr "Version 0.3.5"
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:78 src/app.py:105
-#, fuzzy
-#| msgid "Updated to GNOME 50 runtime."
 msgid "Updated to GNOME 51 runtime and nmap 7.992."
-msgstr "Auf GNOME 50-Runtime aktualisiert."
+msgstr "Auf GNOME 51-Runtime und nmap 7.992 aktualisiert."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:79 src/app.py:106
 msgid ""
 "Added Bavarian, German, and Brazilian Portuguese translations. Updated "
 "Czech, Estonian, and German translations."
 msgstr ""
+"Bayerische, Deutsche und brasilianisch-Portugiesische Übersetzung "
+"hinzugefügt. Tschechische, Estonische und Deutsche Übersetzungen "
+"aktualisiert."
 
 #: data/io.github.zingytomato.netpeek.metainfo.xml.in:86
 msgid "Version 0.3.4"
@@ -674,7 +673,7 @@ msgstr "Sortierungsoptionen"
 
 #: src/gtk/results_page.ui:94 src/pages/results.py:459
 msgid "Rescan"
-msgstr "Neu scannen"
+msgstr "Erneut scannen"
 
 #: src/gtk/results_page.ui:119
 msgid "Scanning network"
@@ -801,7 +800,7 @@ msgstr "Beenden"
 #: src/gtk/shortcuts-dialog.ui:49
 msgctxt "shortcut window"
 msgid "Scanning"
-msgstr "Wird gescannt"
+msgstr "Scanning-Kürzel"
 
 #: src/gtk/shortcuts-dialog.ui:52
 msgctxt "shortcut window"
@@ -1094,7 +1093,7 @@ msgstr "Allgemein"
 
 #: src/pages/preferences.py:53 src/pages/results.py:496
 msgid "Scanning"
-msgstr "Wird gescannt"
+msgstr "Scanning"
 
 #: src/pages/preferences.py:55
 msgid "Tune how aggressively NetPeek scans your network."
