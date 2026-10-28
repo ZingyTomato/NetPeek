@@ -21,7 +21,10 @@ import gi
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Adw, Gio
+from gi.repository import Adw, Gio, Gtk
+
+from .. import models
+
 
 
 class PreferencesDialog(Adw.PreferencesDialog):
@@ -36,11 +39,15 @@ class PreferencesDialog(Adw.PreferencesDialog):
     MAX_THREADS = 500
     STEP = 10
     PAGE_INCREMENT = 50
+    # savig old ports in case the edit is invalid
+    OLD_PORTS = models.BASE_PORTS
 
-    def __init__(self, settings, scanner, **kwargs):
+    def __init__(self, settings, scanner, toast_overlay, **kwargs):
         super().__init__(**kwargs)
         self._settings = settings
         self._scanner = scanner
+        self._toast_overlay = toast_overlay
+        ports_string = ", ".join(str(port) for port in models.BASE_PORTS)
 
         self.set_search_enabled(False)
 
@@ -71,5 +78,37 @@ class PreferencesDialog(Adw.PreferencesDialog):
             'changed::thread-count', self._on_thread_count_setting)
         group.add(self.thread_row)
 
+        # Ports List group
+        ports_group = Adw.PreferencesGroup()
+        ports_group.set_title(_("Ports List"))
+        ports_group.set_description(_("Add or remove ports that get scanned, seperated by commas\nSaved just for this session!"))
+        page.add(ports_group)
+
+        self.port_entry = Gtk.Entry()
+        # self.port_entry.set_placeholder_text(_("e.g. 8080"))
+        self.port_entry.set_text(ports_string)
+        self.port_entry.set_hexpand(True)
+
+        focus_controller = Gtk.EventControllerFocus()
+        focus_controller.connect("leave", self._on_ports_setting)
+        self.port_entry.add_controller(focus_controller)
+        ports_group.add(self.port_entry)
+
     def _on_thread_count_setting(self, settings, _key):
         self._scanner.set_max_workers(settings.get_int('thread-count'))
+        self._on_ports_setting()
+
+    def _on_ports_setting(self, _key):
+        try:
+            models.BASE_PORTS = [int(port) for port in self.port_entry.get_text().split(", ")]
+        except ValueError:
+            self._toast_overlay.add_toast(
+                Adw.Toast(
+                    title=_("Invalid ports list, edits not saved"),
+                    timeout=3,
+                    priority=Adw.ToastPriority.HIGH,
+                )
+            )
+            models.BASE_PORTS = self.OLD_PORTS
+
+        return False
