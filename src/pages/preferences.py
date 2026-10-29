@@ -47,6 +47,7 @@ class PreferencesDialog(Adw.PreferencesDialog):
         self._settings = settings
         self._scanner = scanner
         self._toast_overlay = toast_overlay
+        # formatting BASE_PORTS for input box
         ports_string = ", ".join(str(port) for port in models.BASE_PORTS)
 
         self.set_search_enabled(False)
@@ -78,17 +79,20 @@ class PreferencesDialog(Adw.PreferencesDialog):
             'changed::thread-count', self._on_thread_count_setting)
         group.add(self.thread_row)
 
-        # Ports List group
+        # Adjusting Ports
+        # Ports group
         ports_group = Adw.PreferencesGroup()
         ports_group.set_title(_("Ports List"))
-        ports_group.set_description(_("Add or remove ports that get scanned, seperated by commas\nSaved just for this session!"))
+        ports_group.set_description(_("Add or remove ports that get scanned, seperated by commas.\nChanges are only saved for the current session!"))
         page.add(ports_group)
 
+        # Ports entry
         self.port_entry = Gtk.Entry()
         # self.port_entry.set_placeholder_text(_("e.g. 8080"))
         self.port_entry.set_text(ports_string)
         self.port_entry.set_hexpand(True)
 
+        # Add focus controller for saving on focus leave
         focus_controller = Gtk.EventControllerFocus()
         focus_controller.connect("leave", self._on_ports_setting)
         self.port_entry.add_controller(focus_controller)
