@@ -100,7 +100,6 @@ class PreferencesDialog(Adw.PreferencesDialog):
 
     def _on_thread_count_setting(self, settings, _key):
         self._scanner.set_max_workers(settings.get_int('thread-count'))
-        self._on_ports_setting()
 
     def _on_ports_setting(self, _key):
         try:
