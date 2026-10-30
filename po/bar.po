@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-27 10:27+0100\n"
-"PO-Revision-Date: 2026-10-28 14:51+0000\n"
+"PO-Revision-Date: 2026-10-30 14:51+0000\n"
 "Last-Translator: \"shuck.\" <shuck-hh@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Bavarian <https://hosted.weblate.org/projects/netpeek/netpeek/"
 "bar/>\n"
@@ -545,429 +545,432 @@ msgstr "Hauptmenü"
 
 #: src/gtk/home_page.ui:102
 msgid "IP range configuration"
-msgstr ""
+msgstr "IP-Bereichskonfiguration"
 
 #: src/gtk/home_page.ui:103
 msgid "Enter the IP range you want to scan"
-msgstr ""
+msgstr "Gib den IP-Bereich ei den du scanna wuist"
 
 #: src/gtk/home_page.ui:107 src/gtk/scan_metadata_dialog.ui:36
 msgid "IP range"
-msgstr ""
+msgstr "IP-Bereich"
 
 #: src/gtk/home_page.ui:117
 msgid "Deep scan"
-msgstr ""
+msgstr "Deep-Scan"
 
 #: src/gtk/home_page.ui:118
 msgid ""
 "Retrieves detailed system information, such as the OS name and HTTP server "
 "details."
 msgstr ""
+"Ruaft detaillierte Systeminformationa ob, wia da OS-Nama und HTTP-Server-"
+"Details."
 
 #: src/gtk/home_page.ui:137
 msgid "Scan network"
-msgstr ""
+msgstr "Netzwerk scannen"
 
 #: src/gtk/home_page.ui:166
 msgid "Preferences"
-msgstr ""
+msgstr "Einstellunga"
 
 #: src/gtk/home_page.ui:174
 msgid "Keyboard shortcuts"
-msgstr ""
+msgstr "Tastaturkürzl"
 
 #: src/gtk/home_page.ui:180
 msgid "About NetPeek"
-msgstr ""
+msgstr "Üba NetPeek"
 
 #: src/gtk/results_page.ui:7 src/gtk/results_page.ui:20
 msgid "Scan results"
-msgstr ""
+msgstr "Scan-Ergebnis'"
 
 #: src/gtk/results_page.ui:26
 msgid "Stop the current network scan"
-msgstr ""
+msgstr "Stopp den aktuellen Scan"
 
 #: src/gtk/results_page.ui:31
 msgid "Stop"
-msgstr ""
+msgstr "Stopp"
 
 #: src/gtk/results_page.ui:42 src/gtk/results_page.ui:46
 #: src/gtk/scan_metadata_dialog.ui:7 src/gtk/scan_metadata_dialog.ui:16
 #: src/pages/history.py:422 src/pages/history.py:424
 msgid "Scan information"
-msgstr ""
+msgstr "Scan-Informationa"
 
 #: src/gtk/results_page.ui:57 src/gtk/results_page.ui:60
 msgid "Export to CSV"
-msgstr ""
+msgstr "In CSV exportian"
 
 #: src/gtk/results_page.ui:68
 msgid "Toggle list view"
-msgstr ""
+msgstr "Listnansicht einschaltn"
 
 #: src/gtk/results_page.ui:76 src/gtk/results_page.ui:83
 msgid "Sort options"
-msgstr ""
+msgstr "Sortierungsoptiona"
 
 #: src/gtk/results_page.ui:94 src/pages/results.py:459
 msgid "Rescan"
-msgstr ""
+msgstr "Nummoi scannen"
 
 #: src/gtk/results_page.ui:119
 msgid "Scanning network"
-msgstr ""
+msgstr "Netzwerk wird g'scannt"
 
 #: src/gtk/results_page.ui:120
 msgid "Discovering devices on your network…"
-msgstr ""
+msgstr "Geräte in deim Netzwerk weadn entdeckt…"
 
 #: src/gtk/results_page.ui:141 src/pages/results.py:491
 msgid "Preparing scan…"
-msgstr ""
+msgstr "Scan wiad vorbereitet…"
 
 #: src/gtk/results_page.ui:152 src/pages/results.py:492
 msgid "Time elapsed: 00:00"
-msgstr ""
+msgstr "Vergangene Zeit: 00:00"
 
 #: src/gtk/results_page.ui:185
 msgid "Search devices"
-msgstr ""
+msgstr "Geräte suchen"
 
 #: src/gtk/results_page.ui:268
+#, fuzzy
 msgid "No results found"
-msgstr ""
+msgstr "Koane Ergebnisse g'funna"
 
 #: src/gtk/results_page.ui:269
 msgid "No devices match your search query."
-msgstr ""
+msgstr "Koane Ergebnisse passn zu deina Suchanfrage."
 
 #: src/gtk/results_page.ui:287 src/pages/results.py:596
 msgid "No devices found"
-msgstr ""
+msgstr "Koane Geräte g'funna"
 
 #: src/gtk/results_page.ui:288
 msgid "No devices were found in the specified range."
-msgstr ""
+msgstr "Koane Geräte in da angegebena Reichweit'n g'funna."
 
 #: src/gtk/results_page.ui:300
 msgid "Scan error"
-msgstr ""
+msgstr "Scanfehla"
 
 #: src/gtk/results_page.ui:301
 msgid "An error occurred while scanning the network."
-msgstr ""
+msgstr "A Fehla is aufgetretn während as Netzwerk g'scannt woan is."
 
 #: src/gtk/results_page.ui:305
 msgid "_Try again"
-msgstr ""
+msgstr "_Nummoi Versuch'n"
 
 #: src/gtk/results_page.ui:331
 msgid "Sort by"
-msgstr ""
+msgstr "Sortieren nach"
 
 #: src/gtk/results_page.ui:333 src/pages/results.py:401
 msgid "Known"
-msgstr ""
+msgstr "Bekannt"
 
 #: src/gtk/results_page.ui:348
 msgid "Custom name"
-msgstr ""
+msgstr "Benutzadefinierta Name"
 
 #: src/gtk/results_page.ui:353
 msgid "Ports"
-msgstr ""
+msgstr "Ports"
 
 #: src/gtk/results_page.ui:370
 msgid "Ascending"
-msgstr ""
+msgstr "Absteigend"
 
 #: src/gtk/scan_metadata_dialog.ui:47 src/gtk/scan_metadata_dialog.ui:53
 msgid "Copy IP range"
-msgstr ""
+msgstr "IP-Bereich kopian"
 
 #: src/gtk/scan_metadata_dialog.ui:61
 msgid "Date taken"
-msgstr ""
+msgstr "Erstellungsdatum"
 
 #: src/gtk/scan_metadata_dialog.ui:71
 msgid "Scan type"
-msgstr ""
+msgstr "Scan-Typ"
 
 #: src/gtk/scan_metadata_dialog.ui:81
 msgid "Scan duration"
-msgstr ""
+msgstr "Scandauer"
 
 #: src/gtk/scan_metadata_dialog.ui:92
 msgid "New devices"
-msgstr ""
+msgstr "Neie Geräte"
 
 #: src/gtk/scan_metadata_dialog.ui:102
 msgid "Known devices"
-msgstr ""
+msgstr "Bekannte Geräte"
 
 #: src/gtk/shortcuts-dialog.ui:9
 msgctxt "shortcut window"
 msgid "General"
-msgstr ""
+msgstr "Allgemein"
 
 #: src/gtk/shortcuts-dialog.ui:12
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
-msgstr ""
+msgstr "Tastenkürzl anzeign"
 
 #: src/gtk/shortcuts-dialog.ui:19
 msgctxt "shortcut window"
 msgid "Previous Scans"
-msgstr ""
+msgstr "Vorherige Scans"
 
 #: src/gtk/shortcuts-dialog.ui:26
 msgctxt "shortcut window"
 msgid "Preferences"
-msgstr ""
+msgstr "Einstellunga"
 
 #: src/gtk/shortcuts-dialog.ui:33
 msgctxt "shortcut window"
 msgid "Go Back"
-msgstr ""
+msgstr "Z'rugg geh"
 
 #: src/gtk/shortcuts-dialog.ui:40
 msgctxt "shortcut window"
 msgid "Quit"
-msgstr ""
+msgstr "Beendn"
 
 #: src/gtk/shortcuts-dialog.ui:49
 msgctxt "shortcut window"
 msgid "Scanning"
-msgstr ""
+msgstr "Scannen"
 
 #: src/gtk/shortcuts-dialog.ui:52
 msgctxt "shortcut window"
 msgid "Start Scan"
-msgstr ""
+msgstr "Scan startn"
 
 #: src/gtk/shortcuts-dialog.ui:59
 msgctxt "shortcut window"
 msgid "Focus IP Range Entry"
-msgstr ""
+msgstr "Fokus IP-Bereich Eintrog"
 
 #: src/gtk/shortcuts-dialog.ui:68
 msgctxt "shortcut window"
 msgid "Results"
-msgstr ""
+msgstr "Ergebnis'"
 
 #: src/gtk/shortcuts-dialog.ui:71
 msgctxt "shortcut window"
 msgid "Search Devices"
-msgstr ""
+msgstr "Geräte Such'n"
 
 #: src/gtk/shortcuts-dialog.ui:78 src/gtk/shortcuts-dialog.ui:85
 msgctxt "shortcut window"
 msgid "Rescan"
-msgstr ""
+msgstr "Nummoi scannen"
 
 #: src/gtk/shortcuts-dialog.ui:92
 msgctxt "shortcut window"
 msgid "Stop Scan"
-msgstr ""
+msgstr "Scan stoppen"
 
 #: src/gtk/shortcuts-dialog.ui:99
 msgctxt "shortcut window"
 msgid "Export to CSV"
-msgstr ""
+msgstr "Ois CSV-Datei exportiern"
 
 #: src/gtk/shortcuts-dialog.ui:106
 msgctxt "shortcut window"
 msgid "Toggle Grid/List View"
-msgstr ""
+msgstr "Rasta-/Listnansicht umschoid'n"
 
 #: src/gtk/shortcuts-dialog.ui:113
 msgctxt "shortcut window"
 msgid "Scan Information"
-msgstr ""
+msgstr "Scan-Infos"
 
 #: src/gtk/theme_selector.ui:17 src/gtk/theme_selector.ui:23
 msgid "Follow System"
-msgstr ""
+msgstr "Systemeinstellung vawendn"
 
 #: src/gtk/theme_selector.ui:34 src/gtk/theme_selector.ui:40
 msgid "Light"
-msgstr ""
+msgstr "Hell"
 
 #: src/gtk/theme_selector.ui:51 src/gtk/theme_selector.ui:57
 msgid "Dark"
-msgstr ""
+msgstr "Dunkl"
 
 #: src/models.py:40
 msgid "SMB shares"
-msgstr ""
+msgstr "SMB-Shares"
 
 #: src/models.py:41
 msgid "Cockpit"
-msgstr ""
+msgstr "Cockpit"
 
 #: src/models.py:42
 msgid "MySQL"
-msgstr ""
+msgstr "MySQL"
 
 #: src/models.py:43
 msgid "PostgreSQL"
-msgstr ""
+msgstr "PostgreSQL"
 
 #: src/models.py:44
 msgid "Redis"
-msgstr ""
+msgstr "Redis"
 
 #: src/models.py:45
 msgid "Home Assistant"
-msgstr ""
+msgstr "Home Assistant"
 
 #: src/models.py:46
 msgid "Plex"
-msgstr ""
+msgstr "Plex"
 
 #: src/models.py:47
 msgid "CUPS"
-msgstr ""
+msgstr "CUPS"
 
 #: src/models.py:48
 msgid "MongoDB"
-msgstr ""
+msgstr "MongoDB"
 
 #: src/models.py:49
 msgid "Proxmox"
-msgstr ""
+msgstr "Proxmox"
 
 #: src/models.py:50
 msgid "Synology DSM"
-msgstr ""
+msgstr "Synology DSM"
 
 #: src/models.py:81
 msgid "No common ports open"
-msgstr ""
+msgstr "Koane bekanntn Ports offa"
 
 #: src/models.py:109
 msgid "Unknown"
-msgstr ""
+msgstr "Unbekannt"
 
 #: src/models.py:118
 msgid "Unknown device"
-msgstr ""
+msgstr "Unbekannt's Gerät"
 
 #: src/pages/history.py:43 src/pages/history.py:288
 msgid "Today"
-msgstr ""
+msgstr "Heind"
 
 #: src/pages/history.py:44 src/pages/history.py:290
 msgid "Yesterday"
-msgstr ""
+msgstr "Gestern"
 
 #: src/pages/history.py:45
 msgid "Last 7 days"
-msgstr ""
+msgstr "In da letztn Wocha"
 
 #: src/pages/history.py:46
 msgid "Last 30 days"
-msgstr ""
+msgstr "In de letztn 30 Dog"
 
 #: src/pages/history.py:50
 msgid "Jan"
-msgstr ""
+msgstr "Jan"
 
 #: src/pages/history.py:50
 msgid "Feb"
-msgstr ""
+msgstr "Feb"
 
 #: src/pages/history.py:50
 msgid "Mar"
-msgstr ""
+msgstr "Mär"
 
 #: src/pages/history.py:50
 msgid "Apr"
-msgstr ""
+msgstr "Apr"
 
 #: src/pages/history.py:50
 msgid "May"
-msgstr ""
+msgstr "Mai"
 
 #: src/pages/history.py:50
 msgid "Jun"
-msgstr ""
+msgstr "Jun"
 
 #: src/pages/history.py:51
 msgid "Jul"
-msgstr ""
+msgstr "Jul"
 
 #: src/pages/history.py:51
 msgid "Aug"
-msgstr ""
+msgstr "Aug"
 
 #: src/pages/history.py:51
 msgid "Sep"
-msgstr ""
+msgstr "Sep"
 
 #: src/pages/history.py:51
 msgid "Oct"
-msgstr ""
+msgstr "Okt"
 
 #: src/pages/history.py:51
 msgid "Nov"
-msgstr ""
+msgstr "Nov"
 
 #: src/pages/history.py:51
 msgid "Dec"
-msgstr ""
+msgstr "Dez"
 
 #: src/pages/history.py:185
 msgid "Invalid date selected."
-msgstr ""
+msgstr "Ungüitiger Dog ausgwöit."
 
 #: src/pages/history.py:188
 msgid "End date must be after start date."
-msgstr ""
+msgstr "As Enddatum muas nachm Startdatum ling."
 
 #: src/pages/history.py:216
 msgid "Custom"
-msgstr ""
+msgstr "Benutzadefiniert"
 
 #: src/pages/history.py:316
 msgid "No scans found"
-msgstr ""
+msgstr "Koane Scans g'funna"
 
 #: src/pages/history.py:317
 msgid "No scans match the selected time range."
-msgstr ""
+msgstr "Koane Scans passn zum ausg'wöitn Zeitraum."
 
 #: src/pages/history.py:360 src/pages/history.py:363
 #, python-brace-format
 msgid "Go to page {n}"
-msgstr ""
+msgstr "Geh' zur Seitn {n}"
 
 #: src/pages/history.py:409
 #, python-brace-format
 msgid "{count} device"
 msgid_plural "{count} devices"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Oa Gerät"
+msgstr[1] "{count} Geräte"
 
 #: src/pages/history.py:412
 #, python-brace-format
 msgid "{time} · {count} · Deep"
-msgstr ""
+msgstr "{time} · {count} · Deep-Scan"
 
 #: src/pages/history.py:415
 #, python-brace-format
 msgid "{time} · {count}"
-msgstr ""
+msgstr "{time} · {count}"
 
 #: src/pages/history.py:432 src/pages/history.py:434
 msgid "Delete this scan"
-msgstr ""
+msgstr "Den Scan löschen"
 
 #: src/pages/history.py:459
 msgid "Delete scan?"
-msgstr ""
+msgstr "Scan löschen?"
 
 #: src/pages/history.py:460
 #, python-brace-format
@@ -975,30 +978,32 @@ msgid ""
 "“{scan}” will be permanently removed from your history. This cannot be "
 "undone."
 msgstr ""
+"\"{scan}\" wiad permanent aus deinem Verlauf g'löscht. Des konn ned "
+"rückgängig g'macht wean."
 
 #: src/pages/history.py:463
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechn"
 
 #: src/pages/history.py:464
 msgid "Delete Scan"
-msgstr ""
+msgstr "Scan löschn"
 
 #: src/pages/history.py:481
 msgid "Scan deleted"
-msgstr ""
+msgstr "Scan g'löscht"
 
 #: src/pages/history.py:482
 msgid "Undo"
-msgstr ""
+msgstr "Rückgängig mach'n"
 
 #: src/pages/home.py:82 src/pages/home.py:98
 msgid "Auto-detect"
-msgstr ""
+msgstr "Automatisch Erkenna"
 
 #: src/pages/home.py:82 src/pages/home.py:99
 msgid "Automatically detect your local network"
-msgstr ""
+msgstr "Automatisch dei lokals Netzwerk erkenna"
 
 #: src/pages/home.py:83
 msgid "Home network (192.168.1.x)"
@@ -1018,39 +1023,39 @@ msgstr ""
 
 #: src/pages/home.py:100
 msgid "Choose a different preset range"
-msgstr ""
+msgstr "Wähl' a andan Bereich aus"
 
 #: src/pages/home.py:168 src/pages/results.py:476
 msgid "Scan already in progress"
-msgstr ""
+msgstr "Scan is bereits in Oabat"
 
 #: src/pages/preferences.py:48
 msgid "General"
-msgstr ""
+msgstr "Allg'mein"
 
 #: src/pages/preferences.py:53 src/pages/results.py:496
 msgid "Scanning"
-msgstr ""
+msgstr "Scannen"
 
 #: src/pages/preferences.py:55
 msgid "Tune how aggressively NetPeek scans your network."
-msgstr ""
+msgstr "Stell ei, wia aggressiv NetPeek dei Netzwerk scannt."
 
 #: src/pages/preferences.py:61
 msgid "Threads"
-msgstr ""
+msgstr "Threads"
 
 #: src/pages/preferences.py:63
 msgid "Concurrent workers. Higher is faster but uses more resources."
-msgstr ""
+msgstr "Gleichzeitige Oawata. Heicha is schnella oba verbraucht mea Ressourcen."
 
 #: src/pages/results.py:320 src/pages/results.py:466
 msgid "Show as grid"
-msgstr ""
+msgstr "Ois Rasta ozoang"
 
 #: src/pages/results.py:320 src/pages/results.py:467
 msgid "Show as list"
-msgstr ""
+msgstr "Ois List'n ozoang"
 
 #: src/pages/results.py:354
 msgid "No devices to export"
