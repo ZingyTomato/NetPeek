@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-27 10:27+0100\n"
-"PO-Revision-Date: 2026-10-30 14:51+0000\n"
+"PO-Revision-Date: 2026-10-31 15:51+0000\n"
 "Last-Translator: \"shuck.\" <shuck-hh@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Bavarian <https://hosted.weblate.org/projects/netpeek/netpeek/"
 "bar/>\n"
@@ -1059,175 +1059,175 @@ msgstr "Ois List'n ozoang"
 
 #: src/pages/results.py:354
 msgid "No devices to export"
-msgstr ""
+msgstr "Koane Geräte zum exportian"
 
 #: src/pages/results.py:358
 msgid "Export scan results"
-msgstr ""
+msgstr "Scanergebnis' exportieren"
 
 #: src/pages/results.py:362
 msgid "CSV files"
-msgstr ""
+msgstr "CSV-Datei'n"
 
 #: src/pages/results.py:381 src/pages/results.py:413
 msgid "Export failed. Please try again."
-msgstr ""
+msgstr "Export fehlg'schlang. Bitte nummoi probian."
 
 #: src/pages/results.py:405
 #, python-brace-format
 msgid "Successfully exported to {name}"
-msgstr ""
+msgstr "Erfolgreich nach {name} exportiat"
 
 #: src/pages/results.py:408
 msgid "Open Folder"
-msgstr ""
+msgstr "Ordna öffnen"
 
 #: src/pages/results.py:443
 #, python-brace-format
 msgid "Time elapsed: {minutes:02d}:{seconds:02d}"
-msgstr ""
+msgstr "Vergangene Zeit: {minutes:02d}:{seconds:02d}"
 
 #: src/pages/results.py:451
 #, python-brace-format
 msgid "Hosts scanned: {scanned}/{total}"
-msgstr ""
+msgstr "G'scannte Hosts: {scanned}/{total}"
 
 #: src/pages/results.py:459
 msgid "Scanning..."
-msgstr ""
+msgstr "Scannt..."
 
 #: src/pages/results.py:472 src/pages/scan_info.py:40
 msgid "Deep"
-msgstr ""
+msgstr "Deep-Scan"
 
 #: src/pages/results.py:496
 msgid "Deep scanning"
-msgstr ""
+msgstr "Deep scannen"
 
 #: src/pages/results.py:498
 #, python-brace-format
 msgid "{mode} · {range}"
-msgstr ""
+msgstr "{mode} · {range}"
 
 #: src/pages/results.py:544
 #, python-brace-format
 msgid "{deep}Loaded from history · {range}"
-msgstr ""
+msgstr "{deep}Aus'm Verlaug g'ladn · {range}"
 
 #: src/pages/results.py:575
 #, python-brace-format
 msgid "Found {count} device"
 msgid_plural "Found {count} devices"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Oa Gerät g'funna"
+msgstr[1] "{count} Geräte g'funna"
 
 #: src/pages/results.py:581
 #, python-brace-format
 msgid "{deep}Scan stopped · {found}"
-msgstr ""
+msgstr "{deep}Scan g'stoppt · {found}"
 
 #: src/pages/results.py:585
 #, python-brace-format
 msgid "{deep}{found}"
-msgstr ""
+msgstr "{deep}{found}"
 
 #: src/pages/results.py:594
 msgid "Scan stopped · No devices found"
-msgstr ""
+msgstr "Scan g'stoppt · Koane Geräte g'funna"
 
 #: src/pages/results.py:614
 msgid "Scan failed"
-msgstr ""
+msgstr "Scan fehlg'schlagen"
 
 #: src/pages/scan_info.py:40
 msgid "Standard"
-msgstr ""
+msgstr "Standard"
 
 #: src/pages/scan_info.py:64
 #, python-brace-format
 msgid "{minutes} {seconds}"
-msgstr ""
+msgstr "{minutes} :{seconds}"
 
 #: src/pages/scan_info.py:66 src/pages/scan_info.py:73
 #, python-brace-format
 msgid "{n} minute"
 msgid_plural "{n} minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Oa minut'n"
+msgstr[1] "{n} minut'n"
 
 #: src/pages/scan_info.py:68 src/pages/scan_info.py:69
 #, python-brace-format
 msgid "{n} second"
 msgid_plural "{n} seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{n} Sekund'"
+msgstr[1] "{n} Sekund'n"
 
 #: src/pages/scan_info.py:71
 #, python-brace-format
 msgid "{hours} {minutes}"
-msgstr ""
+msgstr "{hours}: {minutes}"
 
 #: src/pages/scan_info.py:72
 #, python-brace-format
 msgid "{n} hour"
 msgid_plural "{n} hours"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "A Stund"
+msgstr[1] "{n} Stund'n"
 
 #: src/scanner.py:52
 msgid "Thread count must be between 1 and 500"
-msgstr ""
+msgstr "Thread-Count muas zwisch'n 1 und 500 sei"
 
 #: src/scanner.py:56
 msgid "Please enter an IP range"
-msgstr ""
+msgstr "Bitte an IP-Bereich eigeb'n"
 
 #: src/scanner.py:63
 msgid "Valid IP range"
-msgstr ""
+msgstr "Guitger IP-Bereich"
 
 #: src/scanner.py:65
 #, python-brace-format
 msgid "Invalid IP range: {e}"
-msgstr ""
+msgstr "Unguitiger IP-Bereich: {e}"
 
 #: src/scanner.py:86
 msgid "Invalid range format!"
-msgstr ""
+msgstr "Unguitigs Bereich-Format!"
 
 #: src/scanner.py:93
 #, python-brace-format
 msgid "Error parsing IP range: {e}"
-msgstr ""
+msgstr "Fehler bei'm Verarbeit'n vom IP-Bereich: {e}"
 
 #: src/scanner.py:111
 #, python-brace-format
 msgid "Nmap error on host {host}: {e}"
-msgstr ""
+msgstr "Nmap-Fehla beim Host {host}: {e}"
 
 #: src/scanner.py:189
 #, python-brace-format
 msgid "An error occurred in a thread: {e}"
-msgstr ""
+msgstr "A Fehla is in am Thread aufgetretn: {e}"
 
 #: src/scanner.py:198
 #, python-brace-format
 msgid "Scan failed: {e}"
-msgstr ""
+msgstr "Scan fehlg'schlagn: {e}"
 
 #: src/widgets.py:49
 #, python-brace-format
 msgid "Copied {ip} to the clipboard"
-msgstr ""
+msgstr "{ip} is in d'Zwischnablag kopiert woan"
 
 #: src/widgets.py:174
 msgid "Show less"
-msgstr ""
+msgstr "Weniga anzeig'n"
 
 #: src/widgets.py:319
 msgid "New device"
-msgstr ""
+msgstr "Neis Gerät"
 
 #: src/widgets.py:324
 msgid "Known device"
-msgstr ""
+msgstr "Bekannt's Gerät"
