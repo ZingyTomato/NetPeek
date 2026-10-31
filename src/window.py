@@ -125,6 +125,7 @@ class NetworkScannerWindow(Adw.ApplicationWindow):
             self._preferences_dialog = PreferencesDialog(
                 settings=self.settings,
                 scanner=self.scanner,
+                toast_overlay=self.toast_overlay,
             )
         self._preferences_dialog.present(self)
 
